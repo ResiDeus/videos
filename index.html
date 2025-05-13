@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Hourly TV Tube</title>
   <style>
     body {
@@ -60,14 +59,29 @@
       color: #bbb;
       font-size: 14px;
     }
+
+    .unmute-btn {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: #ff4444;
+      border: none;
+      padding: 6px 12px;
+      font-size: 14px;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+      z-index: 2;
+    }
   </style>
 </head>
 <body>
 
   <div class="tv-frame">
     <div class="screen">
-      <iframe id="youtube-player" allow="autoplay" allowfullscreen></iframe>
+      <iframe id="youtube-player" allow="autoplay; encrypted-media" allowfullscreen></iframe>
     </div>
+    <button class="unmute-btn" id="unmuteBtn">🔊 Unmute</button>
     <div class="tv-label">Boricua Tube</div>
   </div>
 
@@ -84,8 +98,21 @@
     const hour = new Date().getHours();
     const videoId = videoByHour[hour];
 
+    // Load muted version for autoplay
     const player = document.getElementById("youtube-player");
-    player.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&mute=1&controls=0&rel=0&modestbranding=1&showinfo=0`;
+    const loadVideo = (mute = true) => {
+      const muteParam = mute ? "&mute=1" : "";
+      player.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1${muteParam}&controls=0&rel=0&modestbranding=1&showinfo=0`;
+    };
+
+    loadVideo(true);
+
+    // Allow user to unmute
+    const unmuteBtn = document.getElementById("unmuteBtn");
+    unmuteBtn.addEventListener("click", () => {
+      loadVideo(false);
+      unmuteBtn.style.display = "none";
+    });
   </script>
 
 </body>
