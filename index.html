@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hourly YouTube Player</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; background: #111; color: white; }
+    iframe { width: 80%; height: 400px; margin-top: 2rem; border: none; }
+  </style>
+</head>
+<body>
+  <h1>YouTube Video of the Hour</h1>
+  <div id="player-container">
+    <iframe id="youtube-player" allowfullscreen></iframe>
+  </div>
+
+  <script>
+    const videoByHour = [
+      'dQw4w9WgXcQ', // 00:00
+      'kJQP7kiw5Fk', // 01:00
+      '3JZ_D3ELwOQ', // 02:00
+      'L_jWHffIx5E', // 03:00
+      'eY52Zsg-KVI', // 04:00
+      'fJ9rUzIMcZQ', // 05:00
+      'RgKAFK5djSk', // 06:00
+      '2Vv-BfVoq4g', // 07:00
+      'uelHwf8o7_U', // 08:00
+      '60ItHLz5WEA', // 09:00
+      'hT_nvWreIhg', // 10:00
+      'OPf0YbXqDm0', // 11:00
+      '9bZkp7q19f0', // 12:00
+      'gCYcHz2k5x0', // 13:00
+      '2vjPBrBU-TM', // 14:00
+      'YqeW9_5kURI', // 15:00
+      'pRpeEdMmmQ0', // 16:00
+      '0KSOMA3QBU0', // 17:00
+      'hLQl3WQQoQ0', // 18:00
+      'uelHwf8o7_U', // 19:00
+      'JGwWNGJdvx8', // 20:00
+      '09R8_2nJtjg', // 21:00
+      'kffacxfA7G4', // 22:00
+      'tVj0ZTS4WF4'  // 23:00
+    ];
+
+    const hour = new Date().getHours(); // Get current hour (0–23)
+    const videoId = videoByHour[hour];
+
+    const player = document.getElementById("youtube-player");
+    player.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1`;
+  </script>
+</body>
+</html>
