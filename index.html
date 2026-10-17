@@ -1,119 +1,596 @@
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Hourly TV Tube</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wink ;) World</title>
   <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      background-color: #1a1a1a;
+      background: #e74c3c;
+      font-family: "Comic Sans MS", "Comic Sans", cursive, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 16px;
+    }
+
+    /* Logo */
+    .logo-wrap {
+      background: linear-gradient(to bottom, #f1c40f, #e67e22);
+      border: 3px solid #fff;
+      border-bottom: none;
+      border-radius: 10px 10px 0 0;
+      padding: 6px 28px 4px;
+      color: white;
+      text-align: center;
+      text-shadow: 2px 2px 0 #000;
+      box-shadow: 0 -2px 8px rgba(0,0,0,0.3);
+    }
+    .logo-wrap small {
+      display: block;
+      font-size: 11px;
+      letter-spacing: 2px;
+    }
+    .logo-wrap strong {
+      font-size: 26px;
+      letter-spacing: 1px;
+    }
+
+    .main {
+      display: flex;
+      background: #fff;
+      border: 4px solid #333;
+      border-radius: 0 12px 12px 12px;
+      overflow: hidden;
+      max-width: 1080px;
+      width: 100%;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.45);
+    }
+
+    /* ===== WORLD MAP ===== */
+    .world {
+      position: relative;
+      width: 700px;
+      height: 520px;
+      background: linear-gradient(#5dade2 0%, #85c1e9 38%, #7dcea0 38%, #27ae60 100%);
+      overflow: hidden;
+    }
+
+    .sea {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 38%;
+      background: linear-gradient(#3498db, #5dade2);
+    }
+    .hills {
+      position: absolute;
+      bottom: 55%;
+      width: 100%;
+      height: 90px;
+      background: #1e8449;
+      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+    }
+
+    .timebox {
+      position: absolute;
+      top: 14px; right: 18px;
+      background: #c0392b;
+      color: #fff;
+      font-weight: bold;
+      font-size: 18px;
+      padding: 6px 14px;
+      border-radius: 8px;
+      border: 2px solid #fff;
+      z-index: 10;
+    }
+
+    .loc {
+      position: absolute;
+      cursor: pointer;
+      transition: transform 0.15s, filter 0.15s;
+      z-index: 5;
+    }
+    .loc:hover {
+      transform: scale(1.06);
+      filter: brightness(1.15);
+    }
+
+    /* Rocket */
+    .rocket {
+      left: 30px; bottom: 70px;
+      width: 130px; height: 240px;
+    }
+    .rocket-body {
+      width: 100%; height: 100%;
+      background: linear-gradient(#e74c3c, #c0392b);
+      clip-path: polygon(50% 0%, 85% 25%, 75% 100%, 25% 100%, 15% 25%);
+      position: relative;
+    }
+    .rocket-body::after {
+      content: "D MAX";
+      position: absolute;
+      bottom: 30px; left: 50%;
+      transform: translateX(-50%);
+      color: #fff;
+      font-weight: bold;
+      font-size: 15px;
+      text-shadow: 1px 1px 0 #000;
+    }
+    .rocket-window {
+      position: absolute;
+      top: 40px; left: 50%;
+      transform: translateX(-50%);
+      width: 36px; height: 36px;
+      background: #85c1e9;
+      border: 3px solid #fff;
+      border-radius: 50%;
+    }
+
+    /* Cybernet Café */
+    .cyber {
+      left: 190px; top: 150px;
+      width: 150px; height: 110px;
+    }
+    .cyber-bubble {
+      width: 100%; height: 100%;
+      background: #3498db;
+      border-radius: 50% 50% 30% 30%;
+      border: 5px solid #2980b9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: bold;
+      text-align: center;
+      line-height: 1.1;
+      box-shadow: 0 4px 0 #1a5276;
+    }
+    .cyber-bubble span { font-size: 13px; }
+    .cyber-bubble strong { font-size: 20px; font-style: italic; }
+
+    /* Club X */
+    .club {
+      right: 150px; top: 90px;
+      width: 170px; height: 150px;
+    }
+    .club-building {
+      width: 100%; height: 100%;
+      background: #9b59b6;
+      border-radius: 25px 25px 8px 8px;
+      border: 4px solid #8e44ad;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 22px;
+      font-weight: bold;
+      box-shadow: 0 6px 0 #5b2c6f;
+    }
+
+    /* Drive-In */
+    .drive {
+      right: 30px; top: 70px;
+      width: 55px; height: 140px;
+    }
+    .drive-sign {
+      width: 100%; height: 100%;
+      background: #e74c3c;
+      border: 3px solid #c0392b;
+      color: #fff;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 15px;
+      letter-spacing: 2px;
+    }
+
+    /* ===== CHARACTER CREATOR ===== */
+    .creator {
+      width: 300px;
+      background: #f39c12;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .creator-title {
+      background: #27ae60;
+      color: #fff;
+      text-align: center;
+      padding: 8px 4px;
+      font-size: 14px;
+      font-weight: bold;
+      border-radius: 6px;
+      text-shadow: 1px 1px 0 #000;
+      line-height: 1.25;
+    }
+
+    .preview-area {
+      display: flex;
+      gap: 8px;
+      background: #ecf0f1;
+      border-radius: 8px;
+      padding: 8px;
+    }
+
+    .preview {
+      width: 90px;
+      height: 120px;
+      background: #bdc3c7;
+      border: 2px solid #7f8c8d;
+      border-radius: 6px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      overflow: hidden;
+    }
+    .char-hair {
+      position: absolute;
+      top: 10px;
+      width: 46px; height: 20px;
+      background: var(--hair, #8B4513);
+      border-radius: 22px 22px 0 0;
+      z-index: 2;
+    }
+    .char-head {
+      position: absolute;
+      top: 18px;
+      width: 42px; height: 42px;
+      background: var(--face, #F5CBA7);
+      border-radius: 50%;
+      z-index: 1;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      margin: 0;
-      font-family: monospace;
+    }
+    .eyes {
+      display: flex;
+      gap: 10px;
+      margin-top: 6px;
+    }
+    .eyes span {
+      width: 6px; height: 6px;
+      background: #000;
+      border-radius: 50%;
+    }
+    .char-body {
+      width: 52px; height: 58px;
+      background: var(--body, #7f8c8d);
+      border-radius: 10px 10px 0 0;
     }
 
-    .tv-frame {
-      background: #222;
-      border: 20px solid #555;
-      border-radius: 20px;
-      padding: 15px;
-      box-shadow: 0 0 30px rgba(0,0,0,0.7);
-      width: 640px;
-      height: 480px;
-      position: relative;
+    .colors {
+      flex: 1;
+      font-size: 12px;
     }
-
-    .tv-frame::before {
-      content: '';
-      position: absolute;
-      top: -30px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 120px;
-      height: 20px;
-      background: #888;
-      border-radius: 10px;
+    .color-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 3px;
     }
-
-    .screen {
-      background: black;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      border-radius: 10px;
-    }
-
-    .screen iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-
-    .tv-label {
-      position: absolute;
-      bottom: -30px;
-      left: 50%;
-      transform: translateX(-50%);
-      color: #bbb;
-      font-size: 14px;
-    }
-
-    .unmute-btn {
-      position: absolute;
-      bottom: 10px;
-      right: 10px;
-      background: #ff4444;
-      border: none;
-      padding: 6px 12px;
-      font-size: 14px;
-      color: white;
-      border-radius: 6px;
+    .swatch {
+      width: 24px; height: 14px;
+      border: 1px solid #333;
       cursor: pointer;
-      z-index: 2;
+      border-radius: 2px;
     }
+    .swatch.active {
+      outline: 3px solid #000;
+    }
+
+    .palette {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 3px;
+      margin: 6px 0;
+    }
+    .palette div {
+      width: 16px; height: 13px;
+      border: 1px solid #555;
+      cursor: pointer;
+      border-radius: 2px;
+    }
+    .palette div:hover {
+      outline: 2px solid #000;
+    }
+
+    .reset-btn {
+      background: #3498db;
+      color: white;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      cursor: pointer;
+      width: 100%;
+    }
+    .reset-btn:hover { background: #2980b9; }
+
+    .acc-section {
+      background: #ecf0f1;
+      border-radius: 6px;
+      padding: 8px;
+    }
+    .acc-section h4 {
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+    .acc-list {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
+    .acc {
+      width: 34px; height: 34px;
+      background: #ddd;
+      border: 2px solid #999;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+    .acc:hover, .acc.on {
+      background: #3498db;
+      border-color: #2980b9;
+      transform: scale(1.1);
+    }
+
+    .login-box {
+      margin-top: auto;
+    }
+    .login-box label {
+      font-size: 12px;
+      display: block;
+      margin-bottom: 3px;
+    }
+    .login-box input {
+      width: 100%;
+      padding: 7px;
+      border: 2px solid #7f8c8d;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+    .login-btn {
+      width: 100%;
+      margin-top: 7px;
+      padding: 9px;
+      background: #27ae60;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .login-btn:hover { background: #219653; }
+
+    .footer {
+      margin-top: 12px;
+      color: #fff;
+      font-size: 12px;
+      text-align: center;
+      max-width: 900px;
+      line-height: 1.45;
+    }
+    .footer a { color: #f1c40f; }
   </style>
 </head>
 <body>
 
-  <div class="tv-frame">
-    <div class="screen">
-      <iframe id="youtube-player" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  <div class="logo-wrap">
+    <small>WELCOME TO</small>
+    <strong>wink ;) world</strong>
+  </div>
+
+  <div class="main">
+    <!-- WORLD -->
+    <div class="world">
+      <div class="sea"></div>
+      <div class="hills"></div>
+
+      <div class="timebox">
+        <span id="clock">2:52 am</span> | 95° F
+      </div>
+
+      <div class="loc rocket" onclick="visit('D MAX Rocket')" title="D MAX Rocket">
+        <div class="rocket-body">
+          <div class="rocket-window"></div>
+        </div>
+      </div>
+
+      <div class="loc cyber" onclick="visit('Cybernet Café')" title="Cybernet Café">
+        <div class="cyber-bubble">
+          <span>CYBERNET</span>
+          <strong>Café</strong>
+        </div>
+      </div>
+
+      <div class="loc club" onclick="visit('Club X')" title="Club X">
+        <div class="club-building">CLUB X</div>
+      </div>
+
+      <div class="loc drive" onclick="visit('Drive-In Movie')" title="Drive-In Movie">
+        <div class="drive-sign">DRIVE IN</div>
+      </div>
     </div>
-    <button class="unmute-btn" id="unmuteBtn">🔊 Unmute</button>
-    <div class="tv-label">Boricua Tube</div>
+
+    <!-- CREATOR -->
+    <div class="creator">
+      <div class="creator-title">
+        CHOOSE A NAME<br>AND LOOK FOR<br>YOUR CHARACTER
+      </div>
+
+      <div class="preview-area">
+        <div class="preview" id="preview">
+          <div class="char-hair"></div>
+          <div class="char-head">
+            <div class="eyes"><span></span><span></span></div>
+          </div>
+          <div class="char-body"></div>
+        </div>
+
+        <div class="colors">
+          <div class="color-row">
+            <div class="swatch active" style="background:#8B4513" data-part="hair"></div>
+            <span>: Hair</span>
+          </div>
+          <div class="color-row">
+            <div class="swatch" style="background:#F5CBA7" data-part="face"></div>
+            <span>: Face</span>
+          </div>
+          <div class="color-row">
+            <div class="swatch" style="background:#7f8c8d" data-part="body"></div>
+            <span>: Body</span>
+          </div>
+
+          <div class="palette" id="palette"></div>
+          <button class="reset-btn" onclick="resetColors()">» RESET «</button>
+        </div>
+      </div>
+
+      <div class="acc-section">
+        <h4>Choose your accessories:</h4>
+        <div class="acc-list">
+          <div class="acc" data-acc="glasses" title="Glasses">👓</div>
+          <div class="acc" data-acc="bottle" title="Bottle">🍾</div>
+          <div class="acc" data-acc="hat" title="Hat">🎩</div>
+          <div class="acc" data-acc="phone" title="Phone">📱</div>
+          <div class="acc" data-acc="person1" title="Friend">🧍</div>
+          <div class="acc" data-acc="person2" title="Friend">🧍‍♀️</div>
+        </div>
+      </div>
+
+      <div class="login-box">
+        <label>Username:</label>
+        <input type="text" id="username" placeholder="Type your name..." maxlength="18">
+        <button class="login-btn" onclick="doLogin()">LOGIN</button>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+<div class="footer">
+    If you click "LOGIN" and nothing happens, talk to your network administrator about enabling chats.<br>
+    If you encounter any problems while in this chat, please send us an e-mail with a brief explanation:
+    <a href="mailto:report@winkworld.example">report problem</a>.
   </div>
 
   <script>
-    const videoByHour = [
-      'dQw4w9WgXcQ', 'kJQP7kiw5Fk', '3JZ_D3ELwOQ', 'L_jWHffIx5E',
-      'eY52Zsg-KVI', 'vzf7j9zHJfg', 'e3yethANpGI', '2Vv-BfVoq4g',
-      'uelHwf8o7_U', '60ItHLz5WEA', 'hT_nvWreIhg', 'OPf0YbXqDm0',
-      '9bZkp7q19f0', 'gCYcHz2k5x0', '2vjPBrBU-TM', 'YqeW9_5kURI',
-      'pRpeEdMmmQ0', '0KSOMA3QBU0', 'hLQl3WQQoQ0', 'uelHwf8o7_U',
-      'JGwWNGJdvx8', '09R8_2nJtjg', 'kffacxfA7G4', 'tVj0ZTS4WF4'
+    const colors = [
+      "#8B4513","#A0522D","#D2691E","#F5DEB3","#F5CBA7","#E67E22","#F39C12","#F1C40F",
+      "#27AE60","#2ECC71","#1ABC9C","#16A085","#3498DB","#2980B9","#9B59B6","#8E44AD",
+      "#E74C3C","#C0392B","#ECF0F1","#BDC3C7","#95A5A6","#7F8C8D","#34495E","#2C3E50",
+      "#FFFFFF","#000000","#FF69B4","#FF1493","#00CED1","#20B2AA","#FFD700","#ADFF2F"
     ];
 
-    const hour = new Date().getHours();
-    const videoId = videoByHour[hour];
+    let currentPart = "hair";
+    const selected = new Set();
 
-    // Load muted version for autoplay
-    const player = document.getElementById("youtube-player");
-    const loadVideo = (mute = true) => {
-      const muteParam = mute ? "&mute=1" : "";
-      player.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1${muteParam}&controls=0&rel=0&modestbranding=1&showinfo=0`;
+    // Build color palette
+    const pal = document.getElementById("palette");
+    colors.forEach(c => {
+      const d = document.createElement("div");
+      d.style.background = c;
+      d.onclick = () => applyColor(c);
+      d.draggable = true;
+      d.ondragstart = e => e.dataTransfer.setData("color", c);
+      pal.appendChild(d);
+    });
+
+    // Drag & drop onto character
+    const preview = document.getElementById("preview");
+    preview.ondragover = e => e.preventDefault();
+    preview.ondrop = e => {
+      e.preventDefault();
+      const c = e.dataTransfer.getData("color");
+      if (c) applyColor(c);
     };
 
-    loadVideo(true);
-
-    // Allow user to unmute
-    const unmuteBtn = document.getElementById("unmuteBtn");
-    unmuteBtn.addEventListener("click", () => {
-      loadVideo(false);
-      unmuteBtn.style.display = "none";
+    // Select which part to color
+    document.querySelectorAll(".swatch").forEach(s => {
+      s.onclick = () => {
+        currentPart = s.dataset.part;
+        document.querySelectorAll(".swatch").forEach(x => x.classList.remove("active"));
+        s.classList.add("active");
+      };
     });
-  </script>
 
+    function applyColor(color) {
+      document.documentElement.style.setProperty(`--${currentPart}`, color);
+      document.querySelector(`.swatch[data-part="${currentPart}"]`).style.background = color;
+    }
+
+    function resetColors() {
+      applyColor("#8B4513");
+      currentPart = "face";
+      applyColor("#F5CBA7");
+      currentPart = "body";
+      applyColor("#7f8c8d");
+      currentPart = "hair";
+      document.querySelectorAll(".swatch").forEach(x => x.classList.remove("active"));
+      document.querySelector('.swatch[data-part="hair"]').classList.add("active");
+    }
+
+    // Accessories toggle
+    document.querySelectorAll(".acc").forEach(item => {
+      item.onclick = () => {
+        const acc = item.dataset.acc;
+        if (selected.has(acc)) {
+          selected.delete(acc);
+          item.classList.remove("on");
+        } else {
+          selected.add(acc);
+          item.classList.add("on");
+        }
+      };
+    });
+
+    // Login
+    function doLogin() {
+      const name = document.getElementById("username").value.trim();
+      if (!name) {
+        alert("Please enter a username!");
+        return;
+      }
+      const accs = [...selected].join(", ") || "none";
+      alert(`Welcome to Wink ;) World, ${name}!\n\nAccessories: ${accs}\n\n(This is a demo – in a real version you would now enter the world)`);
+    }
+
+    // Clickable locations
+    function visit(place) {
+      alert(`You are going to: ${place}\n\nIn a full version this would take you into that area!`);
+    }
+
+    // Live clock
+    function updateClock() {
+      const now = new Date();
+      let h = now.getHours();
+      const m = String(now.getMinutes()).padStart(2, "0");
+      const ampm = h >= 12 ? "pm" : "am";
+      h = h % 12 || 12;
+      document.getElementById("clock").textContent = `${h}:${m} ${ampm}`;
+    }
+    updateClock();
+    setInterval(updateClock, 30000);
+  </script>
 </body>
 </html>
