@@ -5,137 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Calculadora de ResiDeus</title>
     <style>
-        /* --- FONDO ANIMADO SYNTHWAVE --- */
-        html, body { 
-            margin: 0; padding: 0; width: 100vw; height: 100vh; 
-            background: linear-gradient(180deg, #09011a 0%, #2c044d 100%); 
-            overflow: hidden; position: relative;
-            font-family: monospace;
-        }
-        .sky { 
-            position: absolute; width: 100%; height: 100%; top: 0; left: 0; 
-            background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent), radial-gradient(1.5px 1px at 75px 120px, #fff9, transparent), radial-gradient(1px 2px at 150px 50px, #00f0ff, transparent), radial-gradient(2px 1.5px at 230px 280px, #ff007f, transparent); 
-            background-size: 380px 380px; animation: twk 4s infinite linear; z-index: 1; 
-        }
-        .grid3d { 
-            position: absolute; width: 100%; height: 40%; bottom: 0; left: 0; 
-            background-image: linear-gradient(rgba(255, 0, 127, 0.2) 2px, transparent 2px), linear-gradient(90deg, rgba(255, 0, 127, 0.2) 2px, transparent 2px); 
-            background-size: 40px 40px; transform: perspective(180px) rotateX(65deg); transform-origin: top center; animation: gM 2.5s infinite linear; z-index: 1; 
-        }
-        @keyframes twk { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
-        @keyframes gM { 0% { background-position: 0 0; } 100% { background-position: 0 40px; } }
-
-        /* --- CHASIS DE CALCULADORA ESTRICTO --- */
-        .chasis { 
-            width: 327px; 
-            height: 460px; /* Aumentado ligeramente para acomodar la lista */
-            background: #241434; 
-            border: 4px solid #ff007f; 
-            box-shadow: 0 0 25px #ff007f80; 
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-            z-index: 10;
-            border-radius: 24px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
+        * { box-sizing: border-box; }
+        html, body { margin: 0; padding: 0; width: 100vw; height: 100vh; background: linear-gradient(180deg, #09011a 0%, #2c044d 100%); overflow: hidden; position: relative; font-family: monospace; }
+        .sky { position: absolute; width: 100%; height: 100%; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent), radial-gradient(1.5px 1px at 75px 120px, #fff9, transparent); background-size: 380px 380px; z-index: 1; }
+        .grid3d { position: absolute; width: 100%; height: 40%; bottom: 0; background-image: linear-gradient(rgba(255, 0, 127, 0.2) 2px, transparent 2px), linear-gradient(90deg, rgba(255, 0, 127, 0.2) 2px, transparent 2px); background-size: 40px 40px; transform: perspective(180px) rotateX(65deg); transform-origin: top center; z-index: 1; }
         
-        /* PANTALLA LCD */
-        .lcd { 
-            width: 100%;
-            height: 190px; 
-            background: #92b043; 
-            border-bottom: 3px solid #000000; 
-            color: #000000; 
-            box-shadow: inset 0 4px 10px rgba(0,0,0,0.4); 
-            font-weight: bold;
-            box-sizing: border-box;
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .lcd-header { display: flex; justify-content: space-between; font-size: 11px; border-bottom: 1px solid rgba(0,0,0,0.2); padding-bottom: 4px; }
+        /* CHASIS CON ALTO DINÁMICO REFORZADO */
+        .chasis { width: 327px; height: auto; min-height: 480px; background: #241434; border: 4px solid #ff007f; box-shadow: 0 0 25px #ff007f80; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; border-radius: 24px; overflow: hidden; display: flex; flex-direction: column; padding: 8px; gap: 6px; }
         
-        /* CONTENEDOR DE LA LISTA DE PRECIOS */
-        .lcd-historial {
-            flex-grow: 1;
-            font-size: 11px;
-            margin: 4px 0;
-            overflow-y: auto;
-            max-height: 55px;
-            text-align: left;
-            border-bottom: 1px dashed rgba(0,0,0,0.15);
-            padding-right: 2px;
-        }
-        .lcd-historial::-webkit-scrollbar { width: 3px; }
-        .lcd-historial::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.4); border-radius: 2px; }
-
+        .lcd { width: 100%; height: 165px; background: #92b043; border: 2px solid #000; border-radius: 14px; color: #000; box-shadow: inset 0 4px 10px rgba(0,0,0,0.4); font-weight: bold; padding: 10px; display: flex; flex-direction: column; justify-content: space-between; }
+        .lcd-header { display: flex; justify-content: space-between; font-size: 11px; border-bottom: 1px solid rgba(0,0,0,0.2); }
+        .lcd-historial { flex-grow: 1; font-size: 11px; margin: 4px 0; overflow-y: auto; max-height: 45px; text-align: left; }
         .lcd-body { text-align: right; font-size: 11px; }
-        .lcd-total { font-size: 30px; font-weight: 900; margin-top: 2px; letter-spacing: -1px; }
+        .lcd-total { font-size: 26px; font-weight: 900; }
 
-        /* MENUS DE ENTRADA EN PARALELO */
-        .row-menus { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 6px 6px 0 6px; }
-        .caja-data { padding: 8px; border-radius: 12px; text-align: center; cursor: pointer; font-size: 11px; transition: all 0.15s ease; }
+        .row-menus { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+        .caja-data { padding: 8px; border-radius: 12px; text-align: center; cursor: pointer; font-size: 11px; }
         .btn-off { background: #1a0826; border: 2px solid #ff007f; color: #ff007f; opacity: 0.5; }
-        .btn-on { background: #ff007f; border: 2px solid #fff; color: #000; font-weight: bold; opacity: 1; }
-        .lbl-title { color: #ffffff !important; font-weight: 900; text-transform: uppercase; display: block; margin-bottom: 2px; }
+        .btn-on { background: #ff007f; border: 2px solid #fff; color: #000; font-weight: bold; }
+        
+        /* CORRECCIÓN CRÍTICA: Desactiva clics fantasmas en las letras internas del menú */
+        .caja-data * { pointer-events: none; }
+        .lbl-title { color: #fff; font-weight: 900; text-transform: uppercase; display: block; }
         .lbl-val { font-size: 15px; font-weight: 900; }
         
-        /* FILA CONFIGURACIONES */
-        .row-config { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 6px; }
-        .btn-cfg { padding: 8px 0; border-radius: 8px; font-size: 10px; font-weight: bold; cursor: pointer; text-align: center; }
+        .row-config { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+        .btn-cfg { padding: 6px 0; border-radius: 8px; font-size: 10px; font-weight: bold; cursor: pointer; text-align: center; }
 
-        /* TECLADO NUMÉRICO */
-        .pad-num { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: #241434; }
-        .btn-key { 
-            height: 34px;
-            background: linear-gradient(180deg, #44186c 0%, #170529 100%); 
-            border: 1px solid #00f0ff44; 
-            color: #00f0ff; font-size: 1.3rem; font-weight: bold; 
-            text-shadow: 0 0 5px #00f0ff80;
-            cursor: pointer;
-        }
-        .btn-key:active { background: linear-gradient(180deg, #ff007f 0%, #a30052 100%); border: 1px solid #fff; color: #fff; }
-        .btn-back { background: linear-gradient(180deg, #5c2c06 0%, #241001 100%); border-color: #f59e0b44; color: #fbbf24; }
+        .pad-num { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+        .btn-key { height: 36px; background: linear-gradient(180deg, #44186c 0%, #170529 100%); border: 1px solid #00f0ff44; border-radius: 6px; color: #00f0ff; font-size: 1.2rem; font-weight: bold; cursor: pointer; }
+        .btn-back { background: linear-gradient(180deg, #5c2c06 0%, #241001 100%); color: #fbbf24; }
 
-        /* SECCIÓN ACCIONES INFERIORES: DOBLE BOTÓN */
-        .row-acciones { display: grid; grid-template-columns: 1fr 1fr; border-top: 2px solid #ff007f; }
-        .btn-clear { 
-            height: 40px; background: linear-gradient(180deg, #701a1a 0%, #300707 100%);
-            border: none; color: #f87171; font-size: 1.3rem; font-weight: bold; cursor: pointer;
-        }
-        .btn-clear:active { background: #ef4444; color: #000; }
-        
-        .btn-add { 
-            height: 40px; background: linear-gradient(180deg, #0f5c3a 0%, #052416 100%);
-            border: none; color: #4ade80; font-size: 1.1rem; font-weight: bold; cursor: pointer;
-            border-left: 2px solid #ff007f;
-        }
-        .btn-add:active { background: #22c55e; color: #000; }
+        .row-acciones { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding-bottom: 2px; }
+        .btn-clear { height: 38px; background: linear-gradient(180deg, #701a1a 0%, #300707 100%); border: 1px solid #ef4444; border-radius: 8px; color: #f87171; font-size: 1.1rem; font-weight: bold; cursor: pointer; }
+        .btn-add { height: 38px; background: linear-gradient(180deg, #0f5c3a 0%, #052416 100%); border: 1px solid #22c55e; border-radius: 8px; color: #4ade80; font-size: 1.1rem; font-weight: bold; cursor: pointer; }
 
-        @keyframes glow { 0%, 100% { box-shadow: 0 0 10px #ff007f; } 50% { box-shadow: 0 0 22px #ff007f; } }
+        @keyframes glow { 0%, 100% { box-shadow: 0 0 10px #ff007f; } 50% { box-shadow: 0 0 18px #ff007f; } }
         .on-anim { animation: glow 1.5s infinite ease-in-out; }
     </style>
 </head>
 <body>
-
     <div class="sky"></div>
     <div class="grid3d"></div>
 
     <div class="chasis">
-        <!-- PANTALLA LCD CON HISTORIAL INTEGRADO -->
         <div class="lcd">
-            <div class="lcd-header">
-                <span>CALCULADORA RESIDEUS</span>
-                <span id="txtIvu">IVU: 11.5%</span>
-            </div>
-            
-            <!-- LISTA VISUAL DE PRODUCTOS AGREGADOS -->
-            <div class="lcd-historial" id="listaPrecios">
-                <i>Lista vacía...</i>
-            </div>
-
+            <div class="lcd-header"><span id="lblArt">CALCULADORA</span><span id="txtIvu">IVU: 11.5%</span></div>
+            <div class="lcd-historial" id="listaPrecios"><i>Lista vacía...</i></div>
             <div class="lcd-body">
                 <div id="rowTip" style="opacity: 0.2;">PROPINA (18%): <span id="outTip">$0.00</span></div>
                 <div>IVU: <span id="outIvu">$0.00</span></div>
@@ -143,19 +59,17 @@
             </div>
         </div>
 
-        <!-- MENUS DE DATOS -->
         <div class="row-menus">
-            <div id="cajaSub" class="caja-data btn-on on-anim" onclick="focusF('sub')">
+            <div id="cajaSub" class="caja-data btn-on on-anim" onclick="seleccionarMenu('sub')">
                 <span class="lbl-title">Cuenta</span>
                 <span class="lbl-val">$<span id="lblSub">0</span></span>
             </div>
-            <div id="cajaPpl" class="caja-data btn-off" onclick="togglePersonasMode()">
+            <div id="cajaPpl" class="caja-data btn-off" onclick="seleccionarMenu('ppl')">
                 <span class="lbl-title">Personas</span>
                 <span class="lbl-val"><span id="lblPpl">OFF</span></span>
             </div>
         </div>
 
-        <!-- CONFIGURACIÓN IVU Y PROPINA -->
         <div class="row-config">
             <button id="ivu115" onclick="setI(11.5)" class="btn-cfg btn-on">11.5%</button>
             <button id="ivu6" onclick="setI(6.0)" class="btn-cfg btn-off">6.0%</button>
@@ -163,229 +77,133 @@
             <button id="btnPropina" onclick="toggleTip()" class="btn-cfg btn-off">PROPINA</button>
         </div>
 
-        <!-- TECLADO NUMÉRICO -->
         <div class="pad-num">
-            <button onclick="num('7')" class="btn-key">7</button>
-            <button onclick="num('8')" class="btn-key">8</button>
-            <button onclick="num('9')" class="btn-key">9</button>
-            
-            <button onclick="num('4')" class="btn-key">4</button>
-            <button onclick="num('5')" class="btn-key">5</button>
-            <button onclick="num('6')" class="btn-key">6</button>
-            
-            <button onclick="num('1')" class="btn-key">1</button>
-            <button onclick="num('2')" class="btn-key">2</button>
-            <button onclick="num('3')" class="btn-key">3</button>
-            
-            <button onclick="num('.')" class="btn-key">.</button>
-            <button onclick="num('0')" class="btn-key">0</button>
-            <button onclick="bksp()" class="btn-key btn-back">←</button>
+            <button onclick="num('7')" class="btn-key">7</button><button onclick="num('8')" class="btn-key">8</button><button onclick="num('9')" class="btn-key">9</button>
+            <button onclick="num('4')" class="btn-key">4</button><button onclick="num('5')" class="btn-key">5</button><button onclick="num('6')" class="btn-key">6</button>
+            <button onclick="num('1')" class="btn-key">1</button><button onclick="num('2')" class="btn-key">2</button><button onclick="num('3')" class="btn-key">3</button>
+            <button onclick="num('.')" class="btn-key">.</button><button onclick="num('0')" class="btn-key">0</button><button onclick="bksp()" class="btn-key btn-back">←</button>
         </div>
 
-        <!-- ACCIONES INFERIORES -->
         <div class="row-acciones">
-            <button onclick="clr()" class="btn-clear">C (Reset)</button>
-            <button onclick="addProducto()" class="btn-add">+ AÑADIR</button>
+            <button onclick="clr()" class="btn-clear">C Reset</button>
+            <button onclick="addProducto()" class="btn-add">+ Añadir</button>
         </div>
     </div>
-
     <script>
-        let ivu = 11.5, mode = 'sub', sSub = "0", sPpl = "0", incluirPropina = false;
-        let modoPersonasActivo = false; 
-        
-        // ARRAY PARA GUARDAR HISTORIAL
-        let preciosGuardados = []; 
-        let cuentaAcumulada = 0;
+        let ivu = 11.5, mode = 'sub', sSub = "0", sPpl = "0", incluirPropina = false, modoPersonasActivo = false;
+        let preciosGuardados = [], cuentaAcumulada = 0;
 
-        // --- SISTEMA DE AUDIO SYNTHWAVE ---
         function reproducirSonido(tipo) {
             try {
-                const AudioContext = window.AudioContext || window.webkitAudioContext;
-                if (!AudioContext) return;
-                const ctx = new AudioContext();
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-                
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator(), gain = ctx.createGain();
+                osc.connect(gain); gain.connect(ctx.destination);
                 if (tipo === 'menu') {
-                    osc.type = 'sine';
-                                    const AudioContext = window.AudioContext || window.webkitAudioContext;
-                if (!AudioContext) return;
-                const ctx = new AudioContext();
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-                
-                if (tipo === 'menu') {
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(800, ctx.currentTime); 
+                    osc.type = 'sine'; osc.frequency.setValueAtTime(800, ctx.currentTime);
                     osc.frequency.exponentialRampToValueAtTime(400, ctx.currentTime + 0.1);
                     gain.gain.setValueAtTime(0.1, ctx.currentTime);
-                    gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.12);
-                    osc.start(); osc.stop(ctx.currentTime + 0.12);
                 } else if (tipo === 'tecla') {
-                    osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(350, ctx.currentTime);
+                    osc.type = 'triangle'; osc.frequency.setValueAtTime(350, ctx.currentTime);
                     gain.gain.setValueAtTime(0.15, ctx.currentTime);
-                    gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.05);
-                    osc.start(); osc.stop(ctx.currentTime + 0.05);
                 } else if (tipo === 'add') {
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(450, ctx.currentTime);
+                    osc.type = 'sine'; osc.frequency.setValueAtTime(450, ctx.currentTime);
                     osc.frequency.exponentialRampToValueAtTime(950, ctx.currentTime + 0.15);
                     gain.gain.setValueAtTime(0.12, ctx.currentTime);
-                    gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.15);
-                    osc.start(); osc.stop(ctx.currentTime + 0.15);
                 }
+                gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.15);
+                osc.start(); osc.stop(ctx.currentTime + 0.15);
             } catch (e) {}
         }
 
-        function focusF(f) {
-            reproducirSonido('menu'); 
+        function seleccionarMenu(f) {
+            reproducirSonido('menu');
             if (f === 'sub') {
-                if (modoPersonasActivo) {
-                    modoPersonasActivo = false;
-                    document.getElementById('lblPpl').innerText = "OFF";
-                    document.getElementById('lblTotalType').innerText = "TOTAL";
-                    calc();
-                }
-                mode = 'sub';
-            }
-            actualizarEstilosPaneles();
-        }
-
-        function togglePersonasMode() {
-            reproducirSonido('menu'); 
-            modoPersonasActivo = !modoPersonasActivo;
-            
-            if (modoPersonasActivo) {
-                if (sPpl === "0" || sPpl === "") { sPpl = "2"; }
-                mode = 'ppl'; 
-                document.getElementById('lblPpl').innerText = sPpl;
-                document.getElementById('lblTotalType').innerText = "C/U";
-            } else {
-                mode = 'sub'; 
+                modoPersonasActivo = false;
                 document.getElementById('lblPpl').innerText = "OFF";
                 document.getElementById('lblTotalType').innerText = "TOTAL";
+                mode = 'sub';
+            } else {
+                modoPersonasActivo = true;
+                if (sPpl === "0" || sPpl === "") sPpl = "2";
+                document.getElementById('lblPpl').innerText = sPpl;
+                document.getElementById('lblTotalType').innerText = "C/U";
+                mode = 'ppl';
             }
-            actualizarEstilosPaneles();
+            document.getElementById('cajaSub').className = mode === 'sub' ? "caja-data btn-on on-anim" : "caja-data btn-off";
+            document.getElementById('cajaPpl').className = mode === 'ppl' ? "caja-data btn-on on-anim" : "caja-data btn-off";
             calc();
         }
 
-        function actualizarEstilosPaneles() {
-            const cajaSub = document.getElementById('cajaSub');
-            const cajaPpl = document.getElementById('cajaPpl');
-            cajaSub.className = mode === 'sub' ? "caja-data btn-on on-anim" : "caja-data btn-off";
-            if (!modoPersonasActivo) {
-                cajaPpl.className = "caja-data btn-off";
-            } else {
-                cajaPpl.className = mode === 'ppl' ? "caja-data btn-on on-anim" : "caja-data bg-[#ff007f]/20 border border-[#ff007f] text-[#ff007f]";
-            }
-        }
-
         function toggleTip() {
-            reproducirSonido('menu'); 
-            incluirPropina = !incluirPropina;
+            reproducirSonido('menu'); incluirPropina = !incluirPropina;
             document.getElementById('btnPropina').className = incluirPropina ? "btn-cfg btn-on" : "btn-cfg btn-off";
             document.getElementById('rowTip').style.opacity = incluirPropina ? "1" : "0.2";
             calc();
         }
 
         function setI(p) {
-            reproducirSonido('menu'); 
-            ivu = p;
-            ['ivu115', 'ivu6', 'ivu0'].forEach(id => { document.getElementById(id).className = "btn-cfg btn-off"; });
-            let idActivo = p === 11.5 ? 'ivu115' : p === 6.0 ? 'ivu6' : 'ivu0';
-            document.getElementById(idActivo).className = "btn-cfg btn-on";
+            reproducirSonido('menu'); ivu = p;
+            ['ivu115', 'ivu6', 'ivu0'].forEach(id => document.getElementById(id).className = "btn-cfg btn-off");
+            document.getElementById(p === 11.5 ? 'ivu115' : p === 6.0 ? 'ivu6' : 'ivu0').className = "btn-cfg btn-on";
             document.getElementById('txtIvu').innerText = `IVU: ${p.toFixed(1)}%`;
             calc();
         }
 
         function num(c) {
-            reproducirSonido('tecla'); 
+            reproducirSonido('tecla');
             if (mode === 'sub') {
                 if (sSub === "0" && c !== '.') sSub = "";
                 if (c === '.' && sSub.includes('.')) return;
-                sSub += c; 
-                document.getElementById('lblSub').innerText = sSub;
+                sSub += c; document.getElementById('lblSub').innerText = sSub;
             } else {
-                if (c === '.') return;
-                if (sPpl === "0" || sPpl === "2" && document.getElementById('lblPpl').innerText === "2") sPpl = ""; 
+                if (c === '.' || sPpl === "0" || sPpl === "2") sPpl = "";
                 sPpl += c; document.getElementById('lblPpl').innerText = sPpl;
             }
             calc();
         }
 
         function bksp() {
-            reproducirSonido('tecla'); 
+            reproducirSonido('tecla');
             if (mode === 'sub') {
-                sSub = sSub.slice(0, -1); if (sSub === "" || sSub === "-") sSub = "0";
+                sSub = sSub.slice(0, -1); if (!sSub) sSub = "0";
                 document.getElementById('lblSub').innerText = sSub;
             } else {
-                sPpl = sPpl.slice(0, -1); if (sPpl === "") sPpl = "0";
+                sPpl = sPpl.slice(0, -1); if (!sPpl) sPpl = "0";
                 document.getElementById('lblPpl').innerText = sPpl;
             }
             calc();
         }
 
         function addProducto() {
-            let valor = parseFloat(sSub) || 0;
-            if (valor > 0) {
-                reproducirSonido('add');
-                preciosGuardados.push(valor);
-                cuentaAcumulada += valor;
-                sSub = "0";
-                document.getElementById('lblSub').innerText = "0";
-                actualizarListaVisual();
+            let val = parseFloat(sSub) || 0;
+            if (val > 0) {
+                reproducirSonido('add'); preciosGuardados.push(val); cuentaAcumulada += val;
+                sSub = "0"; document.getElementById('lblSub').innerText = "0";
+                const con = document.getElementById('listaPrecios');
+                con.innerHTML = preciosGuardados.map((p, i) => `<div>• Art #${i+1}: $${p.toFixed(2)}</div>`).join('');
+                con.scrollTop = con.scrollHeight;
                 calc();
             }
         }
 
-        function actualizarListaVisual() {
-            const contenedor = document.getElementById('listaPrecios');
-            if (preciosGuardados.length === 0) {
-                contenedor.innerHTML = "<i>Lista vacía...</i>";
-                return;
-            }
-            contenedor.innerHTML = preciosGuardados.map((p, i) => `<div>• Art #${i+1}: $${p.toFixed(2)}</div>`).join('');
-            contenedor.scrollTop = contenedor.scrollHeight;
-        }
-
         function clr() {
             reproducirSonido('tecla');
-            if (mode === 'sub') { 
-                sSub = "0"; 
-                cuentaAcumulada = 0;
-                preciosGuardados = [];
+            if (mode === 'sub') {
+                sSub = "0"; cuentaAcumulada = 0; preciosGuardados = [];
                 document.getElementById('lblSub').innerText = "0";
-                actualizarListaVisual();
-            } else { 
-                sPpl = "1"; 
-                document.getElementById('lblPpl').innerText = "1"; 
-            }
+                document.getElementById('listaPrecios').innerHTML = "<i>Lista vacía...</i>";
+            } else { sPpl = "1"; document.getElementById('lblPpl').innerText = "1"; }
             calc();
         }
 
         function calc() {
-            let subEscribiendo = mode === 'sub' ? (parseFloat(sSub) || 0) : 0;
-            let nSub = cuentaAcumulada + subEscribiendo;
-            
-            let nPpl = modoPersonasActivo ? (parseInt(sPpl) || 1) : 1; 
-            let vTip = incluirPropina ? (nSub * 0.18) : 0;
-            let vIvu = nSub * (ivu / 100);
-            let divisor = nPpl > 0 ? nPpl : 1;
-            
-            document.getElementById('outTip').innerText = `$${vTip.toFixed(2)}`;
-            document.getElementById('outIvu').innerText = `$${vIvu.toFixed(2)}`;
-            document.getElementById('outPer').innerText = ((nSub + vTip + vIvu) / divisor).toFixed(2);
-
-            if (preciosGuardados.length > 0) {
-                document.getElementById('lblSub').previousElementSibling.innerText = `Cuenta (${preciosGuardados.length} art.)`;
-            } else {
-                document.getElementById('lblSub').previousElementSibling.innerText = "Cuenta";
-            }
+            let nSub = cuentaAcumulada + (mode === 'sub' ? (parseFloat(sSub) || 0) : 0);
+            let nPpl = modoPersonasActivo ? (parseInt(sPpl) || 1) : 1;
+            document.getElementById('outTip').innerText = `$${(incluirPropina ? nSub * 0.18 : 0).toFixed(2)}`;
+            document.getElementById('outIvu').innerText = `$${(nSub * (ivu / 100)).toFixed(2)}`;
+            document.getElementById('outPer').innerText = ((nSub + (incluirPropina ? nSub * 0.18 : 0) + (nSub * (ivu / 100))) / (nPpl > 0 ? nPpl : 1)).toFixed(2);
+            document.getElementById('lblArt').innerText = preciosGuardados.length ? `Cuenta (${preciosGuardados.length} art.)` : "CALCULADORA";
         }
+    </script>
+</body>
+</html>
