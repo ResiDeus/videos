@@ -174,10 +174,10 @@
 
         function focusF(f) {
             if (f === 'sub') {
-                // Si presionas Cuenta, apagas el modo personas por completo
+                // Al presionar Cuenta, solo apagamos visualmente el modo personas
                 if (modoPersonasActivo) {
                     modoPersonasActivo = false;
-                    sPpl = "0";
+                    // Mantenemos el valor de sPpl guardado en la variable, pero mostramos OFF
                     document.getElementById('lblPpl').innerText = "OFF";
                     document.getElementById('lblTotalType').innerText = "TOTAL";
                     calc();
@@ -188,23 +188,26 @@
         }
 
         function togglePersonasMode() {
-            // Invierte el estado: si estaba OFF se enciende, si estaba ON se apaga
             modoPersonasActivo = !modoPersonasActivo;
             
             if (modoPersonasActivo) {
-                sPpl = "2"; // Arranca sugerido en 2 personas al encenderse
+                // NUEVO: Si sPpl es "0" o está vacío, sugerimos "2". Si ya tenía un número guardado, lo mantiene.
+                if (sPpl === "0" || sPpl === "") {
+                    sPpl = "2"; 
+                }
                 mode = 'ppl'; // Cambia el foco automáticamente al contador de personas
                 document.getElementById('lblPpl').innerText = sPpl;
                 document.getElementById('lblTotalType').innerText = "C/U";
             } else {
-                sPpl = "0";
-                mode = 'sub'; // Devuelve el foco a la cuenta base obligatoriamente
+                // Al apagarlo con el mismo botón, mantenemos guardado el número pero visualmente dice OFF
+                mode = 'sub'; 
                 document.getElementById('lblPpl').innerText = "OFF";
                 document.getElementById('lblTotalType').innerText = "TOTAL";
             }
             actualizarEstilosPaneles();
             calc();
         }
+
 
         function actualizarEstilosPaneles() {
             const cajaSub = document.getElementById('cajaSub');
