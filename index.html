@@ -3,154 +3,159 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Cyber_Boricua_OS.exe</title>
+  <title>El_Costurero_De_La_Abuela.exe</title>
   <style>
     :root { 
-      --neon-pink: #ff007f; 
-      --neon-cyan: #00f3ff; 
-      --neon-purple: #9d00ff; 
-      --dark-bg: #0d0118; 
-      --panel-bg: rgba(25, 10, 45, 0.75);
-      --glass-glow: 0 0 15px rgba(0, 243, 255, 0.3);
+      --tin-gold: #c59b27; 
+      --tin-metal: #a37f1c;
+      --felt-blue: #1c3b57; 
+      --biscuit-cream: #f4ebd0;
+      --ink-blue: #1d2d50;
     }
-    * { box-sizing: border-box; font-family: 'Segoe UI', -apple-system, sans-serif; font-size: 13px; margin: 0; padding: 0; user-select: none; font-weight: bold; color: #fff; }
-    body { background: var(--dark-bg); background-image: radial-gradient(circle at 50% 50%, #200435 0%, var(--dark-bg) 80%); display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 10px; overflow: hidden; }
-    /* Chasis Holográfico del iPhone Futurístico */
-    .phone-body { width: 100%; max-width: 360px; height: 650px; background: rgba(10, 2, 20, 0.9); border: 2px solid var(--neon-cyan); border-radius: 40px; padding: 12px; display: flex; flex-direction: column; box-shadow: 0 0 25px rgba(0, 243, 255, 0.4), inset 0 0 15px rgba(255, 0, 127, 0.2); position: relative; }
-    .dynamic-island { width: 110px; height: 24px; background: #000; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; margin: 0 auto 10px; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
+    * { box-sizing: border-box; font-family: 'Courier New', monospace; font-size: 13px; margin: 0; padding: 0; user-select: none; font-weight: bold; }
+    body { background: #2b1f1d; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 10px; overflow: hidden; }
+    /* Contenedor de la Lata Fija sin Scroll */
+    .tin-box { width: 100%; max-width: 360px; height: 640px; background: var(--tin-gold); border: 8px double var(--tin-metal); border-radius: 35px; padding: 15px; display: flex; flex-direction: column; box-shadow: 0 15px 35px rgba(0,0,0,0.8), inset 0 0 15px rgba(0,0,0,0.5); position: relative; }
+    .tin-rim { flex-grow: 1; background: var(--felt-blue); background-image: radial-gradient(circle, #244a6b 0%, var(--felt-blue) 80%); border: 4px inset var(--tin-metal); border-radius: 20px; padding: 12px; display: flex; flex-direction: column; overflow: hidden; position: relative; }
     
-    /* Pantalla Fija sin Scroll */
-    .lcd-screen { flex-grow: 1; background: var(--panel-bg); border: 1px solid var(--neon-pink); border-radius: 28px; padding: 12px; display: flex; flex-direction: column; position: relative; overflow: hidden; backdrop-filter: blur(10px); box-shadow: 0 0 15px rgba(255, 0, 127, 0.2); }
-    .screen-header { display: flex; justify-content: space-between; font-size: 11px; border-bottom: 1px solid rgba(0, 243, 255, 0.2); padding-bottom: 6px; margin-bottom: 8px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--neon-cyan); text-shadow: 0 0 5px var(--neon-cyan); }
-    .screen-content { flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; height: calc(100% - 25px); }
-    /* Rejilla de Aplicaciones Estilo iOS */
-    .app-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; padding-top: 15px; height: 100%; align-content: start; }
-    .app-icon { display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(255, 0, 127, 0.05); border: 1px solid var(--neon-pink); padding: 12px 6px; border-radius: 16px; cursor: pointer; text-align: center; font-size: 11px; transition: all 0.2s; box-shadow: inset 0 0 8px rgba(255, 0, 127, 0.1); }
-    .app-icon span { font-size: 26px; margin-bottom: 6px; filter: drop-shadow(0 0 5px rgba(255,255,255,0.5)); }
-    .app-icon p { text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
-    .app-icon:active { background: rgba(0, 243, 255, 0.15); border-color: var(--neon-cyan); box-shadow: 0 0 12px var(--neon-cyan); }
+    /* El Desorden del Costurero (Objetos Sueltos) */
+    .sewing-tray { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; padding-top: 10px; justify-items: center; }
+    .trinket { display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); border: 2px dashed rgba(255,255,255,0.2); width: 110px; height: 110px; border-radius: 50%; cursor: pointer; text-align: center; font-size: 11px; color: var(--biscuit-cream); text-shadow: 1px 1px #000; box-shadow: 2px 4px 8px rgba(0,0,0,0.4); }
+    .trinket span { font-size: 38px; margin-bottom: 2px; filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.5)); }
+    .trinket p { font-size: 11px; margin-top: 2px; }
+    .trinket:active { transform: scale(0.95); box-shadow: 1px 1px 3px rgba(0,0,0,0.5); border-color: var(--tin-gold); }
+    /* Vistas de los Objetos al tocarlos */
+    .object-view { display: none; flex-direction: column; height: 100%; gap: 8px; overflow: hidden; }
+    .btn-close-box { display: inline-block; width: fit-content; border: 2px solid var(--tin-metal); padding: 4px 10px; margin-bottom: 4px; font-size: 11px; cursor: pointer; border-radius: 4px; background: var(--gray, #c0c0c0); box-shadow: 1px 1px 3px #000; color: #000; }
+    .btn-close-box:active { box-shadow: none; transform: translate(1px, 1px); }
     
-    /* Vistas Internas de las Apps */
-    .app-view { display: none; flex-direction: column; height: 100%; gap: 10px; overflow: hidden; }
-    .btn-back { display: inline-block; width: fit-content; border: 1px solid var(--neon-cyan); padding: 4px 12px; margin-bottom: 4px; font-size: 11px; cursor: pointer; border-radius: 20px; background: rgba(0, 243, 255, 0.05); text-transform: uppercase; text-shadow: 0 0 5px var(--neon-cyan); box-shadow: var(--glass-glow); }
-    .sunken { border: 1px solid rgba(0, 243, 255, 0.3); padding: 10px; background: rgba(10, 2, 25, 0.6); border-radius: 12px; font-size: 12px; word-break: break-word; box-shadow: var(--glass-glow); overflow-y: auto; }
-    .field { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 2px; }
-    input, select { background: rgba(255, 0, 127, 0.05); border: 1px solid var(--neon-pink); padding: 6px; width: 55%; font-size: 12px; outline: none; border-radius: 8px; text-align: center; color: #fff; box-shadow: inset 0 0 5px rgba(255,0,127,0.2); }
-    input:focus, select:focus { border-color: var(--neon-cyan); box-shadow: 0 0 8px var(--neon-cyan); }
-    option { background: #1a0630; color: #fff; }
+    /* Interiores Estilo Libreta/Papel Viejo */
+    .paper-sheet { border: 1px solid #dcd1b4; padding: 10px; background: #fffbf0; border-radius: 4px; color: var(--ink-blue); box-shadow: 2px 2px 10px rgba(0,0,0,0.3); overflow-y: auto; flex-grow: 1; border-left: 3px double #ff9999; }
+    .paper-sheet * { color: var(--ink-blue); }
     
-    .track-list { flex-grow: 1; overflow-y: auto; max-height: 140px; margin-top: 4px; border-radius: 8px; }
-    .track { padding: 8px; cursor: pointer; border-bottom: 1px dashed rgba(255, 0, 127, 0.2); font-size: 11px; }
-    .track.active { background: var(--neon-pink); color: #fff; text-shadow: 0 0 5px #fff; border-radius: 6px; }
+    /* Estilo Calculadora Escolar Gris */
+    .calc-case { background: #8e9294; border: 3px solid #5a5d5f; border-radius: 8px; padding: 10px; display: flex; flex-direction: column; gap: 8px; flex-grow: 1; box-shadow: 3px 5px 10px rgba(0,0,0,0.5); }
+    .calc-lcd { background: #a4b494; border: 2px inset #5a5d5f; padding: 8px; text-align: right; font-family: monospace; font-size: 15px; color: #1c2810; height: 50px; display: flex; flex-direction: column; justify-content: center; font-weight: bold; border-radius: 4px; }
+    .field { display: flex; justify-content: space-between; align-items: center; gap: 6px; }
+    input, select { background: #fff; border: 1px solid var(--dark-bg); padding: 4px; width: 55%; font-size: 12px; outline: none; color: #000; }
     
-    .home-indicator { width: 120px; height: 5px; background: rgba(255,255,255,0.4); border-radius: 3px; margin: 12px auto 0; cursor: pointer; transition: background 0.2s; }
-    .home-indicator:hover { background: var(--neon-cyan); box-shadow: 0 0 8px var(--neon-cyan); }
-    button.win-btn { background: rgba(0, 243, 255, 0.05); border: 1px solid var(--neon-cyan); padding: 6px 12px; cursor: pointer; font-size: 12px; border-radius: 8px; text-shadow: 0 0 5px var(--neon-cyan); width: 100%; box-shadow: var(--glass-glow); }
+    .track-list { flex-grow: 1; overflow-y: auto; max-height: 110px; background: #222; border-radius: 4px; padding: 4px; }
+    .track { padding: 6px; cursor: pointer; border-bottom: 1px dashed #444; font-size: 11px; color: #0f0; font-family: monospace; }
+    .track.active { background: #0f0; color: #000; }
+    
+    .needle-holder { width: 100%; display: flex; justify-content: space-between; font-size: 11px; border-bottom: 1px dotted rgba(255,255,255,0.2); padding-bottom: 4px; margin-bottom: 6px; color: var(--biscuit-cream); }
+    .needle-holder span { color: var(--biscuit-cream); }
   </style>
 </head>
 <body>
-  <div class="phone-body">
-    <div class="dynamic-island"></div>
-    
-    <!-- PANTALLA LCD -->
-    <div class="lcd-screen">
-      <div class="screen-header">
-        <span>⚡ SYNTH_OS</span>
-        <span id="clock">00:00</span>
-        <span>🔋100%</span>
+  <div class="tin-box">
+    <div class="tin-rim">
+      <div class="needle-holder">
+        <span>📍 COSTURERO</span>
+        <span id="clock">00:00 AM</span>
+        <span>🧵 HILOS: OK</span>
       </div>
       
-      <div class="screen-content">
-        <!-- MENÚ DE REJILLA PRINCIPAL -->
-        <div id="main-menu" class="app-grid">
-          <div class="app-icon" onclick="showApp('app-ivu')"><span>🧮</span><p>IVU.app</p></div>
-          <div class="app-icon" onclick="showApp('app-music')"><span>📻</span><p>Winamp</p></div>
-          <div class="app-icon" onclick="showApp('app-boricua')"><span>🇵🇷</span><p>Jerga</p></div>
-          <div class="app-icon" onclick="showApp('app-abuela')"><span>📖</span><p>Botánica</p></div>
-          <div class="app-icon" onclick="showApp('app-cucaracha')"><span>🪳</span><p>Radar</p></div>
-        </div>
-        <!-- APP: CALCULADORA IVU -->
-        <div id="app-ivu" class="app-view">
-          <div class="btn-back" onclick="goHome()">◀ Back</div>
-          <div class="field"><label>Precio $:</label><input type="number" id="amount" value="100" oninput="calcIVU()"></div>
-          <div class="field">
-            <label>Tipo:</label>
-            <select id="ivu-type" onchange="calcIVU()">
-              <option value="11.5">General 11.5%</option>
-              <option value="7">Comida Prep. 7%</option>
-            </select>
-          </div>
-          <div class="sunken" id="ivu-results" style="flex-grow:1;"></div>
+      <div class="screen-content" style="flex-grow: 1; display: flex; flex-direction: column; overflow: hidden;">
+        <!-- BANDEJA PRINCIPAL DE OBJETOS -->
+        <div id="main-menu" class="sewing-tray">
+          <div class="trinket" onclick="showObject('view-calc')"><span>🧮</span><p>Calculadora Gris</p></div>
+          <div class="trinket" onclick="showObject('view-walkman')"><span>📻</span><p>Walkman Amarillo</p></div>
+          <div class="trinket" onclick="showObject('view-keychain')"><span>🇵🇷</span><p>Llavero Isla</p></div>
+          <div class="trinket" onclick="showObject('view-notebook')"><span>📖</span><p>Libreta Vieja</p></div>
+          <div class="trinket" onclick="showObject('view-baygon')"><span>🪳</span><p>Pote Baygón</p></div>
         </div>
 
-        <!-- APP: REPRODUCTOR WINAMP -->
-        <div id="app-music" class="app-view">
-          <div class="btn-back" onclick="goHome()">◀ Back</div>
-          <div class="sunken" id="now-playing" style="font-size:11px; text-align:center; height:24px; overflow:hidden; border-color:var(--neon-pink); color:var(--neon-pink); text-shadow:0 0 5px var(--neon-pink);">SYNTH STREAM OFF</div>
-          <img id="visualizer-gif" src="https://archive.org" style="width: 100%; height: 90px; object-fit: contain; background: #000; border: 1px solid var(--neon-cyan); opacity: 0.4; border-radius:8px;">
-          <audio id="audio-player" controls style="width: 100%; height: 30px; outline: none; margin: 2px 0;"></audio>
-          <div class="sunken track-list" id="playlist"></div>
-          <button class="win-btn" onclick="addTrackPrompt()">+ Inyectar MP3 (URL)</button>
-        </div>
-        <!-- APP: BORICUÓMETRO -->
-        <div id="app-boricua" class="app-view">
-          <div class="btn-back" onclick="goHome()">◀ Back</div>
-          <div class="field">
-            <label>Jerga:</label>
-            <select id="boricua-word" onchange="traducirBoricua()">
-              <option value="">-- Elige --</option>
-              <option value="gandul">Estar como el gandul</option>
-              <option value="alcapurria">Guayando alcapurria</option>
-              <option value="revolu">Un revolú</option>
-              <option value="chinchorreo">Chinchorreo</option>
-            </select>
+        <!-- OBJETO: CALCULADORA ESCOLAR GRIS -->
+        <div id="view-calc" class="object-view">
+          <div class="btn-close-box" onclick="closeObject()">[Guardar Objeto]</div>
+          <div class="calc-case">
+            <div class="field" style="justify-content:flex-start; gap:10px;"><label style="color:#fff;">Precio $:</label><input type="number" id="amount" value="100" oninput="calcIVU()" style="width:100px;"></div>
+            <div class="field" style="justify-content:flex-start; gap:10px;">
+              <label style="color:#fff;">Arbitrio:</label>
+              <select id="ivu-type" onchange="calcIVU()" style="width:120px;">
+                <option value="11.5">IVU 11.5%</option>
+                <option value="7">Comida 7%</option>
+              </select>
+            </div>
+            <div class="calc-lcd" id="ivu-results"></div>
           </div>
-          <div class="sunken" id="boricua-result" style="flex-grow:1;">Selecciona un término holográfico.</div>
+        </div>
+        <!-- OBJETO: WALKMAN DE CASETTE AMARILLO -->
+        <div id="view-walkman" class="object-view">
+          <div class="btn-close-box" onclick="closeObject()">[Guardar Objeto]</div>
+          <div style="background:#eed44b; border:3px solid #bba327; padding:10px; border-radius:8px; flex-grow:1; display:flex; flex-direction:column; gap:6px; box-shadow:3px 4px 8px rgba(0,0,0,0.5);">
+            <div style="background:#111; color:#fff; font-family:monospace; padding:4px; text-align:center; font-size:11px; border-radius:4px; border:2px inset #fff;" id="now-playing">TAPE STOPPED</div>
+            <img id="visualizer-gif" src="https://archive.org" style="width: 100%; height: 75px; object-fit: contain; background: #000; border: 2px inset #333; opacity: 0.4; border-radius:4px;">
+            <audio id="audio-player" controls style="width: 100%; height: 28px; outline: none;"></audio>
+            <div class="track-list" id="playlist"></div>
+            <button class="win-btn" onclick="addTrackPrompt()" style="background:#fff; color:#000; font-size:11px; padding:4px; border:1px solid #000;">+ Meter Cinta (URL)</button>
+          </div>
+        </div>
+        <!-- OBJETO: LLAVERO MAPA DE LA ISLA -->
+        <div id="view-keychain" class="object-view">
+          <div class="btn-close-box" onclick="closeObject()">[Guardar Objeto]</div>
+          <div class="paper-sheet">
+            <h3 style="border-bottom:1px solid #ff9999; margin-bottom:6px; font-size:14px;">🇵🇷 Diccionario de la Isla</h3>
+            <div class="field" style="margin-bottom:8px;">
+              <label>Jerga:</label>
+              <select id="boricua-word" onchange="traducirBoricua()" style="width:60%;">
+                <option value="">-- Elige --</option>
+                <option value="gandul">Como el gandul</option>
+                <option value="alcapurria">Guayando masa</option>
+                <option value="revolu">Un revolú</option>
+                <option value="chinchorreo">Chinchorreo</option>
+              </select>
+            </div>
+            <div id="boricua-result" style="font-style:italic; font-size:12px;">Toca una frase tallada en el llavero.</div>
+          </div>
         </div>
 
-        <!-- APP: REMEDIOS ABUELA -->
-        <div id="app-abuela" class="app-view">
-          <div class="btn-back" onclick="goHome()">◀ Back</div>
-          <div class="field">
-            <label>Achaque:</label>
-            <select id="remedio-selector" onchange="verRemedio()">
-              <option value="">-- Elige --</option>
-              <option value="empacho">Empacho</option>
-              <option value="resfriado">Tos de campo</option>
-              <option value="mal_de_ojo">Mal de Ojo</option>
-            </select>
+        <!-- OBJETO: LIBRETA VIEJA DE LÍNEAS -->
+        <div id="view-notebook" class="object-view">
+          <div class="btn-close-box" onclick="closeObject()">[Guardar Objeto]</div>
+          <div class="paper-sheet">
+            <h3 style="border-bottom:1px solid #ff9999; margin-bottom:6px; font-size:14px;">✍️ Apuntes de Botánica de Abuela</h3>
+            <div class="field" style="margin-bottom:8px;">
+              <label>Molestia:</label>
+              <select id="remedio-selector" onchange="verRemedio()" style="width:60%;">
+                <option value="">-- Elige --</option>
+                <option value="empacho">Empacho</option>
+                <option value="resfriado">Tos del pecho</option>
+                <option value="mal_de_ojo">Mal de Ojo</option>
+              </select>
+            </div>
+            <div id="remedio-result" style="font-size:11px; white-space:pre-line; line-height:1.4;">Hojea las páginas amarillas de la libreta.</div>
           </div>
-          <div class="sunken" id="remedio-result" style="font-size:11px; flex-grow:1; border-color:var(--neon-pink); color:#ffccff;">Abre la base de datos medicinal tradicional.</div>
         </div>
 
-        <!-- APP: CUCARACHAS TIMER -->
-        <div id="app-cucaracha" class="app-view">
-          <div class="btn-back" onclick="goHome()">◀ Back</div>
-          <div class="field"><label>Municipio:</label><select id="town-selector" onchange="evaluarInvasionCucaracha()"></select></div>
-          <div id="town-weather-title" style="font-size:11px; color:var(--neon-cyan); text-shadow:0 0 5px var(--neon-cyan);">SISTEMA: STANDBY</div>
-          <div class="sunken" id="timer-display" style="text-align: center; font-size: 18px; color: var(--neon-pink); text-shadow:0 0 8px var(--neon-pink); padding: 8px; font-weight: bold; background:rgba(0,0,0,0.2);">RADAR INACTIVO</div>
-          <div class="sunken" id="cucaracha-consejo" style="font-size: 11px; flex-grow:1;">Monitoreando microclimas.</div>
+        <!-- OBJETO: POTE DE BAYGÓN VERDE -->
+        <div id="view-baygon" class="object-view">
+          <div class="btn-close-box" onclick="closeObject()">[Guardar Objeto]</div>
+          <div style="background:#1d6639; border:3px solid #114424; padding:12px; border-radius:8px; flex-grow:1; display:flex; flex-direction:column; gap:6px; box-shadow:3px 4px 8px rgba(0,0,0,0.5);">
+            <div style="background:#cc2222; height:18px; border-radius:4px; text-align:center; color:#fff; font-size:11px; line-height:18px;">VÁLVULA DE SEGURIDAD RED</div>
+            <div class="field" style="margin-top:4px;"><label style="color:#fff;">Municipio:</label><select id="town-selector" onchange="evaluarInvasionCucaracha()" style="width:60%;"></select></div>
+            <div id="town-weather-title" style="font-size:11px; color:#ffcc00; text-align:center;">MANÓMETRO: ESPERANDO PUEBLO</div>
+            <div style="background:#000; color:#0f0; text-align:center; padding:10px; font-family:monospace; font-size:18px; font-weight:bold; border:2px inset #666;" id="timer-display">PRESIÓN OK</div>
+            <div id="cucaracha-consejo" style="font-size:11px; color:#fff; background:rgba(0,0,0,0.3); padding:6px; border-radius:4px; flex-grow:1; overflow-y:auto;">Inspección de alcantarillas mediante la boquilla del pote.</div>
+          </div>
         </div>
       </div>
     </div>
-    
-    <!-- Barra de Navegación Estilo iPhone -->
-    <div class="home-indicator" onclick="goHome()"></div>
   </div>
   <script>
-    // --- MANEJADOR DE PANTALLA COMPLETA ---
-    function showApp(appId) {
+    // --- CONTROL DE APERTURA DE OBJETOS ---
+    function showObject(viewId) {
       document.getElementById('main-menu').style.display = 'none';
-      document.querySelectorAll('.app-view').forEach(view => view.style.display = 'none');
-      document.getElementById(appId).style.display = 'flex';
+      document.querySelectorAll('.object-view').forEach(view => view.style.display = 'none');
+      document.getElementById(viewId).style.display = 'flex';
     }
-    function goHome() {
-      document.querySelectorAll('.app-view').forEach(view => view.style.display = 'none');
-      document.getElementById('main-menu').style.gridTemplateColumns = 'repeat(3, 1fr)';
+    function closeObject() {
+      document.querySelectorAll('.object-view').forEach(view => view.style.display = 'none');
       document.getElementById('main-menu').style.display = 'grid';
     }
 
-    // --- BASE DE DATOS GEOGRÁFICA COMPACTA ---
+    // Municipios compactos para el radar del Baygón
     const municipiosPR = [
       { n: "Adjuntas", costa: false }, { n: "Aguadilla", costa: true }, { n: "Arecibo", costa: true }, { n: "Barranquitas", costa: false },
       { n: "Bayamón", costa: true }, { n: "Cabo Rojo", costa: true }, { n: "Caguas", costa: false }, { n: "Carolina", costa: true },
@@ -162,85 +167,75 @@
 
     window.onload = function() {
       const s = document.getElementById('town-selector');
-      if (s) s.innerHTML = `<option value="">-- Municipio --</option>` + municipiosPR.map(m => `<option value="${m.n}">${m.n}</option>`).join('');
+      if (s) s.innerHTML = `<option value="">-- Elige --</option>` + municipiosPR.map(m => `<option value="${m.n}">${m.n}</option>`).join('');
     };
 
-    // Reloj Holográfico 24H
-    setInterval(() => { document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }); }, 1000);
-    // --- SINTETIZADOR DE ACORDE CYBER GLOW ---
+    // Reloj del bastidor de costura
+    setInterval(() => { document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }); }, 1000);
+    // --- TIMBRE METÁLICO DE AGUJA SYNTH ---
     function playWin98ErrorSound() {
       try {
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const freqs = [147.14, 220.00, 329.63]; // Frecuencias ajustadas a acordes futuristas Synthwave
+        const freqs = [150.00, 180.00, 220.00]; 
         freqs.forEach(freq => {
           const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
-          osc.type = 'sawtooth'; osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-          gain.gain.setValueAtTime(0.08, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
-          osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.4);
+          osc.type = 'triangle'; osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+          gain.gain.setValueAtTime(0.08, audioContext.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.3);
+          osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.3);
         });
       } catch (e) {}
     }
 
-    // --- CÁLCULO DEL IVU AVANZADO BORICUA ---
+    // --- CÁLCULO DE LA PANTALLA LCD GRIS ---
     function calcIVU() {
       const amt = parseFloat(document.getElementById('amount').value) || 0; const type = parseFloat(document.getElementById('ivu-type').value);
       let est = type === 11.5 ? amt * 0.105 : amt * 0.06; let mun = amt * 0.01;
-      document.getElementById('ivu-results').innerHTML = `
-        Estatal (${type===11.5?'10.5%':'6%'}): $${est.toFixed(2)}<br>
-        Municipal (1%): $${mun.toFixed(2)}<br>
-        <hr style="border:1px dashed rgba(0,243,255,0.2); margin:6px 0;">
-        <span style="color:var(--neon-cyan);">Total IVU: $${(est+mun).toFixed(2)}</span><br>
-        <span style="color:var(--neon-pink); font-size:14px;">Gran Total: $${(amt+est+mun).toFixed(2)}</span>
-      `;
+      document.getElementById('ivu-results').innerHTML = `E:$${est.toFixed(2)} M:$${mun.toFixed(2)}<br>IVU:$${(est+mun).toFixed(2)} TOT:$${(amt+est+mun).toFixed(2)}`;
     }
     calcIVU();
 
-    function toggleVolSlider(e) { e.stopPropagation(); const v = document.getElementById('vol-container'); v.style.display = v.style.display === 'block' ? 'none' : 'block'; }
-    function changeVolume(val) { const audioPlayer = document.getElementById('audio-player'); if (audioPlayer) audioPlayer.volume = val; }
-    // --- MULTIMEDIA STREAM ---
+    // --- CONTROLES DEL CASSETTE DEL WALKMAN ---
     const canciones = [
       { titulo: "Yankee - Gasolina", url: "https://archive.org" },
       { titulo: "Yankee - Rompe", url: "https://archive.org" }
     ];
     const audio = document.getElementById('audio-player');
-    function renderPlaylist() { document.getElementById('playlist').innerHTML = canciones.map((c, i) => `<div class="track" onclick="playTrack(${i})">🎵 ${c.titulo}</div>`).join(''); }
+    function renderPlaylist() { document.getElementById('playlist').innerHTML = canciones.map((c, i) => `<div class="track" onclick="playTrack(${i})">📼 SIDE_A: ${c.titulo}</div>`).join(''); }
     function playTrack(i) { document.getElementById('now-playing').textContent = canciones[i].titulo.toUpperCase(); audio.src = canciones[i].url; audio.crossOrigin = "anonymous"; audio.play(); document.getElementById('visualizer-gif').style.opacity = "1"; }
-    audio.addEventListener('play', () => { document.getElementById('visualizer-gif').style.opacity = "1"; });
-    audio.addEventListener('pause', () => { document.getElementById('visualizer-gif').style.opacity = "0.3"; });
+    audio.addEventListener('pause', () => { document.getElementById('visualizer-gif').style.opacity = "0.4"; });
     renderPlaylist();
 
-    function addTrackPrompt() { const title = prompt("Nombre:"); const url = prompt("MP3 URL:"); if (title && url) { canciones.push({ titulo: title, url: url }); renderPlaylist(); }}
-
-    // --- LOGICA DE DICCIONARIOS ---
+    function addTrackPrompt() { const title = prompt("Tema:"); const url = prompt("MP3 URL:"); if (title && url) { canciones.push({ titulo: title, url: url }); renderPlaylist(); }}
+    // --- LÓGICA DE DICCIONARIOS DE PAPEL ---
     function traducirBoricua() {
       const p = document.getElementById('boricua-word').value; const r = document.getElementById('boricua-result');
-      const d = { gandul: "Apretado de tiempo o llegando con las justas.", alcapurria: "Trabajar muy duro bajo presión.", revolu: "Caos o desorden masivo total.", chinchorreo: "Ruta social de frituras de fin de semana." };
-      r.innerHTML = p ? `<b>SIGNIFICADO SYNTH:</b><br>${d[p]}` : "Selecciona un término holográfico.";
+      const d = { gandul: "Estar muy apretado de tiempo o soga al cuello.", alcapurria: "Pasar una jornada de trabajo forzado intenso.", revolu: "Desorden masivo o caos en el cuarto.", chinchorreo: "Paseo de frituras por la montaña." };
+      r.innerHTML = p ? `<b>Traducido:</b><br>${d[p]}` : "Toca una frase tallada en el llavero.";
     }
 
     function verRemedio() {
       const a = document.getElementById('remedio-selector').value; const d = document.getElementById('remedio-result');
-      const l = { empacho: "Aceite de oliva en vientre en forma de cruz y té de menta.", resfriado: "Té de jengibre, malojillo, ajo machacado y miel pura.", mal_de_ojo: "Pulsera de azabache con cuentas rojas y ruda fresca." };
-      d.innerHTML = a ? `📜 <b>FÓRMULA BOTÁNICA:</b><br>${l[a]}` : "Abre la base de datos medicinal tradicional.";
+      const l = { empacho: "Sobar el vientre con aceite de oliva tibio en cruz y té de menta.", resfriado: "Hervir jengibre, malojillo, un ajo y endulzar con miel pura.", mal_de_ojo: "Amarrar azabache con hilo rojo y pasar hojas de ruda fresca." };
+      d.innerHTML = a ? `<b>Remedio Escrito:</b><br>${l[a]}` : "Hojea las páginas amarillas de la libreta.";
     }
 
-    // --- RADAR MUNICIPAL AUTÓNOMO INMUNE A ERRORES DE RED ---
+    // --- ALGORITMO CUCARACHAS-TIMER EN EL POTE DE INSECTICIDA ---
     let c_interval = null;
     function evaluarInvasionCucaracha() {
       const pName = document.getElementById('town-selector').value; const timer = document.getElementById('timer-display'); const consejo = document.getElementById('cucaracha-consejo');
-      clearInterval(c_interval); if (!pName) { timer.textContent = "RADAR OFF"; return; }
+      clearInterval(c_interval); if (!pName) { timer.textContent = "PRESIÓN OK"; return; }
       
       const pInfo = municipiosPR.find(m => m.n === pName);
       const hora = new Date().getHours();
-      let temp = pInfo.costa ? 87 : 75; if (hora >= 11 && hora <= 16) temp += 4;
+      let temp = pInfo.costa ? 86 : 74; if (hora >= 12 && hora <= 16) temp += 4;
       
-      document.getElementById('town-weather-title').innerHTML = `HOLOGRAMA: <span style="color:var(--neon-cyan);">${pName.toUpperCase()}</span> | <b>${temp}°F</b>`;
+      document.getElementById('town-weather-title').innerHTML = `MANÓMETRO: ${pName.toUpperCase()} a ${temp}°F`;
 
       if (pInfo.costa && temp >= 85) {
         playWin98ErrorSound(); let t = 42 * 60;
-        consejo.innerHTML = `<b style="color:var(--neon-pink);">⚠️ EVAPORACIÓN ACTIVA:</b> Bochorno severo detectado en ${pName}. Humero subiendo por las alcantarillas. Sella las ventanas de aluminio.`;
-        c_interval = setInterval(() => { t--; let m = Math.floor(t / 60); let s = t % 60; timer.textContent = `INVASIÓN EN: ${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`; if (t <= 0) { clearInterval(c_interval); timer.textContent = "CRÍTICO: INVASIÓN"; playWin98ErrorSound(); } }, 1000);
-      } else { timer.textContent = "SISTEMA: ESTABLE"; consejo.innerHTML = `Presión barométrica normal en ${pName}. Subsuelo frío. Riesgo de plagas: CERO.`; }
+        consejo.innerHTML = `⚠️ <b>BOQUILLA CRÍTICA:</b> Humero alto detectado en los drenajes de ${pName}. Las cucarachas van a volar. Sella los bordes de la puerta principal ya.`;
+        c_interval = setInterval(() => { t--; let m = Math.floor(t / 60); let s = t % 60; timer.textContent = `VALVULA: ${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`; if (t <= 0) { clearInterval(c_interval); timer.textContent = "¡INVASIÓN!"; playWin98ErrorSound(); } }, 1000);
+      } else { timer.textContent = "PRESIÓN NORMAL"; consejo.innerHTML = `Presión barométrica templada en ${pName}. Subsuelo inerte. Boquilla libre de plagas.`; }
     }
   </script>
 </body>
