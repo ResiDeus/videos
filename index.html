@@ -32,16 +32,18 @@
         .lcd-total { font-size: 26px; font-weight: 900; }
 
         .row-menus { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-        .caja-data { padding: 8px; border-radius: 12px; text-align: center; cursor: pointer; font-size: 11px; transition: all 0.2s ease; }
+        .caja-data { padding: 6px 4px; border-radius: 12px; text-align: center; cursor: pointer; font-size: 11px; transition: all 0.2s ease; display: flex; flex-direction: column; justify-content: center; align-items: center; }
         .btn-off { background: #1a0826; border: 2px solid #ff007f; color: #ff007f; opacity: 0.5; box-shadow: none !important; }
         .btn-on { background: #ff007f; border: 2px solid #fff; color: #000; font-weight: bold; }
         
         .caja-data * { pointer-events: none; }
-        .lbl-title { color: #fff; font-weight: 900; text-transform: uppercase; display: block; }
-        .lbl-val { font-size: 15px; font-weight: 900; display: inline-block; }
+        .lbl-title { color: #fff; font-weight: 900; text-transform: uppercase; display: block; margin-bottom: 2px; }
         
-        @keyframes blinkFast { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
-        .blink-num { animation: blinkFast 0.6s infinite steps(2, start); }
+        /* CORRECCIÓN INTERACTIVA: Se duplicó el tamaño (30px) de las cifras editables */
+        .lbl-val { font-size: 30px; font-weight: 900; display: inline-block; line-height: 1; letter-spacing: -1px; }
+        
+        @keyframes blinkFast { 0%, 100% { opacity: 1; } 50% { opacity: 0.15; } }
+        .blink-num { animation: blinkFast 0.5s infinite steps(2, start); text-shadow: 0 0 10px rgba(255,255,255,0.6); }
 
         .row-config { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
         .btn-cfg { padding: 6px 0; border-radius: 8px; font-size: 10px; font-weight: bold; cursor: pointer; text-align: center; }
@@ -50,15 +52,17 @@
         .btn-key { height: 36px; background: linear-gradient(180deg, #44186c 0%, #170529 100%); border: 1px solid #00f0ff44; border-radius: 6px; color: #00f0ff; font-size: 1.2rem; font-weight: bold; cursor: pointer; }
         .btn-back { background: linear-gradient(180deg, #5c2c06 0%, #241001 100%); color: #fbbf24; }
 
+        /* ESTILO DESHABILITADO GENERAL PARA PUNTO Y ACCIONES */
+        .btn-key:disabled { opacity: 0.2 !important; cursor: not-allowed !important; filter: grayscale(100%); border-color: #333 !important; background: #1a0b24 !important; color: #555 !important; text-shadow: none !important; }
+
         .row-acciones { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding-bottom: 2px; }
-        
         .btn-clear { height: 38px; background: linear-gradient(180deg, #991b1b 0%, #450a0a 100%); border: 2px solid #ef4444; box-shadow: 0 0 10px #ef444460; border-radius: 8px; color: #fee2e2; text-shadow: 0 0 5px #ef4444; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: all 0.2s ease; }
         .btn-clear:active { background: #ef4444; color: #000; }
 
         .btn-add { height: 38px; background: linear-gradient(180deg, #065f46 0%, #064e3b 100%); border: 2px solid #10b981; box-shadow: 0 0 10px #10b98160; border-radius: 8px; color: #d1fae5; text-shadow: 0 0 5px #10b981; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: all 0.2s ease; }
         .btn-add:active { background: #10b981; color: #000; }
         
-        .btn-clear:disabled, .btn-add:disabled { opacity: 0.15 !important; box-shadow: none !important; text-shadow: none !important; border-color: #444 !important; background: #11051c !important; color: #555 !important; cursor: not-allowed !important; }
+        .btn-clear:disabled, .btn-add:disabled { opacity: 0.15 !important; box-shadow: none !important; text-shadow: none !important; border-color: #444 !important; background: #11051c !important; color: #555 !important; }
 
         @keyframes glow { 0%, 100% { box-shadow: 0 0 8px #ff007f; opacity: 0.85; } 50% { box-shadow: 0 0 22px #ff007f; opacity: 1; } }
         .on-anim { animation: glow 1.2s infinite ease-in-out; }
@@ -108,7 +112,8 @@
             <button onclick="num('7')" class="btn-key">7</button><button onclick="num('8')" class="btn-key">8</button><button onclick="num('9')" class="btn-key">9</button>
             <button onclick="num('4')" class="btn-key">4</button><button onclick="num('5')" class="btn-key">5</button><button onclick="num('6')" class="btn-key">6</button>
             <button onclick="num('1')" class="btn-key">1</button><button onclick="num('2')" class="btn-key">2</button><button onclick="num('3')" class="btn-key">3</button>
-            <button onclick="num('.')" class="btn-key">.</button><button onclick="num('0')" class="btn-key">0</button><button onclick="bksp()" class="btn-key btn-back">←</button>
+            <!-- NUEVO: Se le agregó el ID 'btnPunto' para controlarlo mediante JavaScript -->
+            <button id="btnPunto" onclick="num('.')" class="btn-key">.</button><button onclick="num('0')" class="btn-key">0</button><button onclick="bksp()" class="btn-key btn-back">←</button>
         </div>
 
         <div class="row-acciones">
@@ -149,10 +154,12 @@
             document.getElementById('txtHeaderIndicadores').innerText = texto;
         }
 
+        // CORRECCIÓN INTERACTIVA: Bloquea el botón del punto decimal al pasar al panel Personas
         function seleccionarMenu(f) {
             reproducirSonido('menu');
             const btnReset = document.getElementById('btnResetGlobal');
             const btnAnadir = document.getElementById('btnAnadirGlobal');
+            const btnPunto = document.getElementById('btnPunto');
             const numSub = document.getElementById('lblSub');
             const numPpl = document.getElementById('lblPpl');
 
@@ -161,8 +168,12 @@
                 numPpl.innerText = "OFF";
                 document.getElementById('lblTotalType').innerText = "TOTAL";
                 mode = 'sub';
+                
+                // Habilitar controles numéricos y de acción de cuenta
                 btnReset.disabled = false;
                 btnAnadir.disabled = false;
+                btnPunto.disabled = false; 
+                
                 numSub.classList.add('blink-num');
                 numPpl.classList.remove('blink-num');
             } else {
@@ -171,8 +182,12 @@
                 numPpl.innerText = sPpl;
                 document.getElementById('lblTotalType').innerText = "C/U";
                 mode = 'ppl';
+                
+                // Deshabilitar controles de cuenta y el punto decimal estrictamente
                 btnReset.disabled = true;
                 btnAnadir.disabled = true;
+                btnPunto.disabled = true; 
+                
                 numPpl.classList.add('blink-num');
                 numSub.classList.remove('blink-num');
             }
@@ -223,24 +238,16 @@
             calc();
         }
 
-        // CORRECCIÓN INTERACTIVA: Guarda el precio y calcula su IVU de forma individual
         function addProducto() {
             let val = parseFloat(sSub) || 0;
             if (val > 0) {
                 reproducirSonido('add');
-                
-                // Calculamos el IVU que le toca a este artículo según el botón activo
                 let ivuIndividual = val * (ivu / 100);
-                
-                // Guardamos un objeto con el precio base y su IVU correspondiente
                 preciosGuardados.push({ precio: val, ivuCalculado: ivuIndividual });
                 cuentaAcumulada += val;
-                
-                sSub = "0"; 
-                document.getElementById('lblSub').innerText = "0";
+                sSub = "0"; document.getElementById('lblSub').innerText = "0";
                 
                 const con = document.getElementById('listaPrecios');
-                // Formateamos la lista para mostrar: • Art #1: \$10.00 (IVU: \$1.15)
                 con.innerHTML = preciosGuardados.map((item, i) => 
                     `<div>• Art #${i+1}: $${item.precio.toFixed(2)} (IVU: $${item.ivuCalculado.toFixed(2)})</div>`
                 ).join('');
