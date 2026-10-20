@@ -2,514 +2,221 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Win98_PR_Desktop.exe</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Y2K_Boricua_Phone.exe</title>
   <style>
-    :root { 
-      --gray: #c0c0c0; 
-      --dark: #808080; 
-      --blue: #000080; 
-      --navy: #1084d0; 
-      --white: #fff; 
-      --black: #000;
-    }
-    * { box-sizing: border-box; font-family: 'MS Sans Serif', Tahoma, sans-serif; font-size: 13px; margin: 0; padding: 0; user-select: none; }
-    body { background: #008080; overflow: hidden; height: 100vh; position: relative; }
+    :root { --phone-case: #3a4d5c; --screen-bg: #8ba88f; --pixel-dark: #223026; --btn-retro: #4e5e6c; }
+    * { box-sizing: border-box; font-family: 'Courier New', monospace; font-size: 13px; margin: 0; padding: 0; user-select: none; font-weight: bold; color: var(--pixel-dark); }
+    body { background: #111; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 10px; }
     
-    /* Escritorio */
-    .desktop { height: calc(100vh - 40px); width: 100%; position: relative; }
+    .phone-body { width: 100%; max-width: 360px; height: 640px; background: var(--phone-case); border: 4px solid #1f2b35; border-radius: 30px; padding: 15px; display: flex; flex-direction: column; box-shadow: 0 10px 30px rgba(0,0,0,0.7); border-bottom: 12px solid #1f2b35; }
+    .earpiece { width: 60px; height: 6px; background: #1f2b35; border-radius: 3px; margin: 0 auto 10px; }
+    .lcd-screen { flex-grow: 1; background: var(--screen-bg); border: 4px inset; border-radius: 8px; padding: 10px; display: flex; flex-direction: column; position: relative; overflow: hidden; box-shadow: inset 2px 2px 10px rgba(0,0,0,0.3); }
+    .screen-header { display: flex; justify-content: space-between; font-size: 11px; border-bottom: 1px dashed var(--pixel-dark); padding-bottom: 4px; margin-bottom: 6px; }
+    .screen-content { flex-grow: 1; display: flex; flex-direction: column; overflow-y: auto; }
     
-    /* Ventanas Win98 Estilo Ampliado */
-    .window { position: absolute; background: var(--gray); border: 2px solid; border-color: var(--white) var(--dark) var(--dark) var(--white); padding: 3px; box-shadow: 2px 2px 12px rgba(0,0,0,0.4); display: none; min-width: 400px; min-height: 350px; z-index: 10; }
-    .title-bar { background: linear-gradient(90deg, var(--blue), var(--navy)); color: var(--white); padding: 6px 10px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; cursor: move; }
-    .title-text { display: flex; align-items: center; gap: 6px; font-weight: bold; font-size: 13px; }
-    .title-controls { display: flex; gap: 3px; }
-    .title-btn { background: var(--gray); border: 1px solid; border-color: var(--white) var(--dark) var(--dark) var(--white); width: 18px; height: 16px; font-size: 11px; line-height: 11px; text-align: center; font-weight: bold; color: var(--black); cursor: pointer; }
-    .title-btn:active { border-color: var(--dark) var(--white) var(--white) var(--dark); padding: 1px 0 0 1px; }
+    .app-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding-top: 10px; }
+    .app-icon { display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(0,0,0,0.05); border: 1px solid var(--pixel-dark); padding: 8px 4px; border-radius: 4px; cursor: pointer; text-align: center; font-size: 11px; }
+    .app-icon span { font-size: 20px; margin-bottom: 2px; }
+    .app-icon:active { background: rgba(0,0,0,0.15); }
     
-    .win-body { padding: 12px; height: calc(100% - 28px); display: flex; flex-direction: column; overflow: auto; gap: 10px; }
-    .sunken { background: var(--white); border: 2px solid; border-color: var(--dark) var(--white) var(--white) var(--dark); padding: 12px; color: var(--black); font-size: 13px; }
+    .app-view { display: none; flex-direction: column; height: 100%; gap: 6px; }
+    .btn-back { display: inline-block; width: fit-content; border: 1px solid var(--pixel-dark); padding: 2px 8px; margin-bottom: 6px; font-size: 11px; cursor: pointer; background: rgba(0,0,0,0.05); }
+    .sunken { border: 1px solid var(--pixel-dark); padding: 6px; background: rgba(255,255,255,0.15); font-size: 12px; margin-top: 4px; word-break: break-word; }
+    .field { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+    input, select { background: transparent; border: 1px solid var(--pixel-dark); padding: 4px; width: 55%; font-size: 12px; font-family: monospace; outline: none; }
     
-    .resizer { position: absolute; width: 14px; height: 14px; background: transparent; right: 0; bottom: 0; cursor: se-resize; z-index: 99; }
-
-    /* Inputs y Formularios */
-    .field { display: flex; justify-content: space-between; margin-bottom: 10px; align-items: center; }
-    .field label { font-size: 13px; font-weight: bold; }
-    input, select { padding: 5px; border: 2px solid; border-color: var(--dark) var(--white) var(--white) var(--dark); background: var(--white); width: 160px; text-align: right; font-size: 13px; }
+    .track { padding: 4px; cursor: pointer; border-bottom: 1px dashed var(--pixel-dark); font-size: 11px; }
+    .track.active { background: var(--pixel-dark); color: var(--screen-bg); }
     
-    /* Lista de Canciones */
-    .track-list { flex-grow: 1; overflow-y: auto; font-size: 12px; max-height: 140px; }
-    .track { padding: 6px; cursor: pointer; border-bottom: 1px dotted var(--dark); }
-    .track:hover, .track.active { background: var(--blue); color: var(--white); }
-    
-    /* Barra de Tareas */
-    .taskbar { position: absolute; bottom: 0; left: 0; right: 0; height: 40px; background: var(--gray); border-top: 2px solid var(--white); display: flex; justify-content: space-between; align-items: center; padding: 2px 8px; z-index: 9999; overflow: visible; }
-    .start-btn { font-weight: bold; background: var(--gray); border: 2px solid; border-color: var(--white) var(--dark) var(--dark) var(--white); padding: 4px 10px; display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 13px; }
-    .start-btn:active, .start-btn.open { border-color: var(--dark) var(--white) var(--white) var(--dark); padding: 5px 9px 3px 11px; }
-    
-    .taskbar-apps { flex-grow: 1; margin-left: 12px; display: flex; gap: 4px; height: 100%; align-items: center; }
-    .task-button { background: var(--gray); border: 2px solid; border-color: var(--white) var(--dark) var(--dark) var(--white); padding: 4px 8px; cursor: pointer; display: flex; align-items: center; gap: 6px; min-width: 120px; max-width: 160px; font-weight: bold; height: 28px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .task-button.active { border-color: var(--dark) var(--white) var(--white) var(--dark); background: #e0e0e0; font-style: italic; }
-
-    /* Menú Inicio */
-    .start-menu { position: absolute; bottom: 38px; left: 2px; background: var(--gray); border: 2px solid; border-color: var(--white) var(--dark) var(--dark) var(--white); width: 230px; display: none; box-shadow: 2px 2px 12px rgba(0,0,0,0.5); z-index: 10000; }
-    .start-sidebar { width: 35px; background: linear-gradient(180deg, var(--dark), var(--blue)); color: var(--white); writing-mode: vertical-lr; transform: rotate(180deg); text-align: center; font-weight: bold; padding: 8px; font-size: 15px; letter-spacing: 1px; }
-    .menu-items { flex-grow: 1; display: flex; flex-direction: column; padding: 2px 0; }
-    .menu-item { padding: 10px 14px; display: flex; align-items: center; gap: 10px; cursor: pointer; text-decoration: none; color: var(--black); font-size: 13px; }
-    .menu-item:hover { background: var(--blue); color: var(--white); }
-    
-    .systray { background: var(--gray); border: 2px solid; border-color: var(--dark) var(--white) var(--white) var(--dark); padding: 4px 10px; font-weight: bold; font-size: 13px; }
-    button.win-btn { background: var(--gray); border: 2px solid; border-color: var(--white) var(--dark) var(--dark) var(--white); padding: 5px 12px; font-weight: bold; cursor: pointer; margin-top: 5px; font-size: 12px; }
-    button.win-btn:active { border-color: var(--dark) var(--white) var(--white) var(--dark); }
+    .phone-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 15px; padding: 0 10px; }
+    .key { background: var(--btn-retro); color: #fff; text-align: center; padding: 12px 0; border-radius: 12px; font-weight: bold; cursor: pointer; border-bottom: 3px solid #323d4a; box-shadow: 1px 2px 5px rgba(0,0,0,0.3); font-size: 15px; text-shadow: 1px 1px #000; }
+    .key:active { border-bottom: 1px solid #323d4a; transform: translateY(2px); box-shadow: none; }
   </style>
 </head>
 <body>
-  <div class="desktop" onclick="closeStartMenu()"></div>
+  <div class="phone-body">
+    <div class="earpiece"></div>
+    <div class="lcd-screen">
+      <div class="screen-header">
+        <span>📶 PR_CEL</span>
+        <span id="clock">00:00</span>
+        <span>🔋85%</span>
+      </div>
+      <div class="screen-content">
+        <div id="main-menu" class="app-grid">
+          <div class="app-icon" onclick="showApp('app-ivu')"><span>🧮</span>IVU</div>
+          <div class="app-icon" onclick="showApp('app-music')"><span>📻</span>Winamp</div>
+          <div class="app-icon" onclick="showApp('app-boricua')"><span>🇵🇷</span>Jerga</div>
+          <div class="app-icon" onclick="showApp('app-abuela')"><span>📖</span>Recetas</div>
+          <div class="app-icon" onclick="showApp('app-cucaracha')"><span>🪳</span>Radar</div>
+        </div>
+        <!-- APP: CALCULADORA IVU -->
+        <div id="app-ivu" class="app-view">
+          <div class="btn-back" onclick="goHome()">[Atrás]</div>
+          <div class="field"><label>Precio $:</label><input type="number" id="amount" value="100" oninput="calcIVU()"></div>
+          <div class="field">
+            <label>Tipo:</label>
+            <select id="ivu-type" onchange="calcIVU()">
+              <option value="11.5">Reg. 11.5%</option>
+              <option value="7">Comida 7%</option>
+            </select>
+          </div>
+          <div class="sunken" id="ivu-results"></div>
+        </div>
 
+        <!-- APP: REPRODUCTOR WINAMP -->
+        <div id="app-music" class="app-view">
+          <div class="btn-back" onclick="goHome()">[Atrás]</div>
+          <div class="sunken" id="now-playing" style="font-size:11px; text-align:center; height:20px; overflow:hidden;">RADIO OFF</div>
+          <img id="visualizer-gif" src="https://archive.org" style="width: 100%; height: 90px; object-fit: contain; background: #000; border: 2px solid; border-color: var(--pixel-dark); opacity: 0.4;">
+          <audio id="audio-player" controls style="width: 100%; height: 28px; margin: 4px 0; outline: none;"></audio>
+          <div class="sunken track-list" id="playlist" style="max-height: 120px; overflow-y: auto;"></div>
+        </div>
+        <!-- APP: BORICUÓMETRO -->
+        <div id="app-boricua" class="app-view">
+          <div class="btn-back" onclick="goHome()">[Atrás]</div>
+          <div class="field">
+            <label>Palabra:</label>
+            <select id="boricua-word" onchange="traducirBoricua()">
+              <option value="">-- Elige --</option>
+              <option value="gandul">Como el gandul</option>
+              <option value="alcapurria">Guayando</option>
+              <option value="revolu">Un revolú</option>
+              <option value="chinchorreo">Chinchorreo</option>
+            </select>
+          </div>
+          <div class="sunken" id="boricua-result">Elige jerga.</div>
+        </div>
 
+        <!-- APP: REMEDIOS ABUELA -->
+        <div id="app-abuela" class="app-view">
+          <div class="btn-back" onclick="goHome()">[Atrás]</div>
+          <div class="field">
+            <label>Achaque:</label>
+            <select id="remedio-selector" onchange="verRemedio()">
+              <option value="">-- Elige --</option>
+              <option value="empacho">Empacho</option>
+              <option value="resfriado">Tos/Pecho</option>
+              <option value="mal_de_ojo">Mal de Ojo</option>
+            </select>
+          </div>
+          <div class="sunken" id="remedio-result" style="font-size: 11px;">Elige un síntoma.</div>
+        </div>
 
-    <!-- VENTANA 1: CALCULADORA IVU -->
-  <div id="win-ivu" class="window" style="top: 40px; left: 40px; width: 440px; height: 380px;">
-    <div class="title-bar" onmousedown="dragStart(event, 'win-ivu')">
-      <div class="title-text">🧮 Calculadora IVU Avanzada</div>
-      <div class="title-controls">
-        <button class="title-btn" onclick="minimizeWin('win-ivu')">_</button>
-        <button class="title-btn" onclick="closeWin('win-ivu')">×</button>
-      </div>
-    </div>
-    <div class="win-body">
-      <div class="field"><label>Cantidad (\$):</label><input type="number" id="amount" value="100" oninput="calcIVU()"></div>
-      <div class="field">
-        <label>Tipo de IVU:</label>
-        <select id="ivu-type" onchange="calcIVU()">
-          <option value="11.5">General (11.5%)</option>
-          <option value="7">Alimentos Prep. (7%)</option>
-        </select>
-      </div>
-      <div class="sunken" id="ivu-results" style="line-height: 1.8; flex-grow: 1;"></div>
-    </div>
-    <div class="resizer" onmousedown="resizeStart(event, 'win-ivu')"></div>
-  </div>
-
-  <!-- VENTANA 2: REPRODUCTOR REGGAETON -->
-  <div id="win-music" class="window" style="top: 80px; left: 120px; width: 460px; height: 490px;">
-    <div class="title-bar" onmousedown="dragStart(event, 'win-music')">
-      <div class="title-text">📻 Winamp Reggaeton</div>
-      <div class="title-controls">
-        <button class="title-btn" onclick="minimizeWin('win-music')">_</button>
-        <button class="title-btn" onclick="closeWin('win-music')">×</button>
-      </div>
-    </div>
-    <div class="win-body">
-      <div class="sunken" style="text-align: center; margin-bottom: 6px; font-weight: bold; background: #000; color: #0f0; font-family: monospace; font-size: 14px;" id="now-playing">DISCO DETENIDO</div>
-      <img id="visualizer-gif" src="https://archive.org" style="width: 100%; height: 150px; object-fit: contain; background: #000; border: 2px solid; border-color: var(--dark) var(--white) var(--white) var(--dark); margin-bottom: 8px; display: block; opacity: 0.4;">
-      <audio id="audio-player" controls style="width: 100%; margin-bottom: 6px;"></audio>
-      <div class="sunken track-list" id="playlist"></div>
-      <button class="win-btn" onclick="addTrackPrompt()">+ Agregar MP3 (URL)</button>
-    </div>
-    <div class="resizer" onmousedown="resizeStart(event, 'win-music')"></div>
-  </div>
-
-  <!-- VENTANA 3: EL BORICUÓMETRO / TRADUCTOR -->
-  <div id="win-boricua" class="window" style="top: 120px; left: 60px; width: 450px; height: 380px;">
-    <div class="title-bar" onmousedown="dragStart(event, 'win-boricua')">
-      <div class="title-text">🇵🇷 Boricuómetro / Traductor de Jerga</div>
-      <div class="title-controls">
-        <button class="title-btn" onclick="minimizeWin('win-boricua')">_</button>
-        <button class="title-btn" onclick="closeWin('win-boricua')">×</button>
-      </div>
-    </div>
-    <div class="win-body">
-      <div class="field">
-        <label>Frase o Palabra Boricua:</label>
-        <select id="boricua-word" onchange="traducirBoricua()" style="width: 200px;">
-          <option value="">-- Selecciona Jerga --</option>
-          <option value="gandul">Estar como el gandul</option>
-          <option value="alcapurria">Guayando la alcapurria</option>
-          <option value="brutal">¡Eso está brutal!</option>
-          <option value="revolu">Un revolú</option>
-          <option value="chinchorreo">Irse de chinchorreo</option>
-        </select>
-      </div>
-      <div class="sunken" id="boricua-result" style="line-height: 1.8; flex-grow: 1; background: #fff;">
-        Selecciona una palabra para medir su nivel de herencia cultural y su traducción al español neutro.
-      </div>
-    </div>
-    <div class="resizer" onmousedown="resizeStart(event, 'win-boricua')"></div>
-  </div>
-
-  <!-- VENTANA 4: GUÍA CURIOSA DE REMEDIOS DE LA ABUELA -->
-  <div id="win-abuela" class="window" style="top: 150px; left: 140px; width: 460px; height: 400px;">
-    <div class="title-bar" onmousedown="dragStart(event, 'win-abuela')">
-      <div class="title-text">📖 Remedios de la Abuela (Libro Botánico)</div>
-      <div class="title-controls">
-        <button class="title-btn" onclick="minimizeWin('win-abuela')">_</button>
-        <button class="title-btn" onclick="closeWin('win-abuela')">×</button>
-      </div>
-    </div>
-    <div class="win-body">
-      <div class="field">
-        <label>¿Qué achaque o molestia tienes?:</label>
-        <select id="remedio-selector" onchange="verRemedio()" style="width: 200px;">
-          <option value="">-- Selecciona Síntoma --</option>
-          <option value="empacho">Empacho (Mal de estómago)</option>
-          <option value="resfriado">Mucha tos y rompepecho</option>
-          <option value="mal_de_ojo">Sospecha de Mal de Ojo</option>
-          <option value="presion">Bajar la presión alta</option>
-        </select>
-      </div>
-      <div class="sunken" id="remedio-result" style="line-height: 1.8; flex-grow: 1; background: #ffffcc; font-family: 'Courier New', monospace; border-color: var(--dark);">
-        Abre el libro de botánica tradicional seleccionando un padecimiento común en los campos de la isla.
-      </div>
-    </div>
-    <div class="resizer" onmousedown="resizeStart(event, 'win-abuela')"></div>
-  </div>
-
-  <!-- VENTANA 5: CUCARACHAS-TIMER -->
-  <div id="win-cucaracha" class="window" style="top: 180px; left: 90px; width: 470px; height: 430px;">
-    <div class="title-bar" onmousedown="dragStart(event, 'win-cucaracha')">
-      <div class="title-text">🪳 Cucarachas-Timer.exe [Radar de Municipios]</div>
-      <div class="title-controls">
-        <button class="title-btn" onclick="minimizeWin('win-cucaracha')">_</button>
-        <button class="title-btn" onclick="closeWin('win-cucaracha')">×</button>
-      </div>
-    </div>
-    <div class="win-body">
-      <div class="field">
-        <label>Selecciona tu Municipio:</label>
-        <select id="town-selector" onchange="evaluarInvasionCucaracha()" style="width: 210px;"></select>
-      </div>
-      <div class="field">
-        <label>Condición del Cielo:</label>
-        <select id="clima-selector" onchange="evaluarInvasionCucaracha()" style="width: 210px;">
-          <option value="sol">Totalmente Soleado</option>
-          <option value="lluvia">Aguacero Fuerte repentino</option>
-          <option value="nublado">Nublado templado</option>
-        </select>
-      </div>
-      <div style="font-weight: bold; margin-top: 4px; color: var(--blue);" id="town-weather-title">ESTADO EN EL PUEBLO:</div>
-      <div class="sunken" id="timer-display" style="text-align: center; font-size: 20px; font-family: monospace; background: #000; color: #ff3333; padding: 12px; font-weight: bold; letter-spacing: 2px; margin: 4px 0;">
-        RADAR DESACTIVADO
-      </div>
-      <div class="sunken" id="cucaracha-consejo" style="line-height: 1.6; font-size: 12px; background: #e0e0e0; flex-grow: 1; overflow-y: auto; max-height: 110px;">
-        Selecciona un pueblo y una condición climática para activar los sensores de alcantarillado.
-      </div>
-    </div>
-    <div class="resizer" onmousedown="resizeStart(event, 'win-cucaracha')"></div>
-  </div>
-
-  <!-- MENÚ INICIO DESPLEGABLE -->
-  <div id="start-menu" class="start-menu">
-    <div class="start-sidebar">Windows 98</div>
-    <div class="menu-items">
-      <div class="menu-item" onclick="openWin('win-ivu'); closeStartMenu();"><span>🧮</span><span>Calculadora IVU</span></div>
-      <div class="menu-item" onclick="openWin('win-music'); closeStartMenu();"><span>📻</span><span>Winamp Reggaeton</span></div>
-      <div class="menu-item" onclick="openWin('win-boricua'); closeStartMenu();"><span>🇵🇷</span><span>Boricuómetro / Traductor</span></div>
-      <div class="menu-item" onclick="openWin('win-abuela'); closeStartMenu();"><span>📖</span><span>Remedios de la Abuela</span></div>
-      <div class="menu-item" onclick="openWin('win-cucaracha'); closeStartMenu();"><span>🪳</span><span>Cucarachas-Timer</span></div>
-    </div>
-  </div>
-
-  <!-- BARRA DE TAREAS INFRAESTRUCTURA -->
-  <div class="taskbar">
-    <div class="start-btn" id="btn-start" onclick="toggleStartMenu(event)">
-      <span style="font-size: 14px; margin-right: 2px;">❖</span><b>Inicio</b>
-    </div>
-    <div class="taskbar-apps" id="taskbar-apps-container"></div>
-    <div class="systray" style="display: flex; align-items: center; gap: 8px; position: relative;">
-      <div style="display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; position: relative;">
-        <span style="font-size: 16px; cursor: pointer;" onclick="toggleVolSlider(event)" title="Volumen">🔊</span>
-        <div id="vol-container" style="display: none; position: absolute; bottom: 38px; right: 0; background: var(--gray); border: 2px solid; border-color: var(--white) var(--dark) var(--dark) var(--white); padding: 10px 6px; z-index: 10005; box-shadow: 2px 2px 10px rgba(0,0,0,0.3); width: 34px; height: 120px; text-align: center;">
-          <input type="range" id="vol-slider" min="0" max="1" step="0.05" value="1" oninput="changeVolume(this.value)" style="writing-mode: vertical-lr; direction: rtl; width: 16px; height: 100px; cursor: pointer; display: inline-block;">
+        <!-- APP: CUCARACHAS TIMER -->
+        <div id="app-cucaracha" class="app-view">
+          <div class="btn-back" onclick="goHome()">[Atrás]</div>
+          <div class="field"><label>Pueblo:</label><select id="town-selector" onchange="evaluarInvasionCucaracha()"></select></div>
+          <div id="town-weather-title" style="font-size:11px; margin-top:2px;">ESTADO: SELECCIONAR</div>
+          <div class="sunken" id="timer-display" style="text-align: center; font-size: 16px; font-weight: bold; background: rgba(0,0,0,0.1); padding: 4px;">RADAR STANDBY</div>
+          <div class="sunken" id="cucaracha-consejo" style="font-size: 11px; max-height: 80px; overflow-y: auto;">Elige pueblo.</div>
         </div>
       </div>
-      <span id="clock" style="cursor: pointer;" onclick="playWin98ErrorSound()" title="Hacer clic para sonido de error">00:00 AM</span>
+    </div>
+    <!-- TECLADO FÍSICO DEL CELULAR -->
+    <div class="phone-pad">
+      <div class="key" onclick="goHome()">🏠</div>
+      <div class="key" onclick="playWin98ErrorSound()">📞</div>
+      <div class="key" onclick="goHome()">✖</div>
+      <div class="key">1</div><div class="key">2</div><div class="key">3</div>
+      <div class="key">4</div><div class="key">5</div><div class="key">6</div>
+      <div class="key">7</div><div class="key">8</div><div class="key">9</div>
     </div>
   </div>
 
-
-
-    <script>
-    // --- LÓGICA DE VENTANAS Y FOCUS ---
-    let activeWin = null, offsetX = 0, offsetY = 0, zIndexCounter = 10;
-    
-    const windowRegistry = {
-      'win-ivu': { title: 'Calculadora IVU', icon: '🧮', active: false },
-      'win-music': { title: 'Winamp Reggaeton', icon: '📻', active: false },
-      'win-boricua': { title: 'Boricuómetro v1.0', icon: '🇵🇷', active: false },
-      'win-abuela': { title: 'Remedios de la Abuela', icon: '📖', active: false },
-      'win-cucaracha': { title: 'Cucarachas-Timer.exe', icon: '🪳', active: false }
-    };
-
-    // --- NUEVA BASE DE DATOS DE COORDENADAS OFICIALES DE PUERTO RICO ---
+  <script>
+    // --- NAVEGACIÓN DE PANTALLA COMPLETA MÓVIL ---
+    function showApp(appId) {
+      document.getElementById('main-menu').style.display = 'none';
+      document.querySelectorAll('.app-view').forEach(view => view.style.display = 'none');
+      document.getElementById(appId).style.display = 'flex';
+    }
+    function goHome() {
+      document.querySelectorAll('.app-view').forEach(view => view.style.display = 'none');
+      document.getElementById('main-menu').style.display = 'grid';
+    }
+    // --- BASE DE DATOS MÓVIL COMPACTA ---
     const municipiosPR = [
-      { n: "Adjuntas", lat: 18.1627, lon: -66.7221 }, { n: "Aguada", lat: 18.3794, lon: -67.1882 },
-      { n: "Aguadilla", lat: 18.4275, lon: -67.1541 }, { n: "Aguas Buenas", lat: 18.2566, lon: -66.1031 },
-      { n: "Aibonito", lat: 18.1397, lon: -66.2663 }, { n: "Añasco", lat: 18.2866, lon: -67.1396 },
-      { n: "Arecibo", lat: 18.4724, lon: -66.7157 }, { n: "Arroyo", lat: 17.9658, lon: -66.0614 },
-      { n: "Barceloneta", lat: 18.4524, lon: -66.5385 }, { n: "Barranquitas", lat: 18.1861, lon: -66.3061 },
-      { n: "Bayamón", lat: 18.3808, lon: -66.1633 }, { n: "Cabo Rojo", lat: 18.0866, lon: -67.1457 },
-      { n: "Caguas", lat: 18.2341, lon: -66.0485 }, { n: "Camuy", lat: 18.4838, lon: -66.8449 },
-      { n: "Canóvanas", lat: 18.3791, lon: -65.9010 }, { n: "Carolina", lat: 18.3808, lon: -65.9574 },
-      { n: "Cataño", lat: 18.4355, lon: -66.1185 }, { n: "Cayey", lat: 18.1119, lon: -66.1663 },
-      { n: "Ceiba", lat: 18.2638, lon: -65.6474 }, { n: "Ciales", lat: 18.3361, lon: -66.4688 },
-      { n: "Cidra", lat: 18.1758, lon: -66.1613 }, { n: "Coamo", lat: 18.08, lon: -66.358 },
-      { n: "Comerío", lat: 18.2181, lon: -66.2257 }, { n: "Corozal", lat: 18.3419, lon: -66.3168 },
-      { n: "Culebra", lat: 18.3030, lon: -65.3010 }, { n: "Dorado", lat: 18.4588, lon: -66.2677 },
-      { n: "Fajardo", lat: 18.3258, lon: -65.6524 }, { n: "Florida", lat: 18.3636, lon: -66.5613 },
-      { n: "Guánica", lat: 17.9716, lon: -66.9080 }, { n: "Guayama", lat: 17.9741, lon: -66.1102 },
-      { n: "Guayanilla", lat: 18.0191, lon: -66.7919 }, { n: "Guaynabo", lat: 18.3577, lon: -66.1113 },
-      { n: "Gurabo", lat: 18.2544, lon: -65.9729 }, { n: "Hatillo", lat: 18.4863, lon: -66.8255 },
-      { n: "Hormigueros", lat: 18.1397, lon: -67.1274 }, { n: "Humacao", lat: 18.1497, lon: -65.8274 },
-      { n: "Isabela", lat: 18.5008, lon: -67.0243 }, { n: "Jayuya", lat: 18.2186, lon: -66.5916 },
-      { n: "Juana Díaz", lat: 18.0527, lon: -66.5064 }, { n: "Juncos", lat: 18.2275, lon: -65.9210 },
-      { n: "Lajas", lat: 18.0497, lon: -67.0596 }, { n: "Lares", lat: 18.2947, lon: -66.8771 },
-      { n: "Las Marías", lat: 18.2513, lon: -66.9932 }, { n: "Las Piedras", lat: 18.1827, lon: -65.8663 },
-      { n: "Loíza", lat: 18.4324, lon: -65.8799 }, { n: "Luquillo", lat: 18.3725, lon: -65.7166 },
-      { n: "Manatí", lat: 18.4275, lon: -66.4921 }, { n: "Maricao", lat: 18.1808, lon: -66.9799 },
-      { n: "Maunabo", lat: 18.0072, lon: -65.8993 }, { n: "Mayagüez", lat: 18.2011, lon: -67.1396 },
-      { n: "Moca", lat: 18.3947, lon: -67.1132 }, { n: "Morovis", lat: 18.3269, lon: -66.4063 },
-      { n: "Naguabo", lat: 18.2116, lon: -65.7352 }, { n: "Naranjito", lat: 18.3008, lon: -66.2449 },
-      { n: "Orocovis", lat: 18.2269, lon: -66.3913 }, { n: "Patillas", lat: 18.0066, lon: -66.0163 },
-      { n: "Peñuelas", lat: 18.0569, lon: -66.7218 }, { n: "Ponce", lat: 18.0111, lon: -66.6141 },
-      { n: "Quebradillas", lat: 18.4738, lon: -66.9385 }, { n: "Rincón", lat: 18.3402, lon: -67.2502 },
-      { n: "Río Grande", lat: 18.3794, lon: -65.8313 }, { n: "Sabana Grande", lat: 18.0777, lon: -66.9605 },
-      { n: "Salinas", lat: 17.9775, lon: -66.2974 }, { n: "San Germán", lat: 18.0827, lon: -67.0424 },
-      { n: "San Juan", lat: 18.4655, lon: -66.1057 }, { n: "San Lorenzo", lat: 18.1894, lon: -65.9610 },
-      { n: "San Sebastián", lat: 18.3352, lon: -66.9902 }, { n: "Santa Isabel", lat: 17.9664, lon: -66.4060 },
-      { n: "Toa Alta", lat: 18.3883, lon: -66.2485 }, { n: "Toa Baja", lat: 18.4444, lon: -66.2591 },
-      { n: "Trujillo Alto", lat: 18.3547, lon: -66.0074 }, { n: "Utuado", lat: 18.2655, lon: -66.7005 },
-      { n: "Vega Alta", lat: 18.4124, lon: -66.3313 }, { n: "Vega Baja", lat: 18.4461, lon: -66.3877 },
-      { n: "Vieques", lat: 18.1252, lon: -65.4413 }, { n: "Villalba", lat: 18.1275, lon: -66.4913 },
-      { n: "Yabucoa", lat: 18.0505, lon: -65.8793 }, { n: "Yauco", lat: 18.0349, lon: -66.8499 }
+      { n: "Adjuntas", costa: false }, { n: "Aguadilla", costa: true }, { n: "Arecibo", costa: true }, { n: "Barranquitas", costa: false },
+      { n: "Bayamón", costa: true }, { n: "Cabo Rojo", costa: true }, { n: "Caguas", costa: false }, { n: "Carolina", costa: true },
+      { n: "Cayey", costa: false }, { n: "Cidra", costa: false }, { n: "Fajardo", costa: true }, { n: "Guayama", costa: true },
+      { n: "Humacao", costa: true }, { n: "Isabela", costa: true }, { n: "Jayuya", costa: false }, { n: "Mayagüez", costa: true },
+      { n: "Orocovis", costa: false }, { n: "Ponce", costa: true }, { n: "Rincón", costa: true }, { n: "San Juan", costa: true },
+      { n: "Utuado", costa: false }, { n: "Yauco", costa: true }
     ];
 
-
     window.onload = function() {
-      const selector = document.getElementById('town-selector');
-      if (selector) {
-        selector.innerHTML = `<option value="">-- Elige Pueblo --</option>` + 
-          municipiosPR.map(m => `<option value="${m.n}">${m.n}</option>`).join('');
-      }
+      const s = document.getElementById('town-selector');
+      if (s) s.innerHTML = `<option value="">-- Pueblo --</option>` + municipiosPR.map(m => `<option value="${m.n}">${m.n}</option>`).join('');
     };
-    function openWin(id) { 
-      const w = document.getElementById(id); if (!w) return;
-      zIndexCounter++; w.style.display = 'block'; w.style.zIndex = zIndexCounter; 
-      windowRegistry[id].active = true;
-      if(id === 'win-music') initAudio(); 
-      updateTaskbarButtons();
-    }
-    
-    function closeWin(id) { document.getElementById(id).style.display = 'none'; windowRegistry[id].active = false; if(id==='win-cucaracha') clearInterval(c_interval); updateTaskbarButtons(); }
-    function minimizeWin(id) { document.getElementById(id).style.display = 'none'; updateTaskbarButtons(); }
-    
-    function toggleWindowFromTaskbar(id) {
-      const w = document.getElementById(id);
-      if (w.style.display === 'block' && parseInt(w.style.zIndex) === zIndexCounter) { w.style.display = 'none'; } 
-      else { w.style.display = 'block'; w.style.zIndex = ++zIndexCounter; }
-      updateTaskbarButtons();
-    }
 
-    function updateTaskbarButtons() {
-      const container = document.getElementById('taskbar-apps-container'); if (!container) return;
-      container.innerHTML = '';
-      Object.keys(windowRegistry).forEach(id => {
-        const winEl = document.getElementById(id);
-        if (winEl && windowRegistry[id].active) {
-          const isOpen = winEl.style.display === 'block';
-          const isFocused = isOpen && parseInt(winEl.style.zIndex) === zIndexCounter;
-          const btn = document.createElement('div');
-          btn.className = `task-button ${isFocused ? 'active' : ''}`;
-          btn.onclick = () => toggleWindowFromTaskbar(id);
-          btn.innerHTML = `<span>${windowRegistry[id].icon}</span> <span>${windowRegistry[id].title}</span>`;
-          container.appendChild(btn);
-        }
-      });
-    }
-    
-    function dragStart(e, id) {
-      if(e.target.classList.contains('title-btn')) return;
-      activeWin = document.getElementById(id); zIndexCounter++; activeWin.style.zIndex = zIndexCounter;
-      offsetX = e.clientX - activeWin.offsetLeft; offsetY = e.clientY - activeWin.offsetTop;
-      document.addEventListener('mousemove', dragMove); document.addEventListener('mouseup', dragEnd);
-      updateTaskbarButtons();
-    }
-    function dragMove(e) { if (activeWin) { activeWin.style.left = (e.clientX - offsetX) + 'px'; activeWin.style.top = (e.clientY - offsetY) + 'px'; } }
-    function dragEnd() { activeWin = null; document.removeEventListener('mousemove', dragMove); document.removeEventListener('mouseup', dragEnd); }
-
-    let resizeWin = null, startW = 0, startH = 0, startX = 0, startY = 0;
-    function resizeStart(e, id) {
-      e.preventDefault(); resizeWin = document.getElementById(id);
-      startW = parseInt(document.defaultView.getComputedStyle(resizeWin).width, 10);
-      startH = parseInt(document.defaultView.getComputedStyle(resizeWin).height, 10);
-      startX = e.clientX; startY = e.clientY;
-      document.addEventListener('mousemove', resizeMove); document.addEventListener('mouseup', resizeEnd);
-    }
-    function resizeMove(e) { if (resizeWin) { resizeWin.style.width = (startW + e.clientX - startX) + 'px'; resizeWin.style.height = (startH + e.clientY - startY) + 'px'; } }
-    function resizeEnd() { resizeWin = null; document.removeEventListener('mousemove', resizeMove); document.removeEventListener('mouseup', resizeEnd); }
-
-    function toggleStartMenu(e) { e.stopPropagation(); const m = document.getElementById('start-menu'); const b = document.getElementById('btn-start'); if(m.style.display==='flex'){ m.style.display='none'; b.classList.remove('open'); }else{ m.style.display='flex'; b.classList.add('open'); }}
-    function closeStartMenu() { document.getElementById('start-menu').style.display = 'none'; document.getElementById('btn-start').classList.remove('open'); document.getElementById('vol-container').style.display = 'none'; }
-    setInterval(() => { document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }); }, 1000);
-    function toggleVolSlider(e) { e.stopPropagation(); const v = document.getElementById('vol-container'); v.style.display = v.style.display === 'block' ? 'none' : 'block'; }
-    function changeVolume(val) { const audioPlayer = document.getElementById('audio-player'); if (audioPlayer) audioPlayer.volume = val; }
-
+    // --- RELOJ ---
+    setInterval(() => { document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }); }, 1000);
+    // --- AUDIO CHORD SYNTH ---
     function playWin98ErrorSound() {
       try {
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const freqs = [130.81, 164.81, 196.00, 261.63]; 
-        freqs.forEach((freq, index) => {
+        const freqs = [130.81, 164.81, 196.00]; 
+        freqs.forEach(freq => {
           const osc = audioContext.createOscillator(); const gain = audioContext.createGain();
-          osc.type = index === 0 ? 'sawtooth' : 'triangle'; osc.frequency.setValueAtTime(freq, audioContext.currentTime);
-          gain.gain.setValueAtTime(0.15, audioContext.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.4);
-          osc.connect(gain); gain.connect(audioContext.destination); osc.start(); osc.stop(audioContext.currentTime + 0.4);
+          osc.type = 'triangle'; osc.frequency.setValueAtTime(freq, audioContext.currentTime);
+          gain.gain.setValueAtTime(0.1, audioContext.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.3);
+          osc.connect(gain); gain.connect(audioContext.destination); osc.start(); osc.stop(audioContext.currentTime + 0.3);
         });
       } catch (e) {}
     }
-    // --- CALCULADORA IVU ---
-    function calcIVU() {
-      const amt = parseFloat(document.getElementById('amount').value) || 0;
-      const type = parseFloat(document.getElementById('ivu-type').value);
-      let estatal = 0, municipal = 0;
-      if (type === 11.5) { estatal = amt * 0.105; municipal = amt * 0.01; } 
-      else { estatal = amt * 0.06; municipal = amt * 0.01; }
-      const totalIvu = estatal + municipal;
-      document.getElementById('ivu-results').innerHTML = `Estatal (${type === 11.5 ? '10.5%' : '6%'}): $${estatal.toFixed(2)}<br>Municipal (1%): $${municipal.toFixed(2)}<br><b>Total IVU (${type}%): $${totalIvu.toFixed(2)}</b><br><br><b style="font-size: 15px;">Gran Total: $${(amt + totalIvu).toFixed(2)}</b>`;
-    }
 
-    // --- REPRODUCTOR DE MÚSICA ---
+    // --- IVU ---
+    function calcIVU() {
+      const amt = parseFloat(document.getElementById('amount').value) || 0; const type = parseFloat(document.getElementById('ivu-type').value);
+      let est = type === 11.5 ? amt * 0.105 : amt * 0.06; let mun = amt * 0.01;
+      document.getElementById('ivu-results').innerHTML = `Est: $${est.toFixed(2)} | Mun: $${mun.toFixed(2)}<br><b>IVU: $${(est+mun).toFixed(2)} | Total: $${(amt+est+mun).toFixed(2)}</b>`;
+    }
+    calcIVU();
+    // --- MUSICA DISCO ---
     const canciones = [
-      { titulo: "Daddy Yankee - Gasolina (2004)", url: "http://radio.plaza.one/mp3" },
-      { titulo: "Daddy Yankee - Rompe (2005)", url: "https://archive.org" },
-      { titulo: "Casa de Leones - No Te Veo (2007)", url: "https://archive.org" }
+      { titulo: "Yankee - Gasolina", url: "https://archive.org" },
+      { titulo: "Yankee - Rompe", url: "https://archive.org" }
     ];
     const audio = document.getElementById('audio-player');
     function renderPlaylist() { document.getElementById('playlist').innerHTML = canciones.map((c, i) => `<div class="track" onclick="playTrack(${i})">📻 ${c.titulo}</div>`).join(''); }
-    function playTrack(i) {
-      document.querySelectorAll('.track').forEach((t, idx) => t.classList.toggle('active', idx === i));
-      document.getElementById('now-playing').textContent = canciones[i].titulo.toUpperCase();
-      audio.src = canciones[i].url; audio.crossOrigin = "anonymous"; audio.play();
-    }
-    function addTrackPrompt() {
-      const title = prompt("Nombre del tema:"); const url = prompt("Enlace directo MP3:");
-      if (title && url) { canciones.push({ titulo: title, url: url }); renderPlaylist(); }
-    }
+    function playTrack(i) { document.getElementById('now-playing').textContent = canciones[i].titulo.toUpperCase(); audio.src = canciones[i].url; audio.crossOrigin = "anonymous"; audio.play(); document.getElementById('visualizer-gif').style.opacity = "1"; }
+    audio.addEventListener('pause', () => { document.getElementById('visualizer-gif').style.opacity = "0.4"; });
     renderPlaylist();
 
-    let audioCtx, audioInit = false;
-    function initAudio() {
-      if (audioInit) return; audioInit = true;
-      const gifElement = document.getElementById('visualizer-gif');
-      audio.addEventListener('play', () => {
-        if (gifElement) gifElement.style.opacity = "1";
-        if (!audioCtx) { try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); audio.crossOrigin = "anonymous"; } catch (e) {} }
-      });
-      audio.addEventListener('pause', () => { if (gifElement) gifElement.style.opacity = "0.4"; });
-    }
+    function addTrackPrompt() { const title = prompt("Nombre:"); const url = prompt("MP3 URL:"); if (title && url) { canciones.push({ titulo: title, url: url }); renderPlaylist(); }}
 
-    // --- TRADUCTOR BORICUA ---
+    // --- JERGA ---
     function traducirBoricua() {
-      const palabra = document.getElementById('boricua-word').value;
-      const resultBox = document.getElementById('boricua-result');
-      const diccionario = {
-        gandul: { nivel: "85%", trad: "Estar sumamente apretado o llegar justo a tiempo.", nota: "Proviene de cómo crecen los gandules pegados dentro de la vaina." },
-        alcapurria: { nivel: "95%", trad: "Trabajar muy duro bajo condiciones intensas.", nota: "Hace alusión al proceso tradicional de rallar la masa en el guayo." },
-        brutal: { nivel: "60%", trad: "Excelente, asombroso, extraordinario.", nota: "Se popularizó en la juventud urbana Y2K." },
-        revolu: { nivel: "90%", trad: "Desorden masivo, caos total.", nota: "Palabra indispensable usada por las madres de la isla." },
-        chinchorreo: { nivel: "100%", trad: "Ruta gastronómica comunitaria de negocio en negocio.", nota: "Actividad cultural máxima de fin de semana para consumir frituras." }
-      };
-      if (!palabra) { resultBox.innerHTML = "Selecciona una palabra para medir su nivel cultural."; return; }
-      const datos = diccionario[palabra];
-      resultBox.innerHTML = `<b>Nivel de Boricuómetro:</b> <span style="color:red; font-size:14px; font-weight:bold;">${datos.nivel}</span><br><b>Significado Neutral:</b> ${datos.trad}<br><br><i>Contexto Histórico: ${datos.nota}</i>`;
+      const p = document.getElementById('boricua-word').value; const r = document.getElementById('boricua-result');
+      const d = { gandul: "Apretado de tiempo.", alcapurria: "Trabajar muy duro.", revolu: "Caos o desorden total.", chinchorreo: "Ruta gastronómica de frituras." };
+      r.innerHTML = p ? `<b>Significado:</b><br>${d[p]}` : "Elige palabra.";
     }
 
-    // --- REMEDIOS BOTÁNICOS ---
+    // --- BOTANICA ---
     function verRemedio() {
-      const achaque = document.getElementById('remedio-selector').value;
-      const display = document.getElementById('remedio-result');
-      const libro = {
-        empacho: "📜 TRATAMIENTO DE LA ABUELA:<br>Consigue hojas de Guanábana fresca. Pásale aceite de oliva tibio en el vientre en forma de cruz, y dale un té de hojas de menta caliente.",
-        resfriado: "📜 TRATAMIENTO DE LA ABUELA:<br>Pon a hervir agua con jengibre machacado, malojillo y un diente de ajo entero. Endúlzalo con miel pura de abejas y unas gotas de limón criollo.",
-        mal_de_ojo: "📜 TRATAMIENTO DE LA ABUELA:<br>Colócale al niño una pulsera de azabache con cuentas rojas. Si ya está ojeado, pasa ruda fresca por su cuerpo rezando con devoción.",
-        presion: "📜 TRATAMIENTO DE LA ABUELA:<br>Pon a remojar una cucharada de semillas de alpiste limpio en agua durante toda la noche. Cuela el agua y tómatela en ayunas."
-      };
-      display.innerHTML = achaque ? libro[achaque] : "Abre el libro de botánica tradicional seleccionando un padecimiento común.";
+      const a = document.getElementById('remedio-selector').value; const d = document.getElementById('remedio-result');
+      const l = { empacho: "Aceite de oliva tibio en vientre y té de menta.", resfriado: "Té de jengibre, malojillo, ajo y miel.", mal_de_ojo: "Pulsera de azabache y ruda fresca." };
+      d.innerHTML = a ? `📜 <b>Receta Abuela:</b><br>${l[a]}` : "Elige síntoma.";
     }
-
-    // --- MOTOR INTERNET LIVE WEATHER SANDBOX INTEGRADO (ANTIBLOQUEOS) ---
+    // --- RADAR CUCARACHA AUTO-WEATHER AUTOMÁTICO ---
     let c_interval = null;
-
     function evaluarInvasionCucaracha() {
-      const puebloNombre = document.getElementById('town-selector').value;
-      const titleDisplay = document.getElementById('town-weather-title');
-      const timerDisplay = document.getElementById('timer-display');
-      const consejoBox = document.getElementById('cucaracha-consejo');
+      const pName = document.getElementById('town-selector').value; const timer = document.getElementById('timer-display'); const consejo = document.getElementById('cucaracha-consejo');
+      clearInterval(c_interval); if (!pName) { timer.textContent = "RADAR OFF"; return; }
       
-      clearInterval(c_interval);
-      if (!puebloNombre) { 
-        timerDisplay.textContent = "RADAR DORMIDO"; 
-        consejoBox.innerHTML = "Por favor selecciona un municipio de la isla."; 
-        return; 
-      }
+      const pInfo = municipiosPR.find(m => m.n === pName);
+      const hora = new Date().getHours();
+      let temp = pInfo.costa ? 86 : 75; if (hora >= 12 && hora <= 16) temp += 4;
       
-      titleDisplay.innerHTML = `CONECTANDO CON SENSORES PARA ${puebloNombre.toUpperCase()}...`;
-      timerDisplay.textContent = "CONECTANDO...";
+      document.getElementById('town-weather-title').innerHTML = `PUEBLO: ${pName.toUpperCase()} | ${temp}°F`;
 
-      // Buscar si el pueblo seleccionado pertenece a la costa o a la montaña
-      const puebloInfo = municipiosPR.find(m => m.n === puebloNombre);
-
-      try {
-        // Generador matemático preciso basado en patrones reales de la isla para Octubre 2026
-        // Genera una oscilación de temperatura realista según la hora del día y la geografía
-        const horaActual = new Date().getHours();
-        let esCosta = (puebloInfo.lat > 18.35 || puebloInfo.lat < 18.05 || puebloInfo.lon < -67.10);
-        
-        let tempReal = esCosta ? 86 : 74; // Las costas promedian 86°F y la montaña 74°F
-        if (horaActual >= 11 && horaActual <= 16) tempReal += 4; // Pico de calor al mediodía
-        
-        // Simular probabilidad real de lluvia (Octubre es época de aguaceros de tarde en el oeste/costas)
-        // Usamos un algoritmo pseudo-aleatorio fijo por pueblo para que el clima sea consistente
-        const factorPueblo = (puebloInfo.lat + Math.abs(puebloInfo.lon)) % 1;
-        const estaLloviendo = factorPueblo > 0.45; // 55% de probabilidad de lluvia tropical simulada
-        
-        let estadoCielo = estaLloviendo ? "Lluvia Activa 🌧️" : "Soleado / Despejado ☀️";
-
-        // Forzar actualización visual en la pantalla de Windows 98
-        setTimeout(() => {
-          titleDisplay.innerHTML = `MUNICIPIO: <b style="color:var(--blue);">${puebloNombre.toUpperCase()}</b> | ACTUAL: <b>${tempReal}°F</b> (${estadoCielo})`;
-
-          // REGLA BORICUA DEL HUMERO: Si llueve y hace calor sofocante (costas en 86°F-90°F), se activan las cucarachas
-          if (estaLloviendo && tempReal >= 84) {
-            playWin98ErrorSound(); // Sonido metálico de alerta
-            let tiempoRestante = 42 * 60;
-            
-            consejoBox.innerHTML = `<b style="color:red;">⚠️ ALERTA DE HUMERO EMITIDA EN ${puebloNombre.toUpperCase()}:</b> Los sensores detectan lluvia fuerte y un bochorno térmico de ${tempReal}°F. El vapor está subiendo por las tuberías de la calle. Pon toallas mojadas debajo de las puertas de inmediato y cierra las ventanas de paletas.`;
-            
-            c_interval = setInterval(() => {
-              tiempoRestante--;
-              let minutos = Math.floor(tiempoRestante / 60);
-              let segundos = tiempoRestante % 60;
-              timerDisplay.textContent = `CRÍTICO: ${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
-              if (tiempoRestante <= 0) { 
-                clearInterval(c_interval); 
-                timerDisplay.textContent = "¡INVASIÓN ACTIVA!"; 
-                playWin98ErrorSound();
-              }
-            }, 1000);
-          } else if (estaLloviendo && tempReal < 84) {
-            timerDisplay.textContent = "TIEMPO FRESCO";
-            consejoBox.innerHTML = `<b>Reporte del Radar:</b> Está lloviendo en ${puebloNombre}, pero la temperatura de la montaña es fresca (${tempReal}°F). El agua estabiliza la temperatura del subsuelo de la isla. Riesgo bajo de plagas voladoras.`;
-          } else {
-            timerDisplay.textContent = "SISTEMA: OK";
-            consejoBox.innerHTML = `El clima en ${puebloNombre} está ${estadoCielo} a ${tempReal}°F. Las alcantarillas se mantienen estables, secas y frías. No hay peligro de plagas en este momento.`;
-          }
-        }, 300); // Pequeña pausa de 300ms para simular la carga dial-up de los 90
-
-      } catch (err) {
-        timerDisplay.textContent = "ERROR 404";
-        titleDisplay.innerHTML = `MUNICIPIO: ${puebloNombre.toUpperCase()} (Desconectado)`;
-        consejoBox.innerHTML = `<b>Error de Sistema:</b> Ocurrió un problema en la asignación de variables lógicas del radar.`;
-      }
+      if (pInfo.costa && temp >= 85) {
+        playWin98ErrorSound(); let t = 42 * 60;
+        consejo.innerHTML = `⚠️ <b>HUMERO ACTIVO:</b> El vapor de los drenajes en ${pName} está alto. Cierra ventanas de paleta.`;
+        c_interval = setInterval(() => { t--; let m = Math.floor(t / 60); let s = t % 60; timer.textContent = `ALERT: ${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`; if (t <= 0) { clearInterval(c_interval); timer.textContent = "¡INVASIÓN!"; playWin98ErrorSound(); } }, 1000);
+      } else { timer.textContent = "SISTEMA: OK"; consejo.innerHTML = `Clima estable en ${pName}. Tuberías secas. Riesgo de plaga voladora: BAJO.`; }
     }
   </script>
 </body>
