@@ -2,67 +2,170 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Win98_LottoPR.exe</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Win98_Y2K_PR.exe</title>
   <style>
-    :root { --w-g: #c0c0c0; --w-d: #808080; --w-b: #000080; }
-    * { box-sizing: border-box; font-family: 'MS Sans Serif', Tahoma, sans-serif; margin: 0; padding: 0; font-size: 12px; }
-    body { background: #008080; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 10px; }
-    .window { width: 100%; max-width: 480px; background: var(--w-g); border: 2px solid; border-color: #fff var(--w-d) var(--w-d) #fff; padding: 3px; box-shadow: 2px 2px 10px #0008; }
-    .title { background: linear-gradient(90deg, var(--w-b), #1084d0); color: #fff; padding: 3px 6px; font-weight: bold; display: flex; justify-content: space-between; }
-    .panel { background: #fff; border: 2px solid; border-color: var(--w-d) #fff #fff var(--w-d); padding: 8px; margin: 8px 0; }
-    .game { background: var(--w-g); border: 1px solid var(--w-d); padding: 6px; margin-bottom: 5px; display: flex; justify-content: space-between; align-items: center; }
-    .balls { display: flex; gap: 4px; }
-    .ball { background: #ffffcc; border: 1px solid #000; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-weight: bold; }
-    .wb { background: #ffcccc; color: #900; }
-    .bc { background: #cce5ff; }
-    .flex { display: flex; gap: 4px; margin-top: 5px; }
-    input { flex: 1; padding: 3px; border: 2px solid; border-color: var(--w-d) #fff #fff var(--w-d); }
-    button { background: var(--w-g); border: 2px solid; border-color: #fff var(--w-d) var(--w-d) #fff; padding: 3px 10px; font-weight: bold; cursor: pointer; }
-    button:active { border-color: var(--w-d) #fff #fff var(--w-d); }
+    :root { --gray: #c0c0c0; --dark: #808080; --blue: #000080; --navy: #1084d0; --white: #fff; }
+    * { box-sizing: border-box; font-family: 'MS Sans Serif', Tahoma, sans-serif; font-size: 11px; margin: 0; padding: 0; user-select: none; }
+    body { background: #008080; overflow: hidden; height: 100vh; position: relative; }
+    
+    /* Desktop & Icons */
+    .desktop { height: calc(100vh - 30px); padding: 15px; display: flex; flex-direction: column; gap: 20px; align-items: flex-start; }
+    .icon { width: 50px; text-align: center; color: var(--white); cursor: pointer; text-shadow: 1px 1px #000; }
+    .icon img { width: 32px; height: 32px; display: block; margin: 0 auto 4px; filter: drop-shadow(1px 1px #000); }
+    
+    /* Windows 98 Engine */
+    .window { position: absolute; background: var(--gray); border: 2px solid; border-color: var(--white) var(--dark) var(--dark) var(--white); padding: 3px; box-shadow: 1px 1px 10px rgba(0,0,0,0.4); display: none; min-width: 250px; z-index: 10; }
+    .title-bar { background: linear-gradient(90deg, var(--blue), var(--navy)); color: var(--white); padding: 3px 6px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; cursor: move; }
+    .title-btn { background: var(--gray); border: 1px solid; border-color: var(--white) var(--dark) var(--dark) var(--white); width: 14px; height: 14px; font-size: 9px; line-height: 10px; text-align: center; font-weight: bold; color: #000; cursor: pointer; }
+    .win-body { padding: 10px; background: var(--gray); }
+    .sunken { background: var(--white); border: 2px solid; border-color: var(--dark) var(--white) var(--white) var(--dark); padding: 8px; color: #000; }
+    
+    /* IVU Calculator */
+    .field { display: flex; justify-content: space-between; margin-bottom: 6px; align-items: center; }
+    input, select { padding: 3px; border: 2px solid; border-color: var(--dark) var(--white) var(--white) var(--dark); background: var(--white); width: 100px; text-align: right; }
+    button.win-btn { background: var(--gray); border: 2px solid; border-color: var(--white) var(--dark) var(--dark) var(--white); padding: 3px 10px; font-weight: bold; cursor: pointer; margin-top: 5px; width: 100%; }
+    
+    /* Music Player */
+    .track-list { margin-top: 8px; max-height: 80px; overflow-y: auto; font-size: 10px; }
+    .track { padding: 3px; cursor: pointer; border-bottom: 1px dotted var(--dark); }
+    .track:hover, .track.active { background: var(--blue); color: var(--white); }
+    
+    /* Taskbar */
+    .taskbar { position: absolute; bottom: 0; left: 0; right: 0; height: 30px; background: var(--gray); border-top: 2px solid var(--white); display: flex; justify-content: space-between; align-items: center; padding: 2px 6px; z-index: 999; }
+    .start-btn { font-weight: bold; background: var(--gray); border: 2px solid; border-color: var(--white) var(--dark) var(--dark) var(--white); padding: 2px 6px; display: flex; align-items: center; gap: 4px; cursor: pointer; }
+    .systray { background: var(--gray); border: 2px solid; border-color: var(--dark) var(--white) var(--white) var(--dark); padding: 2px 6px; font-weight: bold; }
   </style>
 </head>
 <body>
-  <div class="window">
-    <div class="title"><span>💾 LottoPR.exe</span><span>❌</span></div>
-    <div class="panel">
-      <div style="font-weight:bold;margin-bottom:6px;color:var(--w-b)">LOTERÍA ELECTRÓNICA DE PR</div>
-      <div id="games">
-        <div class="game"><span>PEGA 2</span><div class="balls"><div class="ball">6</div><div class="ball">2</div><div class="ball wb">6</div></div></div>
-        <div class="game"><span>PEGA 3</span><div class="balls"><div class="ball">4</div><div class="ball">2</div><div class="ball">3</div><div class="ball wb">5</div></div></div>
-        <div class="game"><span>PEGA 4</span><div class="balls"><div class="ball">9</div><div class="ball">6</div><div class="ball">5</div><div class="ball">1</div><div class="ball wb">5</div></div></div>
-        <div class="game"><span>LOTO CASH</span><div class="balls"><div class="ball">21</div><div class="ball">22</div><div class="ball">23</div><div class="ball">24</div><div class="ball">31</div><div class="ball bc">06</div></div></div>
+
+  <!-- Escritorio -->
+  <div class="desktop">
+    <div class="icon" onclick="openWin('win-ivu')">
+      <img src="https://alexmeub.com" alt="IVU">
+      IVU.exe
+    </div>
+    <div class="icon" onclick="openWin('win-music')">
+      <img src="https://alexmeub.com" alt="Música">
+      Playero.exe
+    </div>
+  </div>
+
+  <!-- VENTANA: CALCULADORA IVU -->
+  <div id="win-ivu" class="window" style="top: 50px; left: 50px; width: 280px;">
+    <div class="title-bar" onmousedown="dragStart(event, 'win-ivu')">
+      <span>🧮 Calculadora IVU Avanzada</span>
+      <button class="title-btn" onclick="closeWin('win-ivu')">×</button>
+    </div>
+    <div class="win-body">
+      <div class="field">
+        <label>Cantidad (\$):</label>
+        <input type="number" id="amount" value="100" oninput="calcIVU()">
+      </div>
+      <div class="field">
+        <label>Tipo de IVU:</label>
+        <select id="ivu-type" onchange="calcIVU()">
+          <option value="11.5">General (11.5%)</option>
+          <option value="7">Alimentos Prep. (7%)</option>
+        </select>
+      </div>
+      <div class="sunken" id="ivu-results" style="line-height: 1.6;">
+        Estatal (10.5%): \$0.00<br>Municipal (1%): \$0.00<br><b>Total IVU: \$0.00</b><br><b>Gran Total: \$0.00</b>
       </div>
     </div>
-    <div class="panel">
-      <div style="font-weight:bold">VERIFICADOR RÁPIDO</div>
-      <div class="flex">
-        <input type="text" id="num" placeholder="Ej: 31 o 423">
-        <button onclick="check()">Verificar</button>
-      </div>
-      <div id="msg" style="margin-top:5px; font-weight:bold; color:var(--w-b)"></div>
+  </div>
+
+  <!-- VENTANA: REPRODUCTOR REGGAETON -->
+  <div id="win-music" class="window" style="top: 80px; left: 120px; width: 300px;">
+    <div class="title-bar" onmousedown="dragStart(event, 'win-music')">
+      <span>📻 Reggaeton Retro Player</span>
+      <button class="title-btn" onclick="closeWin('win-music')">×</button>
     </div>
-    <div style="font-size:10px; display:flex; justify-content:space-between; padding:0 3px;"><span>Listo</span><span id="time"></span></div>
+    <div class="win-body">
+      <div class="sunken" style="text-align: center; margin-bottom: 8px; font-weight: bold; background: #000; color: #0f0; font-family: monospace;" id="now-playing">
+        DISCO INSERTADO
+      </div>
+      <audio id="audio-player" controls style="width: 100%; margin-bottom: 8px;"></audio>
+      <div class="sunken track-list" id="playlist"></div>
+      <button class="win-btn" onclick="addTrackPrompt()">+ Agregar Canción (URL)</button>
+    </div>
+  </div>
+
+  <!-- Barra de tareas -->
+  <div class="taskbar">
+    <div class="start-btn"><img src="https://alexmeub.com" width="14">Inicio</div>
+    <div class="systray" id="clock">00:00 AM</div>
   </div>
 
   <script>
-    // Base de datos del día integrada por bloqueo de CORS en navegadores
-    const map = { "62": "Pega 2", "423": "Pega 3", "9651": "Pega 4", "212223243106": "Loto Cash" };
-    document.getElementById('time').textContent = new Date().toLocaleDateString('es-PR');
+    // --- LÓGICA DE VENTANAS INTERACTIVAS (DRAG & DROP) ---
+    let activeWin = null, offsetX = 0, offsetY = 0;
+    function openWin(id) { const w = document.getElementById(id); w.style.display = 'block'; w.style.zIndex = ++zIndexCounter; }
+    function closeWin(id) { document.getElementById(id).style.display = 'none'; }
+    let zIndexCounter = 10;
 
-    function check() {
-      const val = document.getElementById('num').value.trim();
-      const msg = document.getElementById('msg');
-      if (!val) return;
-      
-      let win = Object.entries(map).find(([k]) => k === val || k.includes(val));
-      if (win) {
-        msg.textContent = `[OK] Coincide con número ganador de: ${win[1]}`;
-        msg.style.color = "green";
-      } else {
-        msg.textContent = `[X] El número ${val} no registra premios hoy.`;
-        msg.style.color = "var(--w-b)";
-      }
+    function dragStart(e, id) {
+      activeWin = document.getElementById(id);
+      activeWin.style.zIndex = ++zIndexCounter;
+      offsetX = e.clientX - activeWin.offsetLeft;
+      offsetY = e.clientY - activeWin.offsetTop;
+      document.addEventListener('mousemove', dragMove);
+      document.addEventListener('mouseup', dragEnd);
     }
+    function dragMove(e) { if (activeWin) { activeWin.style.left = (e.clientX - offsetX) + 'px'; activeWin.style.top = (e.clientY - offsetY) + 'px'; } }
+    function dragEnd() { activeWin = null; document.removeEventListener('mousemove', dragMove); document.removeEventListener('mouseup', dragEnd); }
+
+    // --- RELOJ DE LA BARRA DE TAREAS ---
+    setInterval(() => {
+      const d = new Date();
+      document.getElementById('clock').textContent = d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    }, 1000);
+
+    // --- CALCULADORA DEL IVU AVANZADA ---
+    function calcIVU() {
+      const amt = parseFloat(document.getElementById('amount').value) || 0;
+      const type = parseFloat(document.getElementById('ivu-type').value);
+      let estatal = 0, municipal = 0;
+      
+      if (type === 11.5) { estatal = amt * 0.105; municipal = amt * 0.01; } 
+      else { estatal = amt * 0.06; municipal = amt * 0.01; } // Ajuste proporcional para alimentos preparados (7% total)
+
+      const totalIvu = estatal + municipal;
+      document.getElementById('ivu-results').innerHTML = `
+        Estatal (${type === 11.5 ? '10.5%' : '6%'}): $${estatal.toFixed(2)}<br>
+        Municipal (1%): $${municipal.toFixed(2)}<br>
+        <b>Total IVU (${type}%): $${totalIvu.toFixed(2)}</b><br>
+        <b>Gran Total: $${(amt + totalIvu).toFixed(2)}</b>`;
+    }
+    calcIVU();
+
+    // --- REPRODUCTOR DE MÚSICA REGGAETON RETRO ---
+    // PUEDES AGREGAR O ELIMINAR CANCIONES EDITANDO ESTA LISTA DIRECTAMENTE:
+    const canciones = [
+      { titulo: "Don Omar - Dile (Retro 2003)", url: "https://soundhelix.com" },
+      { titulo: "Daddy Yankee - Gasolina (2004)", url: "https://soundhelix.com" },
+      { titulo: "Tego Calderon - Pa' Que Retozen", url: "https://soundhelix.com" }
+    ];
+
+    const audio = document.getElementById('audio-player');
+    function renderPlaylist() {
+      const container = document.getElementById('playlist');
+      container.innerHTML = canciones.map((c, i) => `<div class="track" onclick="playTrack(${i})">${i+1}. ${c.titulo}</div>`).join('');
+    }
+
+    function playTrack(i) {
+      document.querySelectorAll('.track').forEach((t, idx) => t.classList.toggle('active', idx === i));
+      document.getElementById('now-playing').textContent = canciones[i].titulo.toUpperCase();
+      audio.src = canciones[i].url;
+      audio.play();
+    }
+
+    function addTrackPrompt() {
+      const title = prompt("Nombre de la canción de reggaeton:");
+      const url = prompt("Enlace directo al archivo MP3 (URL):");
+      if (title && url) { canciones.push({ titulo: title, url: url }); renderPlaylist(); }
+    }
+    renderPlaylist();
   </script>
 </body>
 </html>
