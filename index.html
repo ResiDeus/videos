@@ -241,28 +241,49 @@
       'win-cucaracha': { title: 'Cucarachas-Timer.exe', icon: '🪳', active: false }
     };
 
+    // --- NUEVA BASE DE DATOS DE COORDENADAS OFICIALES DE PUERTO RICO ---
     const municipiosPR = [
-      { n: "Adjuntas", costa: false }, { n: "Aguada", costa: true }, { n: "Aguadilla", costa: true }, { n: "Aguas Buenas", costa: false },
-      { n: "Aibonito", costa: false }, { n: "Añasco", costa: true }, { n: "Arecibo", costa: true }, { n: "Arroyo", costa: true },
-      { n: "Barceloneta", costa: true }, { n: "Barranquitas", costa: false }, { n: "Bayamón", costa: true }, { n: "Cabo Rojo", costa: true },
-      { n: "Caguas", costa: false }, { n: "Camuy", costa: true }, { n: "Canóvanas", costa: false }, { n: "Carolina", costa: true },
-      { n: "Cataño", costa: true }, { n: "Cayey", costa: false }, { n: "Ceiba", costa: true }, { n: "Ciales", costa: false },
-      { n: "Cidra", costa: false }, { n: "Coamo", costa: false }, { n: "Comerío", costa: false }, { n: "Corozal", costa: false },
-      { n: "Culebra", costa: true }, { n: "Dorado", costa: true }, { n: "Fajardo", costa: true }, { n: "Florida", costa: false },
-      { n: "Guánica", costa: true }, { n: "Guayama", costa: true }, { n: "Guayanilla", costa: true }, { n: "Guaynabo", costa: false },
-      { n: "Gurabo", costa: false }, { n: "Hatillo", costa: true }, { n: "Hormigueros", costa: false }, { n: "Humacao", costa: true },
-      { n: "Isabela", costa: true }, { n: "Jayuya", costa: false }, { n: "Juana Díaz", costa: true }, { n: "Juncos", costa: false },
-      { n: "Lajas", costa: true }, { n: "Lares", costa: false }, { n: "Las Marías", costa: false }, { n: "Las Piedras", costa: false },
-      { n: "Loíza", costa: true }, { n: "Luquillo", costa: true }, { n: "Manatí", costa: true }, { n: "Maricao", costa: false },
-      { n: "Maunabo", costa: true }, { n: "Mayagüez", costa: true }, { n: "Moca", costa: false }, { n: "Morovis", costa: false },
-      { n: "Naguabo", costa: true }, { n: "Naranjito", costa: false }, { n: "Orocovis", costa: false }, { n: "Patillas", costa: true },
-      { n: "Peñuelas", costa: true }, { n: "Ponce", costa: true }, { n: "Quebradillas", costa: true }, { n: "Rincón", costa: true },
-      { n: "Río Grande", costa: true }, { n: "Sabana Grande", costa: false }, { n: "Salinas", costa: true }, { n: "San Germán", costa: false },
-      { n: "San Juan", costa: true }, { n: "San Lorenzo", costa: false }, { n: "San Sebastián", costa: false }, { n: "Santa Isabel", costa: true },
-      { n: "Toa Alta", costa: false }, { n: "Toa Baja", costa: true }, { n: "Trujillo Alto", costa: false }, { n: "Utuado", costa: false },
-      { n: "Vega Alta", costa: true }, { n: "Vega Baja", costa: true }, { n: "Vieques", costa: true }, { n: "Villalba", costa: false },
-      { n: "Yabucoa", costa: true }, { n: "Yauco", costa: true }
+      { n: "Adjuntas", lat: 18.1627, lon: -66.7221 }, { n: "Aguada", lat: 18.3794, lon: -67.1882 },
+      { n: "Aguadilla", lat: 18.4275, lon: -67.1541 }, { n: "Aguas Buenas", lat: 18.2566, lon: -66.1031 },
+      { n: "Aibonito", lat: 18.1397, lon: -66.2663 }, { n: "Añasco", lat: 18.2866, lon: -67.1396 },
+      { n: "Arecibo", lat: 18.4724, lon: -66.7157 }, { n: "Arroyo", lat: 17.9658, lon: -66.0614 },
+      { n: "Barceloneta", lat: 18.4524, lon: -66.5385 }, { n: "Barranquitas", lat: 18.1861, lon: -66.3061 },
+      { n: "Bayamón", lat: 18.3808, lon: -66.1633 }, { n: "Cabo Rojo", lat: 18.0866, lon: -67.1457 },
+      { n: "Caguas", lat: 18.2341, lon: -66.0485 }, { n: "Camuy", lat: 18.4838, lon: -66.8449 },
+      { n: "Canóvanas", lat: 18.3791, lon: -65.9010 }, { n: "Carolina", lat: 18.3808, lon: -65.9574 },
+      { n: "Cataño", lat: 18.4355, lon: -66.1185 }, { n: "Cayey", lat: 18.1119, lon: -66.1663 },
+      { n: "Ceiba", lat: 18.2638, lon: -65.6474 }, { n: "Ciales", lat: 18.3361, lon: -66.4688 },
+      { n: "Cidra", lat: 18.1758, lon: -66.1613 }, { n: "Coamo", lat: 18.08, lon: -66.358 },
+      { n: "Comerío", lat: 18.2181, lon: -66.2257 }, { n: "Corozal", lat: 18.3419, lon: -66.3168 },
+      { n: "Culebra", lat: 18.3030, lon: -65.3010 }, { n: "Dorado", lat: 18.4588, lon: -66.2677 },
+      { n: "Fajardo", lat: 18.3258, lon: -65.6524 }, { n: "Florida", lat: 18.3636, lon: -66.5613 },
+      { n: "Guánica", lat: 17.9716, lon: -66.9080 }, { n: "Guayama", lat: 17.9741, lon: -66.1102 },
+      { n: "Guayanilla", lat: 18.0191, lon: -66.7919 }, { n: "Guaynabo", lat: 18.3577, lon: -66.1113 },
+      { n: "Gurabo", lat: 18.2544, lon: -65.9729 }, { n: "Hatillo", lat: 18.4863, lon: -66.8255 },
+      { n: "Hormigueros", lat: 18.1397, lon: -67.1274 }, { n: "Humacao", lat: 18.1497, lon: -65.8274 },
+      { n: "Isabela", lat: 18.5008, lon: -67.0243 }, { n: "Jayuya", lat: 18.2186, lon: -66.5916 },
+      { n: "Juana Díaz", lat: 18.0527, lon: -66.5064 }, { n: "Juncos", lat: 18.2275, lon: -65.9210 },
+      { n: "Lajas", lat: 18.0497, lon: -67.0596 }, { n: "Lares", lat: 18.2947, lon: -66.8771 },
+      { n: "Las Marías", lat: 18.2513, lon: -66.9932 }, { n: "Las Piedras", lat: 18.1827, lon: -65.8663 },
+      { n: "Loíza", lat: 18.4324, lon: -65.8799 }, { n: "Luquillo", lat: 18.3725, lon: -65.7166 },
+      { n: "Manatí", lat: 18.4275, lon: -66.4921 }, { n: "Maricao", lat: 18.1808, lon: -66.9799 },
+      { n: "Maunabo", lat: 18.0072, lon: -65.8993 }, { n: "Mayagüez", lat: 18.2011, lon: -67.1396 },
+      { n: "Moca", lat: 18.3947, lon: -67.1132 }, { n: "Morovis", lat: 18.3269, lon: -66.4063 },
+      { n: "Naguabo", lat: 18.2116, lon: -65.7352 }, { n: "Naranjito", lat: 18.3008, lon: -66.2449 },
+      { n: "Orocovis", lat: 18.2269, lon: -66.3913 }, { n: "Patillas", lat: 18.0066, lon: -66.0163 },
+      { n: "Peñuelas", lat: 18.0569, lon: -66.7218 }, { n: "Ponce", lat: 18.0111, lon: -66.6141 },
+      { n: "Quebradillas", lat: 18.4738, lon: -66.9385 }, { n: "Rincón", lat: 18.3402, lon: -67.2502 },
+      { n: "Río Grande", lat: 18.3794, lon: -65.8313 }, { n: "Sabana Grande", lat: 18.0777, lon: -66.9605 },
+      { n: "Salinas", lat: 17.9775, lon: -66.2974 }, { n: "San Germán", lat: 18.0827, lon: -67.0424 },
+      { n: "San Juan", lat: 18.4655, lon: -66.1057 }, { n: "San Lorenzo", lat: 18.1894, lon: -65.9610 },
+      { n: "San Sebastián", lat: 18.3352, lon: -66.9902 }, { n: "Santa Isabel", lat: 17.9664, lon: -66.4060 },
+      { n: "Toa Alta", lat: 18.3883, lon: -66.2485 }, { n: "Toa Baja", lat: 18.4444, lon: -66.2591 },
+      { n: "Trujillo Alto", lat: 18.3547, lon: -66.0074 }, { n: "Utuado", lat: 18.2655, lon: -66.7005 },
+      { n: "Vega Alta", lat: 18.4124, lon: -66.3313 }, { n: "Vega Baja", lat: 18.4461, lon: -66.3877 },
+      { n: "Vieques", lat: 18.1252, lon: -65.4413 }, { n: "Villalba", lat: 18.1275, lon: -66.4913 },
+      { n: "Yabucoa", lat: 18.0505, lon: -65.8793 }, { n: "Yauco", lat: 18.0349, lon: -66.8499 }
     ];
+
 
     window.onload = function() {
       const selector = document.getElementById('town-selector');
@@ -415,44 +436,74 @@
       display.innerHTML = achaque ? libro[achaque] : "Abre el libro de botánica tradicional seleccionando un padecimiento común.";
     }
 
-    // --- ALERTA CUCARACHAS POR MUNICIPIOS ---
+    // --- NUEVO MOTOR INTERNET LIVE WEATHER DE PUERTO RICO ---
     let c_interval = null;
-    function evaluarInvasionCucaracha() {
+
+    async function evaluarInvasionCucaracha() {
       const puebloNombre = document.getElementById('town-selector').value;
-      const clima = document.getElementById('clima-selector').value;
       const titleDisplay = document.getElementById('town-weather-title');
       const timerDisplay = document.getElementById('timer-display');
       const consejoBox = document.getElementById('cucaracha-consejo');
       
       clearInterval(c_interval);
-      if (!puebloNombre) { timerDisplay.textContent = "RADAR APAGADO"; consejoBox.innerHTML = "Por favor selecciona un municipio."; return; }
+      if (!puebloNombre) { 
+        timerDisplay.textContent = "RADAR DORMIDO"; 
+        consejoBox.innerHTML = "Por favor selecciona un municipio de la isla."; 
+        return; 
+      }
       
-      const puebloInfo = municipiosPR.find(m => m.n === puebloNombre);
-      let tempBase = puebloInfo.costa ? 89 : 76; 
-      if (clima === 'lluvia') tempBase += 5; 
-      
-      titleDisplay.innerHTML = `MUNICIPIO: <b style="color:var(--blue);">${puebloNombre.toUpperCase()}</b> | TEMP: <b>${tempBase}°F</b>`;
+      titleDisplay.innerHTML = `CONECTANDO CON SATÉLITE PARA ${puebloNombre.toUpperCase()}...`;
+      timerDisplay.textContent = "BUSCANDO...";
 
-      if (clima === 'lluvia' && tempBase >= 85) {
-        playWin98ErrorSound();
-        let tiempoRestante = 42 * 60;
-        consejoBox.innerHTML = `<b style="color:red;">⚠️ ALERTA DE HUMERO EMITIDA EN ${puebloNombre.toUpperCase()}:</b> La temperatura de ${tempBase}°F tras el aguacero está evaporando los alcantarillados de la costa. Las cucarachas van a salir en desbandada hacia las casas.`;
-        c_interval = setInterval(() => {
-          tiempoRestante--;
-          let minutos = Math.floor(tiempoRestante / 60);
-          let segundos = tiempoRestante % 60;
-          timerDisplay.textContent = `CRÍTICO: ${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
-          if (tiempoRestante <= 0) { clearInterval(c_interval); timerDisplay.textContent = "¡INVASIÓN ACTIVA!"; playWin98ErrorSound(); }
-        }, 1000);
-      } else if (clima === 'lluvia' && tempBase < 85) {
-        timerDisplay.textContent = "TIEMPO FRESCO";
-        consejoBox.innerHTML = `<b>Reporte de Plagas:</b> Aunque está lloviendo en ${puebloNombre}, la temperatura de la montaña (${tempBase}°F) es muy fresca para levantar el vapor de las tuberías. Todo seguro.`;
-      } else if (clima === 'tormenta' || clima === 'nublado') {
-        timerDisplay.textContent = "DESPEJADO";
-        consejoBox.innerHTML = `<b>Monitoreo Satelital:</b> Cielo cubierto sobre ${puebloNombre}. Presión barométrica estable en los drenajes subterráneos.`;
-      } else {
-        timerDisplay.textContent = "SISTEMA: OK";
-        consejoBox.innerHTML = `Condiciones normales en ${puebloNombre}. Sol radiante y alcantarillas secas. No hay riesgo de invasión voladora.`;
+      const puebloInfo = municipiosPR.find(m => m.n === puebloNombre);
+
+      try {
+        // Consultar el tiempo real de hoy [2026] usando la API meteorológica global abierta
+        const url = `https://open-meteo.com{puebloInfo.lat}&longitude=${puebloInfo.lon}&current_weather=true&temperature_unit=fahrenheit`;
+        const res = await fetch(url);
+        if (!res.ok) throw new Error();
+        const data = await res.json();
+        
+        const tempReal = Math.round(data.current_weather.temperature);
+        const codeClima = data.current_weather.weathercode; // Código internacional del cielo
+
+        // Mapear los códigos técnicos de lluvia de la API (Códigos 51 a 67 y 80 a 82 significan lluvia)
+        const estaLloviendo = (codeClima >= 51 && codeClima <= 67) || (codeClima >= 80 && codeClima <= 82) || codeClima >= 95;
+        let estadoCielo = estaLloviendo ? "Lloviendo" : "Seco / Nublado";
+        if (codeClima === 0) estadoCielo = "Despejado ☀️";
+
+        titleDisplay.innerHTML = `MUNICIPIO: <b style="color:var(--blue);">${puebloNombre.toUpperCase()}</b> | ACTUAL: <b>${tempBase}°F</b> (${estadoCielo})`;
+
+        // REGLA CURIOSA BORICUA: Si hay lluvia activa y la temperatura de la calle supera los 83°F, se levanta el humero
+        if (estaLloviendo && tempReal >= 83) {
+          playWin98ErrorSound(); // Alerta sonora clásica
+          let tiempoRestante = 42 * 60;
+          
+          consejoBox.innerHTML = `<b style="color:red;">⚠️ ALERTA DE HUMERO DETECTADA:</b> Los sensores registran lluvia y un bochorno real de ${tempReal}°F en ${puebloNombre}. Las alcantarillas están calientes. Pon toallas mojadas debajo de las puertas de inmediato.`;
+          
+          c_interval = setInterval(() => {
+            tiempoRestante--;
+            let minutos = Math.floor(tiempoRestante / 60);
+            let segundos = tiempoRestante % 60;
+            timerDisplay.textContent = `CRÍTICO: ${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
+            if (tiempoRestante <= 0) { 
+              clearInterval(c_interval); 
+              timerDisplay.textContent = "¡INVASIÓN ACTIVA!"; 
+              playWin98ErrorSound();
+            }
+          }, 1000);
+        } else if (estaLloviendo && tempReal < 83) {
+          timerDisplay.textContent = "TIEMPO FRESCO";
+          consejoBox.innerHTML = `<b>Reporte de Plagas:</b> Está lloviendo en ${puebloNombre}, pero la temperatura es fresca (${tempReal}°F). El agua fría estabiliza las tuberías del subsuelo. Riesgo bajo.`;
+        } else {
+          timerDisplay.textContent = "SISTEMA: OK";
+          consejoBox.innerHTML = `El clima en ${puebloNombre} está ${estadoCielo} a ${tempReal}°F. Las alcantarillas se mantienen estables y secas. No hay peligro de plagas voladoras en este momento.`;
+        }
+
+      } catch (err) {
+        timerDisplay.textContent = "ERROR 404";
+        titleDisplay.innerHTML = `MUNICIPIO: ${puebloNombre.toUpperCase()} (Desconectado)`;
+        consejoBox.innerHTML = `<b>Error de Red Dial-Up:</b> No se pudo obtener el clima en vivo. Asegúrese de que su navegador permita conexiones externas HTTP en GitHub Pages.`;
       }
     }
   </script>
