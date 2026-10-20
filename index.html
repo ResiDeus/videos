@@ -116,10 +116,10 @@
                 <span id="txtIvu">IVU: 11.5%</span>
             </div>
             <div class="lcd-body">
-                <div id="rowTip" style="opacity: 0.2;">PROPINA AUTO (18%): <span id="outTip">$0.00</span></div>
-                <div>IVU LIQUIDO: <span id="outIvu">$0.00</span></div>
+                <div id="rowTip" style="opacity: 0.2;">PROPINA (18%): <span id="outTip">$0.00</span></div>
+                <div>IVU: <span id="outIvu">$0.00</span></div>
                 <!-- Cambia dinámicamente de TOTAL CTA a C/U -->
-                <div class="lcd-total"><span id="lblTotalType">TOTAL CTA</span>: $<span id="outPer">0.00</span></div>
+                <div class="lcd-total"><span id="lblTotalType">TOTAL</span>: $<span id="outPer">0.00</span></div>
             </div>
         </div>
         <!-- MENUS DE DATOS SINCRO CON BOTONES DE ACTIVACIÓN INTELIGENTES -->
@@ -192,7 +192,7 @@
                 sPpl = "0";
                 mode = 'sub'; // Devuelve el foco a la cuenta base obligatoriamente
                 document.getElementById('lblPpl').innerText = "OFF";
-                document.getElementById('lblTotalType').innerText = "TOTAL CTA";
+                document.getElementById('lblTotalType').innerText = "TOTAL";
             }
             actualizarEstilosPaneles();
             calc();
