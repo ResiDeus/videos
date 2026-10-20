@@ -12,7 +12,7 @@
         }
         /* Chasis forzado verticalmente de forma compacta */
         .chasis-calc {
-            width: 320px; height: 500px;
+            width: 320px; height: 510px;
             background-color: #241434;
             border: 4px solid #ff007f;
             box-shadow: 0 0 25px rgba(255, 0, 127, 0.4);
@@ -22,12 +22,6 @@
             background-color: #92b043;
             border: 3px solid #000000;
             color: #000000;
-        }
-        /* Recuadros de datos con fondo negro y tipografía blanca nítida */
-        .caja-lectura {
-            background-color: #000000 !important;
-            border: 2px solid #3c1e54;
-            transition: all 0.15s ease;
         }
         /* Botonera gigante optimizada para el tacto */
         .btn-tecla {
@@ -45,13 +39,18 @@
             background-color: #ff007f;
             color: #000000;
         }
-        .btn-ivu-off { background-color: #1a0826; border: 1px solid #ff007f; color: #ff007f; }
-        .btn-ivu-on { background-color: #ff007f; border: 2px solid #ffffff; color: #000000; box-shadow: 0 0 10px #ff007f; }
-        
-        /* Resplandor de selección de campo activo */
-        .focus-box { 
-            border: 2px solid #00f0ff !important;
-            box-shadow: 0 0 12px rgba(0, 240, 255, 0.5);
+        /* Estilos sincronizados para selectores e indicadores (Mismo sistema de color) */
+        .btn-ivu-off { 
+            background-color: #1a0826; 
+            border: 1px solid #ff007f; 
+            color: #ff007f; 
+        }
+        .btn-ivu-on { 
+            background-color: #ff007f; 
+            border: 2px solid #ffffff; 
+            color: #000000; 
+            box-shadow: 0 0 10px #ff007f; 
+            font-weight: bold;
         }
     </style>
 </head>
@@ -72,23 +71,23 @@
             </div>
         </div>
 
-        <!-- INDICADORES TÁCTILES MEJORADOS (MÁXIMA LEGIBILIDAD) -->
+        <!-- INDICADORES TÁCTILES MÁS GRANDES Y SINCRONIZADOS CON EL COLOR DEL IVU -->
         <div class="grid grid-cols-2 gap-2 text-xs font-bold font-sans">
-            <div id="cajaSubtotal" class="caja-lectura p-2.5 rounded-xl cursor-pointer focus-box" onclick="cambiarEnfoque('subtotal')">
-                <span class="text-white block text-[10px] uppercase tracking-wider font-extrabold mb-0.5 opacity-90">1. Cuenta Base</span>
-                <span class="text-white font-mono text-base block font-black">\$<span id="lblSubtotal">0</span></span>
+            <div id="cajaSubtotal" class="btn-ivu-on p-3.5 rounded-xl cursor-pointer text-center" onclick="cambiarEnfoque('subtotal')">
+                <span class="block text-[10px] uppercase tracking-wider mb-0.5 opacity-80">1. Cuenta Base</span>
+                <span class="font-mono text-base block font-black">\$<span id="lblSubtotal">0</span></span>
             </div>
-            <div id="cajaPersonas" class="caja-lectura p-2.5 rounded-xl cursor-pointer" onclick="cambiarEnfoque('personas')">
-                <span class="text-white block text-[10px] uppercase tracking-wider font-extrabold mb-0.5 opacity-90">2. Personas</span>
-                <span class="text-white font-mono text-base block font-black"><span id="lblPersonas">0</span></span>
+            <div id="cajaPersonas" class="btn-ivu-off p-3.5 rounded-xl cursor-pointer text-center" onclick="cambiarEnfoque('personas')">
+                <span class="block text-[10px] uppercase tracking-wider mb-0.5 opacity-80">2. Personas</span>
+                <span class="font-mono text-base block font-black"><span id="lblPersonas">0</span></span>
             </div>
         </div>
 
         <!-- SELECTOR IVU -->
         <div class="grid grid-cols-3 gap-1.5 text-xs font-bold font-sans">
-            <button id="ivu115" onclick="cambiarIvu(11.5)" class="py-2 rounded-lg btn-ivu-on">11.5%</button>
-            <button id="ivu6" onclick="cambiarIvu(6.0)" class="py-2 rounded-lg btn-ivu-off">6.0%</button>
-            <button id="ivu0" onclick="cambiarIvu(0.0)" class="py-2 rounded-lg btn-ivu-off">0.0%</button>
+            <button id="ivu115" onclick="cambiarIvu(11.5)" class="py-2.5 rounded-lg btn-ivu-on">11.5%</button>
+            <button id="ivu6" onclick="cambiarIvu(6.0)" class="py-2.5 rounded-lg btn-ivu-off">6.0%</button>
+            <button id="ivu0" onclick="cambiarIvu(0.0)" class="py-2.5 rounded-lg btn-ivu-off">0.0%</button>
         </div>
 
         <!-- TECLADO NUMÉRICO MAXIMIZADO PARA EL TACTO -->
@@ -116,16 +115,18 @@
 
         function cambiarEnfoque(campo) {
             campoActivo = campo;
-            document.getElementById('cajaSubtotal').classList.remove('focus-box');
-            document.getElementById('cajaPersonas').classList.remove('focus-box');
-            document.getElementById(campo === 'subtotal' ? 'cajaSubtotal' : 'cajaPersonas').classList.add('focus-box');
+            document.getElementById('cajaSubtotal').className = "btn-ivu-off p-3.5 rounded-xl cursor-pointer text-center";
+            document.getElementById('cajaPersonas').className = "btn-ivu-off p-3.5 rounded-xl cursor-pointer text-center";
+            
+            let idFoco = campo === 'subtotal' ? 'cajaSubtotal' : 'cajaPersonas';
+            document.getElementById(idFoco).className = "btn-ivu-on p-3.5 rounded-xl cursor-pointer text-center";
         }
 
         function cambiarIvu(porcentaje) {
             tasaIvu = porcentaje;
-            ['ivu115', 'ivu6', 'ivu0'].forEach(id => document.getElementById(id).className = "py-2 rounded-lg btn-ivu-off");
+            ['ivu115', 'ivu6', 'ivu0'].forEach(id => document.getElementById(id).className = "py-2.5 rounded-lg btn-ivu-off");
             let idActivo = porcentaje === 11.5 ? 'ivu115' : porcentaje === 6.0 ? 'ivu6' : 'ivu0';
-            document.getElementById(idActivo).className = "py-2 rounded-lg btn-ivu-on";
+            document.getElementById(idActivo).className = "py-2.5 rounded-lg btn-ivu-on";
             document.getElementById('txtIvuActual').innerText = `IVU: ${porcentaje.toFixed(1)}%`;
             ejecutarCalculos();
         }
