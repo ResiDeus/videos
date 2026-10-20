@@ -141,7 +141,7 @@
 
   <!-- VENTANA 4: GUÍA CURIOSA DE REMEDIOS DE LA ABUELA -->
   <div id="win-abuela" class="window" style="top: 150px; left: 140px; width: 460px; height: 400px;">
-    <div class="title-bar" onmousedown="dragStart(event, 'win-abuela')">
+        <div class="title-bar" onmousedown="dragStart(event, 'win-abuela')">
       <div class="title-text"><span>📖</span> Remedios de la Abuela (Libro Botánico)</div>
       <div class="title-controls">
         <button class="title-btn" onclick="minimizeWin('win-abuela')">_</button>
@@ -327,7 +327,7 @@
 
     // --- CONTROL DEL MENÚ DE INICIO ---
     function toggleStartMenu(e) { e.stopPropagation(); const m = document.getElementById('start-menu'); const b = document.getElementById('btn-start'); if(m.style.display==='flex'){ m.style.display='none'; b.classList.remove('open'); }else{ m.style.display='flex'; b.classList.add('open'); }}
-    function closeStartMenu() { document.getElementById('start-menu').style.display = 'none'; document.getElementById('btn-start').classList.remove('open'); document.getElementById('vol-container').style.display = 'none'; }
+        function closeStartMenu() { document.getElementById('start-menu').style.display = 'none'; document.getElementById('btn-start').classList.remove('open'); document.getElementById('vol-container').style.display = 'none'; }
     setInterval(() => { document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }); }, 1000);
 
     // --- MANEJADOR DE VOLUMEN (SYSTRAY) ---
@@ -366,7 +366,7 @@
 
     // --- PLAYLIST MP3 REAL DE REGGAETON RETRO ---
     const canciones = [
-      { titulo: "Daddy Yankee - Gasolina (2004)", url: "http://radio.plaza.one/mp3" },
+      { titulo: "Daddy Yankee - Gasolina (2004)", url: "https://archive.org" },
       { titulo: "Daddy Yankee - Rompe (2005)", url: "https://archive.org" },
       { titulo: "Casa de Leones - No Te Veo (2007)", url: "https://archive.org" }
     ];
@@ -426,7 +426,7 @@
         mal_de_ojo: "📜 TRATAMIENTO DE LA ABUELA:<br>Colócale al niño una pulsera de azabache con cuentas rojas. Si ya está ojeado, pasa ruda fresca por su cuerpo rezando con devoción.",
         presion: "📜 TRATAMIENTO DE LA ABUELA:<br>Pon a remojar una cucharada de semillas de alpiste limpio en agua durante toda la noche. Cuela el agua y tómatela en ayunas."
       };
-      display.innerHTML = achaque ? libro[achaque] : "Abre el libro de botánica tradicional seleccionando un padecimiento.";
+      display.innerHTML = achaque ? libro[achaque] : "Abre el libro de botánica tradicional seleccionando un padecimiento común en los campos de la isla.";
     }
 
     // --- LÓGICA DEL CUCARACHAS-TIMER ---
@@ -456,6 +456,8 @@
         consejoBox.innerHTML = `Monitoreando las alcantarillas de Puerto Rico de forma satelital. Humedad normal, todo despejado por el momento.`;
       }
     }
-  </style>
+  </script>
 </body>
 </html>
+
+
