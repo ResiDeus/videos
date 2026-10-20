@@ -124,6 +124,15 @@
         <span style="font-size:18px;">📻</span>
         <span>Winamp Reggaeton</span>
       </div>
+      
+      <!-- ==========================================
+           PUNTO 2: ACCESOS EN EL MENÚ INICIO (HTML)
+           Cuando agregues una app, pon su acceso directo aquí siguiendo este formato:
+           <div class="menu-item" onclick="openWin('ID_DE_TU_VENTANA'); closeStartMenu();">
+             <span style="font-size:18px;">[EMOJI_ICONO]</span>
+             <span>Nombre de tu App</span>
+           </div>
+           ========================================== -->
     </div>
   </div>
 
@@ -135,7 +144,17 @@
     
     <div class="taskbar-apps" id="taskbar-apps-container"></div>
     
-    <div class="systray" id="clock">00:00 AM</div>
+    <!-- System Tray con Control de Volumen y Reloj -->
+    <div class="systray" style="display: flex; align-items: center; gap: 8px;">
+      <div style="display: flex; align-items: center; gap: 4px; position: relative;">
+        <span style="font-size: 16px; cursor: pointer;" onclick="toggleVolSlider(event)" title="Volumen">🔊</span>
+
+                <div id="vol-container" style="display: none; position: absolute; bottom: 35px; right: -10px; background: var(--gray); border: 2px solid; border-color: var(--white) var(--dark) var(--dark) var(--white); padding: 8px 4px; z-index: 10001; transform: rotate(-90deg); transform-origin: bottom right;">
+          <input type="range" id="vol-slider" min="0" max="1" step="0.05" value="1" oninput="changeVolume(this.value)" style="width: 80px; cursor: pointer;">
+        </div>
+      </div>
+      <span id="clock" style="cursor: pointer;" onclick="playWin98ErrorSound()" title="Hacer clic para sonido de error">00:00 AM</span>
+    </div>
   </div>
 
   <script>
@@ -224,8 +243,39 @@
 
     // --- CONTROL DEL MENÚ DE INICIO ---
     function toggleStartMenu(e) { e.stopPropagation(); const m = document.getElementById('start-menu'); const b = document.getElementById('btn-start'); if(m.style.display==='flex'){ m.style.display='none'; b.classList.remove('open'); }else{ m.style.display='flex'; b.classList.add('open'); }}
-    function closeStartMenu() { document.getElementById('start-menu').style.display = 'none'; document.getElementById('btn-start').classList.remove('open'); }
+    function closeStartMenu() { document.getElementById('start-menu').style.display = 'none'; document.getElementById('btn-start').classList.remove('open'); document.getElementById('vol-container').style.display = 'none'; }
     setInterval(() => { document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }); }, 1000);
+
+    // --- MANEJADOR DE VOLUMEN (SYSTRAY) ---
+    function toggleVolSlider(e) { e.stopPropagation(); const v = document.getElementById('vol-container'); v.style.display = v.style.display === 'block' ? 'none' : 'block'; }
+    function changeVolume(val) { document.getElementById('audio-player').volume = val; }
+
+    // --- SÍNTESIS DE SONIDO DE ERROR WINDOWS (CHORD.WAV) ---
+    function playWin98ErrorSound() {
+      try {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const freqs = [130.81, 164.81, 196.00, 261.63]; 
+        
+        freqs.forEach((freq, index) => {
+          const osc = audioContext.createOscillator();
+          const gain = audioContext.createGain();
+          
+          osc.type = index === 0 ? 'sawtooth' : 'triangle';
+          osc.frequency.setValueAtTime(freq, audioContext.currentTime);
+          
+          gain.gain.setValueAtTime(0.15, audioContext.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.4);
+          
+          osc.connect(gain);
+          gain.connect(audioContext.destination);
+          
+          osc.start();
+          osc.stop(audioContext.currentTime + 0.4);
+        });
+      } catch (e) {
+        console.log("Interacción de usuario necesaria para reproducir audio.");
+      }
+    }
 
     // --- CALCULADORA DEL IVU DE PUERTO RICO ---
     function calcIVU() {
@@ -241,7 +291,7 @@
 
     // --- PLAYLIST CON ENLACES MP3 REALES ---
     const canciones = [
-      { titulo: "Daddy Yankee - Gasolina (2004)", url: "http://radio.plaza.one/mp3" },
+      { titulo: "Daddy Yankee - Gasolina (2004)", url: "https://archive.org" },
       { titulo: "Daddy Yankee - Rompe (2005)", url: "https://archive.org" },
       { titulo: "Casa de Leones - No Te Veo (2007)", url: "https://archive.org" }
     ];
@@ -261,7 +311,7 @@
     }
     renderPlaylist();
 
-    // --- VISUALIZADOR DE FIGURA DINÁMICA ESTILO WINDOWS XP (Y2K) ---
+    // --- VISUALIZADOR DE FIGURA DINÁMICA ---
     let audioCtx, analyser, source, canvas, canvasCtx, audioInit = false;
     let rotationAngle = 0;
 
@@ -299,8 +349,8 @@
 
       canvasCtx.fillStyle = 'rgba(0, 0, 0, 0.15)'; 
       canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
-      
-      const centerX = canvas.width / 2;
+
+            const centerX = canvas.width / 2;
       const centerY = canvas.height / 2;
       canvasCtx.beginPath();
       rotationAngle += 0.01;
@@ -336,3 +386,4 @@
 </body>
 </html>
 
+      
