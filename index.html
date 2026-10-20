@@ -18,16 +18,13 @@
         .lcd { width: 100%; height: 165px; background: #92b043; border: 2px solid #000; border-radius: 14px; color: #000; box-shadow: inset 0 4px 10px rgba(0,0,0,0.4); font-weight: bold; padding: 10px; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
         .lcd-header { display: flex; justify-content: space-between; font-size: 11px; border-bottom: 1px solid rgba(0,0,0,0.2); }
         
-        /* CAJA CON CONTENEDOR DE SCROLL E INDICADOR UNIVERSAL PARA SAFARI */
         .lcd-wrapper { position: relative; flex-grow: 1; display: flex; flex-direction: column; margin: 4px 0; max-height: 45px; }
         .lcd-historial { flex-grow: 1; font-size: 11px; overflow-y: scroll; text-align: left; padding-right: 4px; -webkit-overflow-scrolling: touch; }
         
-        /* Barra para navegadores compatibles (PC/Android) */
         .lcd-historial::-webkit-scrollbar { width: 5px; display: block; }
         .lcd-historial::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.1); }
         .lcd-historial::-webkit-scrollbar-thumb { background: #ff007f; border-radius: 4px; }
         
-        /* FLECHA FLOTANTE RETRO PARA MÓVILES (Desaparece al scrollear mediante JS) */
         .scroll-hint { position: absolute; bottom: 1px; right: 2px; font-size: 8px; color: rgba(0,0,0,0.6); animation: bounce 1.2s infinite ease-in-out; pointer-events: none; display: none; background: rgba(146, 176, 67, 0.9); padding: 0 2px; border-radius: 3px; }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(2px); } }
         
@@ -64,10 +61,13 @@
 
     <div class="chasis">
         <div class="lcd">
-            <div class="lcd-header"><span id="lblArt">CALCULADORA</span><span id="txtIvu">IVU: 11.5%</span></div>
+            <!-- NUEVO: Contenedor superior preparado para mostrar IVU y TIP dinámicamente -->
+            <div class="lcd-header">
+                <span id="lblArt">CALCULADORA</span>
+                <span id="txtHeaderIndicadores">IVU: 11.5%</span>
+            </div>
             
             <div class="lcd-wrapper">
-                <!-- Se añade un detector de scroll 'onscroll' para la flecha -->
                 <div class="lcd-historial" id="listaPrecios" onscroll="detectarDesplazamiento()"><i>Lista vacía...</i></div>
                 <div class="scroll-hint" id="flechaGuia">▼ deslizar</div>
             </div>
@@ -135,6 +135,15 @@
             } catch (e) {}
         }
 
+        // FUNCIÓN AUXILIAR: Mantiene actualizada la barra superior con el IVU y la Propina
+        function actualizarHeaderIndicadores() {
+            let texto = `IVU: ${ivu.toFixed(1)}%`;
+            if (incluirPropina) {
+                texto += ` | TIP: 18%`;
+            }
+            document.getElementById('txtHeaderIndicadores').innerText = texto;
+        }
+
         function seleccionarMenu(f) {
             reproducirSonido('menu');
             if (f === 'sub') {
@@ -158,6 +167,7 @@
             reproducirSonido('menu'); incluirPropina = !incluirPropina;
             document.getElementById('btnPropina').className = incluirPropina ? "btn-cfg btn-on" : "btn-cfg btn-off";
             document.getElementById('rowTip').style.opacity = incluirPropina ? "1" : "0.2";
+            actualizarHeaderIndicadores(); // Actualiza la barra superior inmediatamente
             calc();
         }
 
@@ -165,7 +175,7 @@
             reproducirSonido('menu'); ivu = p;
             ['ivu115', 'ivu6', 'ivu0'].forEach(id => document.getElementById(id).className = "btn-cfg btn-off");
             document.getElementById(p === 11.5 ? 'ivu115' : p === 6.0 ? 'ivu6' : 'ivu0').className = "btn-cfg btn-on";
-            document.getElementById('txtIvu').innerText = `IVU: ${p.toFixed(1)}%`;
+            actualizarHeaderIndicadores(); // Actualiza el porcentaje del IVU conservando el estado del TIP
             calc();
         }
 
@@ -202,18 +212,14 @@
                 const con = document.getElementById('listaPrecios');
                 con.innerHTML = preciosGuardados.map((p, i) => `<div>• Art #${i+1}: $${p.toFixed(2)}</div>`).join('');
                 
-                // CONTROL DE FLECHA GUÍA EN MÓVIL
                 const f = document.getElementById('flechaGuia');
-                if (con.scrollHeight > con.clientHeight) {
-                    f.style.display = "block"; // Se activa la advertencia si hay contenido oculto abajo
-                }
+                if (con.scrollHeight > con.clientHeight) { f.style.display = "block"; }
                 
                 con.scrollTop = con.scrollHeight;
                 calc();
             }
         }
 
-        // ESCONDE EL AVISO EN CUANTO EL USUARIO TOCA E INTERACTÚA CON LA LISTA
         function detectarDesplazamiento() {
             document.getElementById('flechaGuia').style.display = "none";
         }
