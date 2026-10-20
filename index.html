@@ -87,7 +87,7 @@
         <div id="app-music" class="app-view">
           <div class="btn-back" onclick="goHome()">◀ Back</div>
           <div class="sunken" id="now-playing" style="font-size:11px; text-align:center; height:24px; overflow:hidden; border-color:var(--neon-pink); color:var(--neon-pink); text-shadow:0 0 5px var(--neon-pink);">SYNTH STREAM OFF</div>
-          <img id="visualizer-gif" src="https://archive.org" style="width: 100%; height: 90px; object-fit: contain; background: #000; border: 1px solid var(--neon-cyan); opacity: 0.4; border-radius:8px;">
+          <img id="visualizer-gif" src="https://cdn.dribbble.com/userupload/25715372/file/original-aa91ab7214f78cb947c661be02e7ca87.gif" style="width: 100%; height: 90px; object-fit: contain; background: #000; border: 1px solid var(--neon-cyan); opacity: 0.4; border-radius:8px;">
           <audio id="audio-player" controls style="width: 100%; height: 30px; outline: none; margin: 2px 0;"></audio>
           <div class="sunken track-list" id="playlist"></div>
           <button class="win-btn" onclick="addTrackPrompt()">+ Inyectar MP3 (URL)</button>
@@ -99,7 +99,7 @@
             <label>Jerga:</label>
             <select id="boricua-word" onchange="traducirBoricua()">
               <option value="">-- Elige --</option>
-              <option value="gandul">Estar como el gandul</option>
+              <option value="gandul">Por encima de los gandules</option>
               <option value="alcapurria">Guayando alcapurria</option>
               <option value="revolu">Un revolú</option>
               <option value="chinchorreo">Chinchorreo</option>
@@ -199,7 +199,7 @@
     function changeVolume(val) { const audioPlayer = document.getElementById('audio-player'); if (audioPlayer) audioPlayer.volume = val; }
     // --- MULTIMEDIA STREAM ---
     const canciones = [
-      { titulo: "Yankee - Gasolina", url: "https://archive.org" },
+      { titulo: "Yankee - Gasolina", url: "https://radio.plaza.one/mp3" },
       { titulo: "Yankee - Rompe", url: "https://archive.org" }
     ];
     const audio = document.getElementById('audio-player');
@@ -214,7 +214,7 @@
     // --- LOGICA DE DICCIONARIOS ---
     function traducirBoricua() {
       const p = document.getElementById('boricua-word').value; const r = document.getElementById('boricua-result');
-      const d = { gandul: "Apretado de tiempo o llegando con las justas.", alcapurria: "Trabajar muy duro bajo presión.", revolu: "Caos o desorden masivo total.", chinchorreo: "Ruta social de frituras de fin de semana." };
+      const d = { gandul: "Algo brutal.", alcapurria: "Trabajar muy duro bajo presión.", revolu: "Caos o desorden masivo total.", chinchorreo: "Ruta social de frituras de fin de semana." };
       r.innerHTML = p ? `<b>SIGNIFICADO SYNTH:</b><br>${d[p]}` : "Selecciona un término holográfico.";
     }
 
