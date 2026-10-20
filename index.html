@@ -14,7 +14,13 @@
         
         .lcd { width: 100%; height: 165px; background: #92b043; border: 2px solid #000; border-radius: 14px; color: #000; box-shadow: inset 0 4px 10px rgba(0,0,0,0.4); font-weight: bold; padding: 10px; display: flex; flex-direction: column; justify-content: space-between; }
         .lcd-header { display: flex; justify-content: space-between; font-size: 11px; border-bottom: 1px solid rgba(0,0,0,0.2); }
-        .lcd-historial { flex-grow: 1; font-size: 11px; margin: 4px 0; overflow-y: auto; max-height: 45px; text-align: left; }
+        
+        /* DISEÑO DE HISTORIAL CON SCROLLBAR NEÓN PERMANENTE */
+        .lcd-historial { flex-grow: 1; font-size: 11px; margin: 4px 0; overflow-y: scroll; max-height: 45px; text-align: left; padding-right: 4px; border-bottom: 1px dashed rgba(0, 0, 0, 0.2); }
+        .lcd-historial::-webkit-scrollbar { width: 5px; display: block !important; }
+        .lcd-historial::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.15); border-radius: 10px; }
+        .lcd-historial::-webkit-scrollbar-thumb { background: #ff007f; border: 1px solid #000; border-radius: 10px; box-shadow: 0 0 4px #ff007f; }
+        
         .lcd-body { text-align: right; font-size: 11px; }
         .lcd-total { font-size: 26px; font-weight: 900; }
 
@@ -194,7 +200,6 @@
             calc();
         }
 
-        // CORRECCIÓN CRÍTICA: Se eliminó la restricción del modo activo para que sume todo al instante
         function calc() {
             let nSub = cuentaAcumulada + (parseFloat(sSub) || 0);
             let nPpl = modoPersonasActivo ? (parseInt(sPpl) || 1) : 1;
