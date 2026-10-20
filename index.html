@@ -7,10 +7,10 @@
     <script src="https://tailwindcss.com"></script>
     <style>
         html, body { margin: 0; width: 100vw; height: 100vh; background: #0c0414; overflow: hidden; position: relative; }
-        .chasis { width: 335px; height: 520px; background: #241434; border: 4px solid #ff007f; box-shadow: 0 0 25px #ff007f80; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        .chasis { width: 335px; height: 535px; background: #241434; border: 4px solid #ff007f; box-shadow: 0 0 25px #ff007f80; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
         .lcd { background: #92b043; border: 3px solid #000; color: #000; box-shadow: inset 0 4px 10px rgba(0,0,0,0.4); font-family: monospace; font-weight: bold; }
         
-        /* BOTONES GLOSSY EN REJILLA DE 3 COLUMNAS */
+        /* BOTONES GLOSSY EN REJILLA DE 3 COLUMNAS SIMÉTRICAS */
         .btn-t { 
             background: linear-gradient(180deg, #44186c 0%, #290d45 40%, #170529 100%);
             border: 1px solid rgba(0, 240, 255, 0.4); border-top: 2px solid rgba(255, 255, 255, 0.2);
@@ -59,8 +59,9 @@
             <button id="ivu0" onclick="setI(0.0)" class="py-2 rounded-xl btn-off">0.0%</button>
         </div>
 
-        <!-- BOTONERA ERGONÓMICA DE 3 COLUMNAS PURAS (ORDENADA) -->
+        <!-- BOTONERA ERGONÓMICA CON ENFOQUE SECUENCIAL -->
         <div class="grid grid-cols-3 gap-2 flex-1 pt-1 font-sans">
+            <!-- Bloque Numérico Convencional -->
             <button onclick="num('7')" class="btn-t rounded-xl">7</button>
             <button onclick="num('8')" class="btn-t rounded-xl">8</button>
             <button onclick="num('9')" class="btn-t rounded-xl">9</button>
@@ -73,11 +74,13 @@
             <button onclick="num('2')" class="btn-t rounded-xl">2</button>
             <button onclick="num('3')" class="btn-t rounded-xl">3</button>
             
+            <!-- Base del Marcado Numérico y Control de Borrado -->
             <button onclick="num('.')" class="btn-t rounded-xl">.</button>
             <button onclick="num('0')" class="btn-t rounded-xl">0</button>
             <button onclick="bksp()" class="btn-t rounded-xl bg-gradient-to-b from-amber-800 to-amber-950 text-amber-400 border-amber-600">←</button>
             
-            <button onclick="clr()" class="btn-t col-span-3 rounded-xl bg-gradient-to-b from-red-800 to-red-950 text-red-400 border-red-600 text-base py-1">BORRAR (C)</button>
+            <!-- Botón de Reseteo Completo en Base -->
+            <button onclick="clr()" class="btn-t col-span-3 rounded-xl bg-gradient-to-b from-red-800 to-red-950 text-red-400 border-red-600 text-base py-1">BORRAR TODO (C)</button>
         </div>
     </div>
 
