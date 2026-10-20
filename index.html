@@ -8,10 +8,10 @@
     <style>
         html, body { margin: 0; width: 100vw; height: 100vh; background: #0c0414; overflow: hidden; position: relative; }
         
-        /* CHASIS COMPACTADO VERTICALMENTE (Se le picó un canto abajo) */
+        /* CHASIS RECORTADO Y AJUSTADO EN LA BASE */
         .chasis { 
             width: 335px; 
-            height: 445px; /* Altura reducida para ajustarse al ras del botón C */
+            height: 455px; /* Ajustado levemente para acomodar la bajada del teclado */
             background: #241434; 
             border: 4px solid #ff007f; 
             box-shadow: 0 0 25px #ff007f80; 
@@ -34,9 +34,9 @@
         /* MATRIZ DE BOTONES TOTALMENTE AJUSTADA DE BORDE A BORDE */
         .grid-teclado {
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr)); /* Divide el espacio exacto en 3 partes iguales */
+            grid-template-columns: repeat(3, minmax(0, 1fr)); 
             gap: 4px;
-            width: 100%; /* Obliga a tocar las paredes laterales del chasis */
+            width: 100%; 
         }
 
         .btn-t { 
@@ -63,7 +63,6 @@
     </style>
 </head>
 <body class="select-none">
-    <!-- Removido el padding inferior del chasis para que el botón C toque el fondo -->
     <div class="chasis rounded-3xl pt-4 px-4 pb-0 flex flex-col justify-between overflow-hidden">
         
         <!-- PANTALLA LCD -->
@@ -91,7 +90,7 @@
         </div>
 
         <!-- FILA ÚNICA DE 5 COLUMNAS PURAS -->
-        <div class="grid grid-cols-5 gap-1 mb-3 shrink-0 w-full font-sans text-[10px] font-bold">
+        <div class="grid grid-cols-5 gap-1 mb-1 shrink-0 w-full font-sans text-[10px] font-bold">
             <button id="ivu115" onclick="setI(11.5)" class="py-2 rounded-lg btn-on">11.5%</button>
             <button id="ivu6" onclick="setI(6.0)" class="py-2 rounded-lg btn-off">6.0%</button>
             <button id="ivu0" onclick="setI(0.0)" class="py-2 rounded-lg btn-off">0.0%</button>
@@ -99,8 +98,8 @@
             <button id="tipOff" onclick="toggleTip(false)" class="py-2 rounded-lg btn-off text-red-400 border-red-400">NO</button>
         </div>
 
-        <!-- TECLADO QUE SE ADAPTA HASTA LOS BORDES FISICOS SIN DEJAR MÁRGENES VACÍOS -->
-        <div class="-mx-4">
+        <!-- TECLADO CON MARGEN SUPERIOR AÑADIDO PARA SEPARACIÓN CORRECTA -->
+        <div class="-mx-4 mt-3">
             <div class="grid-teclado font-sans">
                 <button onclick="num('7')" class="btn-t">7</button>
                 <button onclick="num('8')" class="btn-t">8</button>
