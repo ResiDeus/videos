@@ -11,7 +11,7 @@
         /* CHASIS RETRO TOTALMENTE CENTRALIZADO */
         .chasis { 
             width: 335px; 
-            height: 480px; 
+            height: 520px; 
             background: #241434; 
             border: 4px solid #ff007f; 
             box-shadow: 0 0 25px #ff007f80; 
@@ -31,12 +31,12 @@
             font-weight: bold; 
         }
         
-        /* REJILLA DE BOTONES CON ANCHOS FIJOS PARA EVITAR QUE SE COLOQUEN A LA IZQUIERDA */
+        /* REJILLA DE BOTONES CON ANCHOS FIJOS EN EL CENTRO */
         .grid-teclado {
             display: grid;
-            grid-template-columns: 94px 94px 94px; /* Tamaño exacto por columna */
+            grid-template-columns: 94px 94px 94px; 
             gap: 6px;
-            justify-content: center; /* Centrado absoluto interno */
+            justify-content: center; 
             width: 100%;
         }
 
@@ -51,7 +51,7 @@
         .btn-t:active { background: linear-gradient(180deg, #ff007f 0%, #a30052 100%); border: 1px solid #fff; color: #fff; text-shadow: none; transform: translateY(2px); }
         
         .btn-c-base {
-            grid-column: span 3; /* Hace que el botón C ocupe todo el ancho */
+            grid-column: span 3; 
             width: 100%;
             height: 38px;
         }
@@ -71,10 +71,16 @@
                 <span>TERMINAL FISCAL PR</span><span id="txtIvu">IVU: 11.5%</span>
             </div>
             <div class="text-[12px] space-y-0.5 mt-1">
-                <div>PROPINA AUTOMÁTICA (18%): <span id="outTip">\$0.00</span></div>
+                <div id="rowTip">PROPINA AUTOMÁTICA (18%): <span id="outTip">\$0.00</span></div>
                 <div>IVU LÍQUIDO: <span id="outIvu">\$0.00</span></div>
                 <div class="text-4xl font-black mt-2 pt-2 border-t border-black/20 tracking-tight">C/U: \$<span id="outPer">0.00</span></div>
             </div>
+        </div>
+
+        <!-- CONTROL DE PROPINA SÍ/NO -->
+        <div class="grid grid-cols-2 gap-2 text-xs font-bold mb-2 shrink-0 w-full font-sans">
+            <button id="tipOn" onclick="toggleTip(true)" class="py-1 rounded-lg btn-on">PROPINA SÍ</button>
+            <button id="tipOff" onclick="toggleTip(false)" class="py-1 rounded-lg btn-off">PROPINA NO</button>
         </div>
 
         <!-- MENUS DE DATOS SINCRO -->
@@ -119,19 +125,30 @@
     </div>
 
     <script>
-        let ivu = 11.5, mode = 'sub', sSub = "0", sPpl = "0";
+        let ivu = 11.5, mode = 'sub', sSub = "0", sPpl = "0", incluirPropina = true;
+        
         function focusF(f) {
             mode = f;
             document.getElementById('cajaSub').className = f === 'sub' ? "btn-on on-anim p-2 rounded-xl cursor-pointer text-center" : "btn-off p-2 rounded-xl cursor-pointer text-center";
             document.getElementById('cajaPpl').className = f === 'ppl' ? "btn-on on-anim p-2 rounded-xl cursor-pointer text-center" : "btn-off p-2 rounded-xl cursor-pointer text-center";
         }
+        
+        function toggleTip(bool) {
+            incluirPropina = bool;
+            document.getElementById('tipOn').className = bool ? "py-1 rounded-lg btn-on" : "py-1 rounded-lg btn-off";
+            document.getElementById('tipOff').className = bool ? "py-1 rounded-lg btn-off" : "py-1 rounded-lg btn-on";
+            document.getElementById('rowTip').style.opacity = bool ? "1" : "0.2";
+            calc();
+        }
+
         function setI(p) {
             ivu = p;
             ['ivu115', 'ivu6', 'ivu0'].forEach(id => document.getElementById(id).className = "py-1.5 rounded-xl btn-off");
-            document.getElementById(p === 11.5 ? 'ivu115' : p === 6.0 ? 'ivu6' : p === 0.0 ? 'ivu0' : 'ivu0').className = "py-1.5 rounded-xl btn-on";
+            document.getElementById(p === 11.5 ? 'ivu115' : p === 6.0 ? 'ivu6' : 'ivu0').className = "py-1.5 rounded-xl btn-on";
             document.getElementById('txtIvu').innerText = `IVU: ${p.toFixed(1)}%`;
             calc();
         }
+        
         function num(c) {
             if (mode === 'sub') {
                 if (sSub === "0" && c !== '.') sSub = "";
@@ -144,6 +161,7 @@
             }
             calc();
         }
+
         function bksp() {
             if (mode === 'sub') {
                 sSub = sSub.slice(0, -1); if (sSub === "" || sSub === "-") sSub = "0";
@@ -154,17 +172,22 @@
             }
             calc();
         }
+        
         function clr() {
             if (mode === 'sub') { sSub = "0"; document.getElementById('lblSub').innerText = "0"; }
             else { sPpl = "0"; document.getElementById('lblPpl').innerText = "0"; }
             calc();
         }
+        
         function calc() {
             let nSub = parseFloat(sSub) || 0, nPpl = parseInt(sPpl) || 0;
-            let vTip = nSub * 0.18, vIvu = nSub * (ivu / 100);
+            let vTip = incluirPropina ? (nSub * 0.18) : 0;
+            let vIvu = nSub * (ivu / 100);
+            let divisor = nPpl > 0 ? nPpl : 1;
+            
             document.getElementById('outTip').innerText = `\$${vTip.toFixed(2)}`;
             document.getElementById('outIvu').innerText = `\$${vIvu.toFixed(2)}`;
-            document.getElementById('outPer').innerText = ((nSub + vTip + vIvu) / (nPpl > 0 ? nPpl : 1)).toFixed(2);
+            document.getElementById('outPer').innerText = ((nSub + vTip + vIvu) / divisor).toFixed(2);
         }
     </script>
 </body>
