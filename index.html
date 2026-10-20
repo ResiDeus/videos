@@ -2,160 +2,181 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PR IVU Terminal - Synthwave Calc</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PR IVU Calc - Windows Edition</title>
     <script src="https://tailwindcss.com"></script>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
         body {
             font-family: 'Share Tech Mono', monospace;
-            background: linear-gradient(180deg, #120424 0%, #05010d 100%);
-        }
-        .synth-font { font-family: 'Orbitron', sans-serif; }
-        
-        /* Chasis de la calculadora */
-        .calc-case {
-            background: #190a2a;
-            border: 4px solid #00f0ff;
-            box-shadow: 0 0 25px rgba(0, 240, 255, 0.4), inset 0 0 15px rgba(0, 240, 255, 0.2);
+            background: #008080; /* El clásico fondo verde azulado de Windows 95/98 */
+            overflow: hidden; /* Evita por completo el scroll en celulares */
         }
         
+        /* Ventana estilo Windows */
+        .window-box {
+            background: #c0c0c0;
+            border-top: 2px solid #fff;
+            border-left: 2px solid #fff;
+            border-right: 2px solid #808080;
+            border-bottom: 2px solid #808080;
+            box-shadow: 1px 1px 10px rgba(0,0,0,0.4);
+        }
+
+        .window-title {
+            background: linear-gradient(90deg, #000080, #1084d0);
+        }
+
         /* Pantalla digital de la calculadora */
-        .calc-screen {
-            background: #090214;
-            border: 2px solid #ff007f;
-            box-shadow: inset 0 0 10px rgba(255, 0, 127, 0.5);
+        .digital-display {
+            background: #000000;
+            border-top: 2px solid #808080;
+            border-left: 2px solid #808080;
+            border-right: 2px solid #fff;
+            border-bottom: 2px solid #fff;
         }
 
-        /* Estados de botones (Activo vs Inactivo) */
-        .btn-inactive {
-            background: #25123e;
-            border: 1px solid #ff007f;
-            color: #ff007f;
-            box-shadow: none;
-            transition: all 0.2s ease;
+        /* Botón Inactivo (Relieve hacia afuera) */
+        .btn-win-inactive {
+            background: #c0c0c0;
+            border-top: 2px solid #fff;
+            border-left: 2px solid #fff;
+            border-right: 2px solid #808080;
+            border-bottom: 2px solid #808080;
+            color: #000;
         }
-        .btn-active {
-            background: #ff007f;
-            border: 1px solid #ffffff;
-            color: #000000;
-            box-shadow: 0 0 15px #ff007f;
+
+        /* Botón Activo / Presionado (Hundido) */
+        .btn-win-active {
+            background: #e0e0e0;
+            border-top: 2px solid #808080;
+            border-left: 2px solid #808080;
+            border-right: 2px solid #fff;
+            border-bottom: 2px solid #fff;
+            color: #000080;
             font-weight: bold;
-            transition: all 0.2s ease;
+            padding-top: 3px; /* Simula el hundimiento */
+            padding-left: 3px;
         }
 
-        /* Fondo de rejilla retro */
-        .grid-bg {
-            background-image: linear-gradient(rgba(255, 0, 127, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 0, 127, 0.05) 1px, transparent 1px);
-            background-size: 30px 30px;
+        /* Campos de Input Estilo Windows */
+        .win-input {
+            background: #fff;
+            color: #000;
+            border-top: 2px solid #808080;
+            border-left: 2px solid #808080;
+            border-right: 2px solid #fff;
+            border-bottom: 2px solid #fff;
         }
-        .neon-text-cyan { text-shadow: 0 0 8px #00f0ff; }
-        .neon-text-pink { text-shadow: 0 0 8px #ff007f; }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4 grid-bg text-pink-100">
+<body class="h-screen w-screen flex items-center justify-center p-3 select-none">
 
-    <!-- CHASIS DE CALCULADORA LITERAL -->
-    <div class="w-full max-w-sm calc-case rounded-3xl p-5 flex flex-col space-y-4">
+    <!-- VENTANA DE WINDOWS (CALCULADORA) -->
+    <div class="w-full max-w-sm h-full max-h-[92vh] window-box rounded-sm p-1.5 flex flex-col justify-between">
         
-        <!-- PANTALLA DIGITAL (DISPLAY PRINCIPAL) -->
-        <div class="calc-screen rounded-2xl p-4 flex flex-col justify-between text-right h-36">
-            <div class="flex justify-between items-center border-b border-[#ff007f]/20 pb-1">
-                <span class="synth-font text-[9px] text-cyan-400 uppercase tracking-widest neon-text-cyan">PR Fiscal Terminal</span>
-                <span id="screenMode" class="text-[10px] text-[#ff007f] font-bold">IVU: 11.5%</span>
+        <!-- BARRA DE TÍTULO DE LA VENTANA -->
+        <div class="window-title flex items-center justify-between px-2 py-1 text-white text-xs font-bold tracking-wide">
+            <div class="flex items-center space-x-1.5">
+                <span>🧮</span>
+                <span>PR_IVU_CALC.EXE</span>
             </div>
-            
-            <div class="flex flex-col space-y-0.5 justify-end h-full pt-2">
-                <div class="text-[11px] text-slate-500">IVU+PROP: <span id="outIvuTip" class="font-mono">\$0.00</span></div>
-                <div class="text-[11px] text-slate-500">TOTAL CTA: <span id="outTotal" class="font-mono">\$0.00</span></div>
-                <div class="text-2xl synth-font font-black text-[#00f0ff] neon-text-cyan mt-1">
-                    <span class="text-xs text-cyan-500 mr-1">C/U:</span>\$<span id="outPerPerson">0.00</span>
-                </div>
+            <div class="flex space-x-1">
+                <button class="bg-[#c0c0c0] text-black w-4 h-4 text-[9px] flex items-center justify-center border-t border-left border-white border-right border-bottom border-black font-bold">_</button>
+                <button class="bg-[#c0c0c0] text-black w-4 h-4 text-[10px] flex items-center justify-center border-t border-left border-white border-right border-bottom border-black font-bold">×</button>
             </div>
         </div>
 
-        <!-- TECLADO NUMÉRICO Y CONTROLES -->
-        <div class="flex flex-col space-y-3">
+        <!-- CUERPO INTERNO CON FLEX DINÁMICO PARA NO VOLVERSE ANCHO NI HACER SCROLL -->
+        <div class="flex-1 flex flex-col justify-between p-2 space-y-3 overflow-hidden">
             
-            <!-- Entrada de Monto Principal -->
-            <div>
-                <label class="block text-[11px] uppercase tracking-wider text-cyan-400 font-bold mb-1">Monto Subtotal (\$)</label>
-                <input type="number" id="subtotal" placeholder="0.00" step="0.01" class="w-full bg-[#090214] border border-[#00f0ff]/50 rounded-xl py-2 px-3 text-lg font-mono text-[#00f0ff] focus:outline-none focus:border-[#00f0ff] text-center" oninput="calculate()">
-            </div>
-
-            <!-- Selector de IVU (Botones con Estado Dinámico) -->
-            <div>
-                <label class="block text-[11px] uppercase tracking-wider text-cyan-400 font-bold mb-1">Tasa de Impuesto (IVU)</label>
-                <div class="grid grid-cols-3 gap-2 text-xs">
-                    <button id="ivu115" onclick="setIVU(11.5)" class="py-2 rounded-xl btn-active synth-font">11.5%</button>
-                    <button id="ivu6" onclick="setIVU(6.0)" class="py-2 rounded-xl btn-inactive synth-font">6.0%</button>
-                    <button id="ivu0" onclick="setIVU(0.0)" class="py-2 rounded-xl btn-inactive synth-font">0.0%</button>
+            <!-- PANTALLA DIGITAL DE RESULTADOS -->
+            <div class="digital-display rounded-sm p-3 flex flex-col justify-between text-right h-28 shrink-0">
+                <div class="flex justify-between items-center text-[10px] text-lime-400 border-b border-lime-900 pb-0.5">
+                    <span>SISTEMA RETRIBUTIVO PR</span>
+                    <span id="screenMode">IVU: 11.5%</span>
+                </div>
+                <div class="flex flex-col text-right justify-end h-full pt-1">
+                    <div class="text-[11px] text-lime-600/80">IMPUESTOS+PROP: <span id="outIvuTip">\$0.00</span></div>
+                    <div class="text-[11px] text-lime-600/80">TOTAL CUENTA: <span id="outTotal">\$0.00</span></div>
+                    <div class="text-xl font-bold text-lime-400 tracking-wide mt-0.5">
+                        <span class="text-xs text-lime-600 mr-1">C/U:</span>\$<span id="outPerPerson">0.00</span>
+                    </div>
                 </div>
             </div>
 
-            <!-- Parámetros variables (Propina y Personas) -->
-            <div class="grid grid-cols-2 gap-3">
+            <!-- INPUT PRINCIPAL: SUBTOTAL -->
+            <div class="shrink-0">
+                <label class="block text-xs font-bold text-black mb-1">Monto Subtotal (\$):</label>
+                <input type="number" id="subtotal" placeholder="0.00" step="0.01" class="w-full win-input py-2 px-3 text-lg font-bold text-center focus:outline-none" oninput="calculate()">
+            </div>
+
+            <!-- SELECTOR DE IVU (BOTONES FÍSICOS CON RELIEVE) -->
+            <div class="shrink-0">
+                <label class="block text-xs font-bold text-black mb-1">Tasa de Impuesto (IVU):</label>
+                <div class="grid grid-cols-3 gap-2 text-xs font-bold h-10">
+                    <button id="ivu115" onclick="setIVU(11.5)" class="btn-win-active rounded-sm">11.5%</button>
+                    <button id="ivu6" onclick="setIVU(6.0)" class="btn-win-inactive rounded-sm">6.0%</button>
+                    <button id="ivu0" onclick="setIVU(0.0)" class="btn-win-inactive rounded-sm">0.0%</button>
+                </div>
+            </div>
+
+            <!-- CONTROLES VARIABLES: PROPINA Y PERSONAS -->
+            <div class="grid grid-cols-2 gap-3 shrink-0">
                 <div>
-                    <label class="block text-[11px] uppercase tracking-wider text-cyan-400 font-bold mb-1">Propina (%)</label>
-                    <input type="number" id="tip" value="0" min="0" class="w-full bg-[#090214] border border-[#ff007f]/50 rounded-xl py-2 px-3 text-center text-[#ff007f] focus:outline-none focus:border-[#ff007f]" oninput="calculate()">
+                    <label class="block text-xs font-bold text-black mb-1">Propina (%):</label>
+                    <input type="number" id="tip" value="0" min="0" class="w-full win-input py-1.5 px-2 text-center font-bold focus:outline-none" oninput="calculate()">
                 </div>
                 <div>
-                    <label class="block text-[11px] uppercase tracking-wider text-cyan-400 font-bold mb-1">Personas (N)</label>
-                    <input type="number" id="people" value="0" min="0" class="w-full bg-[#090214] border border-[#ff007f]/50 rounded-xl py-2 px-3 text-center text-[#ff007f] focus:outline-none focus:border-[#ff007f]" oninput="calculate()">
+                    <label class="block text-xs font-bold text-black mb-1">Personas (N):</label>
+                    <input type="number" id="people" value="0" min="0" class="w-full win-input py-1.5 px-2 text-center font-bold focus:outline-none" oninput="calculate()">
                 </div>
             </div>
 
-            <!-- BOTÓN ACCIÓN DE EXPORTAR -->
-            <button onclick="copyBill()" class="w-full bg-gradient-to-r from-[#ff007f] to-[#b800c4] text-white py-3 rounded-xl font-bold uppercase tracking-wider text-xs transition-all hover:brightness-125 synth-font shadow-[0_0_12px_rgba(255,0,127,0.4)]">
-                Enviar por WhatsApp
-            </button>
+            <!-- BOTÓN DE EXPORTACIÓN (ESTILO WINDOWS DE COMANDO) -->
+            <div class="pt-2 shrink-0">
+                <button onclick="copyBill()" class="w-full btn-win-inactive font-bold py-2.5 text-xs uppercase tracking-wide rounded-sm active:bg-[#e0e0e0] border-black">
+                    [ Compartir por WhatsApp ]
+                </button>
+            </div>
         </div>
     </div>
 
-    <!-- CONTROLADORES LÓGICOS DE LA CALCULADORA -->
+    <!-- LOGICA MATEMÁTICA Y DE INTERRUPTORES -->
     <script>
         let ivuRate = 11.5;
 
         function setIVU(perc) {
             ivuRate = perc;
             
-            // Apagar todos los botones primero
+            // Apagar estados visuales de los botones
             ['ivu115', 'ivu6', 'ivu0'].forEach(id => {
                 const btn = document.getElementById(id);
-                btn.classList.remove('btn-active');
-                btn.classList.add('btn-inactive');
+                btn.className = "btn-win-inactive rounded-sm";
             });
 
-            // Encender el botón presionado
+            // Encender el botón presionado (Hundirlo)
             let activeId = 'ivu115';
             if (perc === 6.0) activeId = 'ivu6';
             if (perc === 0.0) activeId = 'ivu0';
             
-            const activeBtn = document.getElementById(activeId);
-            activeBtn.classList.remove('btn-inactive');
-            activeBtn.classList.add('btn-active');
-
-            // Actualizar etiqueta interna en la pantalla digital
+            document.getElementById(activeId).className = "btn-win-active rounded-sm";
             document.getElementById('screenMode').innerText = `IVU: ${perc.toFixed(1)}%`;
             calculate();
         }
 
         function calculate() {
-            // Obtener inputs crudos de la calculadora
             let sub = parseFloat(document.getElementById('subtotal').value) || 0;
             let tipPerc = parseFloat(document.getElementById('tip').value) || 0;
             let ppl = parseInt(document.getElementById('people').value) || 0;
 
-            // Fórmulas matemáticas
             let ivuValue = sub * (ivuRate / 100);
             let tipValue = sub * (tipPerc / 100);
             let totalValue = sub + ivuValue + tipValue;
             
-            // Si las personas están en 0 o vacías, la división se evalúa contra 1 para evitar errores de Infinity
             let divisor = ppl > 0 ? ppl : 1; 
             let perPersonValue = totalValue / divisor;
 
-            // Inyectar texto formateado en la pantalla digital de la calculadora
             document.getElementById('outIvuTip').innerText = `$${(ivuValue + tipValue).toFixed(2)}`;
             document.getElementById('outTotal').innerText = `$${totalValue.toFixed(2)}`;
             document.getElementById('outPerPerson').innerText = perPersonValue.toFixed(2);
@@ -166,13 +187,13 @@
             let total = document.getElementById('outTotal').innerText;
             let ppl = document.getElementById('people').value || 0;
             
-            let text = `📟 *PR TERMINAL CALC* 📟\n`;
+            let text = `💾 *PR WINDOWS CALC* 💾\n`;
             text += `Cada persona aporta: *$${perPerson}*\n`;
-            text += `Total de Cuenta: ${total} (Entre ${ppl} personas)\n`;
-            text += `¡Enviado desde mi terminal Synthwave por ATH Móvil! 🇵🇷`;
+            text += `Total de la Cuenta: $${total} (Entre ${ppl} personas)\n`;
+            text += `¡Calculado desde la terminal clásica de Puerto Rico! 🇵🇷`;
 
             navigator.clipboard.writeText(text).then(() => {
-                alert('¡Copiado a la memoria! Listo para pegar en tu chat.');
+                alert('Monto copiado al portapapeles con éxito.');
             });
         }
     </script>
