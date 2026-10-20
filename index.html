@@ -173,27 +173,44 @@
         let modoPersonasActivo = false; // Controla si la división de personas está encendida o apagada
 
         function focusF(f) {
-            // Si el modo personas está apagado, no puedes darle foco táctil
-            if (f === 'ppl' && !modoPersonasActivo) return;
+            if (f === 'sub') {
+                // Si presionas Cuenta, apagas el modo personas por completo
+                if (modoPersonasActivo) {
+                    modoPersonasActivo = false;
+                    sPpl = "0";
+                    document.getElementById('lblPpl').innerText = "OFF";
+                    document.getElementById('lblTotalType').innerText = "TOTAL";
+                    calc();
+                }
+                mode = 'sub';
+            }
+            actualizarEstilosPaneles();
+        }
+
+        function togglePersonasMode() {
+            // Invierte el estado: si estaba OFF se enciende, si estaba ON se apaga
+            modoPersonasActivo = !modoPersonasActivo;
             
-            // NUEVO: Si se presiona el botón de cuenta ('sub'), apagamos por completo el modo personas
-            if (f === 'sub' && modoPersonasActivo) {
-                modoPersonasActivo = false;
+            if (modoPersonasActivo) {
+                sPpl = "2"; // Arranca sugerido en 2 personas al encenderse
+                mode = 'ppl'; // Cambia el foco automáticamente al contador de personas
+                document.getElementById('lblPpl').innerText = sPpl;
+                document.getElementById('lblTotalType').innerText = "C/U";
+            } else {
                 sPpl = "0";
+                mode = 'sub'; // Devuelve el foco a la cuenta base obligatoriamente
                 document.getElementById('lblPpl').innerText = "OFF";
                 document.getElementById('lblTotalType').innerText = "TOTAL";
-                calc(); // Recalcula el total para reflejar que ya no divide por personas
             }
-            
-            mode = f;
             actualizarEstilosPaneles();
+            calc();
         }
 
         function actualizarEstilosPaneles() {
             const cajaSub = document.getElementById('cajaSub');
             const cajaPpl = document.getElementById('cajaPpl');
 
-            // Setear Cuenta Base
+            // Setear Cuenta Base: si el foco está en 'sub', se ilumina
             cajaSub.className = mode === 'sub' ? "caja-data btn-on on-anim" : "caja-data btn-off";
             
             // Setear Personas dinámicamente según su estado de encendido y foco
@@ -203,6 +220,7 @@
                 cajaPpl.className = mode === 'ppl' ? "caja-data btn-on on-anim" : "caja-data bg-[#ff007f]/20 border border-[#ff007f] text-[#ff007f]";
             }
         }
+
 
         function toggleTip() {
             incluirPropina = !incluirPropina;
