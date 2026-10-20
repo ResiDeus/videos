@@ -83,24 +83,24 @@
                 <span class="txt-b text-[10px]">1. Cuenta Base</span>
                 <span class="font-mono text-base block font-black">\$<span id="lblSub">0</span></span>
             </div>
-            <div id="cajaPpl" class="btn-off p-2 rounded-xl cursor-pointer text-center" onclick="focusF('ppl')">
+            <div id="cajaPpl" class="btn-off p-2 rounded-xl cursor-pointer text-center" onclick="focusF('personas')">
                 <span class="txt-b text-[10px]">2. Personas</span>
                 <span class="font-mono text-base block font-black"><span id="lblPpl">0</span></span>
             </div>
         </div>
 
-        <!-- FILA DE CONFIGURACIÓN UNIFICADA: IVU Y PROPINAS LADO A LADO -->
-        <div class="grid grid-cols-2 gap-2 mb-2 shrink-0 w-full font-sans text-[10px] font-bold">
-            <!-- Bloque IVU (Izquierda) -->
-            <div class="grid grid-cols-3 gap-1">
-                <button id="ivu115" onclick="setI(11.5)" class="py-1.5 rounded-lg btn-on">11.5</button>
-                <button id="ivu6" onclick="setI(6.0)" class="py-1.5 rounded-lg btn-off">6.0</button>
-                <button id="ivu0" onclick="setI(0.0)" class="py-1.5 rounded-lg btn-off">0.0</button>
+        <!-- CONFIGURACIÓN PARALELA EN UNA SOLA FILA -->
+        <div class="flex flex-row space-x-2 mb-2 shrink-0 w-full font-sans text-[10px] font-bold">
+            <!-- Bloque de Botones de IVU (Lado Izquierdo) -->
+            <div class="flex-1 grid grid-cols-3 gap-1">
+                <button id="ivu115" onclick="setI(11.5)" class="py-1.5 rounded-lg btn-on text-[9px] leading-tight">11.5%<span class="block text-[7px] font-normal opacity-80">General</span></button>
+                <button id="ivu6" onclick="setI(6.0)" class="py-1.5 rounded-lg btn-off text-[9px] leading-tight">6.0%<span class="block text-[7px] font-normal opacity-80">Comida</span></button>
+                <button id="ivu0" onclick="setI(0.0)" class="py-1.5 rounded-lg btn-off text-[9px] leading-tight">0.0%<span class="block text-[7px] font-normal opacity-80">Exento</span></button>
             </div>
-            <!-- Bloque Propina (Derecha) -->
-            <div class="grid grid-cols-2 gap-1">
-                <button id="tipOn" onclick="toggleTip(true)" class="py-1.5 rounded-lg btn-on">TIP SÍ</button>
-                <button id="tipOff" onclick="toggleTip(false)" class="py-1.5 rounded-lg btn-off">TIP NO</button>
+            <!-- Bloque de Botones de Propina (Lado Derecho) -->
+            <div class="w-28 grid grid-cols-2 gap-1">
+                <button id="tipOn" onclick="toggleTip(true)" class="py-1.5 rounded-lg btn-on text-[9px] flex flex-col justify-center items-center">TIP SÍ</button>
+                <button id="tipOff" onclick="toggleTip(false)" class="py-1.5 rounded-lg btn-off text-[9px] flex flex-col justify-center items-center">TIP NO</button>
             </div>
         </div>
 
@@ -132,22 +132,24 @@
         function focusF(f) {
             mode = f;
             document.getElementById('cajaSub').className = f === 'sub' ? "btn-on on-anim p-2 rounded-xl cursor-pointer text-center" : "btn-off p-2 rounded-xl cursor-pointer text-center";
-            document.getElementById('cajaPpl').className = f === 'ppl' ? "btn-on on-anim p-2 rounded-xl cursor-pointer text-center" : "btn-off p-2 rounded-xl cursor-pointer text-center";
+            document.getElementById('cajaPpl').className = f === 'personas' ? "btn-on on-anim p-2 rounded-xl cursor-pointer text-center" : "btn-off p-2 rounded-xl cursor-pointer text-center";
         }
         
         function toggleTip(bool) {
             incluirPropina = bool;
-            document.getElementById('tipOn').className = bool ? "py-1.5 rounded-lg btn-on" : "py-1.5 rounded-lg btn-off";
-            document.getElementById('tipOff').className = bool ? "py-1.5 rounded-lg btn-off" : "py-1.5 rounded-lg btn-on";
+            document.getElementById('tipOn').className = bool ? "py-1.5 rounded-lg btn-on text-[9px]" : "py-1.5 rounded-lg btn-off text-[9px]";
+            document.getElementById('tipOff').className = bool ? "py-1.5 rounded-lg btn-off text-[9px]" : "py-1.5 rounded-lg btn-on text-[9px]";
             document.getElementById('rowTip').style.opacity = bool ? "1" : "0.2";
             calc();
         }
 
         function setI(p) {
             ivu = p;
-            ['ivu115', 'ivu6', 'ivu0'].forEach(id => document.getElementById(id).className = "py-1.5 rounded-lg btn-off");
+            ['ivu115', 'ivu6', 'ivu0'].forEach(id => {
+                document.getElementById(id).className = "py-1.5 rounded-lg btn-off text-[9px] leading-tight";
+            });
             let idActivo = p === 11.5 ? 'ivu115' : p === 6.0 ? 'ivu6' : 'ivu0';
-            document.getElementById(idActivo).className = "py-1.5 rounded-lg btn-on";
+            document.getElementById(idActivo).className = "py-1.5 rounded-lg btn-on text-[9px] leading-tight";
             document.getElementById('txtIvu').innerText = `IVU: ${p.toFixed(1)}%`;
             calc();
         }
@@ -188,8 +190,31 @@
             let vIvu = nSub * (ivu / 100);
             let divisor = nPpl > 0 ? nPpl : 1;
             
-            document.getElementById('outTip').innerText = `\$${vTip.toFixed(2)}`;
-            document.getElementById('outIvu').innerText = `\$${vIvu.toFixed(2)}`;
+        function bksp() {
+            if (mode === 'sub') {
+                sSub = sSub.slice(0, -1); if (sSub === "" || sSub === "-") sSub = "0";
+                document.getElementById('lblSub').innerText = sSub;
+            } else {
+                sPpl = sPpl.slice(0, -1); if (sPpl === "") sPpl = "0";
+                document.getElementById('lblPpl').innerText = sPpl;
+            }
+            calc();
+        }
+        
+        function clr() {
+            if (mode === 'sub') { sSub = "0"; document.getElementById('lblSub').innerText = "0"; }
+            else { sPpl = "0"; document.getElementById('lblPpl').innerText = "0"; }
+            calc();
+        }
+        
+        function calc() {
+            let nSub = parseFloat(sSub) || 0, nPpl = parseInt(sPpl) || 0;
+            let vTip = incluirPropina ? (nSub * 0.18) : 0;
+            let vIvu = nSub * (ivu / 100);
+            let divisor = nPpl > 0 ? nPpl : 1;
+            
+            document.getElementById('outTip').innerText = `$${vTip.toFixed(2)}`;
+            document.getElementById('outIvu').innerText = `$${vIvu.toFixed(2)}`;
             document.getElementById('outPer').innerText = ((nSub + vTip + vIvu) / divisor).toFixed(2);
         }
     </script>
