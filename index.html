@@ -47,9 +47,13 @@
         .btn-key { height: 36px; background: linear-gradient(180deg, #44186c 0%, #170529 100%); border: 1px solid #00f0ff44; border-radius: 6px; color: #00f0ff; font-size: 1.2rem; font-weight: bold; cursor: pointer; }
         .btn-back { background: linear-gradient(180deg, #5c2c06 0%, #241001 100%); color: #fbbf24; }
 
+        /* ACCIONES INFERIORES CON ESTILOS DE DESHABILITADO */
         .row-acciones { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding-bottom: 2px; }
         .btn-clear { height: 38px; background: linear-gradient(180deg, #701a1a 0%, #300707 100%); border: 1px solid #ef4444; border-radius: 8px; color: #f87171; font-size: 1.1rem; font-weight: bold; cursor: pointer; }
         .btn-add { height: 38px; background: linear-gradient(180deg, #0f5c3a 0%, #052416 100%); border: 1px solid #22c55e; border-radius: 8px; color: #4ade80; font-size: 1.1rem; font-weight: bold; cursor: pointer; }
+        
+        /* ESTILO RETRO DESHABILITADO */
+        .btn-clear:disabled, .btn-add:disabled { opacity: 0.25 !important; cursor: not-allowed !important; filter: grayscale(80%); border-color: rgba(255,255,255,0.1) !important; background: #11081c !important; color: #666 !important; }
 
         @keyframes glow { 0%, 100% { box-shadow: 0 0 10px #ff007f; } 50% { box-shadow: 0 0 18px #ff007f; } }
         .on-anim { animation: glow 1.5s infinite ease-in-out; }
@@ -61,7 +65,6 @@
 
     <div class="chasis">
         <div class="lcd">
-            <!-- NUEVO: Contenedor superior preparado para mostrar IVU y TIP dinámicamente -->
             <div class="lcd-header">
                 <span id="lblArt">CALCULADORA</span>
                 <span id="txtHeaderIndicadores">IVU: 11.5%</span>
@@ -79,6 +82,7 @@
             </div>
         </div>
         <div class="row-menus">
+            <!-- Asignamos IDs a los botones inferiores para poder manipularlos con JS -->
             <div id="cajaSub" class="caja-data btn-on on-anim" onclick="seleccionarMenu('sub')">
                 <span class="lbl-title">Cuenta</span>
                 <span class="lbl-val">\$<span id="lblSub">0</span></span>
@@ -104,8 +108,8 @@
         </div>
 
         <div class="row-acciones">
-            <button onclick="clr()" class="btn-clear">C Reset</button>
-            <button onclick="addProducto()" class="btn-add">+ Añadir</button>
+            <button id="btnResetGlobal" onclick="clr()" class="btn-clear">C Reset</button>
+            <button id="btnAnadirGlobal" onclick="addProducto()" class="btn-add">+ Añadir</button>
         </div>
     </div>
 
@@ -135,28 +139,37 @@
             } catch (e) {}
         }
 
-        // FUNCIÓN AUXILIAR: Mantiene actualizada la barra superior con el IVU y la Propina
         function actualizarHeaderIndicadores() {
             let texto = `IVU: ${ivu.toFixed(1)}%`;
-            if (incluirPropina) {
-                texto += ` | TIP: 18%`;
-            }
+            if (incluirPropina) { texto += ` | TIP: 18%`; }
             document.getElementById('txtHeaderIndicadores').innerText = texto;
         }
 
+        // CORRECCIÓN INTERACTIVA: Bloquea y atenúa los botones inferiores al cambiar de menú
         function seleccionarMenu(f) {
             reproducirSonido('menu');
+            const btnReset = document.getElementById('btnResetGlobal');
+            const btnAnadir = document.getElementById('btnAnadirGlobal');
+
             if (f === 'sub') {
                 modoPersonasActivo = false;
                 document.getElementById('lblPpl').innerText = "OFF";
                 document.getElementById('lblTotalType').innerText = "TOTAL";
                 mode = 'sub';
+                
+                // Habilitar de nuevo en modo Cuenta
+                btnReset.disabled = false;
+                btnAnadir.disabled = false;
             } else {
                 modoPersonasActivo = true;
                 if (sPpl === "0" || sPpl === "") sPpl = "2";
                 document.getElementById('lblPpl').innerText = sPpl;
                 document.getElementById('lblTotalType').innerText = "C/U";
                 mode = 'ppl';
+                
+                // Deshabilitar estrictamente en modo Personas
+                btnReset.disabled = true;
+                btnAnadir.disabled = true;
             }
             document.getElementById('cajaSub').className = mode === 'sub' ? "caja-data btn-on on-anim" : "caja-data btn-off";
             document.getElementById('cajaPpl').className = mode === 'ppl' ? "caja-data btn-on on-anim" : "caja-data btn-off";
@@ -167,7 +180,7 @@
             reproducirSonido('menu'); incluirPropina = !incluirPropina;
             document.getElementById('btnPropina').className = incluirPropina ? "btn-cfg btn-on" : "btn-cfg btn-off";
             document.getElementById('rowTip').style.opacity = incluirPropina ? "1" : "0.2";
-            actualizarHeaderIndicadores(); // Actualiza la barra superior inmediatamente
+            actualizarHeaderIndicadores();
             calc();
         }
 
@@ -175,7 +188,7 @@
             reproducirSonido('menu'); ivu = p;
             ['ivu115', 'ivu6', 'ivu0'].forEach(id => document.getElementById(id).className = "btn-cfg btn-off");
             document.getElementById(p === 11.5 ? 'ivu115' : p === 6.0 ? 'ivu6' : 'ivu0').className = "btn-cfg btn-on";
-            actualizarHeaderIndicadores(); // Actualiza el porcentaje del IVU conservando el estado del TIP
+            actualizarHeaderIndicadores();
             calc();
         }
 
