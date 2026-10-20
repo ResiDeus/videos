@@ -170,12 +170,16 @@
     <!-- MOTOR LÓGICO DE ARQUITECTURA INTELIGENTE -->
     <script>
         let ivu = 11.5, mode = 'sub', sSub = "0", sPpl = "0", incluirPropina = false;
-        let modoPersonasActivo = false; // Controla si la división de personas está encendida o apagada
+        let modoPersonasActivo = false; 
+        
+        // NUEVAS VARIABLES PARA EL MODO COMPRAS
+        let cuentaAcumulada = 0; // Guarda la suma total de los productos
+        let cantidadProductos = 0; // Cuenta cuántos productos has agregado
+        let ultimoClicC = 0; // Para detectar el doble clic en el botón 'C'
 
         // --- SISTEMA DE AUDIO SYNTHWAVE ---
         function reproducirSonido(tipo) {
             try {
-                // Crear el contexto de audio del navegador
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
                 if (!AudioContext) return;
                 const ctx = new AudioContext();
@@ -187,7 +191,6 @@
                 gain.connect(ctx.destination);
                 
                 if (tipo === 'menu') {
-                    // Sonido para botones de menú: un tono agudo y rápido (estilo interfaz retro)
                     osc.type = 'sine';
                     osc.frequency.setValueAtTime(800, ctx.currentTime); 
                     osc.frequency.exponentialRampToValueAtTime(400, ctx.currentTime + 0.1);
@@ -196,21 +199,29 @@
                     osc.start();
                     osc.stop(ctx.currentTime + 0.12);
                 } else if (tipo === 'tecla') {
-                    // Sonido para números: un "click" o tono corto más grave
                     osc.type = 'triangle';
                     osc.frequency.setValueAtTime(350, ctx.currentTime);
                     gain.gain.setValueAtTime(0.15, ctx.currentTime);
                     gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.05);
                     osc.start();
                     osc.stop(ctx.currentTime + 0.05);
+                } else if (tipo === 'acumular') {
+                    // Sonido especial cuando agregas un producto con éxito (Tono ascendente)
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(400, ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(900, ctx.currentTime + 0.15);
+                    gain.gain.setValueAtTime(0.12, ctx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.15);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.15);
                 }
             } catch (e) {
-                console.log("Audio no soportado o bloqueado por el navegador:", e);
+                console.log("Audio bloqueado:", e);
             }
         }
 
         function focusF(f) {
-            reproducirSonido('menu'); // Sonido de menú
+            reproducirSonido('menu'); 
             if (f === 'sub') {
                 if (modoPersonasActivo) {
                     modoPersonasActivo = false;
@@ -224,13 +235,15 @@
         }
 
         function togglePersonasMode() {
-            reproducirSonido('menu'); // Sonido de menú
+            reproducirSonido('menu'); 
             modoPersonasActivo = !modoPersonasActivo;
             
             if (modoPersonasActivo) {
-                if (sPpl === "0" || sPpl === "") {
-                    sPpl = "2"; 
+                // Antes de pasar a personas, si hay un número a medio escribir en Cuenta, lo acumulamos automáticamente
+                if (mode === 'sub' && parseFloat(sSub) > 0) {
+                    acumularPrecioActual();
                 }
+                if (sPpl === "0" || sPpl === "") { sPpl = "2"; }
                 mode = 'ppl'; 
                 document.getElementById('lblPpl').innerText = sPpl;
                 document.getElementById('lblTotalType').innerText = "C/U";
@@ -257,7 +270,7 @@
         }
 
         function toggleTip() {
-            reproducirSonido('menu'); // Sonido de menú
+            reproducirSonido('menu'); 
             incluirPropina = !incluirPropina;
             const btn = document.getElementById('btnPropina');
             btn.className = incluirPropina ? "btn-cfg btn-on" : "btn-cfg btn-off";
@@ -266,7 +279,7 @@
         }
 
         function setI(p) {
-            reproducirSonido('menu'); // Sonido de menú
+            reproducirSonido('menu'); 
             ivu = p;
             ['ivu115', 'ivu6', 'ivu0'].forEach(id => { document.getElementById(id).className = "btn-cfg btn-off"; });
             let idActivo = p === 11.5 ? 'ivu115' : p === 6.0 ? 'ivu6' : 'ivu0';
@@ -276,11 +289,14 @@
         }
 
         function num(c) {
-            reproducirSonido('tecla'); // Sonido de tecla numérica
+            reproducirSonido('tecla'); 
             if (mode === 'sub') {
                 if (sSub === "0" && c !== '.') sSub = "";
                 if (c === '.' && sSub.includes('.')) return;
-                sSub += c; document.getElementById('lblSub').innerText = sSub;
+                sSub += c; 
+                // Mostramos de forma interactiva lo que escribe + lo que ya lleva acumulado
+                let subActual = parseFloat(sSub) || 0;
+                document.getElementById('lblSub').innerText = (cuentaAcumulada + subActual).toFixed(2);
             } else {
                 if (c === '.') return;
                 if (sPpl === "0" || sPpl === "2" && document.getElementById('lblPpl').innerText === "2") sPpl = ""; 
@@ -290,10 +306,11 @@
         }
 
         function bksp() {
-            reproducirSonido('tecla'); // Sonido de tecla numérica
+            reproducirSonido('tecla'); 
             if (mode === 'sub') {
                 sSub = sSub.slice(0, -1); if (sSub === "" || sSub === "-") sSub = "0";
-                document.getElementById('lblSub').innerText = sSub;
+                let subActual = parseFloat(sSub) || 0;
+                document.getElementById('lblSub').innerText = (cuentaAcumulada + subActual).toFixed(2);
             } else {
                 sPpl = sPpl.slice(0, -1); if (sPpl === "") sPpl = "0";
                 document.getElementById('lblPpl').innerText = sPpl;
@@ -301,15 +318,56 @@
             calc();
         }
 
+        // FUNCIÓN CLAVE: Agrega el precio actual al carrito global
+        function acumularPrecioActual() {
+            let valorActual = parseFloat(sSub) || 0;
+            if (valorActual > 0) {
+                cuentaAcumulada += valorActual;
+                cantidadProductos++;
+                sSub = "0"; // Reiniciamos la entrada actual para el siguiente artículo
+                reproducirSonido('acumular');
+            }
+        }
+
         function clr() {
-            reproducirSonido('tecla'); // Sonido de tecla numérica
-            if (mode === 'sub') { sSub = "0"; document.getElementById('lblSub').innerText = "0"; }
-            else { sPpl = "1"; document.getElementById('lblPpl').innerText = "1"; }
+            let tiempoActual = new Date().getTime();
+            let diferenciaTiempo = tiempoActual - ultimoClicC;
+            ultimoClicC = tiempoActual;
+
+            if (mode === 'sub') {
+                // DETECCIÓN DE DOBLE CLIC (Menos de 300 milisegundos)
+                if (diferenciaTiempo < 300) {
+                    // BORRAR TODO POR COMPLETO
+                    reproducirSonido('tecla');
+                    cuentaAcumulada = 0;
+                    cantidadProductos = 0;
+                    sSub = "0";
+                    document.getElementById('lblSub').innerText = "0";
+                } else {
+                    // UN SOLO CLIC: Añade el número de la pantalla al total de la compra
+                    setTimeout(() => {
+                        // Comprobamos que no se haya convertido en doble clic en este pequeño lapso
+                        if (ultimoClicC === tiempoActual) {
+                            acumularPrecioActual();
+                            document.getElementById('lblSub').innerText = cuentaAcumulada > 0 ? cuentaAcumulada.toFixed(2) : "0";
+                            calc();
+                        }
+                    }, 200);
+                }
+            } else {
+                // Si estás en el panel de personas, 'C' solo resetea a 1 como antes
+                reproducirSonido('tecla');
+                sPpl = "1"; 
+                document.getElementById('lblPpl').innerText = "1";
+            }
             calc();
         }
 
         function calc() {
-            let nSub = parseFloat(sSub) || 0;
+            let subActual = mode === 'sub' ? (parseFloat(sSub) || 0) : 0;
+            // El total neto de la cuenta es lo acumulado más lo que el usuario esté escribiendo en el momento
+            let nSub = cuentaAcumulada + subActual;
+            
             let nPpl = modoPersonasActivo ? (parseInt(sPpl) || 1) : 1; 
             
             let vTip = incluirPropina ? (nSub * 0.18) : 0;
@@ -319,7 +377,15 @@
             document.getElementById('outTip').innerText = `$${vTip.toFixed(2)}`;
             document.getElementById('outIvu').innerText = `$${vIvu.toFixed(2)}`;
             document.getElementById('outPer').innerText = ((nSub + vTip + vIvu) / divisor).toFixed(2);
+            
+            // Actualizar encabezado superior con la cantidad de artículos si hay compras registradas
+            if (cantidadProductos > 0) {
+                document.getElementById('lblSub').previousElementSibling.innerText = `Cuenta (${cantidadProductos} art.)`;
+            } else {
+                document.getElementById('lblSub').previousElementSibling.innerText = "Cuenta";
+            }
         }
+
 
     </script>
 </body>
