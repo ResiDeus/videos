@@ -42,7 +42,7 @@
     .track-list { flex-grow: 1; overflow-y: auto; font-size: 12px; max-height: 160px; }
     .track { padding: 6px; cursor: pointer; border-bottom: 1px dotted var(--dark); }
     .track:hover, .track.active { background: var(--blue); color: var(--white); }
-    #visualizer { width: 100%; height: 75px; background: var(--black); border: 2px solid; border-color: var(--dark) var(--white) var(--white) var(--dark); margin-bottom: 8px; display: block; }
+    #visualizer { width: 100%; height: 150px; background: var(--black); border: 2px solid; border-color: var(--dark) var(--white) var(--white) var(--dark); margin-bottom: 8px; display: block; }
     
     /* Barra de Tareas e Inicio */
     .taskbar { position: absolute; bottom: 0; left: 0; right: 0; height: 40px; background: var(--gray); border-top: 2px solid var(--white); display: flex; justify-content: space-between; align-items: center; padding: 2px 8px; z-index: 9999; }
@@ -94,7 +94,7 @@
   </div>
 
   <!-- VENTANA 2: REPRODUCTOR REGGAETON -->
-  <div id="win-music" class="window" style="top: 80px; left: 120px; width: 460px; height: 440px;">
+  <div id="win-music" class="window" style="top: 80px; left: 120px; width: 460px; height: 490px;">
     <div class="title-bar" onmousedown="dragStart(event, 'win-music')">
       <div class="title-text"><span style="font-size: 16px;">📻</span> Reggaeton Retro Player</div>
       <div class="title-controls">
@@ -104,7 +104,7 @@
     </div>
     <div class="win-body">
       <div class="sunken" style="text-align: center; margin-bottom: 6px; font-weight: bold; background: #000; color: #0f0; font-family: monospace; font-size: 14px;" id="now-playing">DISCO DETENIDO</div>
-      <canvas id="visualizer"></canvas>
+      <canvas id="visualizer" width="400" height="150"></canvas>
       <audio id="audio-player" controls style="width: 100%; margin-bottom: 6px;"></audio>
       <div class="sunken track-list" id="playlist"></div>
       <button class="win-btn" onclick="addTrackPrompt()">+ Agregar MP3 (URL)</button>
@@ -124,15 +124,6 @@
         <span style="font-size:18px;">📻</span>
         <span>Winamp Reggaeton</span>
       </div>
-      
-      <!-- ==========================================
-           PUNTO 2: ACCESOS EN EL MENÚ INICIO (HTML)
-           Cuando agregues una app, pon su acceso directo aquí siguiendo este formato:
-           <div class="menu-item" onclick="openWin('ID_DE_TU_VENTANA'); closeStartMenu();">
-             <span style="font-size:18px;">[EMOJI_ICONO]</span>
-             <span>Nombre de tu App</span>
-           </div>
-           ========================================== -->
     </div>
   </div>
 
@@ -157,9 +148,11 @@
     };
 
     function openWin(id) { 
-            const w = document.getElementById(id); 
+      const w = document.getElementById(id); 
+      if (!w) return;
+      zIndexCounter++;
       w.style.display = 'block'; 
-      w.style.zIndex = ++zIndexCounter; 
+      w.style.zIndex = zIndexCounter; 
       windowRegistry[id].active = true;
       if(id === 'win-music') initAudio(); 
       updateTaskbarButtons();
@@ -268,37 +261,71 @@
     }
     renderPlaylist();
 
-    // --- VISUALIZADOR DE AUDIO ---
+    // --- VISUALIZADOR DE FIGURA DINÁMICA ESTILO WINDOWS XP (Y2K) ---
     let audioCtx, analyser, source, canvas, canvasCtx, audioInit = false;
+    let rotationAngle = 0;
+
     function initAudio() {
-      if (audioInit) return; audioInit = true;
-      canvas = document.getElementById('visualizer'); canvasCtx = canvas.getContext('2d');
+      if (audioInit) return; 
+      audioInit = true;
+      canvas = document.getElementById('visualizer'); 
+      canvasCtx = canvas.getContext('2d');
+      
       audio.addEventListener('play', () => {
         if (!audioCtx) {
-          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-          analyser = audioCtx.createAnalyser();
-          source = audioCtx.createMediaElementSource(audio);
-          source.connect(analyser); analyser.connect(audioCtx.destination);
-          analyser.fftSize = 64;
-          drawVisualizer();
+          try {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            analyser = audioCtx.createAnalyser();
+            audio.crossOrigin = "anonymous";
+            source = audioCtx.createMediaElementSource(audio);
+            source.connect(analyser); 
+            analyser.connect(audioCtx.destination);
+            analyser.fftSize = 128;
+            drawVisualizer();
+          } catch (e) {
+            console.warn("Bloqueo de CORS detectado en el análisis de espectro.");
+          }
         }
       });
     }
 
     function drawVisualizer() {
       requestAnimationFrame(drawVisualizer);
+      if (!analyser) return;
+
       const bufferLength = analyser.frequencyBinCount;
       const dataArray = new Uint8Array(bufferLength);
-      analyser.getByteFrequencyData(dataArray);
-      canvasCtx.fillStyle = '#000'; canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
-      const barWidth = (canvas.width / bufferLength) * 1.5;
-      let barX = 0;
+      analyser.getByteTimeDomainData(dataArray);
+
+      canvasCtx.fillStyle = 'rgba(0, 0, 0, 0.15)'; 
+      canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+      canvasCtx.beginPath();
+      rotationAngle += 0.01;
+
       for (let i = 0; i < bufferLength; i++) {
-        let barHeight = dataArray[i] / 4;
-        canvasCtx.fillStyle = `rgb(${barHeight * 3}, 255, 0)`;
-        canvasCtx.fillRect(barX, canvas.height - barHeight, barWidth - 2, barHeight);
-        barX += barWidth;
+        const v = dataArray[i] / 128.0; 
+        const angle = (i / bufferLength) * Math.PI * 2 + rotationAngle;
+        const baseRadius = 40;
+        const radius = baseRadius + (v - 1.0) * 60;
+
+        const x = centerX + Math.cos(angle) * radius * 1.5;
+        const y = centerY + Math.sin(angle) * radius;
+
+        if (i === 0) canvasCtx.moveTo(x, y);
+        else canvasCtx.lineTo(x, y);
       }
+      
+      canvasCtx.closePath();
+      const hue = (rotationAngle * 50) % 360;
+      canvasCtx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+      canvasCtx.lineWidth = 3;
+      canvasCtx.shadowBlur = 10;
+      canvasCtx.shadowColor = `hsl(${hue}, 100%, 50%)`;
+      canvasCtx.stroke();
+      canvasCtx.shadowBlur = 0;
     }
 
     // ==========================================
