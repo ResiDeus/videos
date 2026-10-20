@@ -23,6 +23,12 @@
             border: 3px solid #000000;
             color: #000000;
         }
+        /* Recuadros de datos con fondo negro y tipografía blanca nítida */
+        .caja-lectura {
+            background-color: #000000 !important;
+            border: 2px solid #3c1e54;
+            transition: all 0.15s ease;
+        }
         /* Botonera gigante optimizada para el tacto */
         .btn-tecla {
             background-color: #3c1e54;
@@ -41,10 +47,14 @@
         }
         .btn-ivu-off { background-color: #1a0826; border: 1px solid #ff007f; color: #ff007f; }
         .btn-ivu-on { background-color: #ff007f; border: 2px solid #ffffff; color: #000000; box-shadow: 0 0 10px #ff007f; }
-        .focus-box { background-color: rgba(255, 0, 127, 0.25) !important; border: 2px solid #ff007f !important; }
+        
+        /* Resplandor de selección de campo activo */
+        .focus-box { 
+            border: 2px solid #00f0ff !important;
+            box-shadow: 0 0 12px rgba(0, 240, 255, 0.5);
+        }
     </style>
 </head>
-<!-- CENTRALIZACIÓN COMPLETA MEDIANTE POSICIONAMIENTO ABSOLUTO GEOMÉTRICO -->
 <body class="absolute inset-0 flex items-center justify-center select-none overflow-hidden">
 
     <div class="chasis-calc rounded-3xl p-4 flex flex-col justify-between">
@@ -62,15 +72,15 @@
             </div>
         </div>
 
-        <!-- INDICADORES TÁCTILES EN BLANCO PURO ASIGNADO -->
+        <!-- INDICADORES TÁCTILES MEJORADOS (MÁXIMA LEGIBILIDAD) -->
         <div class="grid grid-cols-2 gap-2 text-xs font-bold font-sans">
-            <div id="cajaSubtotal" class="bg-[#120520] border border-purple-900 p-2 rounded-xl cursor-pointer focus-box" onclick="cambiarEnfoque('subtotal')">
-                <span class="text-white block text-[10px] uppercase font-bold">1. Cuenta Base</span>
-                <span class="text-white font-mono text-sm">\$<span id="lblSubtotal">0</span></span>
+            <div id="cajaSubtotal" class="caja-lectura p-2.5 rounded-xl cursor-pointer focus-box" onclick="cambiarEnfoque('subtotal')">
+                <span class="text-white block text-[10px] uppercase tracking-wider font-extrabold mb-0.5 opacity-90">1. Cuenta Base</span>
+                <span class="text-white font-mono text-base block font-black">\$<span id="lblSubtotal">0</span></span>
             </div>
-            <div id="cajaPersonas" class="bg-[#120520] border border-purple-900 p-2 rounded-xl cursor-pointer" onclick="cambiarEnfoque('personas')">
-                <span class="text-white block text-[10px] uppercase font-bold">2. Personas</span>
-                <span class="text-white font-mono text-sm"><span id="lblPersonas">0</span></span>
+            <div id="cajaPersonas" class="caja-lectura p-2.5 rounded-xl cursor-pointer" onclick="cambiarEnfoque('personas')">
+                <span class="text-white block text-[10px] uppercase tracking-wider font-extrabold mb-0.5 opacity-90">2. Personas</span>
+                <span class="text-white font-mono text-base block font-black"><span id="lblPersonas">0</span></span>
             </div>
         </div>
 
@@ -81,7 +91,7 @@
             <button id="ivu0" onclick="cambiarIvu(0.0)" class="py-2 rounded-lg btn-ivu-off">0.0%</button>
         </div>
 
-        <!-- TECLADO NUMÉRICO MAXIMIZADO PARA EL TACTO (SIN BOTÓN COMPARTIR) -->
+        <!-- TECLADO NUMÉRICO MAXIMIZADO PARA EL TACTO -->
         <div class="grid grid-cols-3 gap-2 flex-1 pt-2 font-sans">
             <button onclick="marcarNumero('7')" class="btn-tecla rounded-xl">7</button>
             <button onclick="marcarNumero('8')" class="btn-tecla rounded-xl">8</button>
