@@ -38,8 +38,12 @@
         
         .caja-data * { pointer-events: none; }
         .lbl-title { color: #fff; font-weight: 900; text-transform: uppercase; display: block; }
-        .lbl-val { font-size: 15px; font-weight: 900; }
+        .lbl-val { font-size: 15px; font-weight: 900; display: inline-block; }
         
+        /* NUEVO: Animación rápida para el parpadeo del número activo */
+        @keyframes blinkFast { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+        .blink-num { animation: blinkFast 0.6s infinite steps(2, start); }
+
         .row-config { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
         .btn-cfg { padding: 6px 0; border-radius: 8px; font-size: 10px; font-weight: bold; cursor: pointer; text-align: center; }
 
@@ -57,7 +61,6 @@
         
         .btn-clear:disabled, .btn-add:disabled { opacity: 0.15 !important; box-shadow: none !important; text-shadow: none !important; border-color: #444 !important; background: #11051c !important; color: #555 !important; cursor: not-allowed !important; }
 
-        /* ANIMACIÓN DE FLASHEO NEÓN MEJORADA */
         @keyframes glow { 0%, 100% { box-shadow: 0 0 8px #ff007f; opacity: 0.85; } 50% { box-shadow: 0 0 22px #ff007f; opacity: 1; } }
         .on-anim { animation: glow 1.2s infinite ease-in-out; }
     </style>
@@ -85,10 +88,10 @@
             </div>
         </div>
         <div class="row-menus">
-            <!-- Ambos botones de menú inician listos para recibir o quitar el flasheo de forma reactiva -->
             <div id="cajaSub" class="caja-data btn-on on-anim" onclick="seleccionarMenu('sub')">
                 <span class="lbl-title">Cuenta</span>
-                <span class="lbl-val">\$<span id="lblSub">0</span></span>
+                <!-- Se añade la clase inicial blink-num al número de la cuenta -->
+                <span class="lbl-val">\$<span id="lblSub" class="blink-num">0</span></span>
             </div>
             <div id="cajaPpl" class="caja-data btn-off" onclick="seleccionarMenu('ppl')">
                 <span class="lbl-title">Personas</span>
@@ -148,30 +151,38 @@
             document.getElementById('txtHeaderIndicadores').innerText = texto;
         }
 
-        // CORRECCIÓN DE ENFOQUE: Alterna dinámicamente el flasheo (.on-anim) entre Cuenta y Personas
+        // CORRECCIÓN INTERACTIVA: Alterna la clase 'blink-num' para que solo parpadee la cifra bajo edición
         function seleccionarMenu(f) {
             reproducirSonido('menu');
             const btnReset = document.getElementById('btnResetGlobal');
             const btnAnadir = document.getElementById('btnAnadirGlobal');
+            const numSub = document.getElementById('lblSub');
+            const numPpl = document.getElementById('lblPpl');
 
             if (f === 'sub') {
                 modoPersonasActivo = false;
-                document.getElementById('lblPpl').innerText = "OFF";
+                numPpl.innerText = "OFF";
                 document.getElementById('lblTotalType').innerText = "TOTAL";
                 mode = 'sub';
                 btnReset.disabled = false;
                 btnAnadir.disabled = false;
+                
+                // Activa parpadeo en cuenta y lo quita de personas
+                numSub.classList.add('blink-num');
+                numPpl.classList.remove('blink-num');
             } else {
                 modoPersonasActivo = true;
                 if (sPpl === "0" || sPpl === "") sPpl = "2";
-                document.getElementById('lblPpl').innerText = sPpl;
+                numPpl.innerText = sPpl;
                 document.getElementById('lblTotalType').innerText = "C/U";
                 mode = 'ppl';
                 btnReset.disabled = true;
                 btnAnadir.disabled = true;
+                
+                // Activa parpadeo en personas y lo quita de cuenta
+                numPpl.classList.add('blink-num');
+                numSub.classList.remove('blink-num');
             }
-            
-            // Si el modo es 'sub', Cuenta flashea y Personas se apaga. Si es 'ppl', al revés.
             document.getElementById('cajaSub').className = mode === 'sub' ? "caja-data btn-on on-anim" : "caja-data btn-off";
             document.getElementById('cajaPpl').className = mode === 'ppl' ? "caja-data btn-on on-anim" : "caja-data btn-off";
             calc();
