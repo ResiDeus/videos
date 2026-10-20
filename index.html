@@ -1,312 +1,382 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>⚡ IVU-CALC 2000 ⚡</title>
-    <!-- Fuentes Estilo Retro / Pixel -->
-    <link href="https://googleapis.com" rel="stylesheet">
-    <style>
-        :root {
-            --bg-color: #008080; /* Clásico verde azulado de Windows 95/98 */
-            --win-bg: #d4d0c8;   /* Gris de sistema operativo retro */
-            --win-border-light: #ffffff;
-            --win-border-dark: #808080;
-            --cyber-pink: #ff007f;
-            --cyber-cyan: #00ffff;
-            --lcd-green: #a3b899;
-            --lcd-text: #1b2614;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Win98_LottoPR.exe - Lotería de Puerto Rico</title>
+  <style>
+    :root {
+      --win-gray: #c0c0c0;
+      --win-dark-gray: #808080;
+      --win-light-gray: #dfdfdf;
+      --win-blue: #000080;
+      --win-navy: #1084d0;
+      --win-white: #ffffff;
+      --win-black: #000000;
+    }
 
-        * {
-            box-sizing: border-box;
-            image-rendering: pixelated;
-        }
+    * {
+      box-sizing: border-box;
+      font-family: 'MS Sans Serif', Tahoma, Geneva, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
 
-        body {
-            background-color: var(--bg-color);
-            /* Patrón de cuadrícula cibernética del año 2000 */
-            background-image: 
-                linear-gradient(rgba(0, 255, 255, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 255, 0.05) 1px, transparent 1px);
-            background-size: 20px 20px;
-            font-family: 'Share Tech Mono', monospace;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
+    body {
+      background-color: #008080; /* Clásico verde teal de fondo de Win98 */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 15px;
+    }
 
-        /* Contenedor estilo Ventana de Windows clásica */
-        .window {
-            background: var(--win-bg);
-            border-top: 2px solid var(--win-border-light);
-            border-left: 2px solid var(--win-border-light);
-            border-right: 2px solid #404040;
-            border-bottom: 2px solid #404040;
-            box-shadow: inset 1px 1px 0px var(--win-border-light), 
-                        inset -1px -1px 0px var(--win-border-dark),
-                        5px 5px 15px rgba(0, 0, 0, 0.4);
-            width: 100%;
-            max-width: 420px;
-            padding: 3px;
-            position: relative;
-        }
+    /* Estilo de Ventana Windows 98 */
+    .win98-window {
+      width: 100%;
+      max-width: 640px;
+      background-color: var(--win-gray);
+      border-top: 2px solid var(--win-white);
+      border-left: 2px solid var(--win-white);
+      border-right: 2px solid var(--win-dark-gray);
+      border-bottom: 2px solid var(--win-dark-gray);
+      box-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+      padding: 3px;
+    }
 
-        /* Barra de título con degradado azul marino */
-        .title-bar {
-            background: linear-gradient(90deg, #000080, #1084d0);
-            color: white;
-            padding: 6px 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: bold;
-            font-size: 14px;
-            letter-spacing: 1px;
-            text-shadow: 1px 1px #000;
-        }
+    /* Barra de título de la ventana */
+    .title-bar {
+      background: linear-gradient(90deg, var(--win-blue), var(--win-navy));
+      color: var(--win-white);
+      padding: 4px 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: bold;
+      font-size: 13px;
+    }
 
-        .title-bar-text {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
+    .title-bar-controls button {
+      background-color: var(--win-gray);
+      border-top: 1px solid var(--win-white);
+      border-left: 1px solid var(--win-white);
+      border-right: 1px solid var(--win-dark-gray);
+      border-bottom: 1px solid var(--win-dark-gray);
+      width: 16px;
+      height: 14px;
+      font-size: 10px;
+      font-weight: bold;
+      line-height: 10px;
+      text-align: center;
+      cursor: pointer;
+    }
 
-        .title-bar-controls button {
-            background: var(--win-bg);
-            border-top: 1px solid var(--win-border-light);
-            border-left: 1px solid var(--win-border-light);
-            border-right: 1px solid #000;
-            border-bottom: 1px solid #000;
-            font-size: 10px;
-            font-weight: bold;
-            width: 16px;
-            height: 14px;
-            cursor: pointer;
-            padding: 0;
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-        }
+    /* Menú superior tipo Win98 */
+    .menu-bar {
+      display: flex;
+      gap: 15px;
+      padding: 2px 6px;
+      font-size: 12px;
+      border-bottom: 1px solid var(--win-dark-gray);
+    }
 
-        /* Cuerpo interno de la aplicación */
-        .window-body {
-            padding: 20px;
-            background: #e4e0d8;
-            border: 1px solid var(--win-border-dark);
-            margin-top: 4px;
-        }
+    .menu-bar span {
+      cursor: pointer;
+    }
+    .menu-bar span:hover {
+      background-color: var(--win-blue);
+      color: var(--win-white);
+    }
 
-        /* Pantalla de Cristal Líquido (LCD) */
-        .lcd-screen {
-            background-color: var(--lcd-green);
-            border: inset 3px #808080;
-            padding: 15px;
-            font-family: 'VT323', monospace;
-            color: var(--lcd-text);
-            text-align: right;
-            margin-bottom: 20px;
-            box-shadow: inset 2px 2px 5px rgba(0,0,0,0.5);
-            border-radius: 2px;
-        }
+    /* Contenido de la ventana */
+    .window-body {
+      padding: 10px;
+    }
 
-        .lcd-main-display {
-            font-size: 42px;
-            line-height: 1;
-            font-weight: bold;
-            letter-spacing: 1px;
-            overflow-x: auto;
-            white-space: nowrap;
-        }
+    /* Paneles internos hundidos (Sunken panel) */
+    .sunken-panel {
+      background-color: var(--win-white);
+      border-top: 2px solid var(--win-dark-gray);
+      border-left: 2px solid var(--win-dark-gray);
+      border-right: 2px solid var(--win-white);
+      border-bottom: 2px solid var(--win-white);
+      padding: 10px;
+      margin-bottom: 10px;
+    }
 
-        .lcd-sub-display {
-            font-size: 16px;
-            opacity: 0.8;
-            margin-bottom: 4px;
-            text-transform: uppercase;
-        }
+    .section-title {
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: var(--win-blue);
+      border-bottom: 1px dotted var(--win-dark-gray);
+      padding-bottom: 3px;
+      display: flex;
+      justify-content: space-between;
+    }
 
-        .form-group {
-            margin-bottom: 15px;
-        }
+    /* Tarjetas de juego */
+    .game-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 8px;
+    }
 
-        label {
-            display: block;
-            margin-bottom: 6px;
-            font-size: 13px;
-            font-weight: bold;
-            color: #222;
-            text-transform: uppercase;
-        }
+    .game-card {
+      background-color: var(--win-light-gray);
+      border-top: 1.5px solid var(--win-white);
+      border-left: 1.5px solid var(--win-white);
+      border-right: 1.5px solid var(--win-dark-gray);
+      border-bottom: 1.5px solid var(--win-dark-gray);
+      padding: 8px;
+    }
 
-        /* Formularios con relieve biselado hacia adentro */
-        input[type="number"], select {
-            width: 100%;
-            padding: 8px;
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 16px;
-            background: #ffffff;
-            border: inset 2px #808080;
-            color: #000;
-            outline: none;
-        }
+    .game-header {
+      font-weight: bold;
+      font-size: 12px;
+      margin-bottom: 6px;
+      background-color: #dfdfdf;
+      display: flex;
+      justify-content: space-between;
+    }
 
-        input[type="number"]:focus, select:focus {
-            background: #fffcee;
-            border-color: var(--cyber-pink);
-        }
+    .numbers-row {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
 
-        /* Tabla de desglose de datos retro */
-        .status-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-            font-size: 14px;
-            background: #d4d0c8;
-            border: inset 2px #fff;
-        }
+    .num-ball {
+      background-color: #ffffcc;
+      border: 1px solid var(--win-black);
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 13px;
+      box-shadow: inset 1px 1px 0px #fff;
+    }
 
-        .status-table td {
-            border: 1px solid var(--win-border-dark);
-            padding: 6px 10px;
-        }
+    .wild-ball {
+      background-color: #ffcccc;
+      color: #990000;
+    }
 
-        .status-table td:first-child {
-            font-weight: bold;
-            background: #c0c0c0;
-            width: 60%;
-        }
+    .loto-ball {
+      background-color: #cce5ff;
+      border-radius: 50%;
+    }
 
-        .status-table td:last-child {
-            text-align: right;
-            font-family: 'VT323', monospace;
-            font-size: 20px;
-            background: #ffffff;
-            color: #000080;
-        }
+    /* Buscador / Verificador rápido */
+    .checker-box {
+      margin-top: 10px;
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
 
-        /* Elementos de marquesina retro */
-        .marquee-container {
-            background: #000;
-            color: var(--cyber-cyan);
-            font-size: 12px;
-            padding: 3px;
-            margin-top: 15px;
-            border: inset 2px #808080;
-            overflow: hidden;
-        }
+    input[type="text"] {
+      flex: 1;
+      padding: 4px;
+      border-top: 2px solid var(--win-dark-gray);
+      border-left: 2px solid var(--win-dark-gray);
+      border-right: 2px solid var(--win-white);
+      border-bottom: 2px solid var(--win-white);
+      background: var(--win-white);
+      font-size: 12px;
+    }
 
-        .sparkle {
-            color: var(--cyber-pink);
-        }
-    </style>
+    button.win98-btn {
+      background-color: var(--win-gray);
+      border-top: 2px solid var(--win-white);
+      border-left: 2px solid var(--win-white);
+      border-right: 2px solid var(--win-dark-gray);
+      border-bottom: 2px solid var(--win-dark-gray);
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button.win98-btn:active {
+      border-top: 2px solid var(--win-dark-gray);
+      border-left: 2px solid var(--win-dark-gray);
+      border-right: 2px solid var(--win-white);
+      border-bottom: 2px solid var(--win-white);
+    }
+
+    .status-bar {
+      border-top: 1px solid var(--win-dark-gray);
+      padding-top: 4px;
+      font-size: 11px;
+      display: flex;
+      justify-content: space-between;
+      color: #333;
+    }
+  </style>
 </head>
 <body>
 
-<div class="window">
+  <div class="win98-window">
+    <!-- Barra de Título -->
     <div class="title-bar">
-        <div class="title-bar-text">
-            <span>💾</span> IVU_ADVANCED_CALC_V2.0.EXE
-        </div>
-        <div class="title-bar-controls">
-            <button aria-label="Minimize">0</button>
-            <button aria-label="Maximize">1</button>
-            <button aria-label="Close" onclick="alert('Goodbye World!')">X</button>
-        </div>
+      <span>💾 LoteríaPR_v98.exe - [Resultados en Vivo]</span>
+      <div class="title-bar-controls">
+        <button>_</button>
+        <button>□</button>
+        <button>×</button>
+      </div>
     </div>
-    
+
+    <!-- Barra de Menú -->
+    <div class="menu-bar">
+      <span><u>A</u>rchivo</span>
+      <span><u>V</u>erificar</span>
+      <span><u>A</u>yuda</span>
+    </div>
+
     <div class="window-body">
-        <!-- Pantalla de la calculadora interactiva -->
-        <div class="lcd-screen">
-            <div class="lcd-sub-display" id="lcdStatus">ESPERANDO IMPORTE...</div>
-            <div class="lcd-main-display" id="resGrandTotal">$0.00</div>
+      <!-- Panel de Últimos Sorteos -->
+      <div class="sunken-panel">
+        <div class="section-title">
+          <span>RESULTADOS OFICIALES (Lotería Electrónica & Tradicional)</span>
+          <span>Actualizado: 2026</span>
         </div>
 
-        <div class="form-group">
-            <label for="amount">Monto Base ($):</label>
-            <input type="number" id="amount" placeholder="0.00" step="0.01" min="0" oninput="calculateIVU()">
+        <div class="game-grid">
+          <!-- Pega 2 -->
+          <div class="game-card">
+            <div class="game-header"><span>PEGA 2 (Noche)</span><span>Diario</span></div>
+            <div class="numbers-row">
+              <div class="num-ball">6</div>
+              <div class="num-ball">4</div>
+              <span style="font-size:11px;">WB:</span>
+              <div class="num-ball wild-ball">7</div>
+            </div>
+          </div>
+
+          <!-- Pega 3 -->
+          <div class="game-card">
+            <div class="game-header"><span>PEGA 3 (Noche)</span><span>Diario</span></div>
+            <div class="numbers-row">
+              <div class="num-ball">6</div>
+              <div class="num-ball">1</div>
+              <div class="num-ball">1</div>
+              <span style="font-size:11px;">WB:</span>
+              <div class="num-ball wild-ball">7</div>
+            </div>
+          </div>
+
+          <!-- Pega 4 -->
+          <div class="game-card">
+            <div class="game-header"><span>PEGA 4 (Noche)</span><span>Diario</span></div>
+            <div class="numbers-row">
+              <div class="num-ball">4</div>
+              <div class="num-ball">1</div>
+              <div class="num-ball">0</div>
+              <div class="num-ball">8</div>
+              <span style="font-size:11px;">WB:</span>
+              <div class="num-ball wild-ball">6</div>
+            </div>
+          </div>
+
+          <!-- Loto Cash -->
+          <div class="game-card">
+            <div class="game-header"><span>LOTO CASH</span><span>Lun/Mié/Vie</span></div>
+            <div class="numbers-row">
+              <div class="num-ball">05</div>
+              <div class="num-ball">12</div>
+              <div class="num-ball">19</div>
+              <div class="num-ball">24</div>
+              <div class="num-ball">31</div>
+              <div class="num-ball loto-ball" title="Bolo Cash">08</div>
+            </div>
+          </div>
         </div>
 
-        <div class="form-group">
-            <label for="taxType">Seleccionar Tasa/Tarifa:</label>
-            <select id="taxType" onchange="calculateIVU()">
-                <option value="general">TASA GENERAL DE PR (11.5%)</option>
-                <option value="prepared_food">ALIMENTOS PREPARADOS (7.0%)</option>
-            </select>
+        <!-- Lotería Tradicional -->
+        <div style="margin-top: 8px;" class="game-card">
+          <div class="game-header"><span>LOTERÍA TRADICIONAL (Sorteo Reciente)</span><span>Billete / Maquina</span></div>
+          <div style="font-size: 11px; margin-top: 4px;">
+            1er Premio: <b>38721</b> | 2do Premio: <b>13928</b> | 3er Premio: <b>46131</b>
+          </div>
         </div>
+      </div>
 
-        <!-- Tabla con el desglose del IVU estatal y municipal -->
-        <table class="status-table">
-            <tr>
-                <td>SUBTOTAL BASE</td>
-                <td id="resBase">$0.00</td>
-            </tr>
-            <tr>
-                <td>IVU ESTATAL (<span id="lblState">10.5</span>%)</td>
-                <td id="resState">$0.00</td>
-            </tr>
-            <tr>
-                <td>IVU MUNICIPAL (<span id="lblMunicipal">1.0</span>%)</td>
-                <td id="resMunicipal">$0.00</td>
-            </tr>
-            <tr>
-                <td>IVU TOTAL</td>
-                <td id="resTaxTotal">$0.00</td>
-            </tr>
-        </table>
-
-        <!-- Banner animado nostálgico -->
-        <div class="marquee-container">
-            <marquee scrollamount="3">
-                <span class="sparkle">✦</span> HACIENDA COMPLIANT <span class="sparkle">✦</span> BIENVENIDOS AL CIBERESPACIO DEL IVU <span class="sparkle">✦</span> TOTALMENTE OPTIMIZADO PARA NETSCAPE NAVIGATOR <span class="sparkle">✦</span>
-            </marquee>
+      <!-- Verificador Rápido de Números -->
+      <div class="sunken-panel">
+        <div class="section-title">VERIFICADOR RÁPIDO DE TU JUGADA</div>
+        <p style="font-size: 11px; margin-bottom: 4px;">Introduce tu número (ej: 611 para Pega 3):</p>
+        <div class="checker-box">
+          <input type="text" id="userNum" placeholder="Escribe tu número aquí...">
+          <button class="win98-btn" onclick="checkNumber()">Comprobar</button>
         </div>
+        <div id="resultMsg" style="font-size: 12px; margin-top: 6px; font-weight: bold; color: var(--win-blue);"></div>
+      </div>
+
+      <!-- Barra de Estado inferior -->
+      <div class="status-bar">
+        <span>Listo</span>
+        <span>Loterías de Puerto Rico - Win98 Client</span>
+      </div>
     </div>
-</div>
+  </div>
 
-<script>
-    function calculateIVU() {
-        const amountInput = document.getElementById('amount').value;
-        const taxType = document.getElementById('taxType').value;
-        
-        const baseAmount = parseFloat(amountInput) || 0;
-        
-        let stateRate = 0.105;     
-        let municipalRate = 0.01;   
-
-        if (taxType === 'prepared_food') {
-            stateRate = 0.07;       
-            municipalRate = 0.00;   
-            document.getElementById('lcdStatus').innerText = "ALIMENTOS PREPARADOS 7%";
-        } else {
-            document.getElementById('lcdStatus').innerText = baseAmount > 0 ? "CALCULO COMPLETO 11.5%" : "ESPERANDO IMPORTE...";
-        }
-
-        const stateTax = baseAmount * stateRate;
-        const municipalTax = baseAmount * municipalRate;
-        const totalTax = stateTax + municipalTax;
-        const grandTotal = baseAmount + totalTax;
-
-        document.getElementById('lblState').innerText = (stateRate * 100).toFixed(1);
-        document.getElementById('lblMunicipal').innerText = (municipalRate * 100).toFixed(1);
-
-        document.getElementById('resBase').innerText = formatCurrency(baseAmount);
-        document.getElementById('resState').innerText = formatCurrency(stateTax);
-        document.getElementById('resMunicipal').innerText = formatCurrency(municipalTax);
-        document.getElementById('resTaxTotal').innerText = formatCurrency(totalTax);
-        document.getElementById('resGrandTotal').innerText = formatCurrency(grandTotal);
+  <script>
+    function checkNumber() {
+      const val = document.getElementById('userNum').value.trim();
+      const winningMap = {
+        "64": "¡Ganador en Pega 2!",
+        "611": "¡Ganador en Pega 3!",
+        "4108": "¡Ganador en Pega 4!"
+      };
+      const msg = document.getElementById('resultMsg');
+      if (!val) {
+        msg.textContent = "Por favor, digita un número.";
+        return;
+      }
+      if (winningMap[val]) {
+      };
+      
+      const msg = document.getElementById('resultMsg');
+      if (!val) {
+        msg.textContent = "Error de Sistema: Por favor, digita un número.";
+        msg.style.color = "red";
+        return;
+      }
+      
+      if (winningMap[val]) {
+        msg.textContent = `[OK] ${winningMap[val]} (Coincide con sorteo de hoy)`;
+        msg.style.color = "green";
+        saveToWinHistory(val, "Ganador");
+      } else {
+        msg.textContent = `[X] El número ${val} no aparece premiado hoy. Intente de nuevo.`;
+        msg.style.color = "var(--win-blue)";
+        saveToWinHistory(val, "No Premiado");
+      }
     }
 
-    function formatCurrency(value) {
-        return new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD'
-        }).format(value);
+    // Funciones adicionales estilo Win98 (Guardar en LocalStorage)
+    function saveToWinHistory(num, status) {
+      let history = JSON.parse(localStorage.getItem('win98_lotto_history')) || [];
+      history.unshift({ num, status, date: new Date().toLocaleTimeString() });
+      if(history.length > 5) history.pop(); // Mantener solo los últimos 5
+      localStorage.setItem('win98_lotto_history', JSON.stringify(history));
+      renderHistory();
     }
-</script>
 
+    function renderHistory() {
+      // Si deseas renderizar una lista, puedes añadir un div con id "historyLog" en tu HTML
+      console.log("Historial Win98 actualizado en LocalStorage.");
+    }
+
+    // Evento de simulación de carga del sistema operativo al abrir la página
+    window.onload = function() {
+      console.log("Win98_LottoPR.exe cargado correctamente en memoria base.");
+    };
+  </script>
 </body>
 </html>
