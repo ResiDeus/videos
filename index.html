@@ -18,11 +18,11 @@
         .lcd { width: 100%; height: 165px; background: #92b043; border: 2px solid #000; border-radius: 14px; color: #000; box-shadow: inset 0 4px 10px rgba(0,0,0,0.4); font-weight: bold; padding: 10px; display: flex; flex-direction: column; justify-content: space-between; }
         .lcd-header { display: flex; justify-content: space-between; font-size: 11px; border-bottom: 1px solid rgba(0,0,0,0.2); }
         
-        /* CORRECCIÓN EXCLUSIVA PARA FORZAR SCROLLBAR VISIBLE EN MÓVILES (iOS y Android) */
+        /* CORRECCIÓN FINAL PARA MÓVILES: -webkit-appearance: none desactiva la barra nativa invisible */
         .lcd-historial { flex-grow: 1; font-size: 11px; margin: 4px 0; overflow-y: scroll; max-height: 45px; text-align: left; padding-right: 6px; border-bottom: 1px dashed rgba(0, 0, 0, 0.2); -webkit-overflow-scrolling: touch; }
-        .lcd-historial::-webkit-scrollbar { width: 6px !important; height: 6px !important; display: block !important; }
-        .lcd-historial::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.15) !important; border-radius: 10px !important; }
-        .lcd-historial::-webkit-scrollbar-thumb { background-color: #ff007f !important; border: 1px solid #000 !important; border-radius: 10px !important; box-shadow: 0 0 4px #ff007f !important; }
+        .lcd-historial::-webkit-scrollbar { -webkit-appearance: none; width: 6px !important; display: block !important; }
+        .lcd-historial::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2) !important; border-radius: 10px !important; }
+        .lcd-historial::-webkit-scrollbar-thumb { background: #ff007f !important; border: 1px solid #000 !important; border-radius: 10px !important; box-shadow: 0 0 4px #ff007f !important; }
         
         .lcd-body { text-align: right; font-size: 11px; }
         .lcd-total { font-size: 26px; font-weight: 900; }
