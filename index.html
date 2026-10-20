@@ -16,8 +16,10 @@
     * { box-sizing: border-box; font-family: 'MS Sans Serif', Tahoma, sans-serif; font-size: 13px; margin: 0; padding: 0; user-select: none; }
     body { background: #008080; overflow: hidden; height: 100vh; position: relative; }
     
+    /* Escritorio */
     .desktop { height: calc(100vh - 40px); width: 100%; position: relative; }
     
+    /* Ventanas Win98 Estilo Ampliado */
     .window { position: absolute; background: var(--gray); border: 2px solid; border-color: var(--white) var(--dark) var(--dark) var(--white); padding: 3px; box-shadow: 2px 2px 12px rgba(0,0,0,0.4); display: none; min-width: 400px; min-height: 350px; z-index: 10; }
     .title-bar { background: linear-gradient(90deg, var(--blue), var(--navy)); color: var(--white); padding: 6px 10px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; cursor: move; }
     .title-text { display: flex; align-items: center; gap: 6px; font-weight: bold; font-size: 13px; }
@@ -30,14 +32,17 @@
     
     .resizer { position: absolute; width: 14px; height: 14px; background: transparent; right: 0; bottom: 0; cursor: se-resize; z-index: 99; }
 
+    /* Inputs y Formularios */
     .field { display: flex; justify-content: space-between; margin-bottom: 10px; align-items: center; }
     .field label { font-size: 13px; font-weight: bold; }
     input, select { padding: 5px; border: 2px solid; border-color: var(--dark) var(--white) var(--white) var(--dark); background: var(--white); width: 160px; text-align: right; font-size: 13px; }
     
+    /* Lista de Canciones */
     .track-list { flex-grow: 1; overflow-y: auto; font-size: 12px; max-height: 140px; }
     .track { padding: 6px; cursor: pointer; border-bottom: 1px dotted var(--dark); }
     .track:hover, .track.active { background: var(--blue); color: var(--white); }
     
+    /* Barra de Tareas */
     .taskbar { position: absolute; bottom: 0; left: 0; right: 0; height: 40px; background: var(--gray); border-top: 2px solid var(--white); display: flex; justify-content: space-between; align-items: center; padding: 2px 8px; z-index: 9999; overflow: visible; }
     .start-btn { font-weight: bold; background: var(--gray); border: 2px solid; border-color: var(--white) var(--dark) var(--dark) var(--white); padding: 4px 10px; display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 13px; }
     .start-btn:active, .start-btn.open { border-color: var(--dark) var(--white) var(--white) var(--dark); padding: 5px 9px 3px 11px; }
@@ -46,6 +51,7 @@
     .task-button { background: var(--gray); border: 2px solid; border-color: var(--white) var(--dark) var(--dark) var(--white); padding: 4px 8px; cursor: pointer; display: flex; align-items: center; gap: 6px; min-width: 120px; max-width: 160px; font-weight: bold; height: 28px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .task-button.active { border-color: var(--dark) var(--white) var(--white) var(--dark); background: #e0e0e0; font-style: italic; }
 
+    /* Menú Inicio */
     .start-menu { position: absolute; bottom: 38px; left: 2px; background: var(--gray); border: 2px solid; border-color: var(--white) var(--dark) var(--dark) var(--white); width: 230px; display: none; box-shadow: 2px 2px 12px rgba(0,0,0,0.5); z-index: 10000; }
     .start-sidebar { width: 35px; background: linear-gradient(180deg, var(--dark), var(--blue)); color: var(--white); writing-mode: vertical-lr; transform: rotate(180deg); text-align: center; font-weight: bold; padding: 8px; font-size: 15px; letter-spacing: 1px; }
     .menu-items { flex-grow: 1; display: flex; flex-direction: column; padding: 2px 0; }
@@ -58,10 +64,11 @@
   </style>
 </head>
 <body>
-
   <div class="desktop" onclick="closeStartMenu()"></div>
 
-  <!-- VENTANA 1: CALCULADORA IVU -->
+
+
+    <!-- VENTANA 1: CALCULADORA IVU -->
   <div id="win-ivu" class="window" style="top: 40px; left: 40px; width: 440px; height: 380px;">
     <div class="title-bar" onmousedown="dragStart(event, 'win-ivu')">
       <div class="title-text">🧮 Calculadora IVU Avanzada</div>
@@ -87,7 +94,7 @@
   <!-- VENTANA 2: REPRODUCTOR REGGAETON -->
   <div id="win-music" class="window" style="top: 80px; left: 120px; width: 460px; height: 490px;">
     <div class="title-bar" onmousedown="dragStart(event, 'win-music')">
-      <div class="title-text">📻 Reggaeton Retro Player</div>
+      <div class="title-text">📻 Winamp Reggaeton</div>
       <div class="title-controls">
         <button class="title-btn" onclick="minimizeWin('win-music')">_</button>
         <button class="title-btn" onclick="closeWin('win-music')">×</button>
@@ -142,7 +149,7 @@
     </div>
     <div class="win-body">
       <div class="field">
-                <label>¿Qué achaque o molestia tienes?:</label>
+        <label>¿Qué achaque o molestia tienes?:</label>
         <select id="remedio-selector" onchange="verRemedio()" style="width: 200px;">
           <option value="">-- Selecciona Síntoma --</option>
           <option value="empacho">Empacho (Mal de estómago)</option>
@@ -152,13 +159,13 @@
         </select>
       </div>
       <div class="sunken" id="remedio-result" style="line-height: 1.8; flex-grow: 1; background: #ffffcc; font-family: 'Courier New', monospace; border-color: var(--dark);">
-        Abre el libro de botánica tradicional seleccionando un padecimientos común en los campos de la isla.
+        Abre el libro de botánica tradicional seleccionando un padecimiento común en los campos de la isla.
       </div>
     </div>
     <div class="resizer" onmousedown="resizeStart(event, 'win-abuela')"></div>
   </div>
 
-  <!-- VENTANA 5: CUCARACHAS-TIMER.EXE -->
+  <!-- VENTANA 5: CUCARACHAS-TIMER -->
   <div id="win-cucaracha" class="window" style="top: 180px; left: 90px; width: 470px; height: 430px;">
     <div class="title-bar" onmousedown="dragStart(event, 'win-cucaracha')">
       <div class="title-text">🪳 Cucarachas-Timer.exe [Radar de Municipios]</div>
@@ -203,7 +210,7 @@
     </div>
   </div>
 
-  <!-- BARRA DE TAREAS -->
+  <!-- BARRA DE TAREAS INFRAESTRUCTURA -->
   <div class="taskbar">
     <div class="start-btn" id="btn-start" onclick="toggleStartMenu(event)">
       <span style="font-size: 14px; margin-right: 2px;">❖</span><b>Inicio</b>
@@ -219,8 +226,11 @@
       <span id="clock" style="cursor: pointer;" onclick="playWin98ErrorSound()" title="Hacer clic para sonido de error">00:00 AM</span>
     </div>
   </div>
+
+
+
     <script>
-    // --- MOTOR DE VENTANAS INTERACTIVAS (DRAG, DROP, FOCUS Y CIERRE REAL) ---
+    // --- LÓGICA DE VENTANAS Y FOCUS ---
     let activeWin = null, offsetX = 0, offsetY = 0, zIndexCounter = 10;
     
     const windowRegistry = {
@@ -231,7 +241,6 @@
       'win-cucaracha': { title: 'Cucarachas-Timer.exe', icon: '🪳', active: false }
     };
 
-    // Base de datos oficial de los 78 Municipios con perfil costero asignado
     const municipiosPR = [
       { n: "Adjuntas", costa: false }, { n: "Aguada", costa: true }, { n: "Aguadilla", costa: true }, { n: "Aguas Buenas", costa: false },
       { n: "Aibonito", costa: false }, { n: "Añasco", costa: true }, { n: "Arecibo", costa: true }, { n: "Arroyo", costa: true },
@@ -262,7 +271,6 @@
           municipiosPR.map(m => `<option value="${m.n}">${m.n}</option>`).join('');
       }
     };
-
     function openWin(id) { 
       const w = document.getElementById(id); if (!w) return;
       zIndexCounter++; w.style.display = 'block'; w.style.zIndex = zIndexCounter; 
@@ -319,6 +327,9 @@
     function resizeMove(e) { if (resizeWin) { resizeWin.style.width = (startW + e.clientX - startX) + 'px'; resizeWin.style.height = (startH + e.clientY - startY) + 'px'; } }
     function resizeEnd() { resizeWin = null; document.removeEventListener('mousemove', resizeMove); document.removeEventListener('mouseup', resizeEnd); }
 
+    function toggleStartMenu(e) { e.stopPropagation(); const m = document.getElementById('start-menu'); const b = document.getElementById('btn-start'); if(m.style.display==='flex'){ m.style.display='none'; b.classList.remove('open'); }else{ m.style.display='flex'; b.classList.add('open'); }}
+    function closeStartMenu() { document.getElementById('start-menu').style.display = 'none'; document.getElementById('btn-start').classList.remove('open'); document.getElementById('vol-container').style.display = 'none'; }
+    setInterval(() => { document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }); }, 1000);
     function toggleVolSlider(e) { e.stopPropagation(); const v = document.getElementById('vol-container'); v.style.display = v.style.display === 'block' ? 'none' : 'block'; }
     function changeVolume(val) { const audioPlayer = document.getElementById('audio-player'); if (audioPlayer) audioPlayer.volume = val; }
 
@@ -334,7 +345,6 @@
         });
       } catch (e) {}
     }
-
     // --- CALCULADORA IVU ---
     function calcIVU() {
       const amt = parseFloat(document.getElementById('amount').value) || 0;
@@ -345,9 +355,8 @@
       const totalIvu = estatal + municipal;
       document.getElementById('ivu-results').innerHTML = `Estatal (${type === 11.5 ? '10.5%' : '6%'}): $${estatal.toFixed(2)}<br>Municipal (1%): $${municipal.toFixed(2)}<br><b>Total IVU (${type}%): $${totalIvu.toFixed(2)}</b><br><br><b style="font-size: 15px;">Gran Total: $${(amt + totalIvu).toFixed(2)}</b>`;
     }
-    calcIVU();
 
-    // --- WINAMP REGGAETON ---
+    // --- REPRODUCTOR DE MÚSICA ---
     const canciones = [
       { titulo: "Daddy Yankee - Gasolina (2004)", url: "https://archive.org" },
       { titulo: "Daddy Yankee - Rompe (2005)", url: "https://archive.org" },
@@ -361,36 +370,23 @@
       audio.src = canciones[i].url; audio.crossOrigin = "anonymous"; audio.play();
     }
     function addTrackPrompt() {
-            const title = prompt("Nombre del tema:"); 
-      const url = prompt("Enlace directo MP3:");
-      if (title && url) { 
-        canciones.push({ titulo: title, url: url }); 
-        renderPlaylist(); 
-      }
+      const title = prompt("Nombre del tema:"); const url = prompt("Enlace directo MP3:");
+      if (title && url) { canciones.push({ titulo: title, url: url }); renderPlaylist(); }
     }
     renderPlaylist();
 
-    // --- MOTOR MULTIMEDIA CON GIF ANIMADO Y2K ---
     let audioCtx, audioInit = false;
     function initAudio() {
-      if (audioInit) return; 
-      audioInit = true;
+      if (audioInit) return; audioInit = true;
       const gifElement = document.getElementById('visualizer-gif');
       audio.addEventListener('play', () => {
         if (gifElement) gifElement.style.opacity = "1";
-        if (!audioCtx) { 
-          try { 
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)(); 
-            audio.crossOrigin = "anonymous"; 
-          } catch (e) {} 
-        }
+        if (!audioCtx) { try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); audio.crossOrigin = "anonymous"; } catch (e) {} }
       });
-      audio.addEventListener('pause', () => { 
-        if (gifElement) gifElement.style.opacity = "0.4"; 
-      });
+      audio.addEventListener('pause', () => { if (gifElement) gifElement.style.opacity = "0.4"; });
     }
 
-    // --- LÓGICA DEL BORICUÓMETRO ---
+    // --- TRADUCTOR BORICUA ---
     function traducirBoricua() {
       const palabra = document.getElementById('boricua-word').value;
       const resultBox = document.getElementById('boricua-result');
@@ -401,15 +397,12 @@
         revolu: { nivel: "90%", trad: "Desorden masivo, caos total.", nota: "Palabra indispensable usada por las madres de la isla." },
         chinchorreo: { nivel: "100%", trad: "Ruta gastronómica comunitaria de negocio en negocio.", nota: "Actividad cultural máxima de fin de semana para consumir frituras." }
       };
-      if (!palabra) { 
-        resultBox.innerHTML = "Selecciona una palabra para medir su nivel cultural."; 
-        return; 
-      }
+      if (!palabra) { resultBox.innerHTML = "Selecciona una palabra para medir su nivel cultural."; return; }
       const datos = diccionario[palabra];
       resultBox.innerHTML = `<b>Nivel de Boricuómetro:</b> <span style="color:red; font-size:14px; font-weight:bold;">${datos.nivel}</span><br><b>Significado Neutral:</b> ${datos.trad}<br><br><i>Contexto Histórico: ${datos.nota}</i>`;
     }
 
-    // --- REMEDIOS DE LA ABUELA ---
+    // --- REMEDIOS BOTÁNICOS ---
     function verRemedio() {
       const achaque = document.getElementById('remedio-selector').value;
       const display = document.getElementById('remedio-result');
@@ -422,7 +415,7 @@
       display.innerHTML = achaque ? libro[achaque] : "Abre el libro de botánica tradicional seleccionando un padecimiento común.";
     }
 
-    // --- CUCARACHAS-TIMER POR PUEBLOS ---
+    // --- ALERTA CUCARACHAS POR MUNICIPIOS ---
     let c_interval = null;
     function evaluarInvasionCucaracha() {
       const puebloNombre = document.getElementById('town-selector').value;
@@ -432,11 +425,7 @@
       const consejoBox = document.getElementById('cucaracha-consejo');
       
       clearInterval(c_interval);
-      if (!puebloNombre) { 
-        timerDisplay.textContent = "RADAR APAGADO"; 
-        consejoBox.innerHTML = "Por favor selecciona un municipio."; 
-        return; 
-      }
+      if (!puebloNombre) { timerDisplay.textContent = "RADAR APAGADO"; consejoBox.innerHTML = "Por favor selecciona un municipio."; return; }
       
       const puebloInfo = municipiosPR.find(m => m.n === puebloNombre);
       let tempBase = puebloInfo.costa ? 89 : 76; 
@@ -453,11 +442,7 @@
           let minutos = Math.floor(tiempoRestante / 60);
           let segundos = tiempoRestante % 60;
           timerDisplay.textContent = `CRÍTICO: ${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
-          if (tiempoRestante <= 0) { 
-            clearInterval(c_interval); 
-            timerDisplay.textContent = "¡INVASIÓN ACTIVA!"; 
-            playWin98ErrorSound(); 
-          }
+          if (tiempoRestante <= 0) { clearInterval(c_interval); timerDisplay.textContent = "¡INVASIÓN ACTIVA!"; playWin98ErrorSound(); }
         }, 1000);
       } else if (clima === 'lluvia' && tempBase < 85) {
         timerDisplay.textContent = "TIEMPO FRESCO";
@@ -473,6 +458,3 @@
   </script>
 </body>
 </html>
-
-
-
