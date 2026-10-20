@@ -3,65 +3,68 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Win98_Y2K_PR.exe</title>
+  <title>Win98_Desktop_System.exe</title>
   <style>
     :root { --gray: #c0c0c0; --dark: #808080; --blue: #000080; --navy: #1084d0; --white: #fff; }
     * { box-sizing: border-box; font-family: 'MS Sans Serif', Tahoma, sans-serif; font-size: 11px; margin: 0; padding: 0; user-select: none; }
     body { background: #008080; overflow: hidden; height: 100vh; position: relative; }
     
-    /* Desktop & Icons */
-    .desktop { height: calc(100vh - 30px); padding: 15px; display: flex; flex-direction: column; gap: 20px; align-items: flex-start; }
-    .icon { width: 50px; text-align: center; color: var(--white); cursor: pointer; text-shadow: 1px 1px #000; }
-    .icon img { width: 32px; height: 32px; display: block; margin: 0 auto 4px; filter: drop-shadow(1px 1px #000); }
+    /* Desktop Vacio (Aesthetic Y2K) */
+    .desktop { height: calc(100vh - 30px); width: 100%; position: relative; }
     
-    /* Windows 98 Engine */
-    .window { position: absolute; background: var(--gray); border: 2px solid; border-color: var(--white) var(--dark) var(--dark) var(--white); padding: 3px; box-shadow: 1px 1px 10px rgba(0,0,0,0.4); display: none; min-width: 250px; z-index: 10; }
-    .title-bar { background: linear-gradient(90deg, var(--blue), var(--navy)); color: var(--white); padding: 3px 6px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; cursor: move; }
-    .title-btn { background: var(--gray); border: 1px solid; border-color: var(--white) var(--dark) var(--dark) var(--white); width: 14px; height: 14px; font-size: 9px; line-height: 10px; text-align: center; font-weight: bold; color: #000; cursor: pointer; }
-    .win-body { padding: 10px; background: var(--gray); }
+    /* Motor de Ventanas Win98 Interactivas */
+    .window { position: absolute; background: var(--gray); border: 2px solid; border-color: var(--white) var(--dark) var(--dark) var(--white); padding: 3px; box-shadow: 1px 1px 10px rgba(0,0,0,0.4); display: none; min-width: 280px; min-height: 200px; z-index: 10; }
+    .title-bar { background: linear-gradient(90deg, var(--blue), var(--navy)); color: var(--white); padding: 4px 6px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; cursor: move; }
+    .title-text { display: flex; align-items: center; gap: 4px; font-weight: bold; }
+    .title-btn { background: var(--gray); border: 1px solid; border-color: var(--white) var(--dark) var(--dark) var(--white); width: 16px; height: 14px; font-size: 10px; line-height: 10px; text-align: center; font-weight: bold; color: #000; cursor: pointer; }
+    .win-body { padding: 10px; height: calc(100% - 22px); display: flex; flex-direction: column; overflow: auto; }
     .sunken { background: var(--white); border: 2px solid; border-color: var(--dark) var(--white) var(--white) var(--dark); padding: 8px; color: #000; }
     
-    /* IVU Calculator */
+    /* Esquinas/Bordes para Redimensionar (Resize handles) */
+    .resizer { position: absolute; width: 10px; height: 10px; background: transparent; right: 0; bottom: 0; cursor: se-resize; }
+
+    /* Calculadora IVU */
     .field { display: flex; justify-content: space-between; margin-bottom: 6px; align-items: center; }
     input, select { padding: 3px; border: 2px solid; border-color: var(--dark) var(--white) var(--white) var(--dark); background: var(--white); width: 100px; text-align: right; }
-    button.win-btn { background: var(--gray); border: 2px solid; border-color: var(--white) var(--dark) var(--dark) var(--white); padding: 3px 10px; font-weight: bold; cursor: pointer; margin-top: 5px; width: 100%; }
     
-    /* Music Player */
-    .track-list { margin-top: 8px; max-height: 80px; overflow-y: auto; font-size: 10px; }
-    .track { padding: 3px; cursor: pointer; border-bottom: 1px dotted var(--dark); }
+    /* Reproductor y Visualizador de Música */
+    .track-list { margin-top: 8px; flex-grow: 1; overflow-y: auto; font-size: 10px; max-height: 110px; }
+    .track { padding: 4px; cursor: pointer; border-bottom: 1px dotted var(--dark); }
     .track:hover, .track.active { background: var(--blue); color: var(--white); }
+    #visualizer { width: 100%; height: 50px; background: #000; border: 2px solid; border-color: var(--dark) var(--white) var(--white) var(--dark); margin-bottom: 6px; display: block; }
     
-    /* Taskbar */
-    .taskbar { position: absolute; bottom: 0; left: 0; right: 0; height: 30px; background: var(--gray); border-top: 2px solid var(--white); display: flex; justify-content: space-between; align-items: center; padding: 2px 6px; z-index: 999; }
-    .start-btn { font-weight: bold; background: var(--gray); border: 2px solid; border-color: var(--white) var(--dark) var(--dark) var(--white); padding: 2px 6px; display: flex; align-items: center; gap: 4px; cursor: pointer; }
+    /* Barra de Tareas e Inicio */
+    .taskbar { position: absolute; bottom: 0; left: 0; right: 0; height: 30px; background: var(--gray); border-top: 2px solid var(--white); display: flex; justify-content: space-between; align-items: center; padding: 2px 6px; z-index: 9999; }
+    .start-btn { font-weight: bold; background: var(--gray); border: 2px solid; border-color: var(--white) var(--dark) var(--dark) var(--white); padding: 2px 8px; display: flex; align-items: center; gap: 4px; cursor: pointer; }
+    .start-btn:active, .start-btn.open { border-color: var(--dark) var(--white) var(--white) var(--dark); padding: 3px 7px 1px 9px; }
+    
+    /* Menú Inicio Desplegable */
+    .start-menu { position: absolute; bottom: 28px; left: 2px; background: var(--gray); border: 2px solid; border-color: var(--white) var(--dark) var(--dark) var(--white); width: 180px; display: none; box-shadow: 2px 2px 10px rgba(0,0,0,0.5); z-index: 10000; }
+    .start-sidebar { width: 25px; background: linear-gradient(180deg, var(--dark), var(--blue)); color: var(--white); writing-mode: vertical-lr; transform: rotate(180deg); text-align: center; font-weight: bold; padding: 6px; font-size: 12px; letter-spacing: 1px; }
+    .menu-items { flex-grow: 1; display: flex; flex-direction: column; }
+    .menu-item { padding: 6px 10px; display: flex; align-items: center; gap: 8px; cursor: pointer; text-decoration: none; color: #000; }
+    .menu-item:hover { background: var(--blue); color: var(--white); }
     .systray { background: var(--gray); border: 2px solid; border-color: var(--dark) var(--white) var(--white) var(--dark); padding: 2px 6px; font-weight: bold; }
+    button.win-btn { background: var(--gray); border: 2px solid; border-color: var(--white) var(--dark) var(--dark) var(--white); padding: 3px 10px; font-weight: bold; cursor: pointer; margin-top: 5px; }
   </style>
 </head>
 <body>
 
-  <!-- Escritorio -->
-  <div class="desktop">
-    <div class="icon" onclick="openWin('win-ivu')">
-      <img src="https://alexmeub.com" alt="IVU">
-      IVU.exe
-    </div>
-    <div class="icon" onclick="openWin('win-music')">
-      <img src="https://alexmeub.com" alt="Música">
-      Playero.exe
-    </div>
-  </div>
+  <div class="desktop" onclick="closeStartMenu()"></div>
 
-  <!-- VENTANA: CALCULADORA IVU -->
-  <div id="win-ivu" class="window" style="top: 50px; left: 50px; width: 280px;">
+  <!-- ==========================================
+       PUNTO 1: INTERFAZ DE LAS VENTANAS (HTML)
+       Para agregar una app nueva, duplica una de estas estructuras
+       ========================================== -->
+
+  <!-- VENTANA 1: CALCULADORA IVU -->
+  <div id="win-ivu" class="window" style="top: 40px; left: 40px; width: 290px; height: 260px;">
     <div class="title-bar" onmousedown="dragStart(event, 'win-ivu')">
-      <span>🧮 Calculadora IVU Avanzada</span>
+      <div class="title-text"><img src="https://alexmeub.com" width="14"> Calculadora IVU Avanzada</div>
       <button class="title-btn" onclick="closeWin('win-ivu')">×</button>
     </div>
     <div class="win-body">
-      <div class="field">
-        <label>Cantidad (\$):</label>
-        <input type="number" id="amount" value="100" oninput="calcIVU()">
-      </div>
+      <div class="field"><label>Cantidad (\$):</label><input type="number" id="amount" value="100" oninput="calcIVU()"></div>
       <div class="field">
         <label>Tipo de IVU:</label>
         <select id="ivu-type" onchange="calcIVU()">
@@ -69,78 +72,155 @@
           <option value="7">Alimentos Prep. (7%)</option>
         </select>
       </div>
-      <div class="sunken" id="ivu-results" style="line-height: 1.6;">
-        Estatal (10.5%): \$0.00<br>Municipal (1%): \$0.00<br><b>Total IVU: \$0.00</b><br><b>Gran Total: \$0.00</b>
-      </div>
+      <div class="sunken" id="ivu-results" style="line-height: 1.6; flex-grow: 1;"></div>
     </div>
+    <div class="resizer" onmousedown="resizeStart(event, 'win-ivu')"></div>
   </div>
 
-  <!-- VENTANA: REPRODUCTOR REGGAETON -->
-  <div id="win-music" class="window" style="top: 80px; left: 120px; width: 300px;">
+  <!-- VENTANA 2: REPRODUCTOR REGGAETON -->
+  <div id="win-music" class="window" style="top: 80px; left: 100px; width: 310px; height: 320px;">
     <div class="title-bar" onmousedown="dragStart(event, 'win-music')">
-      <span>📻 Reggaeton Retro Player</span>
+      <div class="title-text"><img src="https://alexmeub.com" width="14"> Reggaeton Retro Player</div>
       <button class="title-btn" onclick="closeWin('win-music')">×</button>
     </div>
     <div class="win-body">
-      <div class="sunken" style="text-align: center; margin-bottom: 8px; font-weight: bold; background: #000; color: #0f0; font-family: monospace;" id="now-playing">
-        DISCO INSERTADO
-      </div>
-      <audio id="audio-player" controls style="width: 100%; margin-bottom: 8px;"></audio>
+      <div class="sunken" style="text-align: center; margin-bottom: 6px; font-weight: bold; background: #000; color: #0f0; font-family: monospace;" id="now-playing">DISCO DETENIDO</div>
+      <canvas id="visualizer"></canvas>
+      <audio id="audio-player" controls style="width: 100%; margin-bottom: 6px;"></audio>
       <div class="sunken track-list" id="playlist"></div>
-      <button class="win-btn" onclick="addTrackPrompt()">+ Agregar Canción (URL)</button>
+      <button class="win-btn" onclick="addTrackPrompt()">+ Agregar MP3 (URL)</button>
+    </div>
+    <div class="resizer" onmousedown="resizeStart(event, 'win-music')"></div>
+  </div>
+
+  <!-- [AQUÍ PEGA EL HTML DE TU PRÓXIMA APP CASERA SI TE INVENTAS UNA NUEVA] -->
+
+
+  <!-- MENÚ INICIO DESPLEGABLE -->
+  <div id="start-menu" class="start-menu" style="display: flex;">
+    <div class="start-sidebar">Windows 98</div>
+    <div class="menu-items">
+      <!-- Item Calculadora -->
+      <div class="menu-item" onclick="openWin('win-ivu'); closeStartMenu();">
+        <img src="https://alexmeub.com" width="16" height="16">
+        <span>Calculadora IVU</span>
+      </div>
+      <!-- Item Reproductor -->
+      <div class="menu-item" onclick="openWin('win-music'); closeStartMenu();">
+        <img src="https://alexmeub.com" width="16" height="16">
+        <span>Winamp Reggaeton</span>
+      </div>
+      
+      <!-- ==========================================
+           PUNTO 2: ACCESOS EN EL MENÚ INICIO (HTML)
+           Cuando agregues una app, pon su acceso directo aquí siguiendo este formato:
+           <div class="menu-item" onclick="openWin('ID_DE_TU_VENTANA'); closeStartMenu();">
+             <img src="URL_DE_ICONO" width="16" height="16">
+             <span>Nombre de tu App</span>
+           </div>
+           ========================================== -->
     </div>
   </div>
 
-  <!-- Barra de tareas -->
+  <!-- BARRA DE TAREAS ABAJO -->
   <div class="taskbar">
-    <div class="start-btn"><img src="https://alexmeub.com" width="14">Inicio</div>
+    <div class="start-btn" id="btn-start" onclick="toggleStartMenu(event)">
+      <img src="https://alexmeub.com" width="14"><b>Inicio</b>
+    </div>
     <div class="systray" id="clock">00:00 AM</div>
   </div>
 
   <script>
-    // --- LÓGICA DE VENTANAS INTERACTIVAS (DRAG & DROP) ---
-    let activeWin = null, offsetX = 0, offsetY = 0;
-    function openWin(id) { const w = document.getElementById(id); w.style.display = 'block'; w.style.zIndex = ++zIndexCounter; }
+    // --- MOTOR DE VENTANAS INTERACTIVAS (DRAG, DROP & FOCUS) ---
+    let activeWin = null, offsetX = 0, offsetY = 0, zIndexCounter = 10;
+    function openWin(id) { const w = document.getElementById(id); w.style.display = 'block'; w.style.zIndex = ++zIndexCounter; if(id==='win-music') initAudio(); }
     function closeWin(id) { document.getElementById(id).style.display = 'none'; }
-    let zIndexCounter = 10;
-
+    
     function dragStart(e, id) {
-      activeWin = document.getElementById(id);
-      activeWin.style.zIndex = ++zIndexCounter;
-      offsetX = e.clientX - activeWin.offsetLeft;
-      offsetY = e.clientY - activeWin.offsetTop;
-      document.addEventListener('mousemove', dragMove);
-      document.addEventListener('mouseup', dragEnd);
+      if(e.target.classList.contains('title-btn')) return;
+      activeWin = document.getElementById(id); activeWin.style.zIndex = ++zIndexCounter;
+      offsetX = e.clientX - activeWin.offsetLeft; offsetY = e.clientY - activeWin.offsetTop;
+      document.addEventListener('mousemove', dragMove); document.addEventListener('mouseup', dragEnd);
     }
     function dragMove(e) { if (activeWin) { activeWin.style.left = (e.clientX - offsetX) + 'px'; activeWin.style.top = (e.clientY - offsetY) + 'px'; } }
     function dragEnd() { activeWin = null; document.removeEventListener('mousemove', dragMove); document.removeEventListener('mouseup', dragEnd); }
 
-    // --- RELOJ DE LA BARRA DE TAREAS ---
-    setInterval(() => {
-      const d = new Date();
-      document.getElementById('clock').textContent = d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-    }, 1000);
+    // --- MOTOR DE REDIMENSIONAMIENTO (RESIZE) ---
+    let resizeWin = null, startW = 0, startH = 0, startX = 0, startY = 0;
+    function resizeStart(e, id) {
+      e.preventDefault(); resizeWin = document.getElementById(id);
+      startW = parseInt(document.defaultView.getComputedStyle(resizeWin).width, 10);
+      startH = parseInt(document.defaultView.getComputedStyle(resizeWin).height, 10);
+      startX = e.clientX; startY = e.clientY;
+      document.addEventListener('mousemove', resizeMove); 
+      document.addEventListener('mouseup', resizeEnd);
+    }
+    
+    function resizeMove(e) { 
+      if (resizeWin) { 
+        resizeWin.style.width = (startW + e.clientX - startX) + 'px'; 
+        resizeWin.style.height = (startH + e.clientY - startY) + 'px'; 
+      } 
+    }
+    
+    function resizeEnd() { 
+      resizeWin = null; 
+      document.removeEventListener('mousemove', resizeMove); 
+      document.removeEventListener('mouseup', resizeEnd); 
+    }
 
-    // --- CALCULADORA DEL IVU AVANZADA ---
+    // --- CONTROL DEL MENÚ DE INICIO ---
+    function toggleStartMenu(e) { 
+      e.stopPropagation(); 
+      const m = document.getElementById('start-menu'); 
+      const b = document.getElementById('btn-start'); 
+      if (m.style.display === 'flex') { 
+        m.style.display = 'none'; 
+        b.classList.remove('open'); 
+      } else { 
+        m.style.display = 'flex'; 
+        b.classList.add('open'); 
+      }
+    }
+    
+    function closeStartMenu() { 
+      document.getElementById('start-menu').style.display = 'none'; 
+      document.getElementById('btn-start').classList.remove('open'); 
+    }
+    
+    // Reloj del sistema en tiempo real
+    setInterval(() => { 
+      document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }); 
+    }, 1000);
+    
+    // Iniciar el menú cerrado por defecto
+    closeStartMenu(); 
+
+    // --- CALCULADORA DEL IVU DE PUERTO RICO ---
     function calcIVU() {
       const amt = parseFloat(document.getElementById('amount').value) || 0;
       const type = parseFloat(document.getElementById('ivu-type').value);
       let estatal = 0, municipal = 0;
       
-      if (type === 11.5) { estatal = amt * 0.105; municipal = amt * 0.01; } 
-      else { estatal = amt * 0.06; municipal = amt * 0.01; } // Ajuste proporcional para alimentos preparados (7% total)
-
+      if (type === 11.5) { 
+        estatal = amt * 0.105; 
+        municipal = amt * 0.01; 
+      } else { 
+        estatal = amt * 0.06; 
+        municipal = amt * 0.01; 
+      }
+      
       const totalIvu = estatal + municipal;
       document.getElementById('ivu-results').innerHTML = `
         Estatal (${type === 11.5 ? '10.5%' : '6%'}): $${estatal.toFixed(2)}<br>
         Municipal (1%): $${municipal.toFixed(2)}<br>
         <b>Total IVU (${type}%): $${totalIvu.toFixed(2)}</b><br>
-        <b>Gran Total: $${(amt + totalIvu).toFixed(2)}</b>`;
+        <b>Gran Total: $${(amt + totalIvu).toFixed(2)}</b>
+      `;
     }
     calcIVU();
 
     // --- REPRODUCTOR DE MÚSICA REGGAETON RETRO ---
-    // PUEDES AGREGAR O ELIMINAR CANCIONES EDITANDO ESTA LISTA DIRECTAMENTE:
     const canciones = [
       { titulo: "Don Omar - Dile (Retro 2003)", url: "https://soundhelix.com" },
       { titulo: "Daddy Yankee - Gasolina (2004)", url: "https://soundhelix.com" },
@@ -148,24 +228,81 @@
     ];
 
     const audio = document.getElementById('audio-player');
-    function renderPlaylist() {
-      const container = document.getElementById('playlist');
-      container.innerHTML = canciones.map((c, i) => `<div class="track" onclick="playTrack(${i})">${i+1}. ${c.titulo}</div>`).join('');
+    
+    function renderPlaylist() { 
+      document.getElementById('playlist').innerHTML = canciones.map((c, i) => 
+        `<div class="track" onclick="playTrack(${i})">💽 ${c.titulo}</div>`
+      ).join(''); 
     }
-
+    
     function playTrack(i) {
       document.querySelectorAll('.track').forEach((t, idx) => t.classList.toggle('active', idx === i));
       document.getElementById('now-playing').textContent = canciones[i].titulo.toUpperCase();
-      audio.src = canciones[i].url;
+      audio.src = canciones[i].url; 
+      audio.crossOrigin = "anonymous"; 
       audio.play();
     }
-
+    
     function addTrackPrompt() {
-      const title = prompt("Nombre de la canción de reggaeton:");
-      const url = prompt("Enlace directo al archivo MP3 (URL):");
-      if (title && url) { canciones.push({ titulo: title, url: url }); renderPlaylist(); }
+      const title = prompt("Nombre del tema de Reggaeton:"); 
+      const url = prompt("Enlace directo MP3:");
+      if (title && url) { 
+        canciones.push({ titulo: title, url: url }); 
+        renderPlaylist(); 
+      }
     }
     renderPlaylist();
+
+    // --- VISUALIZADOR DE AUDIO ESTILO WINDOWS XP ---
+    let audioCtx, analyser, source, canvas, canvasCtx, audioInit = false;
+    
+    function initAudio() {
+      if (audioInit) return; 
+      audioInit = true;
+      canvas = document.getElementById('visualizer'); 
+      canvasCtx = canvas.getContext('2d');
+      
+      audio.addEventListener('play', () => {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          analyser = audioCtx.createAnalyser();
+          source = audioCtx.createMediaElementSource(audio);
+          source.connect(analyser); 
+          analyser.connect(audioCtx.destination);
+          analyser.fftSize = 64;
+          drawVisualizer();
+        }
+      });
+    }
+
+    function drawVisualizer() {
+      requestAnimationFrame(drawVisualizer);
+      const bufferLength = analyser.frequencyBinCount;
+      const dataArray = new Uint8Array(bufferLength);
+      analyser.getByteFrequencyData(dataArray);
+      
+      canvasCtx.fillStyle = '#000'; 
+      canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      const barWidth = (canvas.width / bufferLength) * 1.5;
+      let barX = 0;
+      
+      for (let i = 0; i < bufferLength; i++) {
+        let barHeight = dataArray[i] / 4;
+        // Barras verdes y amarillas brillantes tipo Media Player clásico
+        canvasCtx.fillStyle = `rgb(${barHeight * 3}, 255, 0)`;
+        canvasCtx.fillRect(barX, canvas.height - barHeight, barWidth - 2, barHeight);
+        barX += barWidth;
+      }
+    }
+
+    // ==========================================
+    // PUNTO 3: LOGICA DE TUS PRÓXIMAS APPS (JAVASCRIPT)
+    // Si creas una app interactiva que requiera funciones lógicas,
+    // puedes programar tus métodos de cálculo o comportamiento justo aquí abajo:
+    // ==========================================
+    
+    console.log("Win98 Shell iniciada correctamente.");
   </script>
 </body>
 </html>
