@@ -1,382 +1,136 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Win98_LottoPR.exe - Lotería de Puerto Rico</title>
-  <style>
-    :root {
-      --win-gray: #c0c0c0;
-      --win-dark-gray: #808080;
-      --win-light-gray: #dfdfdf;
-      --win-blue: #000080;
-      --win-navy: #1084d0;
-      --win-white: #ffffff;
-      --win-black: #000000;
+    // URLs de extracción en tiempo real usando un proxy CORS libre
+    const PROXY = "https://allorigins.win";
+    const TARGET = encodeURIComponent("https://lottery.jackpocket.com/en/lottery-results/puerto-rico");
+
+    // Al arrancar el "Sistema Operativo Win98"
+    window.onload = function() {
+      fetchLottoRealTime();
+      renderHistory();
+    };
+
+    async function fetchLottoRealTime() {
+      // Intentar buscar un contenedor de texto de estado en la UI, o usar la consola si no existe
+      console.log("Win98_Network: Estableciendo conexión dial-up con Jackpocket...");
+      
+      try {
+        const response = await fetch(`${PROXY}${TARGET}`);
+        if (!response.ok) throw new Error("Error de red");
+        
+        const resData = await response.json();
+        
+        // Convertir el texto HTML plano en un documento DOM para buscar elementos
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(resData.contents, "text/html");
+        
+        // Objeto temporal para mapear lo que encontremos en la web
+        window.winningMap = {};
+
+        // Extraer los bloques de juegos de la página de Jackpocket
+        const gameRows = doc.querySelectorAll('.v-list-item');
+        
+        gameRows.forEach(row => {
+          const titleEl = row.querySelector('.v-list-item__title');
+          const subtitleEl = row.querySelector('.v-list-item__subtitle');
+          
+          if (titleEl && subtitleEl) {
+            const title = titleEl.textContent.trim().toUpperCase(); // Ej: "PEGA 3 NOCHE"
+            const rawNumbers = subtitleEl.textContent.trim(); // Ej: "9 2 9 Wild Ball: 5"
+            
+            // Limpiar y extraer solo los dígitos principales para nuestro buscador rápido
+            const digitsOnly = rawNumbers.replace(/Wild Ball:.*\$/i, '').replace(/\D/g, '');
+            
+            if (digitsOnly) {
+              window.winningMap[digitsOnly] = `¡Ganador en ${title}!`;
+            }
+            
+            // Actualizar visualmente las tarjetas de la interfaz Win98 de manera dinámica
+            actualizarInterfazGrafica(title, rawNumbers);
+          }
+        });
+
+        console.log("Sincronización Win98 completada con éxito. Datos cargados.");
+      } catch (error) {
+        console.error("Fallo de red Win98: Usando contingencia local por desconexión.");
+        cargarBackupLocal();
+      }
     }
 
-    * {
-      box-sizing: border-box;
-      font-family: 'MS Sans Serif', Tahoma, Geneva, sans-serif;
-      margin: 0;
-      padding: 0;
+    // Busca las tarjetas de juego en el HTML y actualiza sus esferas amarillas
+    function actualizarInterfazGrafica(titulo, textoNumeros) {
+      // Extrae la parte antes de la Wild Ball
+      const partePrincipal = textoNumeros.replace(/Wild Ball:.*\$/i, '').trim();
+      const numerosArray = partePrincipal.split(/\s+/).filter(n => n.length > 0);
+      
+      // Extrae la Wild Ball si existe
+      const wbMatch = textoNumeros.match(/Wild Ball:\s*(\d+)/i);
+      const wbValue = wbMatch ? wbMatch[1] : null;
+
+      // Mapeo selectivo por títulos comunes de la lotería de Puerto Rico
+      let targetCardIndex = -1;
+      if (titulo.includes("PEGA 2")) targetCardIndex = 0;
+      else if (titulo.includes("PEGA 3")) targetCardIndex = 1;
+      else if (titulo.includes("PEGA 4")) targetCardIndex = 2;
+      else if (titulo.includes("LOTO") || titulo.includes("POWERBALL")) targetCardIndex = 3;
+
+      if (targetCardIndex !== -1) {
+        const card = document.querySelectorAll('.game-card')[targetCardIndex];
+        if (card) {
+          const titleSpan = card.querySelector('.game-header span:first-child');
+          if (titleSpan) titleSpan.textContent = titulo; // Actualiza el nombre exacto del sorteo (Día/Noche)
+          
+          const numbersRow = card.querySelector('.numbers-row');
+          if (numbersRow) {
+            let htmlBolas = numerosArray.map(n => `<div class="num-ball">${n}</div>`).join('');
+            if (wbValue) {
+              htmlBolas += `<span style="font-size:11px;">WB:</span><div class="num-ball wild-ball">${wbValue}</div>`;
+            }
+            numbersRow.innerHTML = htmlBolas;
+          }
+        }
+      }
     }
 
-    body {
-      background-color: #008080; /* Clásico verde teal de fondo de Win98 */
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 15px;
+    // Sistema de respaldo por si el proxy falla o se satura temporalmente
+    function cargarBackupLocal() {
+      window.winningMap = {
+        "64": "¡Ganador simulado en Pega 2!",
+        "611": "¡Ganador simulado en Pega 3!",
+        "4108": "¡Ganador simulado en Pega 4!"
+      };
     }
 
-    /* Estilo de Ventana Windows 98 */
-    .win98-window {
-      width: 100%;
-      max-width: 640px;
-      background-color: var(--win-gray);
-      border-top: 2px solid var(--win-white);
-      border-left: 2px solid var(--win-white);
-      border-right: 2px solid var(--win-dark-gray);
-      border-bottom: 2px solid var(--win-dark-gray);
-      box-shadow: 2px 2px 10px rgba(0,0,0,0.5);
-      padding: 3px;
-    }
-
-    /* Barra de título de la ventana */
-    .title-bar {
-      background: linear-gradient(90deg, var(--win-blue), var(--win-navy));
-      color: var(--win-white);
-      padding: 4px 6px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-weight: bold;
-      font-size: 13px;
-    }
-
-    .title-bar-controls button {
-      background-color: var(--win-gray);
-      border-top: 1px solid var(--win-white);
-      border-left: 1px solid var(--win-white);
-      border-right: 1px solid var(--win-dark-gray);
-      border-bottom: 1px solid var(--win-dark-gray);
-      width: 16px;
-      height: 14px;
-      font-size: 10px;
-      font-weight: bold;
-      line-height: 10px;
-      text-align: center;
-      cursor: pointer;
-    }
-
-    /* Menú superior tipo Win98 */
-    .menu-bar {
-      display: flex;
-      gap: 15px;
-      padding: 2px 6px;
-      font-size: 12px;
-      border-bottom: 1px solid var(--win-dark-gray);
-    }
-
-    .menu-bar span {
-      cursor: pointer;
-    }
-    .menu-bar span:hover {
-      background-color: var(--win-blue);
-      color: var(--win-white);
-    }
-
-    /* Contenido de la ventana */
-    .window-body {
-      padding: 10px;
-    }
-
-    /* Paneles internos hundidos (Sunken panel) */
-    .sunken-panel {
-      background-color: var(--win-white);
-      border-top: 2px solid var(--win-dark-gray);
-      border-left: 2px solid var(--win-dark-gray);
-      border-right: 2px solid var(--win-white);
-      border-bottom: 2px solid var(--win-white);
-      padding: 10px;
-      margin-bottom: 10px;
-    }
-
-    .section-title {
-      font-size: 13px;
-      font-weight: bold;
-      margin-bottom: 8px;
-      color: var(--win-blue);
-      border-bottom: 1px dotted var(--win-dark-gray);
-      padding-bottom: 3px;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    /* Tarjetas de juego */
-    .game-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 8px;
-    }
-
-    .game-card {
-      background-color: var(--win-light-gray);
-      border-top: 1.5px solid var(--win-white);
-      border-left: 1.5px solid var(--win-white);
-      border-right: 1.5px solid var(--win-dark-gray);
-      border-bottom: 1.5px solid var(--win-dark-gray);
-      padding: 8px;
-    }
-
-    .game-header {
-      font-weight: bold;
-      font-size: 12px;
-      margin-bottom: 6px;
-      background-color: #dfdfdf;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .numbers-row {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    .num-ball {
-      background-color: #ffffcc;
-      border: 1px solid var(--win-black);
-      width: 28px;
-      height: 28px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      font-size: 13px;
-      box-shadow: inset 1px 1px 0px #fff;
-    }
-
-    .wild-ball {
-      background-color: #ffcccc;
-      color: #990000;
-    }
-
-    .loto-ball {
-      background-color: #cce5ff;
-      border-radius: 50%;
-    }
-
-    /* Buscador / Verificador rápido */
-    .checker-box {
-      margin-top: 10px;
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-
-    input[type="text"] {
-      flex: 1;
-      padding: 4px;
-      border-top: 2px solid var(--win-dark-gray);
-      border-left: 2px solid var(--win-dark-gray);
-      border-right: 2px solid var(--win-white);
-      border-bottom: 2px solid var(--win-white);
-      background: var(--win-white);
-      font-size: 12px;
-    }
-
-    button.win98-btn {
-      background-color: var(--win-gray);
-      border-top: 2px solid var(--win-white);
-      border-left: 2px solid var(--win-white);
-      border-right: 2px solid var(--win-dark-gray);
-      border-bottom: 2px solid var(--win-dark-gray);
-      padding: 4px 12px;
-      font-size: 12px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    button.win98-btn:active {
-      border-top: 2px solid var(--win-dark-gray);
-      border-left: 2px solid var(--win-dark-gray);
-      border-right: 2px solid var(--win-white);
-      border-bottom: 2px solid var(--win-white);
-    }
-
-    .status-bar {
-      border-top: 1px solid var(--win-dark-gray);
-      padding-top: 4px;
-      font-size: 11px;
-      display: flex;
-      justify-content: space-between;
-      color: #333;
-    }
-  </style>
-</head>
-<body>
-
-  <div class="win98-window">
-    <!-- Barra de Título -->
-    <div class="title-bar">
-      <span>💾 LoteríaPR_v98.exe - [Resultados en Vivo]</span>
-      <div class="title-bar-controls">
-        <button>_</button>
-        <button>□</button>
-        <button>×</button>
-      </div>
-    </div>
-
-    <!-- Barra de Menú -->
-    <div class="menu-bar">
-      <span><u>A</u>rchivo</span>
-      <span><u>V</u>erificar</span>
-      <span><u>A</u>yuda</span>
-    </div>
-
-    <div class="window-body">
-      <!-- Panel de Últimos Sorteos -->
-      <div class="sunken-panel">
-        <div class="section-title">
-          <span>RESULTADOS OFICIALES (Lotería Electrónica & Tradicional)</span>
-          <span>Actualizado: 2026</span>
-        </div>
-
-        <div class="game-grid">
-          <!-- Pega 2 -->
-          <div class="game-card">
-            <div class="game-header"><span>PEGA 2 (Noche)</span><span>Diario</span></div>
-            <div class="numbers-row">
-              <div class="num-ball">6</div>
-              <div class="num-ball">4</div>
-              <span style="font-size:11px;">WB:</span>
-              <div class="num-ball wild-ball">7</div>
-            </div>
-          </div>
-
-          <!-- Pega 3 -->
-          <div class="game-card">
-            <div class="game-header"><span>PEGA 3 (Noche)</span><span>Diario</span></div>
-            <div class="numbers-row">
-              <div class="num-ball">6</div>
-              <div class="num-ball">1</div>
-              <div class="num-ball">1</div>
-              <span style="font-size:11px;">WB:</span>
-              <div class="num-ball wild-ball">7</div>
-            </div>
-          </div>
-
-          <!-- Pega 4 -->
-          <div class="game-card">
-            <div class="game-header"><span>PEGA 4 (Noche)</span><span>Diario</span></div>
-            <div class="numbers-row">
-              <div class="num-ball">4</div>
-              <div class="num-ball">1</div>
-              <div class="num-ball">0</div>
-              <div class="num-ball">8</div>
-              <span style="font-size:11px;">WB:</span>
-              <div class="num-ball wild-ball">6</div>
-            </div>
-          </div>
-
-          <!-- Loto Cash -->
-          <div class="game-card">
-            <div class="game-header"><span>LOTO CASH</span><span>Lun/Mié/Vie</span></div>
-            <div class="numbers-row">
-              <div class="num-ball">05</div>
-              <div class="num-ball">12</div>
-              <div class="num-ball">19</div>
-              <div class="num-ball">24</div>
-              <div class="num-ball">31</div>
-              <div class="num-ball loto-ball" title="Bolo Cash">08</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Lotería Tradicional -->
-        <div style="margin-top: 8px;" class="game-card">
-          <div class="game-header"><span>LOTERÍA TRADICIONAL (Sorteo Reciente)</span><span>Billete / Maquina</span></div>
-          <div style="font-size: 11px; margin-top: 4px;">
-            1er Premio: <b>38721</b> | 2do Premio: <b>13928</b> | 3er Premio: <b>46131</b>
-          </div>
-        </div>
-      </div>
-
-      <!-- Verificador Rápido de Números -->
-      <div class="sunken-panel">
-        <div class="section-title">VERIFICADOR RÁPIDO DE TU JUGADA</div>
-        <p style="font-size: 11px; margin-bottom: 4px;">Introduce tu número (ej: 611 para Pega 3):</p>
-        <div class="checker-box">
-          <input type="text" id="userNum" placeholder="Escribe tu número aquí...">
-          <button class="win98-btn" onclick="checkNumber()">Comprobar</button>
-        </div>
-        <div id="resultMsg" style="font-size: 12px; margin-top: 6px; font-weight: bold; color: var(--win-blue);"></div>
-      </div>
-
-      <!-- Barra de Estado inferior -->
-      <div class="status-bar">
-        <span>Listo</span>
-        <span>Loterías de Puerto Rico - Win98 Client</span>
-      </div>
-    </div>
-  </div>
-
-  <script>
+    // Lógica del Verificador de números vinculada al LocalStorage
     function checkNumber() {
       const val = document.getElementById('userNum').value.trim();
-      const winningMap = {
-        "64": "¡Ganador en Pega 2!",
-        "611": "¡Ganador en Pega 3!",
-        "4108": "¡Ganador en Pega 4!"
-      };
       const msg = document.getElementById('resultMsg');
-      if (!val) {
-        msg.textContent = "Por favor, digita un número.";
-        return;
-      }
-      if (winningMap[val]) {
-      };
       
-      const msg = document.getElementById('resultMsg');
+      if (!window.winningMap) cargarBackupLocal();
+
       if (!val) {
-        msg.textContent = "Error de Sistema: Por favor, digita un número.";
+        msg.textContent = "Error: Input vacío.";
         msg.style.color = "red";
         return;
       }
       
-      if (winningMap[val]) {
-        msg.textContent = `[OK] ${winningMap[val]} (Coincide con sorteo de hoy)`;
+      if (window.winningMap[val]) {
+        msg.textContent = `[OK] ${window.winningMap[val]}`;
         msg.style.color = "green";
-        saveToWinHistory(val, "Ganador");
+        saveToHistory(val, "Ganador");
       } else {
-        msg.textContent = `[X] El número ${val} no aparece premiado hoy. Intente de nuevo.`;
+        msg.textContent = `[X] El número ${val} no registra premios mayores en este sorteo.`;
         msg.style.color = "var(--win-blue)";
-        saveToWinHistory(val, "No Premiado");
+        saveToHistory(val, "No Premiado");
       }
     }
 
-    // Funciones adicionales estilo Win98 (Guardar en LocalStorage)
-    function saveToWinHistory(num, status) {
+    function saveToHistory(num, status) {
       let history = JSON.parse(localStorage.getItem('win98_lotto_history')) || [];
-      history.unshift({ num, status, date: new Date().toLocaleTimeString() });
-      if(history.length > 5) history.pop(); // Mantener solo los últimos 5
+      history.unshift({ num, status, time: new Date().toLocaleTimeString() });
+      if(history.length > 5) history.pop();
       localStorage.setItem('win98_lotto_history', JSON.stringify(history));
       renderHistory();
     }
 
     function renderHistory() {
-      // Si deseas renderizar una lista, puedes añadir un div con id "historyLog" en tu HTML
-      console.log("Historial Win98 actualizado en LocalStorage.");
+      console.log("Historial de consultas del registro de Windows sincronizado.");
     }
-
-    // Evento de simulación de carga del sistema operativo al abrir la página
-    window.onload = function() {
-      console.log("Win98_LottoPR.exe cargado correctamente en memoria base.");
-    };
-  </script>
-</body>
-</html>
