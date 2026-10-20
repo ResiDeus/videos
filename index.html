@@ -13,14 +13,14 @@
             font-family: 'Share Tech Mono', monospace;
             background-color: #0c0414; /* Fondo exterior ultra oscuro */
         }
-        /* Bloqueo estricto del chasis de la calculadora para evitar que se ensanche */
+        /* Bloqueo estricto del chasis estilo beeper para evitar deformaciones */
         .chasis-calculadora {
             width: 310px;
             background-color: #241434;
             border: 4px solid #ff007f;
             box-shadow: 0 0 25px rgba(255, 0, 127, 0.4);
         }
-        /* Pantalla de Cristal Líquido Retro con Máximo Contraste (Fondo claro, letras negras) */
+        /* Pantalla LCD Retro con Máximo Contraste (Fondo claro, letras negras) */
         .pantalla-lcd {
             background-color: #92b043; /* Verde oliva clásico de pantallas monocromáticas */
             border: 3px solid #000000;
@@ -61,10 +61,10 @@
         }
     </style>
 </head>
-<body class="h-screen w-screen flex items-center justify-center p-2 select-none">
+<body class="h-screen w-screen flex items-center justify-center p-2 select-none overflow-hidden">
 
-    <!-- RECIPIENTE DE LA CALCULADORA FÍSICA -->
-    <div class="chasis-calculadora rounded-3xl p-4 flex flex-col space-y-3 shrink-0">
+    <!-- COMPONENTE CENTRALIZADO EN LA PANTALLA -->
+    <div class="chasis-calculadora rounded-3xl p-4 flex flex-col space-y-3 shrink-0 mx-auto my-auto">
         
         <!-- PANTALLA LCD (MÁXIMA LEGIBILIDAD) -->
         <div class="pantalla-lcd rounded-lg p-3 flex flex-col justify-between text-right h-28 shrink-0 font-mono">
@@ -125,103 +125,114 @@
         </div>
     </div>
 
-    <!-- Vinculación del Cerebro Operativo -->
-    <script src="app.js"></script>
+    <!-- CEREBRO OPERATIVO INTEGRADO (CORREGIDO) -->
+    <script>
+        let tasaIvu = 11.5;
+        let campoActivo = 'subtotal'; 
+        let textoSubtotal = "0";
+        let textoPersonas = "0";
+
+        function cambiarEnfoque(campo) {
+            campoActivo = campo;
+            document.getElementById('cajaSubtotal').classList.remove('campo-enfocado');
+            document.getElementById('cajaPersonas').classList.remove('campo-enfocado');
+            
+            if (campo === 'subtotal') document.getElementById('cajaSubtotal').classList.add('campo-enfocado');
+            if (campo === 'personas') document.getElementById('cajaPersonas').classList.add('campo-enfocado');
+        }
+
+        function cambiarIvu(porcentaje) {
+            tasaIvu = porcentaje;
+            ['ivu115', 'ivu6', 'ivu0'].forEach(id => {
+                document.getElementById(id).className = "py-1.5 rounded-lg btn-ivu-inactivo";
+            });
+
+            let idActivo = porcentaje === 11.5 ? 'ivu115' : porcentaje === 6.0 ? 'ivu6' : 'ivu0';
+            document.getElementById(idActivo).className = "py-1.5 rounded-lg btn-ivu-activo";
+            document.getElementById('txtIvuActual').innerText = `IVU: ${porcentaje.toFixed(1)}%`;
+            ejecutarCalculos();
+        }
+
+        function marcarNumero(caracter) {
+            if (campoActivo === 'subtotal') {
+                if (textoSubtotal === "0" && caracter !== '.') textoSubtotal = "";
+                if (caracter === '.' && textoSubtotal.includes('.')) return; 
+                textoSubtotal += caracter;
+                document.getElementById('lblSubtotal').innerText = textoSubtotal;
+            } else {
+                if (caracter === '.') return; 
+                if (textoPersonas === "0") textoPersonas = "";
+                textoPersonas += caracter;
+                document.getElementById('lblPersonas').innerText = textoPersonas;
+            }
+            ejecutarCalculos();
+        }
+
+        function borrarTodo() {
+            if (campoActivo === 'subtotal') {
+                textoSubtotal = "0";
+                document.getElementById('lblSubtotal').innerText = "0";
+            } else {
+                textoPersonas = "0";
+                document.getElementById('lblPersonas').innerText = "0";
+            }
+            ejecutarCalculos();
+        }
+
+        function ejecutarCalculos() {
+            let subtotalNumerico = parseFloat(textoSubtotal) || 0;
+            let personasNumerico = parseInt(textoPersonas) || 0;
+
+            let valorPropina = subtotalNumerico * 0.18;
+            let valorIvu = subtotalNumerico * (tasaIvu / 100);
+            let valorTotal = subtotalNumerico + valorPropina + valorIvu;
+            
+            let divisor = personasNumerico > 0 ? personasNumerico : 1;
+            let valorPorPersona = valorTotal / divisor;
+
+            document.getElementById('outTip').innerText = `$${valorPropina.toFixed(2)}`;
+            document.getElementById('outTip').innerText = `$${valorPropina.toFixed(2)}`;
+            document.getElementById('outIvu').innerText = `$${valorIvu.toFixed(2)}`;
+            document.getElementById('outPerPerson').innerText = valorPorPersona.toFixed(2);
+        }
+
+        function compartirWhatsApp() {
+            let perPerson = document.getElementById('outPerPerson').innerText;
+            let tip = document.getElementById('outTip').innerText;
+            
+            let text = `📟 *PR BEEPER CALC* 📟\n`;
+            text += `Cuota individual: *$${perPerson}*\n`;
+            text += `Incluye Propina Auto (18%): ${tip}\n`;
+            text += `Dividido entre: ${textoPersonas} personas\n`;
+            text += `¡Enviado vía beeper por ATH Móvil! 🇵🇷`;
+
+            // SISTEMA DE SEGURIDAD CONTRA ERRORES DE NAVEGACIÓN LOCAL
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).then(() => {
+                    alert('¡Mensaje copiado! Listo para pegar en WhatsApp.');
+                }).catch(err => {
+                    fallbackCopiarTexto(text);
+                });
+            } else {
+                fallbackCopiarTexto(text);
+            }
+        }
+
+        function fallbackCopiarTexto(texto) {
+            const textArea = document.createElement("textarea");
+            textArea.value = texto;
+            textArea.style.position = "fixed"; 
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                alert('¡Mensaje copiado con éxito!');
+            } catch (err) {
+                alert('Error al copiar. Inténtalo de nuevo.');
+            }
+            document.body.removeChild(textArea);
+        }
+    </script>
 </body>
 </html>
-// --- VARIABLES DE ESTADO INTERNO ---
-let tasaIvu = 11.5;
-let campoActivo = 'subtotal'; // Controla qué recuadro recibe los números ('subtotal' o 'personas')
-let textoSubtotal = "0";
-let textoPersonas = "0";
-
-// --- CAMBIAR EL FOCO DE ENTRADA ---
-function cambiarEnfoque(campo) {
-    campoActivo = campo;
-    document.getElementById('cajaSubtotal').classList.remove('campo-enfocado');
-    document.getElementById('cajaPersonas').classList.remove('campo-enfocado');
-    
-    if (campo === 'subtotal') document.getElementById('cajaSubtotal').classList.add('campo-enfocado');
-    if (campo === 'personas') document.getElementById('cajaPersonas').classList.add('campo-enfocado');
-}
-
-// --- CAMBIAR TASA DE IVU (INTERRUPTORES FÍSICOS) ---
-function cambiarIvu(porcentaje) {
-    tasaIvu = porcentaje;
-    
-    // Resetear todos los estilos visuales a inactivos
-    ['ivu115', 'ivu6', 'ivu0'].forEach(id => {
-        document.getElementById(id).className = "py-1.5 rounded-lg btn-ivu-inactivo";
-    });
-
-    // Encender en rosa neón el botón seleccionado
-    let idActivo = porcentaje === 11.5 ? 'ivu115' : porcentaje === 6.0 ? 'ivu6' : 'ivu0';
-    document.getElementById(idActivo).className = "py-1.5 rounded-lg btn-ivu-activo";
-    document.getElementById('txtIvuActual').innerText = `IVU: ${porcentaje.toFixed(1)}%`;
-    
-    ejecutarCalculos();
-}
-
-// --- CAPTURA DE BOTONES NUMÉRICOS ---
-function marcarNumero(caracter) {
-    if (campoActivo === 'subtotal') {
-        if (textoSubtotal === "0" && caracter !== '.') textoSubtotal = "";
-        if (caracter === '.' && textoSubtotal.includes('.')) return; // Bloquear doble punto
-        textoSubtotal += caracter;
-        document.getElementById('lblSubtotal').innerText = textoSubtotal;
-    } else {
-        if (caracter === '.') return; // Las personas no llevan decimales
-        if (textoPersonas === "0") textoPersonas = "";
-        textoPersonas += caracter;
-        document.getElementById('lblPersonas').innerText = textoPersonas;
-    }
-    ejecutarCalculos();
-}
-
-// --- BOTÓN DE REINICIO / BORRAR (C) ---
-function borrarTodo() {
-    if (campoActivo === 'subtotal') {
-        textoSubtotal = "0";
-        document.getElementById('lblSubtotal').innerText = "0";
-    } else {
-        textoPersonas = "0";
-        document.getElementById('lblPersonas').innerText = "0";
-    }
-    ejecutarCalculos();
-}
-
-// --- PROCESADOR MATEMÁTICO ---
-function ejecutarCalculos() {
-    let subtotalNumerico = parseFloat(textoSubtotal) || 0;
-    let personasNumerico = parseInt(textoPersonas) || 0;
-
-    // Matemática del negocio: Propina del 18% automática sobre el costo base
-    let valorPropina = subtotalNumerico * 0.18;
-    let valorIvu = subtotalNumerico * (tasaIvu / 100);
-    let valorTotal = subtotalNumerico + valorPropina + valorIvu;
-    
-    // Evitar divisiones por cero o infinitos si no hay personas escritas
-    let divisor = personasNumerico > 0 ? personasNumerico : 1;
-    let valorPorPersona = valorTotal / divisor;
-
-    // Pintar resultados con letras negras en la pantalla LCD de alto contraste
-    document.getElementById('outTip').innerText = `$${valorPropina.toFixed(2)}`;
-    document.getElementById('outIvu').innerText = `$${valorIvu.toFixed(2)}`;
-    document.getElementById('outPerPerson').innerText = valorPorPersona.toFixed(2);
-}
-
-// --- COMPARTIR POR WHATSAPP ---
-function compartirWhatsApp() {
-    let perPerson = document.getElementById('outPerPerson').innerText;
-    let tip = document.getElementById('outTip').innerText;
-    
-    let text = `📟 *CÓMPUTO DE CUENTA PR* 📟\n`;
-    text += `Cuota individual: *$${perPerson}*\n`;
-    text += `Incluye Propina Auto (18%): ${tip}\n`;
-    text += `Dividido entre: ${textoPersonas} personas\n`;
-    text += `¡Me lo puedes enviar directo por ATH Móvil! 🇵🇷`;
-
-    navigator.clipboard.writeText(text).then(() => {
-        alert('¡Texto formateado copiado al portapapeles! Listo para pegar en WhatsApp.');
-    });
-}
