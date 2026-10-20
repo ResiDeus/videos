@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Calculadora</title>
+    <title>Calculadora de ResiDeus</title>
     <style>
         * { box-sizing: border-box; }
         html, body { margin: 0; padding: 0; width: 100vw; height: 100vh; background: linear-gradient(180deg, #09011a 0%, #2c044d 100%); overflow: hidden; position: relative; font-family: monospace; }
         
-        /* RESTAURADAS ANIMACIONES RETRO */
         .sky { position: absolute; width: 100%; height: 100%; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent), radial-gradient(1.5px 1px at 75px 120px, #fff9, transparent); background-size: 380px 380px; z-index: 1; animation: twk 4s infinite linear; }
         .grid3d { position: absolute; width: 100%; height: 40%; bottom: 0; background-image: linear-gradient(rgba(255, 0, 127, 0.2) 2px, transparent 2px), linear-gradient(90deg, rgba(255, 0, 127, 0.2) 2px, transparent 2px); background-size: 40px 40px; transform: perspective(180px) rotateX(65deg); transform-origin: top center; z-index: 1; animation: gM 2.5s infinite linear; }
         @keyframes twk { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
@@ -19,10 +18,11 @@
         .lcd { width: 100%; height: 165px; background: #92b043; border: 2px solid #000; border-radius: 14px; color: #000; box-shadow: inset 0 4px 10px rgba(0,0,0,0.4); font-weight: bold; padding: 10px; display: flex; flex-direction: column; justify-content: space-between; }
         .lcd-header { display: flex; justify-content: space-between; font-size: 11px; border-bottom: 1px solid rgba(0,0,0,0.2); }
         
-        .lcd-historial { flex-grow: 1; font-size: 11px; margin: 4px 0; overflow-y: scroll; max-height: 45px; text-align: left; padding-right: 4px; border-bottom: 1px dashed rgba(0, 0, 0, 0.2); }
-        .lcd-historial::-webkit-scrollbar { width: 5px; display: block !important; }
-        .lcd-historial::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.15); border-radius: 10px; }
-        .lcd-historial::-webkit-scrollbar-thumb { background: #ff007f; border: 1px solid #000; border-radius: 10px; box-shadow: 0 0 4px #ff007f; }
+        /* CORRECCIÓN EXCLUSIVA PARA FORZAR SCROLLBAR VISIBLE EN MÓVILES (iOS y Android) */
+        .lcd-historial { flex-grow: 1; font-size: 11px; margin: 4px 0; overflow-y: scroll; max-height: 45px; text-align: left; padding-right: 6px; border-bottom: 1px dashed rgba(0, 0, 0, 0.2); -webkit-overflow-scrolling: touch; }
+        .lcd-historial::-webkit-scrollbar { width: 6px !important; height: 6px !important; display: block !important; }
+        .lcd-historial::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.15) !important; border-radius: 10px !important; }
+        .lcd-historial::-webkit-scrollbar-thumb { background-color: #ff007f !important; border: 1px solid #000 !important; border-radius: 10px !important; box-shadow: 0 0 4px #ff007f !important; }
         
         .lcd-body { text-align: right; font-size: 11px; }
         .lcd-total { font-size: 26px; font-weight: 900; }
@@ -65,11 +65,10 @@
                 <div class="lcd-total"><span id="lblTotalType">TOTAL</span>: $<span id="outPer">0.00</span></div>
             </div>
         </div>
-
         <div class="row-menus">
             <div id="cajaSub" class="caja-data btn-on on-anim" onclick="seleccionarMenu('sub')">
                 <span class="lbl-title">Cuenta</span>
-                <span class="lbl-val">$<span id="lblSub">0</span></span>
+                <span class="lbl-val">\$<span id="lblSub">0</span></span>
             </div>
             <div id="cajaPpl" class="caja-data btn-off" onclick="seleccionarMenu('ppl')">
                 <span class="lbl-title">Personas</span>
@@ -96,6 +95,7 @@
             <button onclick="addProducto()" class="btn-add">+ Añadir</button>
         </div>
     </div>
+
     <script>
         let ivu = 11.5, mode = 'sub', sSub = "0", sPpl = "0", incluirPropina = false, modoPersonasActivo = false;
         let preciosGuardados = [], cuentaAcumulada = 0;
