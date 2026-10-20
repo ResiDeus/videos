@@ -3,161 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PR IVU Calc - Glossy Terminal</title>
+    <title>PR IVU Calc</title>
     <script src="https://tailwindcss.com"></script>
-    <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        html, body { 
-            margin: 0; padding: 0; width: 100vw; height: 100vh; 
-            background: #0c0414; overflow: hidden; position: relative;
-        }
+        html, body { margin: 0; width: 100vw; height: 100vh; background: #0c0414; overflow: hidden; position: relative; }
+        .chasis { width: 335px; height: 520px; background: #241434; border: 4px solid #ff007f; box-shadow: 0 0 25px #ff007f80; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        .lcd { background: #92b043; border: 3px solid #000; color: #000; box-shadow: inset 0 4px 10px rgba(0,0,0,0.4); font-family: monospace; font-weight: bold; }
         
-        /* Chasis compacto vertical centrado geométricamente */
-        .chasis { 
-            width: 335px; 
-            height: 520px; 
-            background: #241434; 
-            border: 4px solid #ff007f; 
-            box-shadow: 0 0 25px #ff007f80;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-        
-        /* PANTALLA LCD ULTRA LARGA VERTICAL */
-        .lcd { 
-            background: #92b043; 
-            border: 3px solid #000; 
-            color: #000; 
-            box-shadow: inset 0 4px 10px rgba(0,0,0,0.4);
-        }
-        
-        /* ACABADO GLOSSY / CRISTAL REFLEJANTE PARA TECLAS NUMÉRICAS */
-        .btn-glossy-cyan { 
+        /* BOTONES GLOSSY EN REJILLA DE 3 COLUMNAS */
+        .btn-t { 
             background: linear-gradient(180deg, #44186c 0%, #290d45 40%, #170529 100%);
-            border: 1px solid rgba(0, 240, 255, 0.4);
-            border-top: 2px solid rgba(255, 255, 255, 0.2);
-            color: #00f0ff; 
-            font-size: 1.6rem; 
-            font-weight: bold; 
+            border: 1px solid rgba(0, 240, 255, 0.4); border-top: 2px solid rgba(255, 255, 255, 0.2);
+            color: #00f0ff; font-size: 1.6rem; font-weight: bold;
             box-shadow: 0 4px 6px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.15);
-            text-shadow: 0 0 5px rgba(0, 240, 255, 0.5);
-            transition: all 0.05s ease;
+            text-shadow: 0 0 5px rgba(0, 240, 255, 0.5); transition: all 0.05s ease;
         }
-        .btn-glossy-cyan:active { 
-            background: linear-gradient(180deg, #ff007f 0%, #a30052 100%);
-            border: 1px solid #ffffff;
-            color: #ffffff; 
-            text-shadow: none;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.5);
-            transform: translateY(3px); 
-        }
-
-        /* BOTONES DE EDICIÓN Y BORRADO EN COLOR ÁMBAR / ROJO GLOSSY */
-        .btn-glossy-amber {
-            background: linear-gradient(180deg, #5c2c06 0%, #3a1a02 40%, #241001 100%);
-            border: 1px solid rgba(245, 158, 11, 0.4);
-            border-top: 2px solid rgba(255, 255, 255, 0.15);
-            color: #fbbf24;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-            text-shadow: 0 0 4px rgba(245, 158, 11, 0.5);
-        }
-        .btn-glossy-amber:active {
-            background: #fbbf24; color: #000; transform: translateY(3px); box-shadow: none; text-shadow: none;
-        }
-
-        .btn-glossy-red {
-            background: linear-gradient(180deg, #701a1a 0%, #4a0e0e 40%, #300707 100%);
-            border: 1px solid rgba(239, 68, 68, 0.4);
-            border-top: 2px solid rgba(255, 255, 255, 0.15);
-            color: #f87171;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-            text-shadow: 0 0 4px rgba(239, 68, 68, 0.5);
-        }
-        .btn-glossy-red:active {
-            background: #ef4444; color: #000; transform: translateY(3px); box-shadow: none; text-shadow: none;
-        }
-        
+        .btn-t:active { background: linear-gradient(180deg, #ff007f 0%, #a30052 100%); border: 1px solid #fff; color: #fff; text-shadow: none; transform: translateY(3px); }
         .btn-off { background: #1a0826; border: 2px solid #ff007f; color: #ff007f; }
         .btn-on { background: #ff007f; border: 2px solid #fff; color: #000; font-weight: bold; }
-        
-        .texto-blanco-fijo {
-            color: #ffffff !important;
-            font-weight: 900 !important;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
+        .txt-b { color: #fff !important; font-weight: 900 !important; text-transform: uppercase; }
         @keyframes glow { 0%, 100% { box-shadow: 0 0 10px #ff007f; } 50% { box-shadow: 0 0 22px #ff007f; } }
         .on-anim { animation: glow 1.5s infinite ease-in-out; }
     </style>
 </head>
 <body class="select-none">
-
     <div class="chasis rounded-3xl p-5 flex flex-col justify-between">
-        
-        <!-- PANTALLA LCD EXTENDIDA EN FORMATO LARGO VERTICAL -->
-        <div class="lcd rounded-xl p-4 flex flex-col justify-between text-right h-44 font-mono font-bold mb-4 shrink-0">
+        <!-- PANTALLA LCD LARGA -->
+        <div class="lcd rounded-xl p-4 flex flex-col justify-between text-right h-40 mb-3 shrink-0">
             <div class="flex justify-between border-b border-black/30 pb-1 text-[11px]">
                 <span>TERMINAL FISCAL PR</span><span id="txtIvu">IVU: 11.5%</span>
             </div>
             <div class="text-[13px] space-y-1 mt-1">
-                <div>PROPINA AUTOMÁTICA (18%): <span id="outTip">$0.00</span></div>
-                <div>IVU LÍQUIDO COMPRESO: <span id="outIvu">$0.00</span></div>
-                <div class="text-4xl font-black mt-3 pt-2 border-t border-black/20 tracking-tight">
-                    <span class="text-xs font-sans align-middle mr-1">C/U:</span>$<span id="outPer">0.00</span>
-                </div>
+                <div>PROPINA AUTOMÁTICA (18%): <span id="outTip">\$0.00</span></div>
+                <div>IVU LÍQUIDO: <span id="outIvu">\$0.00</span></div>
+                <div class="text-4xl font-black mt-2 pt-2 border-t border-black/20 tracking-tight">C/U: \$<span id="outPer">0.00</span></div>
             </div>
         </div>
 
-        <!-- MENUS DE DATOS COMPACTOS -->
+        <!-- MENUS DE DATOS SINCRO -->
         <div class="grid grid-cols-2 gap-3 text-xs font-bold mb-3 shrink-0">
-            <div class="h-14 flex items-center justify-center">
-                <div id="cajaSub" class="btn-on on-anim w-full h-full rounded-xl cursor-pointer text-center flex flex-col justify-center" onclick="focusF('sub')">
-                    <span class="texto-blanco-fijo text-[10px]">1. Cuenta Base</span>
-                    <span class="font-mono text-base font-black">$<span id="lblSub">0</span></span>
-                </div>
+            <div id="cajaSub" class="btn-on on-anim p-3 rounded-xl cursor-pointer text-center" onclick="focusF('sub')">
+                <span class="txt-b text-[10px]">1. Cuenta Base</span>
+                <span class="font-mono text-base block font-black">\$<span id="lblSub">0</span></span>
             </div>
-            <div class="h-14 flex items-center justify-center">
-                <div id="cajaPpl" class="btn-off w-full h-full rounded-xl cursor-pointer text-center flex flex-col justify-center" onclick="focusF('ppl')">
-                    <span class="texto-blanco-fijo text-[10px]">2. Personas</span>
-                    <span class="font-mono text-base font-black"><span id="lblPpl">0</span></span>
-                </div>
+            <div id="cajaPpl" class="btn-off p-3 rounded-xl cursor-pointer text-center" onclick="focusF('ppl')">
+                <span class="txt-b text-[10px]">2. Personas</span>
+                <span class="font-mono text-base block font-black"><span id="lblPpl">0</span></span>
             </div>
         </div>
 
-        <!-- SELECTOR IVU COMPACTO -->
+        <!-- SELECTOR IVU -->
         <div class="grid grid-cols-3 gap-2 text-xs font-bold mb-3 shrink-0">
             <button id="ivu115" onclick="setI(11.5)" class="py-2 rounded-xl btn-on">11.5%</button>
             <button id="ivu6" onclick="setI(6.0)" class="py-2 rounded-xl btn-off">6.0%</button>
             <button id="ivu0" onclick="setI(0.0)" class="py-2 rounded-xl btn-off">0.0%</button>
         </div>
 
-        <!-- DISTRIBUCIÓN ERGONÓMICA DE CALCULADORA ESTÁNDAR (4 COLUMNAS) -->
-        <div class="grid grid-cols-4 gap-2 flex-1 pt-1 font-sans">
-            <!-- Fila 1 -->
-            <button onclick="num('7')" class="btn-tecla btn-glossy-cyan rounded-xl">7</button>
-            <button onclick="num('8')" class="btn-tecla btn-glossy-cyan rounded-xl">8</button>
-            <button onclick="num('9')" class="btn-tecla btn-glossy-cyan rounded-xl">9</button>
-            <button onclick="bksp()" class="btn-tecla btn-glossy-amber rounded-xl text-xl flex items-center justify-center">←</button>
+        <!-- BOTONERA ERGONÓMICA DE 3 COLUMNAS PURAS (ORDENADA) -->
+        <div class="grid grid-cols-3 gap-2 flex-1 pt-1 font-sans">
+            <button onclick="num('7')" class="btn-t rounded-xl">7</button>
+            <button onclick="num('8')" class="btn-t rounded-xl">8</button>
+            <button onclick="num('9')" class="btn-t rounded-xl">9</button>
             
-            <!-- Fila 2 -->
-            <button onclick="num('4')" class="btn-tecla btn-glossy-cyan rounded-xl">4</button>
-            <button onclick="num('5')" class="btn-tecla btn-glossy-cyan rounded-xl">5</button>
-            <button onclick="num('6')" class="btn-tecla btn-glossy-cyan rounded-xl">6</button>
-            <button onclick="clr()" class="btn-tecla btn-glossy-red rounded-xl text-base flex items-center justify-center">C</button>
+            <button onclick="num('4')" class="btn-t rounded-xl">4</button>
+            <button onclick="num('5')" class="btn-t rounded-xl">5</button>
+            <button onclick="num('6')" class="btn-t rounded-xl">6</button>
             
-            <!-- Fila 3 y 4 Combinada de forma simétrica -->
-            <button onclick="num('1')" class="btn-tecla btn-glossy-cyan rounded-xl">1</button>
-            <button onclick="num('2')" class="btn-tecla btn-glossy-cyan rounded-xl">2</button>
-            <button onclick="num('3')" class="btn-tecla btn-glossy-cyan rounded-xl">3</button>
-            <div class="bg-transparent border border-dashed border-purple-950/20 rounded-xl"></div> <!-- Bloque de balance de diseño -->
+            <button onclick="num('1')" class="btn-t rounded-xl">1</button>
+            <button onclick="num('2')" class="btn-t rounded-xl">2</button>
+            <button onclick="num('3')" class="btn-t rounded-xl">3</button>
             
-            <!-- Fila 4 -->
-            <button onclick="num('0')" class="btn-tecla col-span-2 btn-glossy-cyan rounded-xl">0</button>
-            <button onclick="num('.')" class="btn-tecla btn-glossy-cyan rounded-xl">.</button>
-            <div class="bg-transparent"></div>
+            <button onclick="num('.')" class="btn-t rounded-xl">.</button>
+            <button onclick="num('0')" class="btn-t rounded-xl">0</button>
+            <button onclick="bksp()" class="btn-t rounded-xl bg-gradient-to-b from-amber-800 to-amber-950 text-amber-400 border-amber-600">←</button>
+            
+            <button onclick="clr()" class="btn-t col-span-3 rounded-xl bg-gradient-to-b from-red-800 to-red-950 text-red-400 border-red-600 text-base py-1">BORRAR (C)</button>
         </div>
     </div>
 
@@ -165,8 +85,8 @@
         let ivu = 11.5, mode = 'sub', sSub = "0", sPpl = "0";
         function focusF(f) {
             mode = f;
-            document.getElementById('cajaSub').className = f === 'sub' ? "btn-on on-anim w-full h-full rounded-xl cursor-pointer text-center flex flex-col justify-center" : "btn-off w-full h-full rounded-xl cursor-pointer text-center flex flex-col justify-center";
-            document.getElementById('cajaPpl').className = f === 'ppl' ? "btn-on on-anim w-full h-full rounded-xl cursor-pointer text-center flex flex-col justify-center" : "btn-off w-full h-full rounded-xl cursor-pointer text-center flex flex-col justify-center";
+            document.getElementById('cajaSub').className = f === 'sub' ? "btn-on on-anim p-3 rounded-xl cursor-pointer text-center" : "btn-off p-3 rounded-xl cursor-pointer text-center";
+            document.getElementById('cajaPpl').className = f === 'ppl' ? "btn-on on-anim p-3 rounded-xl cursor-pointer text-center" : "btn-off p-3 rounded-xl cursor-pointer text-center";
         }
         function setI(p) {
             ivu = p;
