@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PR IVU Calc</title>
+    <title>PR IVU Calc - Glossy Terminal</title>
     <script src="https://tailwindcss.com"></script>
+    <link href="https://googleapis.com" rel="stylesheet">
     <style>
         html, body { 
             margin: 0; padding: 0; width: 100vw; height: 100vh; 
             background: #0c0414; overflow: hidden; position: relative;
         }
         
-        /* Chasis compacto y optimizado (Se redujo la altura total) */
+        /* Chasis compacto vertical centrado geométricamente */
         .chasis { 
             width: 335px; 
             height: 520px; 
@@ -24,23 +25,59 @@
             transform: translate(-50%, -50%);
         }
         
-        /* PANTALLA LCD ULTRA LARGA Y MASIVA */
+        /* PANTALLA LCD ULTRA LARGA VERTICAL */
         .lcd { 
             background: #92b043; 
             border: 3px solid #000; 
             color: #000; 
+            box-shadow: inset 0 4px 10px rgba(0,0,0,0.4);
         }
         
-        /* BOTONERA COMPACTA Y BAJA */
-        .btn-t { 
-            background: #3c1e54; 
-            border-bottom: 4px solid #1a0826; 
-            border-right: 2px solid #1a0826; 
+        /* ACABADO GLOSSY / CRISTAL REFLEJANTE PARA TECLAS NUMÉRICAS */
+        .btn-glossy-cyan { 
+            background: linear-gradient(180deg, #44186c 0%, #290d45 40%, #170529 100%);
+            border: 1px solid rgba(0, 240, 255, 0.4);
+            border-top: 2px solid rgba(255, 255, 255, 0.2);
             color: #00f0ff; 
             font-size: 1.6rem; 
             font-weight: bold; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.15);
+            text-shadow: 0 0 5px rgba(0, 240, 255, 0.5);
+            transition: all 0.05s ease;
         }
-        .btn-t:active { border-bottom: 1px solid #1a0826; border-right: 1px solid #1a0826; transform: translateY(3px); background: #ff007f; color: #000; }
+        .btn-glossy-cyan:active { 
+            background: linear-gradient(180deg, #ff007f 0%, #a30052 100%);
+            border: 1px solid #ffffff;
+            color: #ffffff; 
+            text-shadow: none;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.5);
+            transform: translateY(3px); 
+        }
+
+        /* BOTONES DE EDICIÓN Y BORRADO EN COLOR ÁMBAR / ROJO GLOSSY */
+        .btn-glossy-amber {
+            background: linear-gradient(180deg, #5c2c06 0%, #3a1a02 40%, #241001 100%);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            border-top: 2px solid rgba(255, 255, 255, 0.15);
+            color: #fbbf24;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            text-shadow: 0 0 4px rgba(245, 158, 11, 0.5);
+        }
+        .btn-glossy-amber:active {
+            background: #fbbf24; color: #000; transform: translateY(3px); box-shadow: none; text-shadow: none;
+        }
+
+        .btn-glossy-red {
+            background: linear-gradient(180deg, #701a1a 0%, #4a0e0e 40%, #300707 100%);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            border-top: 2px solid rgba(255, 255, 255, 0.15);
+            color: #f87171;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            text-shadow: 0 0 4px rgba(239, 68, 68, 0.5);
+        }
+        .btn-glossy-red:active {
+            background: #ef4444; color: #000; transform: translateY(3px); box-shadow: none; text-shadow: none;
+        }
         
         .btn-off { background: #1a0826; border: 2px solid #ff007f; color: #ff007f; }
         .btn-on { background: #ff007f; border: 2px solid #fff; color: #000; font-weight: bold; }
@@ -66,10 +103,10 @@
                 <span>TERMINAL FISCAL PR</span><span id="txtIvu">IVU: 11.5%</span>
             </div>
             <div class="text-[13px] space-y-1 mt-1">
-                <div>PROPINA AUTOMÁTICA (18%): <span id="outTip">\$0.00</span></div>
-                <div>IVU LÍQUIDO COMPRESO: <span id="outIvu">Agg-</span></div>
+                <div>PROPINA AUTOMÁTICA (18%): <span id="outTip">$0.00</span></div>
+                <div>IVU LÍQUIDO COMPRESO: <span id="outIvu">$0.00</span></div>
                 <div class="text-4xl font-black mt-3 pt-2 border-t border-black/20 tracking-tight">
-                    <span class="text-xs font-sans align-middle mr-1">C/U:</span>\$<span id="outPer">0.00</span>
+                    <span class="text-xs font-sans align-middle mr-1">C/U:</span>$<span id="outPer">0.00</span>
                 </div>
             </div>
         </div>
@@ -79,7 +116,7 @@
             <div class="h-14 flex items-center justify-center">
                 <div id="cajaSub" class="btn-on on-anim w-full h-full rounded-xl cursor-pointer text-center flex flex-col justify-center" onclick="focusF('sub')">
                     <span class="texto-blanco-fijo text-[10px]">1. Cuenta Base</span>
-                    <span class="font-mono text-base font-black">\$<span id="lblSub">0</span></span>
+                    <span class="font-mono text-base font-black">$<span id="lblSub">0</span></span>
                 </div>
             </div>
             <div class="h-14 flex items-center justify-center">
@@ -97,21 +134,30 @@
             <button id="ivu0" onclick="setI(0.0)" class="py-2 rounded-xl btn-off">0.0%</button>
         </div>
 
-        <!-- BOTONERA COMPACTA Y BAJA -->
-        <div class="grid grid-cols-4 gap-2 flex-1 pt-1">
-            <button onclick="num('7')" class="btn-t rounded-xl">7</button>
-            <button onclick="num('8')" class="btn-t rounded-xl">8</button>
-            <button onclick="num('9')" class="btn-t rounded-xl">9</button>
-            <button onclick="bksp()" class="text-base rounded-xl font-bold bg-amber-950 border border-amber-500 text-amber-200 active:bg-amber-500 active:text-black flex items-center justify-center">←</button>
-            <button onclick="num('4')" class="btn-t rounded-xl">4</button>
-            <button onclick="num('5')" class="btn-t rounded-xl">5</button>
-            <button onclick="num('6')" class="btn-t rounded-xl">6</button>
-            <button onclick="clr()" class="row-span-3 text-base rounded-xl font-bold bg-red-900 border border-red-500 text-red-200 active:bg-red-500 active:text-black flex items-center justify-center">C</button>
-            <button onclick="num('1')" class="btn-t rounded-xl">1</button>
-            <button onclick="num('2')" class="btn-t rounded-xl">2</button>
-            <button onclick="num('3')" class="btn-t rounded-xl">3</button>
-            <button onclick="num('0')" class="btn-t col-span-2 rounded-xl">0</button>
-            <button onclick="num('.')" class="btn-t rounded-xl">.</button>
+        <!-- DISTRIBUCIÓN ERGONÓMICA DE CALCULADORA ESTÁNDAR (4 COLUMNAS) -->
+        <div class="grid grid-cols-4 gap-2 flex-1 pt-1 font-sans">
+            <!-- Fila 1 -->
+            <button onclick="num('7')" class="btn-tecla btn-glossy-cyan rounded-xl">7</button>
+            <button onclick="num('8')" class="btn-tecla btn-glossy-cyan rounded-xl">8</button>
+            <button onclick="num('9')" class="btn-tecla btn-glossy-cyan rounded-xl">9</button>
+            <button onclick="bksp()" class="btn-tecla btn-glossy-amber rounded-xl text-xl flex items-center justify-center">←</button>
+            
+            <!-- Fila 2 -->
+            <button onclick="num('4')" class="btn-tecla btn-glossy-cyan rounded-xl">4</button>
+            <button onclick="num('5')" class="btn-tecla btn-glossy-cyan rounded-xl">5</button>
+            <button onclick="num('6')" class="btn-tecla btn-glossy-cyan rounded-xl">6</button>
+            <button onclick="clr()" class="btn-tecla btn-glossy-red rounded-xl text-base flex items-center justify-center">C</button>
+            
+            <!-- Fila 3 y 4 Combinada de forma simétrica -->
+            <button onclick="num('1')" class="btn-tecla btn-glossy-cyan rounded-xl">1</button>
+            <button onclick="num('2')" class="btn-tecla btn-glossy-cyan rounded-xl">2</button>
+            <button onclick="num('3')" class="btn-tecla btn-glossy-cyan rounded-xl">3</button>
+            <div class="bg-transparent border border-dashed border-purple-950/20 rounded-xl"></div> <!-- Bloque de balance de diseño -->
+            
+            <!-- Fila 4 -->
+            <button onclick="num('0')" class="btn-tecla col-span-2 btn-glossy-cyan rounded-xl">0</button>
+            <button onclick="num('.')" class="btn-tecla btn-glossy-cyan rounded-xl">.</button>
+            <div class="bg-transparent"></div>
         </div>
     </div>
 
@@ -159,8 +205,8 @@
         function calc() {
             let nSub = parseFloat(sSub) || 0, nPpl = parseInt(sPpl) || 0;
             let vTip = nSub * 0.18, vIvu = nSub * (ivu / 100);
-            document.getElementById('outTip').innerText = `\$${vTip.toFixed(2)}`;
-            document.getElementById('outIvu').innerText = `\$${vIvu.toFixed(2)}`;
+            document.getElementById('outTip').innerText = `$${vTip.toFixed(2)}`;
+            document.getElementById('outIvu').innerText = `$${vIvu.toFixed(2)}`;
             document.getElementById('outPer').innerText = ((nSub + vTip + vIvu) / (nPpl > 0 ? nPpl : 1)).toFixed(2);
         }
     </script>
