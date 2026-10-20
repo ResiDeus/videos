@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PR IVU Calc - Synthwave Beeper</title>
-    <!-- Tailwind CSS para el diseño base rápido -->
+    <title>PR IVU Calc - Terminal de Mano</title>
+    <!-- Tailwind CSS para diseño base rápido -->
     <script src="https://tailwindcss.com"></script>
     <style>
         html, body { 
@@ -13,14 +13,14 @@
             overflow: hidden; position: relative; 
         }
         
-        /* FONDO ANIMADO SYNTHWAVE RETRO GRID */
+        /* FONDO ANIMADO SYNTHWAVE */
         .sky { position: absolute; width: 100%; height: 100%; top: 0; left: 0; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent), radial-gradient(1.5px 1px at 75px 120px, #fff9, transparent), radial-gradient(1px 2px at 150px 50px, #00f0ff, transparent), radial-gradient(2px 1.5px at 230px 280px, #ff007f, transparent); background-size: 380px 380px; animation: twk 4s infinite linear; z-index: 1; }
         .grid3d { position: absolute; width: 100%; height: 40%; bottom: 0; left: 0; background-image: linear-gradient(rgba(255, 0, 127, 0.2) 2px, transparent 2px), linear-gradient(90deg, rgba(255, 0, 127, 0.2) 2px, transparent 2px); background-size: 40px 40px; transform: perspective(180px) rotateX(65deg); transform-origin: top center; animation: gM 2.5s infinite linear; z-index: 1; }
         
-        /* CHASIS BLOQUEADO Y CENTRALIZADO GEOMÉTRICAMENTE EN PANTALLA */
+        /* CHASIS CON CONFIGURACIÓN DE COLISIÓN INTERNA (Altura compensada por la pantalla larga) */
         .chasis { 
             width: 335px; 
-            height: 410px; 
+            height: 440px; 
             background: #241434; 
             border: 4px solid #ff007f; 
             box-shadow: 0 0 25px #ff007f80; 
@@ -34,7 +34,7 @@
             z-index: 10; 
         }
         
-        /* PANTALLA LCD QUE COLISIONA DIRECTAMENTE CON LOS MENÚS INFERIORES */
+        /* PANTALLA LCD COMPRESA AL RAS INFERIOR */
         .lcd { 
             background: #92b043; 
             border-bottom: 3px solid #000000; 
@@ -44,13 +44,14 @@
             font-weight: bold; 
         }
         
-        /* REJILLA DE BOTONES DE BORDE A BORDE ABSOLUTO */
+        /* BOTONERA ERGONÓMICA DE EXTREMO A EXTREMO */
         .grid-t { 
             display: grid; 
             grid-template-columns: repeat(3, minmax(0, 1fr)); 
             gap: 3px; 
             width: 100%; 
         }
+        
         .btn-t { 
             height: 32px; 
             background: linear-gradient(180deg, #44186c 0%, #170529 100%); 
@@ -62,7 +63,6 @@
             text-shadow: 0 0 5px #00f0ff80; 
         }
         .btn-t:active { background: linear-gradient(180deg, #ff007f 0%, #a30052 100%); border: 1px solid #fff; color: #fff; transform: translateY(2px); }
-        
         .btn-off { background: #1a0826; border: 2px solid #ff007f; color: #ff007f; }
         .btn-on { background: #ff007f; border: 2px solid #fff; color: #000; font-weight: bold; }
         .txt-b { color: #fff !important; font-weight: 900 !important; text-transform: uppercase; }
@@ -75,15 +75,15 @@
 </head>
 <body class="select-none">
 
-    <!-- CAPAS DEL ENTORNO RETRO -->
+    <!-- ENTORNO GRÁFICO SYNTHWAVE -->
     <div class="sky"></div>
     <div class="grid3d"></div>
 
-    <!-- CUERPO DE LA CALCULADORA -->
+    <!-- CHASIS CENTRALIZADO -->
     <div class="chasis rounded-3xl pt-0 px-4 pb-0 overflow-hidden">
         
-        <!-- PANTALLA LCD EXTENDIDA (Toca directamente los menús al remover el margen) -->
-        <div class="lcd rounded-t-2xl p-4 flex flex-col justify-between text-right h-44 shrink-0 -mx-4">
+        <!-- PANTALLA LCD EXTENDIDA A h-52 (Toca directamente los menús inferiores al remover el margen) -->
+        <div class="lcd rounded-t-2xl p-4 flex flex-col justify-between text-right h-52 shrink-0 -mx-4">
             <div class="flex justify-between border-b border-black/20 pb-0.5 text-[10px]">
                 <span>TERMINAL FISCAL PR</span><span id="txtIvu">IVU: 11.5%</span>
             </div>
@@ -94,7 +94,7 @@
             </div>
         </div>
 
-        <!-- MENUS DE DATOS (Al ras de la pantalla verde) -->
+        <!-- MENUS DE DATOS SINCRO (Alineados al ras de la pantalla verde) -->
         <div class="grid grid-cols-2 gap-2 text-xs font-bold mb-2 shrink-0 w-full">
             <div id="cajaSub" class="btn-on on-anim p-2 rounded-xl cursor-pointer text-center" onclick="focusF('sub')">
                 <span class="txt-b text-[10px]">1. Cuenta Base</span>
@@ -134,8 +134,10 @@
                 <button onclick="num('0')" class="btn-t">0</button>
                 <button onclick="bksp()" class="btn-t bg-gradient-to-b from-amber-800 to-amber-950 text-amber-400 border-amber-600">←</button>
                 
-                <!-- BOTÓN C INTEGRADO DE BORDE A BORDE -->
-                <button onclick="clr()" class="btn-t col-span-3 bg-gradient-to-b from-red-800 to-red-950 text-red-400 border-red-600 text-xl flex items-center justify-center font-bold">C</button>
+                <!-- BOTÓN C EXTENDIDO CON -mx-4 DE EXTREMO A EXTREMO PARA EL TOQUE TOTAL -->
+                <div class="col-span-3 -mx-4">
+                    <button onclick="clr()" class="btn-t w-full bg-gradient-to-b from-red-800 to-red-950 text-red-400 border-red-600 text-xl flex items-center justify-center font-bold">C</button>
+                </div>
             </div>
         </div>
     </div>
