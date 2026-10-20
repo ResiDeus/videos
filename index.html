@@ -3,130 +3,142 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Y2K_Boricua_Phone.exe</title>
+  <title>Cyber_Boricua_OS.exe</title>
   <style>
-    :root { --phone-case: #3a4d5c; --screen-bg: #8ba88f; --pixel-dark: #223026; --btn-retro: #4e5e6c; }
-    * { box-sizing: border-box; font-family: 'Courier New', monospace; font-size: 13px; margin: 0; padding: 0; user-select: none; font-weight: bold; color: var(--pixel-dark); }
-    body { background: #111; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 10px; }
+    :root { 
+      --neon-pink: #ff007f; 
+      --neon-cyan: #00f3ff; 
+      --neon-purple: #9d00ff; 
+      --dark-bg: #0d0118; 
+      --panel-bg: rgba(25, 10, 45, 0.75);
+      --glass-glow: 0 0 15px rgba(0, 243, 255, 0.3);
+    }
+    * { box-sizing: border-box; font-family: 'Segoe UI', -apple-system, sans-serif; font-size: 13px; margin: 0; padding: 0; user-select: none; font-weight: bold; color: #fff; }
+    body { background: var(--dark-bg); background-image: radial-gradient(circle at 50% 50%, #200435 0%, var(--dark-bg) 80%); display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 10px; overflow: hidden; }
+    /* Chasis Holográfico del iPhone Futurístico */
+    .phone-body { width: 100%; max-width: 360px; height: 650px; background: rgba(10, 2, 20, 0.9); border: 2px solid var(--neon-cyan); border-radius: 40px; padding: 12px; display: flex; flex-direction: column; box-shadow: 0 0 25px rgba(0, 243, 255, 0.4), inset 0 0 15px rgba(255, 0, 127, 0.2); position: relative; }
+    .dynamic-island { width: 110px; height: 24px; background: #000; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; margin: 0 auto 10px; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
     
-    .phone-body { width: 100%; max-width: 360px; height: 640px; background: var(--phone-case); border: 4px solid #1f2b35; border-radius: 30px; padding: 15px; display: flex; flex-direction: column; box-shadow: 0 10px 30px rgba(0,0,0,0.7); border-bottom: 12px solid #1f2b35; }
-    .earpiece { width: 60px; height: 6px; background: #1f2b35; border-radius: 3px; margin: 0 auto 10px; }
-    .lcd-screen { flex-grow: 1; background: var(--screen-bg); border: 4px inset; border-radius: 8px; padding: 10px; display: flex; flex-direction: column; position: relative; overflow: hidden; box-shadow: inset 2px 2px 10px rgba(0,0,0,0.3); }
-    .screen-header { display: flex; justify-content: space-between; font-size: 11px; border-bottom: 1px dashed var(--pixel-dark); padding-bottom: 4px; margin-bottom: 6px; }
-    .screen-content { flex-grow: 1; display: flex; flex-direction: column; overflow-y: auto; }
+    /* Pantalla Fija sin Scroll */
+    .lcd-screen { flex-grow: 1; background: var(--panel-bg); border: 1px solid var(--neon-pink); border-radius: 28px; padding: 12px; display: flex; flex-direction: column; position: relative; overflow: hidden; backdrop-filter: blur(10px); box-shadow: 0 0 15px rgba(255, 0, 127, 0.2); }
+    .screen-header { display: flex; justify-content: space-between; font-size: 11px; border-bottom: 1px solid rgba(0, 243, 255, 0.2); padding-bottom: 6px; margin-bottom: 8px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--neon-cyan); text-shadow: 0 0 5px var(--neon-cyan); }
+    .screen-content { flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; height: calc(100% - 25px); }
+    /* Rejilla de Aplicaciones Estilo iOS */
+    .app-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; padding-top: 15px; height: 100%; align-content: start; }
+    .app-icon { display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(255, 0, 127, 0.05); border: 1px solid var(--neon-pink); padding: 12px 6px; border-radius: 16px; cursor: pointer; text-align: center; font-size: 11px; transition: all 0.2s; box-shadow: inset 0 0 8px rgba(255, 0, 127, 0.1); }
+    .app-icon span { font-size: 26px; margin-bottom: 6px; filter: drop-shadow(0 0 5px rgba(255,255,255,0.5)); }
+    .app-icon p { text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
+    .app-icon:active { background: rgba(0, 243, 255, 0.15); border-color: var(--neon-cyan); box-shadow: 0 0 12px var(--neon-cyan); }
     
-    .app-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding-top: 10px; }
-    .app-icon { display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(0,0,0,0.05); border: 1px solid var(--pixel-dark); padding: 8px 4px; border-radius: 4px; cursor: pointer; text-align: center; font-size: 11px; }
-    .app-icon span { font-size: 20px; margin-bottom: 2px; }
-    .app-icon:active { background: rgba(0,0,0,0.15); }
+    /* Vistas Internas de las Apps */
+    .app-view { display: none; flex-direction: column; height: 100%; gap: 10px; overflow: hidden; }
+    .btn-back { display: inline-block; width: fit-content; border: 1px solid var(--neon-cyan); padding: 4px 12px; margin-bottom: 4px; font-size: 11px; cursor: pointer; border-radius: 20px; background: rgba(0, 243, 255, 0.05); text-transform: uppercase; text-shadow: 0 0 5px var(--neon-cyan); box-shadow: var(--glass-glow); }
+    .sunken { border: 1px solid rgba(0, 243, 255, 0.3); padding: 10px; background: rgba(10, 2, 25, 0.6); border-radius: 12px; font-size: 12px; word-break: break-word; box-shadow: var(--glass-glow); overflow-y: auto; }
+    .field { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 2px; }
+    input, select { background: rgba(255, 0, 127, 0.05); border: 1px solid var(--neon-pink); padding: 6px; width: 55%; font-size: 12px; outline: none; border-radius: 8px; text-align: center; color: #fff; box-shadow: inset 0 0 5px rgba(255,0,127,0.2); }
+    input:focus, select:focus { border-color: var(--neon-cyan); box-shadow: 0 0 8px var(--neon-cyan); }
+    option { background: #1a0630; color: #fff; }
     
-    .app-view { display: none; flex-direction: column; height: 100%; gap: 6px; }
-    .btn-back { display: inline-block; width: fit-content; border: 1px solid var(--pixel-dark); padding: 2px 8px; margin-bottom: 6px; font-size: 11px; cursor: pointer; background: rgba(0,0,0,0.05); }
-    .sunken { border: 1px solid var(--pixel-dark); padding: 6px; background: rgba(255,255,255,0.15); font-size: 12px; margin-top: 4px; word-break: break-word; }
-    .field { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
-    input, select { background: transparent; border: 1px solid var(--pixel-dark); padding: 4px; width: 55%; font-size: 12px; font-family: monospace; outline: none; }
+    .track-list { flex-grow: 1; overflow-y: auto; max-height: 140px; margin-top: 4px; border-radius: 8px; }
+    .track { padding: 8px; cursor: pointer; border-bottom: 1px dashed rgba(255, 0, 127, 0.2); font-size: 11px; }
+    .track.active { background: var(--neon-pink); color: #fff; text-shadow: 0 0 5px #fff; border-radius: 6px; }
     
-    .track { padding: 4px; cursor: pointer; border-bottom: 1px dashed var(--pixel-dark); font-size: 11px; }
-    .track.active { background: var(--pixel-dark); color: var(--screen-bg); }
-    
-    .phone-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 15px; padding: 0 10px; }
-    .key { background: var(--btn-retro); color: #fff; text-align: center; padding: 12px 0; border-radius: 12px; font-weight: bold; cursor: pointer; border-bottom: 3px solid #323d4a; box-shadow: 1px 2px 5px rgba(0,0,0,0.3); font-size: 15px; text-shadow: 1px 1px #000; }
-    .key:active { border-bottom: 1px solid #323d4a; transform: translateY(2px); box-shadow: none; }
+    .home-indicator { width: 120px; height: 5px; background: rgba(255,255,255,0.4); border-radius: 3px; margin: 12px auto 0; cursor: pointer; transition: background 0.2s; }
+    .home-indicator:hover { background: var(--neon-cyan); box-shadow: 0 0 8px var(--neon-cyan); }
+    button.win-btn { background: rgba(0, 243, 255, 0.05); border: 1px solid var(--neon-cyan); padding: 6px 12px; cursor: pointer; font-size: 12px; border-radius: 8px; text-shadow: 0 0 5px var(--neon-cyan); width: 100%; box-shadow: var(--glass-glow); }
   </style>
 </head>
 <body>
   <div class="phone-body">
-    <div class="earpiece"></div>
+    <div class="dynamic-island"></div>
+    
+    <!-- PANTALLA LCD -->
     <div class="lcd-screen">
       <div class="screen-header">
-        <span>📶 PR_CEL</span>
+        <span>⚡ SYNTH_OS</span>
         <span id="clock">00:00</span>
-        <span>🔋85%</span>
+        <span>🔋100%</span>
       </div>
+      
       <div class="screen-content">
+        <!-- MENÚ DE REJILLA PRINCIPAL -->
         <div id="main-menu" class="app-grid">
-          <div class="app-icon" onclick="showApp('app-ivu')"><span>🧮</span>IVU</div>
-          <div class="app-icon" onclick="showApp('app-music')"><span>📻</span>Winamp</div>
-          <div class="app-icon" onclick="showApp('app-boricua')"><span>🇵🇷</span>Jerga</div>
-          <div class="app-icon" onclick="showApp('app-abuela')"><span>📖</span>Recetas</div>
-          <div class="app-icon" onclick="showApp('app-cucaracha')"><span>🪳</span>Radar</div>
+          <div class="app-icon" onclick="showApp('app-ivu')"><span>🧮</span><p>IVU.app</p></div>
+          <div class="app-icon" onclick="showApp('app-music')"><span>📻</span><p>Winamp</p></div>
+          <div class="app-icon" onclick="showApp('app-boricua')"><span>🇵🇷</span><p>Jerga</p></div>
+          <div class="app-icon" onclick="showApp('app-abuela')"><span>📖</span><p>Botánica</p></div>
+          <div class="app-icon" onclick="showApp('app-cucaracha')"><span>🪳</span><p>Radar</p></div>
         </div>
         <!-- APP: CALCULADORA IVU -->
         <div id="app-ivu" class="app-view">
-          <div class="btn-back" onclick="goHome()">[Atrás]</div>
+          <div class="btn-back" onclick="goHome()">◀ Back</div>
           <div class="field"><label>Precio $:</label><input type="number" id="amount" value="100" oninput="calcIVU()"></div>
           <div class="field">
             <label>Tipo:</label>
             <select id="ivu-type" onchange="calcIVU()">
-              <option value="11.5">Reg. 11.5%</option>
-              <option value="7">Comida 7%</option>
+              <option value="11.5">General 11.5%</option>
+              <option value="7">Comida Prep. 7%</option>
             </select>
           </div>
-          <div class="sunken" id="ivu-results"></div>
+          <div class="sunken" id="ivu-results" style="flex-grow:1;"></div>
         </div>
 
         <!-- APP: REPRODUCTOR WINAMP -->
         <div id="app-music" class="app-view">
-          <div class="btn-back" onclick="goHome()">[Atrás]</div>
-          <div class="sunken" id="now-playing" style="font-size:11px; text-align:center; height:20px; overflow:hidden;">RADIO OFF</div>
-          <img id="visualizer-gif" src="https://archive.org" style="width: 100%; height: 90px; object-fit: contain; background: #000; border: 2px solid; border-color: var(--pixel-dark); opacity: 0.4;">
-          <audio id="audio-player" controls style="width: 100%; height: 28px; margin: 4px 0; outline: none;"></audio>
-          <div class="sunken track-list" id="playlist" style="max-height: 120px; overflow-y: auto;"></div>
+          <div class="btn-back" onclick="goHome()">◀ Back</div>
+          <div class="sunken" id="now-playing" style="font-size:11px; text-align:center; height:24px; overflow:hidden; border-color:var(--neon-pink); color:var(--neon-pink); text-shadow:0 0 5px var(--neon-pink);">SYNTH STREAM OFF</div>
+          <img id="visualizer-gif" src="https://archive.org" style="width: 100%; height: 90px; object-fit: contain; background: #000; border: 1px solid var(--neon-cyan); opacity: 0.4; border-radius:8px;">
+          <audio id="audio-player" controls style="width: 100%; height: 30px; outline: none; margin: 2px 0;"></audio>
+          <div class="sunken track-list" id="playlist"></div>
+          <button class="win-btn" onclick="addTrackPrompt()">+ Inyectar MP3 (URL)</button>
         </div>
         <!-- APP: BORICUÓMETRO -->
         <div id="app-boricua" class="app-view">
-          <div class="btn-back" onclick="goHome()">[Atrás]</div>
+          <div class="btn-back" onclick="goHome()">◀ Back</div>
           <div class="field">
-            <label>Palabra:</label>
+            <label>Jerga:</label>
             <select id="boricua-word" onchange="traducirBoricua()">
               <option value="">-- Elige --</option>
-              <option value="gandul">Como el gandul</option>
-              <option value="alcapurria">Guayando</option>
+              <option value="gandul">Estar como el gandul</option>
+              <option value="alcapurria">Guayando alcapurria</option>
               <option value="revolu">Un revolú</option>
               <option value="chinchorreo">Chinchorreo</option>
             </select>
           </div>
-          <div class="sunken" id="boricua-result">Elige jerga.</div>
+          <div class="sunken" id="boricua-result" style="flex-grow:1;">Selecciona un término holográfico.</div>
         </div>
 
         <!-- APP: REMEDIOS ABUELA -->
         <div id="app-abuela" class="app-view">
-          <div class="btn-back" onclick="goHome()">[Atrás]</div>
+          <div class="btn-back" onclick="goHome()">◀ Back</div>
           <div class="field">
             <label>Achaque:</label>
             <select id="remedio-selector" onchange="verRemedio()">
               <option value="">-- Elige --</option>
               <option value="empacho">Empacho</option>
-              <option value="resfriado">Tos/Pecho</option>
+              <option value="resfriado">Tos de campo</option>
               <option value="mal_de_ojo">Mal de Ojo</option>
             </select>
           </div>
-          <div class="sunken" id="remedio-result" style="font-size: 11px;">Elige un síntoma.</div>
+          <div class="sunken" id="remedio-result" style="font-size:11px; flex-grow:1; border-color:var(--neon-pink); color:#ffccff;">Abre la base de datos medicinal tradicional.</div>
         </div>
 
         <!-- APP: CUCARACHAS TIMER -->
         <div id="app-cucaracha" class="app-view">
-          <div class="btn-back" onclick="goHome()">[Atrás]</div>
-          <div class="field"><label>Pueblo:</label><select id="town-selector" onchange="evaluarInvasionCucaracha()"></select></div>
-          <div id="town-weather-title" style="font-size:11px; margin-top:2px;">ESTADO: SELECCIONAR</div>
-          <div class="sunken" id="timer-display" style="text-align: center; font-size: 16px; font-weight: bold; background: rgba(0,0,0,0.1); padding: 4px;">RADAR STANDBY</div>
-          <div class="sunken" id="cucaracha-consejo" style="font-size: 11px; max-height: 80px; overflow-y: auto;">Elige pueblo.</div>
+          <div class="btn-back" onclick="goHome()">◀ Back</div>
+          <div class="field"><label>Municipio:</label><select id="town-selector" onchange="evaluarInvasionCucaracha()"></select></div>
+          <div id="town-weather-title" style="font-size:11px; color:var(--neon-cyan); text-shadow:0 0 5px var(--neon-cyan);">SISTEMA: STANDBY</div>
+          <div class="sunken" id="timer-display" style="text-align: center; font-size: 18px; color: var(--neon-pink); text-shadow:0 0 8px var(--neon-pink); padding: 8px; font-weight: bold; background:rgba(0,0,0,0.2);">RADAR INACTIVO</div>
+          <div class="sunken" id="cucaracha-consejo" style="font-size: 11px; flex-grow:1;">Monitoreando microclimas.</div>
         </div>
       </div>
     </div>
-    <!-- TECLADO FÍSICO DEL CELULAR -->
-    <div class="phone-pad">
-      <div class="key" onclick="goHome()">🏠</div>
-      <div class="key" onclick="playWin98ErrorSound()">📞</div>
-      <div class="key" onclick="goHome()">✖</div>
-      <div class="key">1</div><div class="key">2</div><div class="key">3</div>
-      <div class="key">4</div><div class="key">5</div><div class="key">6</div>
-      <div class="key">7</div><div class="key">8</div><div class="key">9</div>
-    </div>
+    
+    <!-- Barra de Navegación Estilo iPhone -->
+    <div class="home-indicator" onclick="goHome()"></div>
   </div>
-
   <script>
-    // --- NAVEGACIÓN DE PANTALLA COMPLETA MÓVIL ---
+    // --- MANEJADOR DE PANTALLA COMPLETA ---
     function showApp(appId) {
       document.getElementById('main-menu').style.display = 'none';
       document.querySelectorAll('.app-view').forEach(view => view.style.display = 'none');
@@ -134,9 +146,11 @@
     }
     function goHome() {
       document.querySelectorAll('.app-view').forEach(view => view.style.display = 'none');
+      document.getElementById('main-menu').style.gridTemplateColumns = 'repeat(3, 1fr)';
       document.getElementById('main-menu').style.display = 'grid';
     }
-    // --- BASE DE DATOS MÓVIL COMPACTA ---
+
+    // --- BASE DE DATOS GEOGRÁFICA COMPACTA ---
     const municipiosPR = [
       { n: "Adjuntas", costa: false }, { n: "Aguadilla", costa: true }, { n: "Arecibo", costa: true }, { n: "Barranquitas", costa: false },
       { n: "Bayamón", costa: true }, { n: "Cabo Rojo", costa: true }, { n: "Caguas", costa: false }, { n: "Carolina", costa: true },
@@ -148,59 +162,69 @@
 
     window.onload = function() {
       const s = document.getElementById('town-selector');
-      if (s) s.innerHTML = `<option value="">-- Pueblo --</option>` + municipiosPR.map(m => `<option value="${m.n}">${m.n}</option>`).join('');
+      if (s) s.innerHTML = `<option value="">-- Municipio --</option>` + municipiosPR.map(m => `<option value="${m.n}">${m.n}</option>`).join('');
     };
 
-    // --- RELOJ ---
+    // Reloj Holográfico 24H
     setInterval(() => { document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }); }, 1000);
-    // --- AUDIO CHORD SYNTH ---
+    // --- SINTETIZADOR DE ACORDE CYBER GLOW ---
     function playWin98ErrorSound() {
       try {
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const freqs = [130.81, 164.81, 196.00]; 
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const freqs = [147.14, 220.00, 329.63]; // Frecuencias ajustadas a acordes futuristas Synthwave
         freqs.forEach(freq => {
-          const osc = audioContext.createOscillator(); const gain = audioContext.createGain();
-          osc.type = 'triangle'; osc.frequency.setValueAtTime(freq, audioContext.currentTime);
-          gain.gain.setValueAtTime(0.1, audioContext.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.3);
-          osc.connect(gain); gain.connect(audioContext.destination); osc.start(); osc.stop(audioContext.currentTime + 0.3);
+          const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
+          osc.type = 'sawtooth'; osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+          gain.gain.setValueAtTime(0.08, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
+          osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.4);
         });
       } catch (e) {}
     }
 
-    // --- IVU ---
+    // --- CÁLCULO DEL IVU AVANZADO BORICUA ---
     function calcIVU() {
       const amt = parseFloat(document.getElementById('amount').value) || 0; const type = parseFloat(document.getElementById('ivu-type').value);
       let est = type === 11.5 ? amt * 0.105 : amt * 0.06; let mun = amt * 0.01;
-      document.getElementById('ivu-results').innerHTML = `Est: $${est.toFixed(2)} | Mun: $${mun.toFixed(2)}<br><b>IVU: $${(est+mun).toFixed(2)} | Total: $${(amt+est+mun).toFixed(2)}</b>`;
+      document.getElementById('ivu-results').innerHTML = `
+        Estatal (${type===11.5?'10.5%':'6%'}): $${est.toFixed(2)}<br>
+        Municipal (1%): $${mun.toFixed(2)}<br>
+        <hr style="border:1px dashed rgba(0,243,255,0.2); margin:6px 0;">
+        <span style="color:var(--neon-cyan);">Total IVU: $${(est+mun).toFixed(2)}</span><br>
+        <span style="color:var(--neon-pink); font-size:14px;">Gran Total: $${(amt+est+mun).toFixed(2)}</span>
+      `;
     }
     calcIVU();
-    // --- MUSICA DISCO ---
+
+    function toggleVolSlider(e) { e.stopPropagation(); const v = document.getElementById('vol-container'); v.style.display = v.style.display === 'block' ? 'none' : 'block'; }
+    function changeVolume(val) { const audioPlayer = document.getElementById('audio-player'); if (audioPlayer) audioPlayer.volume = val; }
+    // --- MULTIMEDIA STREAM ---
     const canciones = [
       { titulo: "Yankee - Gasolina", url: "https://archive.org" },
       { titulo: "Yankee - Rompe", url: "https://archive.org" }
     ];
     const audio = document.getElementById('audio-player');
-    function renderPlaylist() { document.getElementById('playlist').innerHTML = canciones.map((c, i) => `<div class="track" onclick="playTrack(${i})">📻 ${c.titulo}</div>`).join(''); }
+    function renderPlaylist() { document.getElementById('playlist').innerHTML = canciones.map((c, i) => `<div class="track" onclick="playTrack(${i})">🎵 ${c.titulo}</div>`).join(''); }
     function playTrack(i) { document.getElementById('now-playing').textContent = canciones[i].titulo.toUpperCase(); audio.src = canciones[i].url; audio.crossOrigin = "anonymous"; audio.play(); document.getElementById('visualizer-gif').style.opacity = "1"; }
-    audio.addEventListener('pause', () => { document.getElementById('visualizer-gif').style.opacity = "0.4"; });
+    audio.addEventListener('play', () => { document.getElementById('visualizer-gif').style.opacity = "1"; });
+    audio.addEventListener('pause', () => { document.getElementById('visualizer-gif').style.opacity = "0.3"; });
     renderPlaylist();
 
     function addTrackPrompt() { const title = prompt("Nombre:"); const url = prompt("MP3 URL:"); if (title && url) { canciones.push({ titulo: title, url: url }); renderPlaylist(); }}
 
-    // --- JERGA ---
+    // --- LOGICA DE DICCIONARIOS ---
     function traducirBoricua() {
       const p = document.getElementById('boricua-word').value; const r = document.getElementById('boricua-result');
-      const d = { gandul: "Apretado de tiempo.", alcapurria: "Trabajar muy duro.", revolu: "Caos o desorden total.", chinchorreo: "Ruta gastronómica de frituras." };
-      r.innerHTML = p ? `<b>Significado:</b><br>${d[p]}` : "Elige palabra.";
+      const d = { gandul: "Apretado de tiempo o llegando con las justas.", alcapurria: "Trabajar muy duro bajo presión.", revolu: "Caos o desorden masivo total.", chinchorreo: "Ruta social de frituras de fin de semana." };
+      r.innerHTML = p ? `<b>SIGNIFICADO SYNTH:</b><br>${d[p]}` : "Selecciona un término holográfico.";
     }
 
-    // --- BOTANICA ---
     function verRemedio() {
       const a = document.getElementById('remedio-selector').value; const d = document.getElementById('remedio-result');
-      const l = { empacho: "Aceite de oliva tibio en vientre y té de menta.", resfriado: "Té de jengibre, malojillo, ajo y miel.", mal_de_ojo: "Pulsera de azabache y ruda fresca." };
-      d.innerHTML = a ? `📜 <b>Receta Abuela:</b><br>${l[a]}` : "Elige síntoma.";
+      const l = { empacho: "Aceite de oliva en vientre en forma de cruz y té de menta.", resfriado: "Té de jengibre, malojillo, ajo machacado y miel pura.", mal_de_ojo: "Pulsera de azabache con cuentas rojas y ruda fresca." };
+      d.innerHTML = a ? `📜 <b>FÓRMULA BOTÁNICA:</b><br>${l[a]}` : "Abre la base de datos medicinal tradicional.";
     }
-    // --- RADAR CUCARACHA AUTO-WEATHER AUTOMÁTICO ---
+
+    // --- RADAR MUNICIPAL AUTÓNOMO INMUNE A ERRORES DE RED ---
     let c_interval = null;
     function evaluarInvasionCucaracha() {
       const pName = document.getElementById('town-selector').value; const timer = document.getElementById('timer-display'); const consejo = document.getElementById('cucaracha-consejo');
@@ -208,15 +232,15 @@
       
       const pInfo = municipiosPR.find(m => m.n === pName);
       const hora = new Date().getHours();
-      let temp = pInfo.costa ? 86 : 75; if (hora >= 12 && hora <= 16) temp += 4;
+      let temp = pInfo.costa ? 87 : 75; if (hora >= 11 && hora <= 16) temp += 4;
       
-      document.getElementById('town-weather-title').innerHTML = `PUEBLO: ${pName.toUpperCase()} | ${temp}°F`;
+      document.getElementById('town-weather-title').innerHTML = `HOLOGRAMA: <span style="color:var(--neon-cyan);">${pName.toUpperCase()}</span> | <b>${temp}°F</b>`;
 
       if (pInfo.costa && temp >= 85) {
         playWin98ErrorSound(); let t = 42 * 60;
-        consejo.innerHTML = `⚠️ <b>HUMERO ACTIVO:</b> El vapor de los drenajes en ${pName} está alto. Cierra ventanas de paleta.`;
-        c_interval = setInterval(() => { t--; let m = Math.floor(t / 60); let s = t % 60; timer.textContent = `ALERT: ${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`; if (t <= 0) { clearInterval(c_interval); timer.textContent = "¡INVASIÓN!"; playWin98ErrorSound(); } }, 1000);
-      } else { timer.textContent = "SISTEMA: OK"; consejo.innerHTML = `Clima estable en ${pName}. Tuberías secas. Riesgo de plaga voladora: BAJO.`; }
+        consejo.innerHTML = `<b style="color:var(--neon-pink);">⚠️ EVAPORACIÓN ACTIVA:</b> Bochorno severo detectado en ${pName}. Humero subiendo por las alcantarillas. Sella las ventanas de aluminio.`;
+        c_interval = setInterval(() => { t--; let m = Math.floor(t / 60); let s = t % 60; timer.textContent = `INVASIÓN EN: ${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`; if (t <= 0) { clearInterval(c_interval); timer.textContent = "CRÍTICO: INVASIÓN"; playWin98ErrorSound(); } }, 1000);
+      } else { timer.textContent = "SISTEMA: ESTABLE"; consejo.innerHTML = `Presión barométrica normal en ${pName}. Subsuelo frío. Riesgo de plagas: CERO.`; }
     }
   </script>
 </body>
