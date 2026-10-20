@@ -3,159 +3,172 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>El_Costurero_De_La_Abuela.exe</title>
+  <title>La_Lata_De_Galletas_De_Abuela.exe</title>
   <style>
     :root { 
       --tin-gold: #c59b27; 
       --tin-metal: #a37f1c;
-      --felt-blue: #1c3b57; 
+      --felt-blue: #142847; 
       --biscuit-cream: #f4ebd0;
       --ink-blue: #1d2d50;
     }
-    * { box-sizing: border-box; font-family: 'Courier New', monospace; font-size: 13px; margin: 0; padding: 0; user-select: none; font-weight: bold; }
-    body { background: #2b1f1d; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 10px; overflow: hidden; }
-    /* Contenedor de la Lata Fija sin Scroll */
-    .tin-box { width: 100%; max-width: 360px; height: 640px; background: var(--tin-gold); border: 8px double var(--tin-metal); border-radius: 35px; padding: 15px; display: flex; flex-direction: column; box-shadow: 0 15px 35px rgba(0,0,0,0.8), inset 0 0 15px rgba(0,0,0,0.5); position: relative; }
-    .tin-rim { flex-grow: 1; background: var(--felt-blue); background-image: radial-gradient(circle, #244a6b 0%, var(--felt-blue) 80%); border: 4px inset var(--tin-metal); border-radius: 20px; padding: 12px; display: flex; flex-direction: column; overflow: hidden; position: relative; }
+    * { box-sizing: border-box; font-family: 'Courier New', monospace; font-weight: bold; margin: 0; padding: 0; user-select: none; }
+    body { background: #1a1110; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; padding: 5px; }
     
-    /* El Desorden del Costurero (Objetos Sueltos) */
-    .sewing-tray { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; padding-top: 10px; justify-items: center; }
-    .trinket { display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); border: 2px dashed rgba(255,255,255,0.2); width: 110px; height: 110px; border-radius: 50%; cursor: pointer; text-align: center; font-size: 11px; color: var(--biscuit-cream); text-shadow: 1px 1px #000; box-shadow: 2px 4px 8px rgba(0,0,0,0.4); }
-    .trinket span { font-size: 38px; margin-bottom: 2px; filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.5)); }
-    .trinket p { font-size: 11px; margin-top: 2px; }
-    .trinket:active { transform: scale(0.95); box-shadow: 1px 1px 3px rgba(0,0,0,0.5); border-color: var(--tin-gold); }
-    /* Vistas de los Objetos al tocarlos */
-    .object-view { display: none; flex-direction: column; height: 100%; gap: 8px; overflow: hidden; }
-    .btn-close-box { display: inline-block; width: fit-content; border: 2px solid var(--tin-metal); padding: 4px 10px; margin-bottom: 4px; font-size: 11px; cursor: pointer; border-radius: 4px; background: var(--gray, #c0c0c0); box-shadow: 1px 1px 3px #000; color: #000; }
-    .btn-close-box:active { box-shadow: none; transform: translate(1px, 1px); }
+    /* La Lata Circular de Galletas Realista */
+    .cookie-tin { width: 98vw; height: 98vw; max-width: 580px; max-height: 580px; background: var(--tin-gold); border: 10px double var(--tin-metal); border-radius: 50%; padding: 10px; display: flex; flex-direction: column; box-shadow: 0 20px 40px rgba(0,0,0,0.8), inset 0 0 25px rgba(0,0,0,0.6); position: relative; }
+    .tin-interior { flex-grow: 1; background: var(--felt-blue); background-image: radial-gradient(circle, #1c3d64 0%, var(--felt-blue) 85%); border: 5px inset var(--tin-metal); border-radius: 50%; padding: 30px; position: relative; overflow: hidden; display: flex; flex-direction: column; }
+    /* Ajustes del System Tray de Costura */
+    .needle-tray { display: flex; justify-content: space-between; font-size: 11px; color: rgba(244,235,208,0.6); border-bottom: 1px dotted rgba(255,255,255,0.1); padding-bottom: 4px; width: 60%; margin: 0 auto 5px; text-align: center; z-index: 2; }
+    .needle-tray span { color: rgba(244,235,208,0.6); font-size: 11px; }
+
+    /* Contenedor Fijo de Objetos */
+    .objects-container { position: relative; flex-grow: 1; width: 100%; height: 100%; }
+
+    /* El Desorden: Tamaños Reales y Posiciones Orgánicas */
+    .trinket { position: absolute; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; text-align: center; filter: drop-shadow(4px 8px 6px rgba(0,0,0,0.6)); transition: transform 0.2s; }
+    .trinket span { filter: drop-shadow(2px 4px 3px rgba(0,0,0,0.4)); }
+    .trinket p { font-size: 11px; color: var(--biscuit-cream); text-shadow: 1px 1px 2px #000; margin-top: 3px; background: rgba(0,0,0,0.4); padding: 1px 4px; border-radius: 3px; }
+    .trinket:active { transform: scale(0.95) !important; }
+
+    /* Escalas de Tamaño Real y Rotaciones Caóticas */
+    #obj-calc { width: 90px; height: 110px; top: 12%; left: 10%; transform: rotate(-15deg); }
+    #obj-calc span { font-size: 65px; }
+
+    #obj-walkman { width: 110px; height: 120px; top: 8%; right: 12%; transform: rotate(18deg); }
+    #obj-walkman span { font-size: 80px; }
+
+    #obj-keychain { width: 65px; height: 65px; top: 45%; left: 42%; transform: rotate(45deg); }
+    #obj-keychain span { font-size: 40px; }
+
+    #obj-notebook { width: 100px; height: 100px; bottom: 12%; left: 12%; transform: rotate(-8deg); }
+    #obj-notebook span { font-size: 70px; }
+
+    #obj-baygon { width: 95px; height: 140px; bottom: 10%; right: 15%; transform: rotate(25deg); }
+    #obj-baygon span { font-size: 85px; }
+    /* Capas Flotantes de Función (Full Screen Popups) */
+    .object-overlay { display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(10,5,20,0.85); border-radius: 50%; padding: 45px 35px; flex-direction: column; gap: 8px; z-index: 10; justify-content: center; backdrop-filter: blur(4px); }
+    .btn-close-box { display: inline-block; width: fit-content; border: 2px solid var(--tin-metal); padding: 4px 10px; margin: 0 auto 4px; font-size: 11px; cursor: pointer; border-radius: 4px; background: #c0c0c0; box-shadow: 1px 1px 3px #000; color: #000; text-transform: uppercase; }
     
-    /* Interiores Estilo Libreta/Papel Viejo */
-    .paper-sheet { border: 1px solid #dcd1b4; padding: 10px; background: #fffbf0; border-radius: 4px; color: var(--ink-blue); box-shadow: 2px 2px 10px rgba(0,0,0,0.3); overflow-y: auto; flex-grow: 1; border-left: 3px double #ff9999; }
+    /* Libreta Antigua */
+    .paper-sheet { border: 1px solid #dcd1b4; padding: 12px; background: #fffbf0; border-radius: 4px; color: var(--ink-blue); box-shadow: 2px 2px 10px rgba(0,0,0,0.5); overflow-y: auto; max-height: 200px; border-left: 3px double #ff9999; }
     .paper-sheet * { color: var(--ink-blue); }
     
-    /* Estilo Calculadora Escolar Gris */
-    .calc-case { background: #8e9294; border: 3px solid #5a5d5f; border-radius: 8px; padding: 10px; display: flex; flex-direction: column; gap: 8px; flex-grow: 1; box-shadow: 3px 5px 10px rgba(0,0,0,0.5); }
-    .calc-lcd { background: #a4b494; border: 2px inset #5a5d5f; padding: 8px; text-align: right; font-family: monospace; font-size: 15px; color: #1c2810; height: 50px; display: flex; flex-direction: column; justify-content: center; font-weight: bold; border-radius: 4px; }
+    /* Calculadora de Plástico Gris */
+    .calc-case { background: #8e9294; border: 3px solid #5a5d5f; border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 6px; box-shadow: 3px 5px 10px rgba(0,0,0,0.6); }
+    .calc-lcd { background: #a4b494; border: 2px inset #5a5d5f; padding: 6px; text-align: right; font-family: monospace; font-size: 14px; color: #1c2810; min-height: 45px; display: flex; flex-direction: column; justify-content: center; font-weight: bold; border-radius: 4px; }
+
     .field { display: flex; justify-content: space-between; align-items: center; gap: 6px; }
-    input, select { background: #fff; border: 1px solid var(--dark-bg); padding: 4px; width: 55%; font-size: 12px; outline: none; color: #000; }
-    
-    .track-list { flex-grow: 1; overflow-y: auto; max-height: 110px; background: #222; border-radius: 4px; padding: 4px; }
-    .track { padding: 6px; cursor: pointer; border-bottom: 1px dashed #444; font-size: 11px; color: #0f0; font-family: monospace; }
+    input, select { background: #fff; border: 1px solid #000; padding: 4px; width: 50%; font-size: 12px; color: #000; outline: none; }
+    .track-list { overflow-y: auto; max-height: 90px; background: #111; border-radius: 4px; padding: 2px; margin-top: 2px; }
+    .track { padding: 5px; cursor: pointer; border-bottom: 1px dashed #333; font-size: 11px; color: #0f0; text-align: left; }
     .track.active { background: #0f0; color: #000; }
-    
-    .needle-holder { width: 100%; display: flex; justify-content: space-between; font-size: 11px; border-bottom: 1px dotted rgba(255,255,255,0.2); padding-bottom: 4px; margin-bottom: 6px; color: var(--biscuit-cream); }
-    .needle-holder span { color: var(--biscuit-cream); }
+    button.win-btn { background: #fff; border: 1px solid #000; padding: 5px; cursor: pointer; font-size: 11px; width: 100%; color: #000; }
   </style>
 </head>
 <body>
-  <div class="tin-box">
-    <div class="tin-rim">
-      <div class="needle-holder">
+  <div class="cookie-tin">
+    <div class="tin-interior">
+      <div class="needle-tray">
         <span>📍 COSTURERO</span>
         <span id="clock">00:00 AM</span>
-        <span>🧵 HILOS: OK</span>
       </div>
       
-      <div class="screen-content" style="flex-grow: 1; display: flex; flex-direction: column; overflow: hidden;">
-        <!-- BANDEJA PRINCIPAL DE OBJETOS -->
-        <div id="main-menu" class="sewing-tray">
-          <div class="trinket" onclick="showObject('view-calc')"><span>🧮</span><p>Calculadora Gris</p></div>
-          <div class="trinket" onclick="showObject('view-walkman')"><span>📻</span><p>Walkman Amarillo</p></div>
-          <div class="trinket" onclick="showObject('view-keychain')"><span>🇵🇷</span><p>Llavero Isla</p></div>
-          <div class="trinket" onclick="showObject('view-notebook')"><span>📖</span><p>Libreta Vieja</p></div>
-          <div class="trinket" onclick="showObject('view-baygon')"><span>🪳</span><p>Pote Baygón</p></div>
+      <!-- CONTENEDOR DE OBJETOS SUELTOS -->
+      <div class="objects-container" id="main-menu">
+        <div class="trinket" id="obj-calc" onclick="showObject('view-calc')"><span>🧮</span><p>Calculadora</p></div>
+        <div class="trinket" id="obj-walkman" onclick="showObject('view-walkman')"><span>📻</span><p>Walkman</p></div>
+        <div class="trinket" id="obj-keychain" onclick="showObject('view-keychain')"><span>🇵🇷</span><p>Llavero</p></div>
+        <div class="trinket" id="obj-notebook" onclick="showObject('view-notebook')"><span>📖</span><p>Libreta</p></div>
+        <div class="trinket" id="obj-baygon" onclick="showObject('view-baygon')"><span>🪳</span><p>Baygón</p></div>
+      </div>
+      <!-- MODAL: CALCULADORA ESCOLAR GRIS -->
+      <div id="view-calc" class="object-overlay">
+        <div class="btn-close-box" onclick="closeObject()">[Cerrar]</div>
+        <div class="calc-case">
+          <div class="field"><label style="color:#fff;">Precio $:</label><input type="number" id="amount" value="100" oninput="calcIVU()"></div>
+          <div class="field">
+            <label style="color:#fff;">Arbitrio:</label>
+            <select id="ivu-type" onchange="calcIVU()">
+              <option value="11.5">IVU 11.5%</option>
+              <option value="7">Comida 7%</option>
+            </select>
+          </div>
+          <div class="calc-lcd" id="ivu-results"></div>
         </div>
+      </div>
 
-        <!-- OBJETO: CALCULADORA ESCOLAR GRIS -->
-        <div id="view-calc" class="object-view">
-          <div class="btn-close-box" onclick="closeObject()">[Guardar Objeto]</div>
-          <div class="calc-case">
-            <div class="field" style="justify-content:flex-start; gap:10px;"><label style="color:#fff;">Precio $:</label><input type="number" id="amount" value="100" oninput="calcIVU()" style="width:100px;"></div>
-            <div class="field" style="justify-content:flex-start; gap:10px;">
-              <label style="color:#fff;">Arbitrio:</label>
-              <select id="ivu-type" onchange="calcIVU()" style="width:120px;">
-                <option value="11.5">IVU 11.5%</option>
-                <option value="7">Comida 7%</option>
-              </select>
-            </div>
-            <div class="calc-lcd" id="ivu-results"></div>
-          </div>
+      <!-- MODAL: WALKMAN AMARILLO -->
+      <div id="view-walkman" class="object-overlay">
+        <div class="btn-close-box" onclick="closeObject()">[Cerrar]</div>
+        <div style="background:#eed44b; border:3px solid #bba327; padding:10px; border-radius:8px; display:flex; flex-direction:column; gap:4px; box-shadow:3px 4px 8px rgba(0,0,0,0.5);">
+          <div style="background:#111; color:#fff; font-family:monospace; padding:4px; text-align:center; font-size:11px; border:1px solid #fff;" id="now-playing">TAPE STOPPED</div>
+          <img id="visualizer-gif" src="https://archive.org" style="width: 100%; height: 70px; object-fit: contain; background: #000; border: 1px inset #333; opacity: 0.4;">
+          <audio id="audio-player" controls style="width: 100%; height: 28px; outline: none;"></audio>
+          <div class="track-list" id="playlist"></div>
+          <button class="win-btn" onclick="addTrackPrompt()">+ Cargar Cinta (URL)</button>
         </div>
-        <!-- OBJETO: WALKMAN DE CASETTE AMARILLO -->
-        <div id="view-walkman" class="object-view">
-          <div class="btn-close-box" onclick="closeObject()">[Guardar Objeto]</div>
-          <div style="background:#eed44b; border:3px solid #bba327; padding:10px; border-radius:8px; flex-grow:1; display:flex; flex-direction:column; gap:6px; box-shadow:3px 4px 8px rgba(0,0,0,0.5);">
-            <div style="background:#111; color:#fff; font-family:monospace; padding:4px; text-align:center; font-size:11px; border-radius:4px; border:2px inset #fff;" id="now-playing">TAPE STOPPED</div>
-            <img id="visualizer-gif" src="https://archive.org" style="width: 100%; height: 75px; object-fit: contain; background: #000; border: 2px inset #333; opacity: 0.4; border-radius:4px;">
-            <audio id="audio-player" controls style="width: 100%; height: 28px; outline: none;"></audio>
-            <div class="track-list" id="playlist"></div>
-            <button class="win-btn" onclick="addTrackPrompt()" style="background:#fff; color:#000; font-size:11px; padding:4px; border:1px solid #000;">+ Meter Cinta (URL)</button>
+      </div>
+      <!-- MODAL: LLAVERO MAPA -->
+      <div id="view-keychain" class="object-overlay">
+        <div class="btn-close-box" onclick="closeObject()">[Cerrar]</div>
+        <div class="paper-sheet">
+          <h3 style="border-bottom:1px solid #ff9999; margin-bottom:6px; font-size:13px;">🇵🇷 Llavero de Jerga</h3>
+          <div class="field" style="margin-bottom:6px;">
+            <label>Palabra:</label>
+            <select id="boricua-word" onchange="traducirBoricua()">
+              <option value="">-- Elige --</option>
+              <option value="gandul">Como el gandul</option>
+              <option value="alcapurria">Guayando alcapurria</option>
+              <option value="revolu">Un revolú</option>
+              <option value="chinchorreo">Chinchorreo</option>
+            </select>
           </div>
+          <div id="boricua-result" style="font-style:italic; font-size:12px;">Toca la frase grabada en el metal.</div>
         </div>
-        <!-- OBJETO: LLAVERO MAPA DE LA ISLA -->
-        <div id="view-keychain" class="object-view">
-          <div class="btn-close-box" onclick="closeObject()">[Guardar Objeto]</div>
-          <div class="paper-sheet">
-            <h3 style="border-bottom:1px solid #ff9999; margin-bottom:6px; font-size:14px;">🇵🇷 Diccionario de la Isla</h3>
-            <div class="field" style="margin-bottom:8px;">
-              <label>Jerga:</label>
-              <select id="boricua-word" onchange="traducirBoricua()" style="width:60%;">
-                <option value="">-- Elige --</option>
-                <option value="gandul">Como el gandul</option>
-                <option value="alcapurria">Guayando masa</option>
-                <option value="revolu">Un revolú</option>
-                <option value="chinchorreo">Chinchorreo</option>
-              </select>
-            </div>
-            <div id="boricua-result" style="font-style:italic; font-size:12px;">Toca una frase tallada en el llavero.</div>
-          </div>
-        </div>
+      </div>
 
-        <!-- OBJETO: LIBRETA VIEJA DE LÍNEAS -->
-        <div id="view-notebook" class="object-view">
-          <div class="btn-close-box" onclick="closeObject()">[Guardar Objeto]</div>
-          <div class="paper-sheet">
-            <h3 style="border-bottom:1px solid #ff9999; margin-bottom:6px; font-size:14px;">✍️ Apuntes de Botánica de Abuela</h3>
-            <div class="field" style="margin-bottom:8px;">
-              <label>Molestia:</label>
-              <select id="remedio-selector" onchange="verRemedio()" style="width:60%;">
-                <option value="">-- Elige --</option>
-                <option value="empacho">Empacho</option>
-                <option value="resfriado">Tos del pecho</option>
-                <option value="mal_de_ojo">Mal de Ojo</option>
-              </select>
-            </div>
-            <div id="remedio-result" style="font-size:11px; white-space:pre-line; line-height:1.4;">Hojea las páginas amarillas de la libreta.</div>
+      <!-- MODAL: LIBRETA VIEJA -->
+      <div id="view-notebook" class="object-overlay">
+        <div class="btn-close-box" onclick="closeObject()">[Cerrar]</div>
+        <div class="paper-sheet">
+          <h3 style="border-bottom:1px solid #ff9999; margin-bottom:6px; font-size:13px;">📖 Recetas Botánicas</h3>
+          <div class="field" style="margin-bottom:6px;">
+            <label>Achaque:</label>
+            <select id="remedio-selector" onchange="verRemedio()">
+              <option value="">-- Elige --</option>
+              <option value="empacho">Empacho</option>
+              <option value="resfriado">Tos fuerte</option>
+              <option value="mal_de_ojo">Mal de Ojo</option>
+            </select>
           </div>
+          <div id="remedio-result" style="font-size:11px; line-height:1.3;">Hojas escritas a mano por la abuela.</div>
         </div>
+      </div>
 
-        <!-- OBJETO: POTE DE BAYGÓN VERDE -->
-        <div id="view-baygon" class="object-view">
-          <div class="btn-close-box" onclick="closeObject()">[Guardar Objeto]</div>
-          <div style="background:#1d6639; border:3px solid #114424; padding:12px; border-radius:8px; flex-grow:1; display:flex; flex-direction:column; gap:6px; box-shadow:3px 4px 8px rgba(0,0,0,0.5);">
-            <div style="background:#cc2222; height:18px; border-radius:4px; text-align:center; color:#fff; font-size:11px; line-height:18px;">VÁLVULA DE SEGURIDAD RED</div>
-            <div class="field" style="margin-top:4px;"><label style="color:#fff;">Municipio:</label><select id="town-selector" onchange="evaluarInvasionCucaracha()" style="width:60%;"></select></div>
-            <div id="town-weather-title" style="font-size:11px; color:#ffcc00; text-align:center;">MANÓMETRO: ESPERANDO PUEBLO</div>
-            <div style="background:#000; color:#0f0; text-align:center; padding:10px; font-family:monospace; font-size:18px; font-weight:bold; border:2px inset #666;" id="timer-display">PRESIÓN OK</div>
-            <div id="cucaracha-consejo" style="font-size:11px; color:#fff; background:rgba(0,0,0,0.3); padding:6px; border-radius:4px; flex-grow:1; overflow-y:auto;">Inspección de alcantarillas mediante la boquilla del pote.</div>
-          </div>
+      <!-- MODAL: POTE DE BAYGÓN -->
+      <div id="view-baygon" class="object-overlay">
+        <div class="btn-close-box" onclick="closeObject()">[Cerrar]</div>
+        <div style="background:#1d6639; border:3px solid #114424; padding:10px; border-radius:8px; display:flex; flex-direction:column; gap:4px;">
+          <div class="field"><label style="color:#fff; font-size:11px;">Municipio:</label><select id="town-selector" onchange="evaluarInvasionCucaracha()" style="width:55%;"></select></div>
+          <div id="town-weather-title" style="font-size:11px; color:#ffcc00; text-align:center; margin:2px 0;">MEDIDOR: PRESIÓN NORMAL</div>
+          <div style="background:#000; color:#0f0; text-align:center; padding:8px; font-family:monospace; font-size:16px;" id="timer-display">STANDBY</div>
+          <div id="cucaracha-consejo" style="font-size:11px; color:#fff; background:rgba(0,0,0,0.3); padding:5px; border-radius:4px; max-height:70px; overflow-y:auto;">Apunta la boquilla del pote.</div>
         </div>
       </div>
     </div>
   </div>
   <script>
-    // --- CONTROL DE APERTURA DE OBJETOS ---
+    // --- NAVEGACIÓN DE OBJETOS DEL COSTURERO ---
     function showObject(viewId) {
-      document.getElementById('main-menu').style.display = 'none';
-      document.querySelectorAll('.object-view').forEach(view => view.style.display = 'none');
+      document.querySelectorAll('.object-overlay').forEach(modal => modal.style.display = 'none');
       document.getElementById(viewId).style.display = 'flex';
     }
     function closeObject() {
-      document.querySelectorAll('.object-view').forEach(view => view.style.display = 'none');
-      document.getElementById('main-menu').style.display = 'grid';
+      document.querySelectorAll('.object-overlay').forEach(modal => modal.style.display = 'none');
     }
 
-    // Municipios compactos para el radar del Baygón
+    // Lista compacta con perfil geográfico autónomo
     const municipiosPR = [
       { n: "Adjuntas", costa: false }, { n: "Aguadilla", costa: true }, { n: "Arecibo", costa: true }, { n: "Barranquitas", costa: false },
       { n: "Bayamón", costa: true }, { n: "Cabo Rojo", costa: true }, { n: "Caguas", costa: false }, { n: "Carolina", costa: true },
@@ -167,75 +180,65 @@
 
     window.onload = function() {
       const s = document.getElementById('town-selector');
-      if (s) s.innerHTML = `<option value="">-- Elige --</option>` + municipiosPR.map(m => `<option value="${m.n}">${m.n}</option>`).join('');
+      if (s) s.innerHTML = `<option value="">-- Pueblo --</option>` + municipiosPR.map(m => `<option value="${m.n}">${m.n}</option>`).join('');
     };
 
-    // Reloj del bastidor de costura
     setInterval(() => { document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }); }, 1000);
-    // --- TIMBRE METÁLICO DE AGUJA SYNTH ---
     function playWin98ErrorSound() {
       try {
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const freqs = [150.00, 180.00, 220.00]; 
+        const freqs = [140.00, 170.00, 210.00]; 
         freqs.forEach(freq => {
           const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
           osc.type = 'triangle'; osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-          gain.gain.setValueAtTime(0.08, audioContext.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.3);
+          gain.gain.setValueAtTime(0.08, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
           osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.3);
         });
       } catch (e) {}
     }
 
-    // --- CÁLCULO DE LA PANTALLA LCD GRIS ---
     function calcIVU() {
       const amt = parseFloat(document.getElementById('amount').value) || 0; const type = parseFloat(document.getElementById('ivu-type').value);
       let est = type === 11.5 ? amt * 0.105 : amt * 0.06; let mun = amt * 0.01;
-      document.getElementById('ivu-results').innerHTML = `E:$${est.toFixed(2)} M:$${mun.toFixed(2)}<br>IVU:$${(est+mun).toFixed(2)} TOT:$${(amt+est+mun).toFixed(2)}`;
+      document.getElementById('ivu-results').innerHTML = `Est: $${est.toFixed(2)} | Mun: $${mun.toFixed(2)}<br><b>IVU: $${(est+mun).toFixed(2)} | Tot: $${(amt+est+mun).toFixed(2)}</b>`;
     }
     calcIVU();
 
-    // --- CONTROLES DEL CASSETTE DEL WALKMAN ---
     const canciones = [
       { titulo: "Yankee - Gasolina", url: "https://archive.org" },
       { titulo: "Yankee - Rompe", url: "https://archive.org" }
     ];
     const audio = document.getElementById('audio-player');
-    function renderPlaylist() { document.getElementById('playlist').innerHTML = canciones.map((c, i) => `<div class="track" onclick="playTrack(${i})">📼 SIDE_A: ${c.titulo}</div>`).join(''); }
+    function renderPlaylist() { document.getElementById('playlist').innerHTML = canciones.map((c, i) => `<div class="track" onclick="playTrack(${i})">📼 TAPE_A: ${c.titulo}</div>`).join(''); }
     function playTrack(i) { document.getElementById('now-playing').textContent = canciones[i].titulo.toUpperCase(); audio.src = canciones[i].url; audio.crossOrigin = "anonymous"; audio.play(); document.getElementById('visualizer-gif').style.opacity = "1"; }
     audio.addEventListener('pause', () => { document.getElementById('visualizer-gif').style.opacity = "0.4"; });
     renderPlaylist();
-
     function addTrackPrompt() { const title = prompt("Tema:"); const url = prompt("MP3 URL:"); if (title && url) { canciones.push({ titulo: title, url: url }); renderPlaylist(); }}
-    // --- LÓGICA DE DICCIONARIOS DE PAPEL ---
+
     function traducirBoricua() {
       const p = document.getElementById('boricua-word').value; const r = document.getElementById('boricua-result');
-      const d = { gandul: "Estar muy apretado de tiempo o soga al cuello.", alcapurria: "Pasar una jornada de trabajo forzado intenso.", revolu: "Desorden masivo o caos en el cuarto.", chinchorreo: "Paseo de frituras por la montaña." };
-      r.innerHTML = p ? `<b>Traducido:</b><br>${d[p]}` : "Toca una frase tallada en el llavero.";
+      const d = { gandul: "Apretado de tiempo o la soga al cuello.", alcapurria: "Pasar una jornada de trabajo muy duro.", revolu: "Desorden masivo o caos total.", chinchorreo: "Ruta de frituras por la montaña." };
+      r.innerHTML = p ? `<b>Significado:</b><br>${d[p]}` : "Toca la frase grabada en el metal.";
     }
 
     function verRemedio() {
       const a = document.getElementById('remedio-selector').value; const d = document.getElementById('remedio-result');
-      const l = { empacho: "Sobar el vientre con aceite de oliva tibio en cruz y té de menta.", resfriado: "Hervir jengibre, malojillo, un ajo y endulzar con miel pura.", mal_de_ojo: "Amarrar azabache con hilo rojo y pasar hojas de ruda fresca." };
-      d.innerHTML = a ? `<b>Remedio Escrito:</b><br>${l[a]}` : "Hojea las páginas amarillas de la libreta.";
+      const l = { empacho: "Sobar vientre con aceite de oliva tibio en cruz y té de menta.", resfriado: "Hervir jengibre, malojillo, un ajo y miel criolla.", mal_de_ojo: "Colocar azabache con hilo rojo y pasar hojas de ruda." };
+      d.innerHTML = a ? `<b>Anotación:</b><br>${l[a]}` : "Hojas escritas a mano por la abuela.";
     }
 
-    // --- ALGORITMO CUCARACHAS-TIMER EN EL POTE DE INSECTICIDA ---
     let c_interval = null;
     function evaluarInvasionCucaracha() {
       const pName = document.getElementById('town-selector').value; const timer = document.getElementById('timer-display'); const consejo = document.getElementById('cucaracha-consejo');
-      clearInterval(c_interval); if (!pName) { timer.textContent = "PRESIÓN OK"; return; }
-      
-      const pInfo = municipiosPR.find(m => m.n === pName);
-      const hora = new Date().getHours();
+      clearInterval(c_interval); if (!pName) { timer.textContent = "STANDBY"; return; }
+      const pInfo = municipiosPR.find(m => m.n === pName); const hora = new Date().getHours();
       let temp = pInfo.costa ? 86 : 74; if (hora >= 12 && hora <= 16) temp += 4;
-      
-      document.getElementById('town-weather-title').innerHTML = `MANÓMETRO: ${pName.toUpperCase()} a ${temp}°F`;
-
+      document.getElementById('town-weather-title').innerHTML = `MEDIDOR: ${pName.toUpperCase()} a ${temp}°F`;
       if (pInfo.costa && temp >= 85) {
         playWin98ErrorSound(); let t = 42 * 60;
-        consejo.innerHTML = `⚠️ <b>BOQUILLA CRÍTICA:</b> Humero alto detectado en los drenajes de ${pName}. Las cucarachas van a volar. Sella los bordes de la puerta principal ya.`;
-        c_interval = setInterval(() => { t--; let m = Math.floor(t / 60); let s = t % 60; timer.textContent = `VALVULA: ${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`; if (t <= 0) { clearInterval(c_interval); timer.textContent = "¡INVASIÓN!"; playWin98ErrorSound(); } }, 1000);
-      } else { timer.textContent = "PRESIÓN NORMAL"; consejo.innerHTML = `Presión barométrica templada en ${pName}. Subsuelo inerte. Boquilla libre de plagas.`; }
+        consejo.innerHTML = `⚠️ <b>HUMERO DETECTED:</b> El vapor de los drenajes en la costa de ${pName} está alto. Sella las ventanas de aluminio.`;
+        c_interval = setInterval(() => { t--; let m = Math.floor(t / 60); let s = t % 60; timer.textContent = `VÁLVULA: ${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`; if (t <= 0) { clearInterval(c_interval); timer.textContent = "INVASIÓN!"; playWin98ErrorSound(); } }, 1000);
+      } else { timer.textContent = "PRESIÓN NORMAL"; consejo.innerHTML = `Clima fresco en ${pName}. Subsuelo inerte. Riesgo de plagas: BAJO.`; }
     }
   </script>
 </body>
