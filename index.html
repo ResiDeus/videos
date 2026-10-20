@@ -39,10 +39,9 @@
     input, select { padding: 5px; border: 2px solid; border-color: var(--dark) var(--white) var(--white) var(--dark); background: var(--white); width: 140px; text-align: right; font-size: 13px; }
     
     /* Reproductor y Visualizador de Música */
-    .track-list { flex-grow: 1; overflow-y: auto; font-size: 12px; max-height: 160px; }
+    .track-list { flex-grow: 1; overflow-y: auto; font-size: 12px; max-height: 140px; }
     .track { padding: 6px; cursor: pointer; border-bottom: 1px dotted var(--dark); }
     .track:hover, .track.active { background: var(--blue); color: var(--white); }
-    #visualizer { width: 100%; height: 150px; background: var(--black); border: 2px solid; border-color: var(--dark) var(--white) var(--white) var(--dark); margin-bottom: 8px; display: block; }
     
     /* Barra de Tareas e Inicio */
     .taskbar { position: absolute; bottom: 0; left: 0; right: 0; height: 40px; background: var(--gray); border-top: 2px solid var(--white); display: flex; justify-content: space-between; align-items: center; padding: 2px 8px; z-index: 9999; overflow: visible; }
@@ -104,8 +103,7 @@
     </div>
     <div class="win-body">
       <div class="sunken" style="text-align: center; margin-bottom: 6px; font-weight: bold; background: #000; color: #0f0; font-family: monospace; font-size: 14px;" id="now-playing">DISCO DETENIDO</div>
-            <!-- VISUALIZER LINEA DE ABAJO -->
-      <img id="visualizer-gif" src="https://images.wondershare.com/filmora/article-images/audio-visualizer-premiere-pro-1.gif" style="width: 100%; height: 150px; object-fit: contain; background: #000; border: 2px solid; border-color: var(--dark) var(--white) var(--white) var(--dark); margin-bottom: 8px; display: block;">
+      <img id="visualizer-gif" src="https://archive.org" style="width: 100%; height: 150px; object-fit: contain; background: #000; border: 2px solid; border-color: var(--dark) var(--white) var(--white) var(--dark); margin-bottom: 8px; display: block; opacity: 0.4;">
       <audio id="audio-player" controls style="width: 100%; margin-bottom: 6px;"></audio>
       <div class="sunken track-list" id="playlist"></div>
       <button class="win-btn" onclick="addTrackPrompt()">+ Agregar MP3 (URL)</button>
@@ -113,27 +111,109 @@
     <div class="resizer" onmousedown="resizeStart(event, 'win-music')"></div>
   </div>
 
+  <!-- VENTANA 3: EL BORICUÓMETRO / TRADUCTOR -->
+  <div id="win-boricua" class="window" style="top: 120px; left: 60px; width: 450px; height: 380px;">
+    <div class="title-bar" onmousedown="dragStart(event, 'win-boricua')">
+      <div class="title-text"><span>🇵🇷</span> Boricuómetro / Traductor de Jerga</div>
+      <div class="title-controls">
+        <button class="title-btn" onclick="minimizeWin('win-boricua')">_</button>
+        <button class="title-btn" onclick="closeWin('win-boricua')">×</button>
+      </div>
+    </div>
+    <div class="win-body">
+      <div class="field">
+        <label>Frase o Palabra Boricua:</label>
+        <select id="boricua-word" onchange="traducirBoricua()" style="width: 200px;">
+          <option value="">-- Selecciona Jerga --</option>
+          <option value="gandul">Estar como el gandul</option>
+          <option value="alcapurria">Guayando la alcapurria</option>
+          <option value="brutal">¡Eso está brutal!</option>
+          <option value="revolu">Un revolú</option>
+          <option value="chinchorreo">Irse de chinchorreo</option>
+        </select>
+      </div>
+      <div class="sunken" id="boricua-result" style="line-height: 1.8; flex-grow: 1; background: #fff;">
+        Selecciona una palabra para medir su nivel de herencia cultural y su traducción al español neutro.
+      </div>
+    </div>
+    <div class="resizer" onmousedown="resizeStart(event, 'win-boricua')"></div>
+  </div>
+
+  <!-- VENTANA 4: GUÍA CURIOSA DE REMEDIOS DE LA ABUELA -->
+  <div id="win-abuela" class="window" style="top: 150px; left: 140px; width: 460px; height: 400px;">
+    <div class="title-bar" onmousedown="dragStart(event, 'win-abuela')">
+      <div class="title-text"><span>📖</span> Remedios de la Abuela (Libro Botánico)</div>
+      <div class="title-controls">
+        <button class="title-btn" onclick="minimizeWin('win-abuela')">_</button>
+        <button class="title-btn" onclick="closeWin('win-abuela')">×</button>
+      </div>
+    </div>
+    <div class="win-body">
+      <div class="field">
+        <label>¿Qué achaque o molestia tienes?:</label>
+        <select id="remedio-selector" onchange="verRemedio()" style="width: 200px;">
+          <option value="">-- Selecciona Síntoma --</option>
+          <option value="empacho">Empacho (Mal de estómago)</option>
+          <option value="resfriado">Mucha tos y rompepecho</option>
+          <option value="mal_de_ojo">Sospecha de Mal de Ojo</option>
+          <option value="presion">Bajar la presión alta</option>
+        </select>
+      </div>
+      <div class="sunken" id="remedio-result" style="line-height: 1.8; flex-grow: 1; background: #ffffcc; font-family: 'Courier New', monospace; border-color: var(--dark);">
+        Abre el libro de botánica tradicional seleccionando un padecimiento común en los campos de la isla.
+      </div>
+    </div>
+    <div class="resizer" onmousedown="resizeStart(event, 'win-abuela')"></div>
+  </div>
+
+  <!-- VENTANA 5: CUCARACHAS-TIMER.EXE -->
+  <div id="win-cucaracha" class="window" style="top: 180px; left: 90px; width: 450px; height: 390px;">
+    <div class="title-bar" onmousedown="dragStart(event, 'win-cucaracha')">
+      <div class="title-text"><span>🪳</span> Cucarachas-Timer.exe [Radar de Clima]</div>
+      <div class="title-controls">
+        <button class="title-btn" onclick="minimizeWin('win-cucaracha')">_</button>
+        <button class="title-btn" onclick="closeWin('win-cucaracha')">×</button>
+      </div>
+    </div>
+    <div class="win-body">
+      <div style="font-weight: bold; margin-bottom: 4px; color: var(--blue);">ESTADO DEL TIEMPO EN TU PUEBLO:</div>
+      <div class="field">
+        <label>Simular Clima Actual:</label>
+        <select id="clima-selector" onchange="evaluarInvasionCucaracha()" style="width: 200px;">
+          <option value="sol">Soleado y Fresco</option>
+          <option value="lluvia_calor">Aguacero fuerte + Calor infernal (Humero)</option>
+          <option value="tormenta">Onda Tropical / Tormenta</option>
+        </select>
+      </div>
+      <div class="sunken" id="timer-display" style="text-align: center; font-size: 20px; font-family: monospace; background: #000; color: #ff3333; padding: 15px; font-weight: bold; letter-spacing: 2px; margin: 5px 0;">
+        SISTEMA DE ALERTA: OK
+      </div>
+      <div class="sunken" id="cucaracha-consejo" style="line-height: 1.6; font-size: 12px; background: #e0e0e0; flex-grow: 1;">
+        Monitoreando las alcantarillas de Puerto Rico. Todo despejado por el momento.
+      </div>
+    </div>
+    <div class="resizer" onmousedown="resizeStart(event, 'win-cucaracha')"></div>
+  </div>
+
   <!-- MENÚ INICIO DESPLEGABLE -->
   <div id="start-menu" class="start-menu">
     <div class="start-sidebar">Windows 98</div>
     <div class="menu-items">
       <div class="menu-item" onclick="openWin('win-ivu'); closeStartMenu();">
-        <span style="font-size:18px;">🧮</span>
-        <span>Calculadora IVU</span>
+        <span style="font-size:18px;">🧮</span><span>Calculadora IVU</span>
       </div>
       <div class="menu-item" onclick="openWin('win-music'); closeStartMenu();">
-        <span style="font-size:18px;">📻</span>
-        <span>Winamp Reggaeton</span>
+        <span style="font-size:18px;">📻</span><span>Winamp Reggaeton</span>
       </div>
-      
-      <!-- ==========================================
-           PUNTO 2: ACCESOS EN EL MENÚ INICIO (HTML)
-           Cuando agregues una app, pon su acceso directo aquí siguiendo este formato:
-           <div class="menu-item" onclick="openWin('ID_DE_TU_VENTANA'); closeStartMenu();">
-             <span style="font-size:18px;">[EMOJI_ICONO]</span>
-             <span>Nombre de tu App</span>
-           </div>
-           ========================================== -->
+      <div class="menu-item" onclick="openWin('win-boricua'); closeStartMenu();">
+        <span style="font-size:18px;">🇵🇷</span><span>Boricuómetro / Traductor</span>
+      </div>
+      <div class="menu-item" onclick="openWin('win-abuela'); closeStartMenu();">
+        <span style="font-size:18px;">📖</span><span>Remedios de la Abuela</span>
+      </div>
+      <div class="menu-item" onclick="openWin('win-cucaracha'); closeStartMenu();">
+        <span style="font-size:18px;">🪳</span><span>Cucarachas-Timer</span>
+      </div>
     </div>
   </div>
 
@@ -145,7 +225,6 @@
     
     <div class="taskbar-apps" id="taskbar-apps-container"></div>
     
-    <!-- System Tray con Control de Volumen y Reloj -->
     <!-- System Tray con Control de Volumen y Reloj -->
     <div class="systray" style="display: flex; align-items: center; gap: 8px; position: relative;">
       <div style="display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; position: relative;">
@@ -164,7 +243,10 @@
     
     const windowRegistry = {
       'win-ivu': { title: 'Calculadora IVU', icon: '🧮', active: false },
-      'win-music': { title: 'Winamp Reggaeton', icon: '📻', active: false }
+      'win-music': { title: 'Winamp Reggaeton', icon: '📻', active: false },
+      'win-boricua': { title: 'Boricuómetro v1.0', icon: '🇵🇷', active: false },
+      'win-abuela': { title: 'Remedios de la Abuela', icon: '📖', active: false },
+      'win-cucaracha': { title: 'Cucarachas-Timer.exe', icon: '🪳', active: false }
     };
 
     function openWin(id) { 
@@ -181,6 +263,7 @@
     function closeWin(id) { 
       document.getElementById(id).style.display = 'none'; 
       windowRegistry[id].active = false;
+      if(id === 'win-cucaracha') clearInterval(c_interval);
       updateTaskbarButtons();
     }
 
@@ -247,42 +330,26 @@
     function closeStartMenu() { document.getElementById('start-menu').style.display = 'none'; document.getElementById('btn-start').classList.remove('open'); document.getElementById('vol-container').style.display = 'none'; }
     setInterval(() => { document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }); }, 1000);
 
-    // --- MANEJADOR DE VOLUMEN (SYSTRAY) REPARADO ---
-    function toggleVolSlider(e) { 
-      e.stopPropagation(); 
-      const v = document.getElementById('vol-container'); 
-      v.style.display = v.style.display === 'block' ? 'none' : 'block';
-    }
-    function changeVolume(val) { 
-      const audioPlayer = document.getElementById('audio-player');
-      if (audioPlayer) audioPlayer.volume = val; 
-    }
+    // --- MANEJADOR DE VOLUMEN (SYSTRAY) ---
+    function toggleVolSlider(e) { e.stopPropagation(); const v = document.getElementById('vol-container'); v.style.display = v.style.display === 'block' ? 'none' : 'block'; }
+    function changeVolume(val) { const audioPlayer = document.getElementById('audio-player'); if (audioPlayer) audioPlayer.volume = val; }
 
     // --- SÍNTESIS DE SONIDO DE ERROR WINDOWS (CHORD.WAV) ---
     function playWin98ErrorSound() {
       try {
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
         const freqs = [130.81, 164.81, 196.00, 261.63]; 
-        
         freqs.forEach((freq, index) => {
           const osc = audioContext.createOscillator();
           const gain = audioContext.createGain();
-          
           osc.type = index === 0 ? 'sawtooth' : 'triangle';
           osc.frequency.setValueAtTime(freq, audioContext.currentTime);
-          
           gain.gain.setValueAtTime(0.15, audioContext.currentTime);
           gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.4);
-          
-          osc.connect(gain);
-          gain.connect(audioContext.destination);
-          
-          osc.start();
-          osc.stop(audioContext.currentTime + 0.4);
+          osc.connect(gain); gain.connect(audioContext.destination);
+          osc.start(); osc.stop(audioContext.currentTime + 0.4);
         });
-      } catch (e) {
-        console.log("Interacción de usuario necesaria para reproducir audio.");
-      }
+      } catch (e) { console.log("Audio deshabilitado."); }
     }
 
     // --- CALCULADORA DEL IVU DE PUERTO RICO ---
@@ -297,9 +364,9 @@
     }
     calcIVU();
 
-    // --- PLAYLIST CON ENLACES MP3 REALES ---
+    // --- PLAYLIST MP3 REAL DE REGGAETON RETRO ---
     const canciones = [
-      { titulo: "Daddy Yankee - Gasolina (2004)", url: "http://radio.plaza.one/mp3" },
+      { titulo: "Daddy Yankee - Gasolina (2004)", url: "https://archive.org" },
       { titulo: "Daddy Yankee - Rompe (2005)", url: "https://archive.org" },
       { titulo: "Casa de Leones - No Te Veo (2007)", url: "https://archive.org" }
     ];
@@ -312,39 +379,83 @@
       document.getElementById('now-playing').textContent = canciones[i].titulo.toUpperCase();
       audio.src = canciones[i].url; audio.crossOrigin = "anonymous"; audio.play();
     }
-    
     function addTrackPrompt() {
       const title = prompt("Nombre del tema:"); const url = prompt("Enlace directo MP3:");
       if (title && url) { canciones.push({ titulo: title, url: url }); renderPlaylist(); }
     }
     renderPlaylist();
 
-        // --- MOTOR MULTIMEDIA CON GIF ANIMADO Y2K ---
-    let audioCtx, analyser, source, audioInit = false;
-
+    // --- MOTOR MULTIMEDIA CON GIF ANIMADO Y2K ---
+    let audioCtx, audioInit = false;
     function initAudio() {
       if (audioInit) return; 
       audioInit = true;
-      
+      const gifElement = document.getElementById('visualizer-gif');
       audio.addEventListener('play', () => {
+        if (gifElement) gifElement.style.opacity = "1";
         if (!audioCtx) {
-          try {
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            audio.crossOrigin = "anonymous";
-          } catch (e) {
-            console.log("Audio inicializado.");
-          }
+          try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); audio.crossOrigin = "anonymous"; } catch (e) {}
         }
       });
+      audio.addEventListener('pause', () => { if (gifElement) gifElement.style.opacity = "0.4"; });
     }
 
+    // --- LÓGICA DEL BORICUÓMETRO ---
+    function traducirBoricua() {
+      const palabra = document.getElementById('boricua-word').value;
+      const resultBox = document.getElementById('boricua-result');
+      const diccionario = {
+        gandul: { nivel: "85%", trad: "Estar sumamente apretado o llegar justo a tiempo.", nota: "Proviene de cómo crecen los gandules pegados dentro de la vaina." },
+        alcapurria: { nivel: "95%", trad: "Trabajar muy duro bajo condiciones intensas.", nota: "Hace alusión al proceso tradicional de rallar la masa en el guayo." },
+        brutal: { nivel: "60%", trad: "Excelente, asombroso, extraordinario.", nota: "Se popularizó en la juventud urbana Y2K." },
+        revolu: { nivel: "90%", trad: "Desorden masivo, caos total.", nota: "Palabra indispensable usada por las madres de la isla." },
+        chinchorreo: { nivel: "100%", trad: "Ruta gastronómica de negocio en negocio en zonas rurales.", nota: "Actividad cultural máxima de fin de semana para consumir frituras." }
+      };
+      if (!palabra) { resultBox.innerHTML = "Selecciona una palabra para medir su nivel cultural."; return; }
+      const datos = diccionario[palabra];
+      resultBox.innerHTML = `<b>Nivel de Boricuómetro:</b> <span style="color:red; font-size:14px; font-weight:bold;">${datos.nivel}</span><br><b>Significado Neutral:</b> ${datos.trad}<br><br><i>Contexto Histórico: ${datos.nota}</i>`;
+    }
 
-    // ==========================================
-    // PUNTO 3: LOGICA DE TUS PRÓXIMAS APPS (JAVASCRIPT)
-    // ==========================================
-    console.log("Win98 Desktop Inicializado sin dependencias externas.");
-  </script>
+    // --- LÓGICA DE LA GUÍA DE REMEDIOS DE LA ABUELA ---
+    function verRemedio() {
+      const achaque = document.getElementById('remedio-selector').value;
+      const display = document.getElementById('remedio-result');
+      const libro = {
+        empacho: "📜 TRATAMIENTO DE LA ABUELA:<br>Consigue hojas de Guanábana fresca. Pásale aceite de oliva tibio en el vientre en forma de cruz, y dale un té de hojas de menta caliente.",
+        resfriado: "📜 TRATAMIENTO DE LA ABUELA:<br>Pon a hervir agua con jengibre machacado, malojillo y un diente de ajo entero. Endúlzalo con miel pura de abejas y unas gotas de limón criollo.",
+        mal_de_ojo: "📜 TRATAMIENTO DE LA ABUELA:<br>Colócale al niño una pulsera de azabache con cuentas rojas. Si ya está ojeado, pasa ruda fresca por su cuerpo rezando con devoción.",
+        presion: "📜 TRATAMIENTO DE LA ABUELA:<br>Pon a remojar una cucharada de semillas de alpiste limpio en agua durante toda la noche. Cuela el agua y tómatela en ayunas."
+      };
+      display.innerHTML = achaque ? libro[achaque] : "Abre el libro de botánica tradicional seleccionando un padecimiento.";
+    }
+
+    // --- LÓGICA DEL CUCARACHAS-TIMER ---
+    let c_interval = null;
+    function evaluarInvasionCucaracha() {
+      const clima = document.getElementById('clima-selector').value;
+      const timerDisplay = document.getElementById('timer-display');
+      const consejoBox = document.getElementById('cucaracha-consejo');
+      clearInterval(c_interval);
+
+      if (clima === 'lluvia_calor') {
+        playWin98ErrorSound();
+        let tiempoRestante = 42 * 60;
+        consejoBox.innerHTML = `<b style="color:red;">⚠️ ALERTA CRÍTICA EMITIDA:</b> El calor infernal está evaporando el agua de los alcantarillados de la isla (el humero). Las cucarachas americanas voladoras salen a la superficie.`;
+        c_interval = setInterval(() => {
+          tiempoRestante--;
+          let minutos = Math.floor(tiempoRestante / 60);
+          let segundos = tiempoRestante % 60;
+          timerDisplay.textContent = `EVACUACIÓN: ${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
+          if (tiempoRestante <= 0) { clearInterval(c_interval); timerDisplay.textContent = "¡INVASIÓN ACTIVA!"; }
+        }, 1000);
+      } else if (clima === 'tormenta') {
+        timerDisplay.textContent = "ALERTA AMBIENTAL";
+        consejoBox.innerHTML = `<b>Reporte de Plagas:</b> La presión barométrica alta las mantendrá refugiadas bajo tierra. Asegura tus ventanas de aluminio.`;
+      } else {
+        timerDisplay.textContent = "SISTEMA: OK";
+        consejoBox.innerHTML = `Monitoreando las alcantarillas de Puerto Rico de forma satelital. Humedad normal, todo despejado por el momento.`;
+      }
+    }
+  </style>
 </body>
 </html>
-
-      
