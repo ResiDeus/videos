@@ -61,8 +61,8 @@
             </div>
         </div>
 
-        <!-- MENUS DE DATOS SINCRO (TEXTO BLANCO REFORZADO) -->
-        <div class="grid grid-cols-2 gap-2 text-xs font-bold mb-2 shrink-0">
+        <!-- MENUS DE DATOS SINCRO -->
+        <div class="grid grid-cols-2 gap-2 text-xs font-bold mb-2 shrink-0 w-full">
             <div id="cajaSub" class="btn-on on-anim p-2 rounded-xl cursor-pointer text-center" onclick="focusF('sub')">
                 <span class="txt-b text-[10px]">1. Cuenta Base</span>
                 <span class="font-mono text-base block font-black">\$<span id="lblSub">0</span></span>
@@ -74,40 +74,40 @@
         </div>
 
         <!-- SELECTOR IVU -->
-        <div class="grid grid-cols-3 gap-2 text-xs font-bold mb-2 shrink-0">
+        <div class="grid grid-cols-3 gap-2 text-xs font-bold mb-2 shrink-0 w-full">
             <button id="ivu115" onclick="setI(11.5)" class="py-1.5 rounded-xl btn-on">11.5%</button>
             <button id="ivu6" onclick="setI(6.0)" class="py-1.5 rounded-xl btn-off">6.0%</button>
             <button id="ivu0" onclick="setI(0.0)" class="py-1.5 rounded-xl btn-off">0.0%</button>
         </div>
 
-        <!-- REJILLA TOTALMENTE REESCRITA DESDE CERO EN FILAS INDEPENDIENTES -->
-        <div class="flex-1 flex flex-col justify-between space-y-2 pt-1 font-sans">
+        <!-- REJILLA CORREGIDA CON ANCHO COMPLETO (w-full) PARA ENLACE CENTRAL -->
+        <div class="flex-1 flex flex-col justify-between space-y-2 pt-1 font-sans w-full">
             <!-- Fila 1 -->
-            <div class="flex-1 grid grid-cols-3 gap-1.5">
+            <div class="flex-1 grid grid-cols-3 gap-1.5 w-full">
                 <button onclick="num('7')" class="btn-t rounded-lg">7</button>
                 <button onclick="num('8')" class="btn-t rounded-lg">8</button>
                 <button onclick="num('9')" class="btn-t rounded-lg">9</button>
             </div>
             <!-- Fila 2 -->
-            <div class="flex-1 grid grid-cols-3 gap-1.5">
+            <div class="flex-1 grid grid-cols-3 gap-1.5 w-full">
                 <button onclick="num('4')" class="btn-t rounded-lg">4</button>
                 <button onclick="num('5')" class="btn-t rounded-lg">5</button>
                 <button onclick="num('6')" class="btn-t rounded-lg">6</button>
             </div>
             <!-- Fila 3 -->
-            <div class="flex-1 grid grid-cols-3 gap-1.5">
+            <div class="flex-1 grid grid-cols-3 gap-1.5 w-full">
                 <button onclick="num('1')" class="btn-t rounded-lg">1</button>
                 <button onclick="num('2')" class="btn-t rounded-lg">2</button>
                 <button onclick="num('3')" class="btn-t rounded-lg">3</button>
             </div>
             <!-- Fila 4 -->
-            <div class="flex-1 grid grid-cols-3 gap-1.5">
+            <div class="flex-1 grid grid-cols-3 gap-1.5 w-full">
                 <button onclick="num('.')" class="btn-t rounded-lg">.</button>
                 <button onclick="num('0')" class="btn-t rounded-lg">0</button>
                 <button onclick="bksp()" class="btn-t rounded-lg bg-gradient-to-b from-amber-800 to-amber-950 text-amber-400 border-amber-600">←</button>
             </div>
-            <!-- Fila 5: Botón C Puro de Gran Tamaño en la Base -->
-            <div class="h-11 shrink-0 flex">
+            <!-- Fila 5: Botón C Centrado y Expandido simétricamente -->
+            <div class="h-11 shrink-0 flex w-full">
                 <button onclick="clr()" class="btn-t w-full rounded-lg bg-gradient-to-b from-red-800 to-red-950 text-red-400 border-red-600 text-xl flex items-center justify-center font-bold">C</button>
             </div>
         </div>
@@ -163,8 +163,8 @@
         function calc() {
             let nSub = parseFloat(sSub) || 0, nPpl = parseInt(sPpl) || 0;
             let vTip = nSub * 0.18, vIvu = nSub * (ivu / 100);
-            document.getElementById('outTip').innerText = `$${vTip.toFixed(2)}`;
-            document.getElementById('outIvu').innerText = `$${vIvu.toFixed(2)}`;
+            document.getElementById('outTip').innerText = `\$${vTip.toFixed(2)}`;
+            document.getElementById('outIvu').innerText = `\$${vIvu.toFixed(2)}`;
             document.getElementById('outPer').innerText = ((nSub + vTip + vIvu) / (nPpl > 0 ? nPpl : 1)).toFixed(2);
         }
     </script>
