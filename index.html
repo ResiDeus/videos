@@ -89,19 +89,13 @@
             </div>
         </div>
 
-        <!-- CONFIGURACIÓN PARALELA LIMPIA SIN SUBTEXTOS -->
-        <div class="flex flex-row space-x-2 mb-2 shrink-0 w-full font-sans text-[11px] font-bold">
-            <!-- Bloque de Botones de IVU Puros (Lado Izquierdo) -->
-            <div class="flex-1 grid grid-cols-3 gap-1">
-                <button id="ivu115" onclick="setI(11.5)" class="py-2.5 rounded-lg btn-on">11.5%</button>
-                <button id="ivu6" onclick="setI(6.0)" class="py-2.5 rounded-lg btn-off">6.0%</button>
-                <button id="ivu0" onclick="setI(0.0)" class="py-2.5 rounded-lg btn-off">0.0%</button>
-            </div>
-            <!-- Bloque de Botones de Propina (Lado Derecho) -->
-            <div class="w-28 grid grid-cols-2 gap-1">
-                <button id="tipOn" onclick="toggleTip(true)" class="py-2.5 rounded-lg btn-on">TIP SÍ</button>
-                <button id="tipOff" onclick="toggleTip(false)" class="py-2.5 rounded-lg btn-off">TIP NO</button>
-            </div>
+        <!-- FILA ÚNICA DE 5 COLUMNAS PURAS: TAXES A LA IZQUIERDA Y PROPINA A LA DERECHA -->
+        <div class="grid grid-cols-5 gap-1 mb-2 shrink-0 w-full font-sans text-[10px] font-bold">
+            <button id="ivu115" onclick="setI(11.5)" class="py-2.5 rounded-lg btn-on">11.5%</button>
+            <button id="ivu6" onclick="setI(6.0)" class="py-2.5 rounded-lg btn-off">6.0%</button>
+            <button id="ivu0" onclick="setI(0.0)" class="py-2.5 rounded-lg btn-off">0.0%</button>
+            <button id="tipOn" onclick="toggleTip(true)" class="py-2.5 rounded-lg btn-on text-emerald-400 border-emerald-400">SÍ</button>
+            <button id="tipOff" onclick="toggleTip(false)" class="py-2.5 rounded-lg btn-off text-red-400 border-red-400">NO</button>
         </div>
 
         <!-- BOTONERA CON MATRIZ DE PÍXELES FIJOS CENTRADOS -->
@@ -137,8 +131,8 @@
         
         function toggleTip(bool) {
             incluirPropina = bool;
-            document.getElementById('tipOn').className = bool ? "py-2.5 rounded-lg btn-on" : "py-2.5 rounded-lg btn-off";
-            document.getElementById('tipOff').className = bool ? "py-2.5 rounded-lg btn-off" : "py-2.5 rounded-lg btn-on";
+            document.getElementById('tipOn').className = bool ? "py-2.5 rounded-lg btn-on text-emerald-400 border-emerald-400" : "py-2.5 rounded-lg btn-off text-emerald-400 border-emerald-400";
+            document.getElementById('tipOff').className = bool ? "py-2.5 rounded-lg btn-off text-red-400 border-red-400" : "py-2.5 rounded-lg btn-on text-red-400 border-red-400";
             document.getElementById('rowTip').style.opacity = bool ? "1" : "0.2";
             calc();
         }
@@ -190,8 +184,8 @@
             let vIvu = nSub * (ivu / 100);
             let divisor = nPpl > 0 ? nPpl : 1;
             
-            document.getElementById('outTip').innerText = `$${vTip.toFixed(2)}`;
-            document.getElementById('outIvu').innerText = `$${vIvu.toFixed(2)}`;
+            document.getElementById('outTip').innerText = `\$${vTip.toFixed(2)}`;
+            document.getElementById('outIvu').innerText = `\$${vIvu.toFixed(2)}`;
             document.getElementById('outPer').innerText = ((nSub + vTip + vIvu) / divisor).toFixed(2);
         }
     </script>
