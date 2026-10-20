@@ -436,7 +436,7 @@
       display.innerHTML = achaque ? libro[achaque] : "Abre el libro de botánica tradicional seleccionando un padecimiento común.";
     }
 
-    // --- NUEVO MOTOR INTERNET LIVE WEATHER DE PUERTO RICO ---
+    // --- MOTOR INTERNET LIVE WEATHER DE PUERTO RICO CORREGIDO ---
     let c_interval = null;
 
     async function evaluarInvasionCucaracha() {
@@ -458,25 +458,26 @@
       const puebloInfo = municipiosPR.find(m => m.n === puebloNombre);
 
       try {
-        // Consultar el tiempo real de hoy [2026] usando la API meteorológica global abierta
+        // Consultar el tiempo usando HTTPS seguro para evitar bloqueos en GitHub Pages
         const url = `https://open-meteo.com{puebloInfo.lat}&longitude=${puebloInfo.lon}&current_weather=true&temperature_unit=fahrenheit`;
         const res = await fetch(url);
         if (!res.ok) throw new Error();
         const data = await res.json();
         
         const tempReal = Math.round(data.current_weather.temperature);
-        const codeClima = data.current_weather.weathercode; // Código internacional del cielo
+        const codeClima = data.current_weather.weathercode; 
 
-        // Mapear los códigos técnicos de lluvia de la API (Códigos 51 a 67 y 80 a 82 significan lluvia)
+        // Códigos internacionales de la API para detectar lloviznas, aguaceros o tormentas
         const estaLloviendo = (codeClima >= 51 && codeClima <= 67) || (codeClima >= 80 && codeClima <= 82) || codeClima >= 95;
         let estadoCielo = estaLloviendo ? "Lloviendo" : "Seco / Nublado";
         if (codeClima === 0) estadoCielo = "Despejado ☀️";
 
-        titleDisplay.innerHTML = `MUNICIPIO: <b style="color:var(--blue);">${puebloNombre.toUpperCase()}</b> | ACTUAL: <b>${tempBase}°F</b> (${estadoCielo})`;
+        // CORRECCIÓN: Se cambió tempBase por tempReal para evitar el fallo de variable inexistente
+        titleDisplay.innerHTML = `MUNICIPIO: <b style="color:var(--blue);">${puebloNombre.toUpperCase()}</b> | ACTUAL: <b>${tempReal}°F</b> (${estadoCielo})`;
 
-        // REGLA CURIOSA BORICUA: Si hay lluvia activa y la temperatura de la calle supera los 83°F, se levanta el humero
+        // REGLA BORICUA: Si hay lluvia activa y la temperatura real es sofocante (>= 83°F), se desata el humero
         if (estaLloviendo && tempReal >= 83) {
-          playWin98ErrorSound(); // Alerta sonora clásica
+          playWin98ErrorSound(); 
           let tiempoRestante = 42 * 60;
           
           consejoBox.innerHTML = `<b style="color:red;">⚠️ ALERTA DE HUMERO DETECTADA:</b> Los sensores registran lluvia y un bochorno real de ${tempReal}°F en ${puebloNombre}. Las alcantarillas están calientes. Pon toallas mojadas debajo de las puertas de inmediato.`;
@@ -501,9 +502,10 @@
         }
 
       } catch (err) {
+        console.error(err);
         timerDisplay.textContent = "ERROR 404";
         titleDisplay.innerHTML = `MUNICIPIO: ${puebloNombre.toUpperCase()} (Desconectado)`;
-        consejoBox.innerHTML = `<b>Error de Red Dial-Up:</b> No se pudo obtener el clima en vivo. Asegúrese de que su navegador permita conexiones externas HTTP en GitHub Pages.`;
+        consejoBox.innerHTML = `<b>Error de Red Dial-Up:</b> Ocurrió un problema al procesar los datos satelitales del pueblo o la conexión fue rechazada.`;
       }
     }
   </script>
