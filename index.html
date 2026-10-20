@@ -47,13 +47,17 @@
         .btn-key { height: 36px; background: linear-gradient(180deg, #44186c 0%, #170529 100%); border: 1px solid #00f0ff44; border-radius: 6px; color: #00f0ff; font-size: 1.2rem; font-weight: bold; cursor: pointer; }
         .btn-back { background: linear-gradient(180deg, #5c2c06 0%, #241001 100%); color: #fbbf24; }
 
-        /* ACCIONES INFERIORES CON ESTILOS DE DESHABILITADO */
+        /* ACCIONES INFERIORES CON LUZ ENCENDIDA POR DEFECTO */
         .row-acciones { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding-bottom: 2px; }
-        .btn-clear { height: 38px; background: linear-gradient(180deg, #701a1a 0%, #300707 100%); border: 1px solid #ef4444; border-radius: 8px; color: #f87171; font-size: 1.1rem; font-weight: bold; cursor: pointer; }
-        .btn-add { height: 38px; background: linear-gradient(180deg, #0f5c3a 0%, #052416 100%); border: 1px solid #22c55e; border-radius: 8px; color: #4ade80; font-size: 1.1rem; font-weight: bold; cursor: pointer; }
         
-        /* ESTILO RETRO DESHABILITADO */
-        .btn-clear:disabled, .btn-add:disabled { opacity: 0.25 !important; cursor: not-allowed !important; filter: grayscale(80%); border-color: rgba(255,255,255,0.1) !important; background: #11081c !important; color: #666 !important; }
+        .btn-clear { height: 38px; background: linear-gradient(180deg, #991b1b 0%, #450a0a 100%); border: 2px solid #ef4444; box-shadow: 0 0 10px #ef444460; border-radius: 8px; color: #fee2e2; text-shadow: 0 0 5px #ef4444; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: all 0.2s ease; }
+        .btn-clear:active { background: #ef4444; color: #000; }
+
+        .btn-add { height: 38px; background: linear-gradient(180deg, #065f46 0%, #064e3b 100%); border: 2px solid #10b981; box-shadow: 0 0 10px #10b98160; border-radius: 8px; color: #d1fae5; text-shadow: 0 0 5px #10b981; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: all 0.2s ease; }
+        .btn-add:active { background: #10b981; color: #000; }
+        
+        /* ESTILO APAGADO RADICAL CUANDO ESTÁN DESHABILITADOS */
+        .btn-clear:disabled, .btn-add:disabled { opacity: 0.15 !important; box-shadow: none !important; text-shadow: none !important; border-color: #444 !important; background: #11051c !important; color: #555 !important; cursor: not-allowed !important; }
 
         @keyframes glow { 0%, 100% { box-shadow: 0 0 10px #ff007f; } 50% { box-shadow: 0 0 18px #ff007f; } }
         .on-anim { animation: glow 1.5s infinite ease-in-out; }
@@ -82,7 +86,6 @@
             </div>
         </div>
         <div class="row-menus">
-            <!-- Asignamos IDs a los botones inferiores para poder manipularlos con JS -->
             <div id="cajaSub" class="caja-data btn-on on-anim" onclick="seleccionarMenu('sub')">
                 <span class="lbl-title">Cuenta</span>
                 <span class="lbl-val">\$<span id="lblSub">0</span></span>
@@ -95,7 +98,8 @@
 
         <div class="row-config">
             <button id="ivu115" onclick="setI(11.5)" class="btn-cfg btn-on">11.5%</button>
-            <button id="ivu6" onclick="setI(6.0)" class="btn-cfg btn-off">6.0%</button>
+            <!-- CAMBIADO: Botón configurado ahora a 7.0% -->
+            <button id="ivu7" onclick="setI(7.0)" class="btn-cfg btn-off">7.0%</button>
             <button id="ivu0" onclick="setI(0.0)" class="btn-cfg btn-off">0.0%</button>
             <button id="btnPropina" onclick="toggleTip()" class="btn-cfg btn-off">PROPINA</button>
         </div>
@@ -145,7 +149,6 @@
             document.getElementById('txtHeaderIndicadores').innerText = texto;
         }
 
-        // CORRECCIÓN INTERACTIVA: Bloquea y atenúa los botones inferiores al cambiar de menú
         function seleccionarMenu(f) {
             reproducirSonido('menu');
             const btnReset = document.getElementById('btnResetGlobal');
@@ -156,8 +159,6 @@
                 document.getElementById('lblPpl').innerText = "OFF";
                 document.getElementById('lblTotalType').innerText = "TOTAL";
                 mode = 'sub';
-                
-                // Habilitar de nuevo en modo Cuenta
                 btnReset.disabled = false;
                 btnAnadir.disabled = false;
             } else {
@@ -166,8 +167,6 @@
                 document.getElementById('lblPpl').innerText = sPpl;
                 document.getElementById('lblTotalType').innerText = "C/U";
                 mode = 'ppl';
-                
-                // Deshabilitar estrictamente en modo Personas
                 btnReset.disabled = true;
                 btnAnadir.disabled = true;
             }
@@ -186,8 +185,9 @@
 
         function setI(p) {
             reproducirSonido('menu'); ivu = p;
-            ['ivu115', 'ivu6', 'ivu0'].forEach(id => document.getElementById(id).className = "btn-cfg btn-off");
-            document.getElementById(p === 11.5 ? 'ivu115' : p === 6.0 ? 'ivu6' : 'ivu0').className = "btn-cfg btn-on";
+            ['ivu115', 'ivu7', 'ivu0'].forEach(id => document.getElementById(id).className = "btn-cfg btn-off");
+            let idActivo = p === 11.5 ? 'ivu115' : p === 7.0 ? 'ivu7' : 'ivu0';
+            document.getElementById(idActivo).className = "btn-cfg btn-on";
             actualizarHeaderIndicadores();
             calc();
         }
