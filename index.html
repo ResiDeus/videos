@@ -104,7 +104,8 @@
     </div>
     <div class="win-body">
       <div class="sunken" style="text-align: center; margin-bottom: 6px; font-weight: bold; background: #000; color: #0f0; font-family: monospace; font-size: 14px;" id="now-playing">DISCO DETENIDO</div>
-      <canvas id="visualizer" width="400" height="150"></canvas>
+            <!-- VISUALIZER LINEA DE ABAJO -->
+      <img id="visualizer-gif" src="https://archive.org" style="width: 100%; height: 150px; object-fit: contain; background: #000; border: 2px solid; border-color: var(--dark) var(--white) var(--white) var(--dark); margin-bottom: 8px; display: block;">
       <audio id="audio-player" controls style="width: 100%; margin-bottom: 6px;"></audio>
       <div class="sunken track-list" id="playlist"></div>
       <button class="win-btn" onclick="addTrackPrompt()">+ Agregar MP3 (URL)</button>
@@ -318,72 +319,25 @@
     }
     renderPlaylist();
 
-    // --- VISUALIZADOR DE FIGURA DINÁMICA ---
-    let audioCtx, analyser, source, canvas, canvasCtx, audioInit = false;
-    let rotationAngle = 0;
+        // --- MOTOR MULTIMEDIA CON GIF ANIMADO Y2K ---
+    let audioCtx, analyser, source, audioInit = false;
 
     function initAudio() {
       if (audioInit) return; 
       audioInit = true;
-      canvas = document.getElementById('visualizer'); 
-      canvasCtx = canvas.getContext('2d');
       
       audio.addEventListener('play', () => {
         if (!audioCtx) {
           try {
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            analyser = audioCtx.createAnalyser();
             audio.crossOrigin = "anonymous";
-            source = audioCtx.createMediaElementSource(audio);
-            source.connect(analyser); 
-            analyser.connect(audioCtx.destination);
-            analyser.fftSize = 128;
-            drawVisualizer();
           } catch (e) {
-            console.warn("Bloqueo de CORS detectado en el análisis de espectro.");
+            console.log("Audio inicializado.");
           }
         }
       });
     }
 
-    function drawVisualizer() {
-      requestAnimationFrame(drawVisualizer);
-      if (!analyser) return;
-
-      const bufferLength = analyser.frequencyBinCount;
-      const dataArray = new Uint8Array(bufferLength);
-      analyser.getByteTimeDomainData(dataArray);
-
-      canvasCtx.fillStyle = 'rgba(0, 0, 0, 0.15)'; 
-      canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
-
-            const centerX = canvas.width / 2;
-      const centerY = canvas.height / 2;
-      canvasCtx.beginPath();
-      rotationAngle += 0.01;
-
-      for (let i = 0; i < bufferLength; i++) {
-        const v = dataArray[i] / 128.0; 
-        const angle = (i / bufferLength) * Math.PI * 2 + rotationAngle;
-        const baseRadius = 40;
-        const radius = baseRadius + (v - 1.0) * 60;
-
-        const x = centerX + Math.cos(angle) * radius * 1.5;
-        const y = centerY + Math.sin(angle) * radius;
-
-        if (i === 0) canvasCtx.moveTo(x, y);
-        else canvasCtx.lineTo(x, y);
-      }
-      
-      canvasCtx.closePath();
-      const hue = (rotationAngle * 50) % 360;
-      canvasCtx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
-      canvasCtx.lineWidth = 3;
-      canvasCtx.shadowBlur = 10;
-      canvasCtx.shadowColor = `hsl(${hue}, 100%, 50%)`;
-      canvasCtx.stroke();
-      canvasCtx.shadowBlur = 0;
-    }
 
     // ==========================================
     // PUNTO 3: LOGICA DE TUS PRÓXIMAS APPS (JAVASCRIPT)
