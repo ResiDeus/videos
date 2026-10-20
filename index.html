@@ -6,164 +6,113 @@
     <title>PR IVU Calc</title>
     <script src="https://tailwindcss.com"></script>
     <style>
-        html, body {
-            margin: 0; padding: 0; width: 100vw; height: 100vh;
-            background-color: #0c0414;
-        }
-        /* Chasis vertical expandido para dar aire y espacio armónico */
-        .chasis-calc {
-            width: 335px; 
-            height: 570px; /* Más alto para separar los componentes limpiamente */
-            background-color: #241434;
-            border: 4px solid #ff007f;
-            box-shadow: 0 0 25px rgba(255, 0, 127, 0.4);
-        }
-        /* Pantalla LCD de alto contraste con respiro interno */
-        .pantalla-lcd {
-            background-color: #92b043;
-            border: 3px solid #000000;
-            color: #000000;
-        }
-        /* Botonera expandida y cómoda para el uso táctil */
-        .btn-tecla {
-            background-color: #3c1e54;
-            border-bottom: 5px solid #1a0826;
-            border-right: 2px solid #1a0826;
-            color: #00f0ff;
-            font-size: 1.6rem;
-            font-weight: bold;
-            transition: all 0.05s ease;
-        }
-        .btn-tecla:active {
-            border-bottom: 1px solid #1a0826;
-            border-right: 1px solid #1a0826;
-            transform: translateY(4px);
-            background-color: #ff007f;
-            color: #000000;
-        }
-        /* Sistema unificado de color de los porcentajes de IVU */
-        .btn-ivu-off { 
-            background-color: #1a0826; 
-            border: 1px solid #ff007f; 
-            color: #ff007f; 
-        }
-        .btn-ivu-on { 
-            background-color: #ff007f; 
-            border: 2px solid #ffffff; 
-            color: #000000; 
-            box-shadow: 0 0 10px #ff007f; 
-            font-weight: bold;
-        }
+        html, body { margin: 0; width: 100vw; height: 100vh; background: #0c0414; overflow: hidden; }
+        .chasis { width: 335px; height: 570px; background: #241434; border: 4px solid #ff007f; box-shadow: 0 0 25px #ff007f66; }
+        .lcd { background: #92b043; border: 3px solid #000; color: #000; }
+        .btn-t { background: #3c1e54; border-bottom: 5px solid #1a0826; border-right: 2px solid #1a0826; color: #00f0ff; font-size: 1.6rem; font-weight: bold; }
+        .btn-t:active { border-bottom: 1px solid #1a0826; border-right: 1px solid #1a0826; transform: translateY(4px); background: #ff007f; color: #000; }
+        .btn-off { background: #1a0826; border: 2px solid #ff007f; color: #ff007f; }
+        .btn-on { background: #ff007f; border: 2px solid #fff; color: #000; font-weight: bold; }
+        @keyframes glow { 0%, 100% { box-shadow: 0 0 10px #ff007f; } 50% { box-shadow: 0 0 22px #ff007f; } }
+        .on-anim { animation: glow 1.5s infinite ease-in-out; }
+        @keyframes twinkle { 0%, 100% { opacity: 0.2; transform: scale(0.8); color: #00f0ff; } 50% { opacity: 1; transform: scale(1.2); color: #ff007f; filter: drop-shadow(0 0 4px #ff007f); } }
+        .star { animation: twinkle 1.2s infinite ease-in-out; position: absolute; font-size: 10px; pointer-events: none; }
     </style>
 </head>
-<body class="absolute inset-0 flex items-center justify-center select-none overflow-hidden">
+<body class="absolute inset-0 flex items-center justify-center select-none">
 
-    <div class="chasis-calc rounded-3xl p-5 flex flex-col justify-between">
-        
+    <div class="chasis rounded-3xl p-5 flex flex-col justify-between shrink-0">
         <!-- PANTALLA LCD -->
-        <div class="pantalla-lcd rounded-xl p-3.5 flex flex-col justify-between text-right h-28 shrink-0 font-mono font-bold mb-2">
-            <div class="flex justify-between items-center text-[10px] border-b border-black/30 pb-1">
-                <span>TERMINAL FISCAL PR</span>
-                <span id="txtIvuActual">IVU: 11.5%</span>
+        <div class="lcd rounded-xl p-3.5 flex flex-col justify-between text-right h-28 font-mono font-bold">
+            <div class="flex justify-between border-b border-black/30 pb-1 text-[10px]">
+                <span>TERMINAL FISCAL PR</span><span id="txtIvu">IVU: 11.5%</span>
             </div>
-            <div class="flex flex-col text-right justify-end space-y-0.5">
-                <div class="text-[11px]">PROPINA (18%): <span id="outTip">\$0.00</span></div>
-                <div class="text-[11px]">IVU LIQUIDO: <span id="outIvu">\$0.00</span></div>
-                <div class="text-2xl font-black mt-1">TOTAL C/U: \$<span id="outPerPerson">0.00</span></div>
-            </div>
-        </div>
-
-        <!-- INDICADORES TÁCTILES AMPLIADOS Y ESPACIOSOS -->
-        <div class="grid grid-cols-2 gap-3 text-xs font-bold font-sans mb-2">
-            <div id="cajaSubtotal" class="btn-ivu-on py-4 rounded-xl cursor-pointer text-center transition-all duration-150" onclick="cambiarEnfoque('subtotal')">
-                <span class="block text-[10px] uppercase tracking-wider mb-0.5 opacity-80">1. Cuenta Base</span>
-                <span class="font-mono text-base block font-black">\$<span id="lblSubtotal">0</span></span>
-            </div>
-            <div id="cajaPersonas" class="btn-ivu-off py-4 rounded-xl cursor-pointer text-center transition-all duration-150" onclick="cambiarEnfoque('personas')">
-                <span class="block text-[10px] uppercase tracking-wider mb-0.5 opacity-80">2. Personas</span>
-                <span class="font-mono text-base block font-black"><span id="lblPersonas">0</span></span>
+            <div class="text-[11px] space-y-0.5">
+                <div>PROPINA (18%): <span id="outTip">\$0.00</span></div>
+                <div>IVU LIQUIDO: <span id="outIvu">\$0.00</span></div>
+                <div class="text-2xl font-black mt-1">TOTAL C/U: \$<span id="outPer">0.00</span></div>
             </div>
         </div>
 
-        <!-- SELECTOR IVU CON ESPACIADO INFERIOR -->
-        <div class="grid grid-cols-3 gap-2 text-xs font-bold font-sans mb-3">
-            <button id="ivu115" onclick="cambiarIvu(11.5)" class="py-2.5 rounded-xl btn-ivu-on">11.5%</button>
-            <button id="ivu6" onclick="cambiarIvu(6.0)" class="py-2.5 rounded-xl btn-ivu-off">6.0%</button>
-            <button id="ivu0" onclick="cambiarIvu(0.0)" class="py-2.5 rounded-xl btn-ivu-off">0.0%</button>
+        <!-- MENUS DE DATOS -->
+        <div class="grid grid-cols-2 gap-3 text-xs font-bold relative">
+            <div class="relative h-16 flex items-center justify-center">
+                <span class="star top-0 left-1">✦</span><span class="star bottom-0 right-1" style="animation-delay:0.4s">★</span>
+                <div id="cajaSub" class="btn-on on-anim w-full h-full rounded-xl cursor-pointer text-center flex flex-col justify-center" onclick="focusF('sub')">
+                    <span class="text-[10px] uppercase opacity-80">1. Cuenta Base</span>
+                    <span class="font-mono text-base font-black">\$<span id="lblSub">0</span></span>
+                </div>
+            </div>
+            <div class="relative h-16 flex items-center justify-center">
+                <span class="star top-0 right-1" style="animation-delay:0.2s">★</span><span class="star bottom-0 left-1" style="animation-delay:0.6s">✦</span>
+                <div id="cajaPpl" class="btn-off w-full h-full rounded-xl cursor-pointer text-center flex flex-col justify-center" onclick="focusF('ppl')">
+                    <span class="text-[10px] uppercase opacity-80">2. Personas</span>
+                    <span class="font-mono text-base font-black"><span id="lblPpl">0</span></span>
+                </div>
+            </div>
         </div>
 
-        <!-- TECLADO NUMÉRICO ESPACIADO Y MAXIMIZADO -->
-        <div class="grid grid-cols-3 gap-2.5 flex-1 font-sans">
-            <button onclick="marcarNumero('7')" class="btn-tecla rounded-2xl">7</button>
-            <button onclick="marcarNumero('8')" class="btn-tecla rounded-2xl">8</button>
-            <button onclick="marcarNumero('9')" class="btn-tecla rounded-2xl">9</button>
-            
-            <button onclick="marcarNumero('4')" class="btn-tecla rounded-2xl">4</button>
-            <button onclick="marcarNumero('5')" class="btn-tecla rounded-2xl">5</button>
-            <button onclick="marcarNumero('6')" class="btn-tecla rounded-2xl">6</button>
-            
-            <button onclick="marcarNumero('1')" class="btn-tecla rounded-2xl">1</button>
-            <button onclick="marcarNumero('2')" class="btn-tecla rounded-2xl">2</button>
-            <button onclick="marcarNumero('3')" class="btn-tecla rounded-2xl">3</button>
-            
-            <button onclick="borrarTodo()" class="text-base rounded-2xl font-bold bg-red-900 border border-red-500 text-red-200 active:bg-red-500 active:text-black transition-all">C</button>
-            <button onclick="marcarNumero('0')" class="btn-tecla rounded-2xl">0</button>
-            <button onclick="marcarNumero('.')" class="btn-tecla rounded-2xl">.</button>
+        <!-- SELECTOR IVU -->
+        <div class="grid grid-cols-3 gap-2 text-xs font-bold">
+            <button id="ivu115" onclick="setI(11.5)" class="py-2.5 rounded-xl btn-on">11.5%</button>
+            <button id="ivu6" onclick="setI(6.0)" class="py-2.5 rounded-xl btn-off">6.0%</button>
+            <button id="ivu0" onclick="setI(0.0)" class="py-2.5 rounded-xl btn-off">0.0%</button>
+        </div>
+
+        <!-- BOTONERA -->
+        <div class="grid grid-cols-3 gap-2.5 flex-1 pt-3">
+            <button onclick="num('7')" class="btn-t rounded-2xl">7</button>
+            <button onclick="num('8')" class="btn-t rounded-2xl">8</button>
+            <button onclick="num('9')" class="btn-t rounded-2xl">9</button>
+            <button onclick="num('4')" class="btn-t rounded-2xl">4</button>
+            <button onclick="num('5')" class="btn-t rounded-2xl">5</button>
+            <button onclick="num('6')" class="btn-t rounded-2xl">6</button>
+            <button onclick="num('1')" class="btn-t rounded-2xl">1</button>
+            <button onclick="num('2')" class="btn-t rounded-2xl">2</button>
+            <button onclick="num('3')" class="btn-t rounded-2xl">3</button>
+            <button onclick="clr()" class="text-base rounded-2xl font-bold bg-red-900 border border-red-500 text-red-200 active:bg-red-500 active:text-black">C</button>
+            <button onclick="num('0')" class="btn-t rounded-2xl">0</button>
+            <button onclick="num('.')" class="btn-t rounded-2xl">.</button>
         </div>
     </div>
 
     <script>
-        let tasaIvu = 11.5, campoActivo = 'subtotal', textoSubtotal = "0", textoPersonas = "0";
-
-        function cambiarEnfoque(campo) {
-            campoActivo = campo;
-            document.getElementById('cajaSubtotal').className = "btn-ivu-off py-4 rounded-xl cursor-pointer text-center transition-all duration-150";
-            document.getElementById('cajaPersonas').className = "btn-ivu-off py-4 rounded-xl cursor-pointer text-center transition-all duration-150";
-            
-            let idFoco = campo === 'subtotal' ? 'cajaSubtotal' : 'cajaPersonas';
-            document.getElementById(idFoco).className = "btn-ivu-on py-4 rounded-xl cursor-pointer text-center transition-all duration-150";
+        let ivu = 11.5, mode = 'sub', sSub = "0", sPpl = "0";
+        function focusF(f) {
+            mode = f;
+            document.getElementById('cajaSub').className = f === 'sub' ? "btn-on on-anim w-full h-full rounded-xl cursor-pointer text-center flex flex-col justify-center" : "btn-off w-full h-full rounded-xl cursor-pointer text-center flex flex-col justify-center";
+            document.getElementById('cajaPpl').className = f === 'ppl' ? "btn-on on-anim w-full h-full rounded-xl cursor-pointer text-center flex flex-col justify-center" : "btn-off w-full h-full rounded-xl cursor-pointer text-center flex flex-col justify-center";
         }
-
-        function cambiarIvu(porcentaje) {
-            tasaIvu = porcentaje;
-            ['ivu115', 'ivu6', 'ivu0'].forEach(id => document.getElementById(id).className = "py-2.5 rounded-xl btn-ivu-off");
-            let idActivo = porcentaje === 11.5 ? 'ivu115' : porcentaje === 6.0 ? 'ivu6' : 'ivu0';
-            document.getElementById(idActivo).className = "py-2.5 rounded-xl btn-ivu-on";
-            document.getElementById('txtIvuActual').innerText = `IVU: ${porcentaje.toFixed(1)}%`;
-            ejecutarCalculos();
+        function setI(p) {
+            ivu = p;
+            ['ivu115', 'ivu6', 'ivu0'].forEach(id => document.getElementById(id).className = "py-2.5 rounded-xl btn-off");
+            document.getElementById(p === 11.5 ? 'ivu115' : p === 6.0 ? 'ivu6' : 'ivu0').className = "py-2.5 rounded-xl btn-on";
+            document.getElementById('txtIvu').innerText = `IVU: ${p.toFixed(1)}%`;
+            calc();
         }
-
-        function marcarNumero(caracter) {
-            if (campoActivo === 'subtotal') {
-                if (textoSubtotal === "0" && caracter !== '.') textoSubtotal = "";
-                if (caracter === '.' && textoSubtotal.includes('.')) return; 
-                textoSubtotal += caracter;
-                document.getElementById('lblSubtotal').innerText = textoSubtotal;
+        function num(c) {
+            if (mode === 'sub') {
+                if (sSub === "0" && c !== '.') sSub = "";
+                if (c === '.' && sSub.includes('.')) return;
+                sSub += c; document.getElementById('lblSub').innerText = sSub;
             } else {
-                if (caracter === '.') return; 
-                if (textoPersonas === "0") textoPersonas = "";
-                textoPersonas += caracter;
-                document.getElementById('lblPersonas').innerText = textoPersonas;
+                if (c === '.') return;
+                if (sPpl === "0") sPpl = "";
+                sPpl += c; document.getElementById('lblPpl').innerText = sPpl;
             }
-            ejecutarCalculos();
+            calc();
         }
-
-        function borrarTodo() {
-            if (campoActivo === 'subtotal') { textoSubtotal = "0"; document.getElementById('lblSubtotal').innerText = "0"; }
-            else { textoPersonas = "0"; document.getElementById('lblPersonas').innerText = "0"; }
-            ejecutarCalculos();
+        function clr() {
+            if (mode === 'sub') { sSub = "0"; document.getElementById('lblSub').innerText = "0"; }
+            else { sPpl = "0"; document.getElementById('lblPpl').innerText = "0"; }
+            calc();
         }
-
-        function ejecutarCalculos() {
-            let subtotalNumerico = parseFloat(textoSubtotal) || 0;
-            let personasNumerico = parseInt(textoPersonas) || 0;
-            let valorPropina = subtotalNumerico * 0.18;
-            let valorIvu = subtotalNumerico * (tasaIvu / 100);
-            let divisor = personasNumerico > 0 ? personasNumerico : 1;
-            
-            document.getElementById('outTip').innerText = `$${valorPropina.toFixed(2)}`;
-            document.getElementById('outIvu').innerText = `$${valorIvu.toFixed(2)}`;
-            document.getElementById('outPerPerson').innerText = ((subtotalNumerico + valorPropina + valorIvu) / divisor).toFixed(2);
+        function calc() {
+            let nSub = parseFloat(sSub) || 0, nPpl = parseInt(sPpl) || 0;
+            let vTip = nSub * 0.18, vIvu = nSub * (ivu / 100);
+            document.getElementById('outTip').innerText = `$${vTip.toFixed(2)}`;
+            document.getElementById('outIvu').innerText = `$${vIvu.toFixed(2)}`;
+            document.getElementById('outPer').innerText = ((nSub + vTip + vIvu) / (nPpl > 0 ? nPpl : 1)).toFixed(2);
         }
     </script>
 </body>
