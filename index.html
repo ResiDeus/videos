@@ -8,7 +8,7 @@
     <style>
         html, body { margin: 0; width: 100vw; height: 100vh; background: #0c0414; overflow: hidden; position: relative; }
         
-        /* CHASIS RECORTADO POR ABAJO (Más pequeño y compacto) */
+        /* CHASIS RECORTADO Y COMPACTO */
         .chasis { 
             width: 335px; 
             height: 480px; 
@@ -21,7 +21,7 @@
             transform: translate(-50%, -50%); 
         }
         
-        /* PANTALLA LCD MAXIMIZADA (Más grande y alta) */
+        /* PANTALLA LCD MAXIMIZADA */
         .lcd { 
             background: #92b043; 
             border: 3px solid #000; 
@@ -48,14 +48,14 @@
 </head>
 <body class="select-none">
     <div class="chasis rounded-3xl p-4 flex flex-col justify-between">
-        <!-- PANTALLA LCD MAXIMIZADA Y MÁS ALGADA -->
+        <!-- PANTALLA LCD -->
         <div class="lcd rounded-xl p-4 flex flex-col justify-between text-right h-44 mb-2 shrink-0">
             <div class="flex justify-between border-b border-black/30 pb-1 text-[11px]">
                 <span>TERMINAL FISCAL PR</span><span id="txtIvu">IVU: 11.5%</span>
             </div>
             <div class="text-[12px] space-y-0.5 mt-1">
                 <div>PROPINA AUTOMÁTICA (18%): <span id="outTip">\$0.00</span></div>
-                <div>IVU LÍQUIDO: <span id="outIvu">      \$0.00</span></div>
+                <div>IVU LÍQUIDO: <span id="outIvu">\$0.00</span></div>
                 <div class="text-4xl font-black mt-2 pt-2 border-t border-black/20 tracking-tight">C/U: \$<span id="outPer">0.00</span></div>
             </div>
         </div>
@@ -79,8 +79,8 @@
             <button id="ivu0" onclick="setI(0.0)" class="py-1.5 rounded-xl btn-off">0.0%</button>
         </div>
 
-        <!-- BOTONERA COMPACTA EN FORMATO DE CALCULADORA COMERCIAL -->
-        <div class="grid grid-cols-3 gap-1.5 flex-1 font-sans">
+        <!-- BOTONERA ESPACIADA Y DISTRIBUIDA HASTA EL BORDE INFERIOR -->
+        <div class="grid grid-cols-3 gap-y-2 gap-x-1.5 flex-1 font-sans pb-1">
             <button onclick="num('7')" class="btn-t rounded-lg">7</button>
             <button onclick="num('8')" class="btn-t rounded-lg">8</button>
             <button onclick="num('9')" class="btn-t rounded-lg">9</button>
@@ -97,7 +97,8 @@
             <button onclick="num('0')" class="btn-t rounded-lg">0</button>
             <button onclick="bksp()" class="btn-t rounded-lg bg-gradient-to-b from-amber-800 to-amber-950 text-amber-400 border-amber-600">←</button>
             
-            <button onclick="clr()" class="btn-t col-span-3 rounded-lg bg-gradient-to-b from-red-800 to-red-950 text-red-400 border-red-600 text-sm py-1">BORRAR TODO (C)</button>
+            <!-- BOTÓN C LIMPIO EXPANDIDO EN LA BASE -->
+            <button onclick="clr()" class="btn-t col-span-3 rounded-lg bg-gradient-to-b from-red-800 to-red-950 text-red-400 border-red-600 text-xl py-1.5">C</button>
         </div>
     </div>
 
