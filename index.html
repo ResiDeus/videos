@@ -3,164 +3,225 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PR IVU Calc - Synthwave Minimalist</title>
+    <title>PR IVU Calc - Terminal de Mano</title>
+    <!-- Tailwind CSS para el posicionamiento general -->
     <script src="https://tailwindcss.com"></script>
+    <!-- Fuente Mono de alta legibilidad para cajas de datos -->
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
         body {
-            font-family: 'Rajdhani', sans-serif;
-            background: #090412; /* Fondo ultra oscuro synthwave */
-            overflow: hidden; /* Elimina scrolls molestos */
+            font-family: 'Share Tech Mono', monospace;
+            background-color: #0c0414; /* Fondo exterior ultra oscuro */
         }
-        .synth-font { font-family: 'Orbitron', sans-serif; }
-        
-        /* Contenedor compacto estilo Widget */
-        .synth-card {
-            background: rgba(22, 11, 41, 0.9);
-            border: 1px solid #ff007f;
-            box-shadow: 0 0 20px rgba(255, 0, 127, 0.2);
+        /* Bloqueo estricto del chasis de la calculadora para evitar que se ensanche */
+        .chasis-calculadora {
+            width: 310px;
+            background-color: #241434;
+            border: 4px solid #ff007f;
+            box-shadow: 0 0 25px rgba(255, 0, 127, 0.4);
         }
-
-        /* Estados de los botones selectores */
-        .btn-synth-inactive {
-            background: #170b28;
-            border: 1px solid rgba(0, 240, 255, 0.3);
+        /* Pantalla de Cristal Líquido Retro con Máximo Contraste (Fondo claro, letras negras) */
+        .pantalla-lcd {
+            background-color: #92b043; /* Verde oliva clásico de pantallas monocromáticas */
+            border: 3px solid #000000;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+            color: #000000; /* Texto negro puro para lectura perfecta */
+        }
+        /* Botones Numéricos con Relieve Físico Tridimensional */
+        .boton-calc {
+            background-color: #3c1e54;
+            border-bottom: 4px solid #1a0826;
+            border-right: 2px solid #1a0826;
             color: #00f0ff;
-            transition: all 0.2s ease;
-        }
-        .btn-synth-active {
-            background: #ff007f;
-            border: 1px solid #ffffff;
-            color: #ffffff;
-            box-shadow: 0 0 12px #ff007f;
             font-weight: bold;
-            transition: all 0.2s ease;
         }
-
-        /* Inputs limpios */
-        .synth-input {
-            background: #0d061a;
-            border: 1px solid rgba(255, 0, 127, 0.4);
-            color: #00f0ff;
+        .boton-calc:active {
+            border-bottom: 1px solid #1a0826;
+            border-right: 1px solid #1a0826;
+            transform: translateY(3px);
+            background-color: #ff007f;
+            color: #000000;
         }
-        .synth-input:focus {
-            border-color: #00f0ff;
-            box-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
+        /* Estilos de botones selectores de IVU */
+        .btn-ivu-inactivo {
+            background-color: #1a0826;
+            border: 1px solid #ff007f;
+            color: #ff007f;
         }
-        
-        .text-neon-cyan { text-shadow: 0 0 5px #00f0ff; }
-        .text-neon-pink { text-shadow: 0 0 5px #ff007f; }
+        .btn-ivu-activo {
+            background-color: #ff007f;
+            border: 2px solid #ffffff;
+            color: #000000;
+            box-shadow: 0 0 10px #ff007f;
+        }
+        /* Recuadro de campo seleccionado para ingresar datos */
+        .campo-enfocado {
+            background-color: rgba(255, 0, 127, 0.2) !important;
+            border: 2px solid #ff007f !important;
+        }
     </style>
 </head>
-<body class="h-screen w-screen flex items-center justify-center p-4 select-none">
+<body class="h-screen w-screen flex items-center justify-center p-2 select-none">
 
-    <!-- CONTENEDOR ESTILO WIDGET (Compacto en PC y Celular) -->
-    <div class="w-full max-w-[340px] h-auto synth-card rounded-2xl p-5 flex flex-col space-y-4">
+    <!-- RECIPIENTE DE LA CALCULADORA FÍSICA -->
+    <div class="chasis-calculadora rounded-3xl p-4 flex flex-col space-y-3 shrink-0">
         
-        <!-- ENCABEZADO MINIMALISTA -->
-        <header class="text-center border-b border-[#ff007f]/20 pb-2">
-            <h1 class="synth-font text-lg font-black text-[#00f0ff] tracking-widest text-neon-cyan">PR FISCAL CALC</h1>
-            <p class="text-[9px] uppercase text-[#ff007f] font-bold tracking-widest">Synthwave Minimal v1.1</p>
-        </header>
-
-        <!-- DISPLAY DIGITAL DE RESULTADOS -->
-        <div class="background-[#0d061a] rounded-xl p-3 flex flex-col justify-between h-28 border border-[#00f0ff]/20 bg-[#090314]">
-            <div class="flex justify-between items-center text-[10px] text-slate-500 font-mono">
-                <span>ESTADO: ONLINE</span>
-                <span id="screenMode" class="text-[#ff007f]">IVU: 11.5%</span>
+        <!-- PANTALLA LCD (MÁXIMA LEGIBILIDAD) -->
+        <div class="pantalla-lcd rounded-lg p-3 flex flex-col justify-between text-right h-28 shrink-0 font-mono">
+            <div class="flex justify-between items-center text-[10px] font-bold border-b border-black/30 pb-0.5">
+                <span>TERMINAL FISCAL PR</span>
+                <span id="txtIvuActual">IVU: 11.5%</span>
             </div>
-            <div class="flex flex-col text-right justify-end font-mono text-xs text-slate-400 space-y-0.5">
-                <div>PROPINA AUTO (18%): <span id="outTip" class="text-white">\$0.00</span></div>
-                <div>IVU TOTAL: <span id="outIvu" class="text-white">\$0.00</span></div>
-                <div class="text-lg font-bold text-[#00f0ff] tracking-wide mt-1 synth-font">
-                    <span class="text-xs text-pink-500 mr-1">C/U:</span>\$<span id="outPerPerson" class="text-neon-cyan">0.00</span>
+            <div class="flex flex-col text-right justify-end space-y-0.5 font-bold">
+                <div class="text-[11px]">PROPINA (18%): <span id="outTip">$0.00</span></div>
+                <div class="text-[11px]">IVU LIQUIDO: <span id="outIvu">$0.00</span></div>
+                <div class="text-2xl font-black tracking-wide mt-0.5">
+                    <span class="text-xs mr-1">TOTAL C/U:</span>$<span id="outPerPerson">0.00</span>
                 </div>
             </div>
         </div>
 
-        <!-- ENTRADA: SUBTOTAL -->
-        <div>
-            <label class="block text-[11px] uppercase tracking-wider text-cyan-400 font-bold mb-1">Monto de la Factura (\$)</label>
-            <input type="number" id="subtotal" placeholder="0.00" step="0.01" class="w-full synth-input py-2 px-3 text-base rounded-xl font-mono text-center focus:outline-none" oninput="calculate()">
-        </div>
-
-        <!-- SELECTOR DE TASA IVU PUERTO RICO -->
-        <div>
-            <label class="block text-[11px] uppercase tracking-wider text-cyan-400 font-bold mb-1">Tipo de Consumo (IVU)</label>
-            <div class="grid grid-cols-3 gap-2 text-[11px]">
-                <button id="ivu115" onclick="setIVU(11.5)" class="py-1.5 rounded-lg btn-synth-active synth-font">11.5%<span class="block text-[8px] opacity-70">General</span></button>
-                <button id="ivu6" onclick="setIVU(6.0)" class="py-1.5 rounded-lg btn-synth-inactive synth-font">6.0%<span class="block text-[8px] opacity-70">Comida</span></button>
-                <button id="ivu0" onclick="setIVU(0.0)" class="py-1.5 rounded-lg btn-synth-inactive synth-font">0.0%<span class="block text-[8px] opacity-70">Exento</span></button>
+        <!-- INDICADORES TÁCTILES DE MEMORIA INTERNA -->
+        <div class="grid grid-cols-2 gap-2 text-xs font-bold">
+            <div id="cajaSubtotal" class="bg-[#120520] border border-purple-900 p-2 rounded-xl cursor-pointer campo-enfocado" onclick="cambiarEnfoque('subtotal')">
+                <span class="text-cyan-400 block text-[9px] uppercase tracking-wider">1. Cuenta Base</span>
+                <span class="text-white font-mono text-sm">$<span id="lblSubtotal">0</span></span>
+            </div>
+            <div id="cajaPersonas" class="bg-[#120520] border border-purple-900 p-2 rounded-xl cursor-pointer" onclick="cambiarEnfoque('personas')">
+                <span class="text-pink-500 block text-[9px] uppercase tracking-wider">2. Personas</span>
+                <span class="text-white font-mono text-sm"><span id="lblPersonas">0</span></span>
             </div>
         </div>
 
-        <!-- CANTIDAD DE PERSONAS -->
-        <div>
-            <label class="block text-[11px] uppercase tracking-wider text-cyan-400 font-bold mb-1">Dividir Cuenta (Personas)</label>
-            <input type="number" id="people" placeholder="0" min="0" class="w-full synth-input py-1.5 px-3 text-center rounded-xl font-mono focus:outline-none" oninput="calculate()">
+        <!-- SELECTOR DE IVU DE PUERTO RICO -->
+        <div class="grid grid-cols-3 gap-1.5 text-xs font-bold">
+            <button id="ivu115" onclick="cambiarIvu(11.5)" class="py-1.5 rounded-lg btn-ivu-activo">11.5%</button>
+            <button id="ivu6" onclick="cambiarIvu(6.0)" class="py-1.5 rounded-lg btn-ivu-inactivo">6.0%</button>
+            <button id="ivu0" onclick="cambiarIvu(0.0)" class="py-1.5 rounded-lg btn-ivu-inactivo">0.0%</button>
         </div>
 
-        <!-- ACCIÓN: EXPORTAR A WHATSAPP -->
-        <button onclick="copyBill()" class="w-full bg-gradient-to-r from-[#ff007f] to-[#b800c4] text-white py-2.5 rounded-xl font-bold uppercase tracking-wider text-xs transition-all hover:scale-[1.01] active:scale-[0.99] synth-font shadow-[0_0_10px_rgba(255,0,127,0.3)]">
-            Enviar por WhatsApp
-        </button>
+        <!-- TECLADO NUMÉRICO LITERAL -->
+        <div class="grid grid-cols-4 gap-2 flex-1">
+            <!-- Fila 1 -->
+            <button onclick="marcarNumero('7')" class="boton-calc h-11 text-lg rounded-xl font-mono">7</button>
+            <button onclick="marcarNumero('8')" class="boton-calc h-11 text-lg rounded-xl font-mono">8</button>
+            <button onclick="marcarNumero('9')" class="boton-calc h-11 text-lg rounded-xl font-mono">9</button>
+            <button onclick="borrarTodo()" class="h-11 text-xs rounded-xl font-bold bg-red-900 border border-red-500 text-red-200 active:bg-red-500 active:text-black">C</button>
+            
+            <!-- Fila 2 -->
+            <button onclick="marcarNumero('4')" class="boton-calc h-11 text-lg rounded-xl font-mono">4</button>
+            <button onclick="marcarNumero('5')" class="boton-calc h-11 text-lg rounded-xl font-mono">5</button>
+            <button onclick="marcarNumero('6')" class="boton-calc h-11 text-lg rounded-xl font-mono">6</button>
+            <button onclick="compartirWhatsApp()" class="row-span-3 h-auto text-[10px] rounded-xl font-bold bg-gradient-to-b from-emerald-600 to-green-700 text-white border border-emerald-400 active:from-green-400 active:to-green-100 active:text-black uppercase tracking-wider p-1 text-center shadow-lg">WhatsApp</button>
+            
+            <!-- Fila 3 -->
+            <button onclick="marcarNumero('1')" class="boton-calc h-11 text-lg rounded-xl font-mono">1</button>
+            <button onclick="marcarNumero('2')" class="boton-calc h-11 text-lg rounded-xl font-mono">2</button>
+            <button onclick="marcarNumero('3')" class="boton-calc h-11 text-lg rounded-xl font-mono">3</button>
+            
+            <!-- Fila 4 -->
+            <button onclick="marcarNumero('0')" class="boton-calc col-span-2 h-11 text-lg rounded-xl font-mono">0</button>
+            <button onclick="marcarNumero('.')" class="boton-calc h-11 text-lg rounded-xl font-mono">.</button>
+        </div>
     </div>
 
-    <!-- CONTROLADORES DE CALCULO AUTOMÁTICO -->
-    <script>
-        let ivuRate = 11.5;
-
-        function setIVU(perc) {
-            ivuRate = perc;
-            
-            // Alternar clases visuales para identificar el botón presionado
-            ['ivu115', 'ivu6', 'ivu0'].forEach(id => {
-                const btn = document.getElementById(id);
-                btn.className = "py-1.5 rounded-lg btn-synth-inactive synth-font";
-            });
-
-            let activeId = 'ivu115';
-            if (perc === 6.0) activeId = 'ivu6';
-            if (perc === 0.0) activeId = 'ivu0';
-            
-            document.getElementById(activeId).className = "py-1.5 rounded-lg btn-synth-active synth-font";
-            document.getElementById('screenMode').innerText = `IVU: ${perc.toFixed(1)}%`;
-            calculate();
-        }
-
-        function calculate() {
-            let sub = parseFloat(document.getElementById('subtotal').value) || 0;
-            let ppl = parseInt(document.getElementById('people').value) || 0;
-
-            // LÓGICA DE AUTOMATIZACIÓN: 18% de propina fija calculada directo sobre el subtotal
-            let tipValue = sub * 0.18;
-            let ivuValue = sub * (ivuRate / 100);
-            let totalValue = sub + ivuValue + tipValue;
-            
-            let divisor = ppl > 0 ? ppl : 1; 
-            let perPersonValue = totalValue / divisor;
-
-            // Inyectar desgloses matemáticos en el Display
-            document.getElementById('outTip').innerText = `$${tipValue.toFixed(2)}`;
-            document.getElementById('outIvu').innerText = `$${ivuValue.toFixed(2)}`;
-            document.getElementById('outPerPerson').innerText = perPersonValue.toFixed(2);
-        }
-
-        function copyBill() {
-            let perPerson = document.getElementById('outPerPerson').innerText;
-            let tip = document.getElementById('outTip').innerText;
-            let ppl = document.getElementById('people').value || 0;
-            
-            let text = `🔮 *PR SYNTH CALC* 🔮\n`;
-            text += `Cada persona aporta: *$${perPerson}*\n`;
-            text += `Incluye Propina Auto (18%): ${tip}\n`;
-            text += `Dividido entre: ${ppl} personas\n`;
-            text += `¡Págame por ATH Móvil! 🇵🇷`;
-
-            navigator.clipboard.writeText(text).then(() => {
-                alert('Monto copiado. ¡Listo para pegar!');
-            });
-        }
-    </script>
+    <!-- Vinculación del Cerebro Operativo -->
+    <script src="app.js"></script>
 </body>
 </html>
+// --- VARIABLES DE ESTADO INTERNO ---
+let tasaIvu = 11.5;
+let campoActivo = 'subtotal'; // Controla qué recuadro recibe los números ('subtotal' o 'personas')
+let textoSubtotal = "0";
+let textoPersonas = "0";
+
+// --- CAMBIAR EL FOCO DE ENTRADA ---
+function cambiarEnfoque(campo) {
+    campoActivo = campo;
+    document.getElementById('cajaSubtotal').classList.remove('campo-enfocado');
+    document.getElementById('cajaPersonas').classList.remove('campo-enfocado');
+    
+    if (campo === 'subtotal') document.getElementById('cajaSubtotal').classList.add('campo-enfocado');
+    if (campo === 'personas') document.getElementById('cajaPersonas').classList.add('campo-enfocado');
+}
+
+// --- CAMBIAR TASA DE IVU (INTERRUPTORES FÍSICOS) ---
+function cambiarIvu(porcentaje) {
+    tasaIvu = porcentaje;
+    
+    // Resetear todos los estilos visuales a inactivos
+    ['ivu115', 'ivu6', 'ivu0'].forEach(id => {
+        document.getElementById(id).className = "py-1.5 rounded-lg btn-ivu-inactivo";
+    });
+
+    // Encender en rosa neón el botón seleccionado
+    let idActivo = porcentaje === 11.5 ? 'ivu115' : porcentaje === 6.0 ? 'ivu6' : 'ivu0';
+    document.getElementById(idActivo).className = "py-1.5 rounded-lg btn-ivu-activo";
+    document.getElementById('txtIvuActual').innerText = `IVU: ${porcentaje.toFixed(1)}%`;
+    
+    ejecutarCalculos();
+}
+
+// --- CAPTURA DE BOTONES NUMÉRICOS ---
+function marcarNumero(caracter) {
+    if (campoActivo === 'subtotal') {
+        if (textoSubtotal === "0" && caracter !== '.') textoSubtotal = "";
+        if (caracter === '.' && textoSubtotal.includes('.')) return; // Bloquear doble punto
+        textoSubtotal += caracter;
+        document.getElementById('lblSubtotal').innerText = textoSubtotal;
+    } else {
+        if (caracter === '.') return; // Las personas no llevan decimales
+        if (textoPersonas === "0") textoPersonas = "";
+        textoPersonas += caracter;
+        document.getElementById('lblPersonas').innerText = textoPersonas;
+    }
+    ejecutarCalculos();
+}
+
+// --- BOTÓN DE REINICIO / BORRAR (C) ---
+function borrarTodo() {
+    if (campoActivo === 'subtotal') {
+        textoSubtotal = "0";
+        document.getElementById('lblSubtotal').innerText = "0";
+    } else {
+        textoPersonas = "0";
+        document.getElementById('lblPersonas').innerText = "0";
+    }
+    ejecutarCalculos();
+}
+
+// --- PROCESADOR MATEMÁTICO ---
+function ejecutarCalculos() {
+    let subtotalNumerico = parseFloat(textoSubtotal) || 0;
+    let personasNumerico = parseInt(textoPersonas) || 0;
+
+    // Matemática del negocio: Propina del 18% automática sobre el costo base
+    let valorPropina = subtotalNumerico * 0.18;
+    let valorIvu = subtotalNumerico * (tasaIvu / 100);
+    let valorTotal = subtotalNumerico + valorPropina + valorIvu;
+    
+    // Evitar divisiones por cero o infinitos si no hay personas escritas
+    let divisor = personasNumerico > 0 ? personasNumerico : 1;
+    let valorPorPersona = valorTotal / divisor;
+
+    // Pintar resultados con letras negras en la pantalla LCD de alto contraste
+    document.getElementById('outTip').innerText = `$${valorPropina.toFixed(2)}`;
+    document.getElementById('outIvu').innerText = `$${valorIvu.toFixed(2)}`;
+    document.getElementById('outPerPerson').innerText = valorPorPersona.toFixed(2);
+}
+
+// --- COMPARTIR POR WHATSAPP ---
+function compartirWhatsApp() {
+    let perPerson = document.getElementById('outPerPerson').innerText;
+    let tip = document.getElementById('outTip').innerText;
+    
+    let text = `📟 *CÓMPUTO DE CUENTA PR* 📟\n`;
+    text += `Cuota individual: *$${perPerson}*\n`;
+    text += `Incluye Propina Auto (18%): ${tip}\n`;
+    text += `Dividido entre: ${textoPersonas} personas\n`;
+    text += `¡Me lo puedes enviar directo por ATH Móvil! 🇵🇷`;
+
+    navigator.clipboard.writeText(text).then(() => {
+        alert('¡Texto formateado copiado al portapapeles! Listo para pegar en WhatsApp.');
+    });
+}
