@@ -8,7 +8,7 @@
     <style>
         html, body { margin: 0; width: 100vw; height: 100vh; background: #0c0414; overflow: hidden; position: relative; }
         
-        /* CHASIS RECORTADO Y COMPACTO */
+        /* CHASIS RETRO COMPACTO TOTALMENTE CENTRALIZADO */
         .chasis { 
             width: 335px; 
             height: 480px; 
@@ -31,6 +31,7 @@
             font-weight: bold; 
         }
         
+        /* BOTONES GLOSSY EXPANDIDOS */
         .btn-t { 
             background: linear-gradient(180deg, #44186c 0%, #290d45 40%, #170529 100%);
             border: 1px solid rgba(0, 240, 255, 0.4); border-top: 2px solid rgba(255, 255, 255, 0.2);
@@ -60,7 +61,7 @@
             </div>
         </div>
 
-        <!-- MENUS DE DATOS SINCRO -->
+        <!-- MENUS DE DATOS SINCRO (TEXTO BLANCO REFORZADO) -->
         <div class="grid grid-cols-2 gap-2 text-xs font-bold mb-2 shrink-0">
             <div id="cajaSub" class="btn-on on-anim p-2 rounded-xl cursor-pointer text-center" onclick="focusF('sub')">
                 <span class="txt-b text-[10px]">1. Cuenta Base</span>
@@ -79,36 +80,48 @@
             <button id="ivu0" onclick="setI(0.0)" class="py-1.5 rounded-xl btn-off">0.0%</button>
         </div>
 
-        <!-- BOTONERA ESPACIADA Y DISTRIBUIDA HASTA EL BORDE INFERIOR -->
-        <div class="grid grid-cols-3 gap-y-2 gap-x-1.5 flex-1 font-sans pb-1">
-            <button onclick="num('7')" class="btn-t rounded-lg">7</button>
-            <button onclick="num('8')" class="btn-t rounded-lg">8</button>
-            <button onclick="num('9')" class="btn-t rounded-lg">9</button>
-            
-            <button onclick="num('4')" class="btn-t rounded-lg">4</button>
-            <button onclick="num('5')" class="btn-t rounded-lg">5</button>
-            <button onclick="num('6')" class="btn-t rounded-lg">6</button>
-            
-            <button onclick="num('1')" class="btn-t rounded-lg">1</button>
-            <button onclick="num('2')" class="btn-t rounded-lg">2</button>
-            <button onclick="num('3')" class="btn-t rounded-lg">3</button>
-            
-            <button onclick="num('.')" class="btn-t rounded-lg">.</button>
-            <button onclick="num('0')" class="btn-t rounded-lg">0</button>
-            <button onclick="bksp()" class="btn-t rounded-lg bg-gradient-to-b from-amber-800 to-amber-950 text-amber-400 border-amber-600">←</button>
-            
-            <!-- BOTÓN C LIMPIO EXPANDIDO EN LA BASE -->
-            <button onclick="clr()" class="btn-t col-span-3 rounded-lg bg-gradient-to-b from-red-800 to-red-950 text-red-400 border-red-600 text-xl py-1.5">C</button>
+        <!-- REJILLA TOTALMENTE REESCRITA DESDE CERO EN FILAS INDEPENDIENTES -->
+        <div class="flex-1 flex flex-col justify-between space-y-2 pt-1 font-sans">
+            <!-- Fila 1 -->
+            <div class="flex-1 grid grid-cols-3 gap-1.5">
+                <button onclick="num('7')" class="btn-t rounded-lg">7</button>
+                <button onclick="num('8')" class="btn-t rounded-lg">8</button>
+                <button onclick="num('9')" class="btn-t rounded-lg">9</button>
+            </div>
+            <!-- Fila 2 -->
+            <div class="flex-1 grid grid-cols-3 gap-1.5">
+                <button onclick="num('4')" class="btn-t rounded-lg">4</button>
+                <button onclick="num('5')" class="btn-t rounded-lg">5</button>
+                <button onclick="num('6')" class="btn-t rounded-lg">6</button>
+            </div>
+            <!-- Fila 3 -->
+            <div class="flex-1 grid grid-cols-3 gap-1.5">
+                <button onclick="num('1')" class="btn-t rounded-lg">1</button>
+                <button onclick="num('2')" class="btn-t rounded-lg">2</button>
+                <button onclick="num('3')" class="btn-t rounded-lg">3</button>
+            </div>
+            <!-- Fila 4 -->
+            <div class="flex-1 grid grid-cols-3 gap-1.5">
+                <button onclick="num('.')" class="btn-t rounded-lg">.</button>
+                <button onclick="num('0')" class="btn-t rounded-lg">0</button>
+                <button onclick="bksp()" class="btn-t rounded-lg bg-gradient-to-b from-amber-800 to-amber-950 text-amber-400 border-amber-600">←</button>
+            </div>
+            <!-- Fila 5: Botón C Puro de Gran Tamaño en la Base -->
+            <div class="h-11 shrink-0 flex">
+                <button onclick="clr()" class="btn-t w-full rounded-lg bg-gradient-to-b from-red-800 to-red-950 text-red-400 border-red-600 text-xl flex items-center justify-center font-bold">C</button>
+            </div>
         </div>
     </div>
 
     <script>
         let ivu = 11.5, mode = 'sub', sSub = "0", sPpl = "0";
+        
         function focusF(f) {
             mode = f;
             document.getElementById('cajaSub').className = f === 'sub' ? "btn-on on-anim p-2 rounded-xl cursor-pointer text-center" : "btn-off p-2 rounded-xl cursor-pointer text-center";
             document.getElementById('cajaPpl').className = f === 'ppl' ? "btn-on on-anim p-2 rounded-xl cursor-pointer text-center" : "btn-off p-2 rounded-xl cursor-pointer text-center";
         }
+        
         function setI(p) {
             ivu = p;
             ['ivu115', 'ivu6', 'ivu0'].forEach(id => document.getElementById(id).className = "py-1.5 rounded-xl btn-off");
@@ -116,6 +129,7 @@
             document.getElementById('txtIvu').innerText = `IVU: ${p.toFixed(1)}%`;
             calc();
         }
+        
         function num(c) {
             if (mode === 'sub') {
                 if (sSub === "0" && c !== '.') sSub = "";
@@ -128,6 +142,7 @@
             }
             calc();
         }
+
         function bksp() {
             if (mode === 'sub') {
                 sSub = sSub.slice(0, -1); if (sSub === "" || sSub === "-") sSub = "0";
@@ -138,16 +153,18 @@
             }
             calc();
         }
+        
         function clr() {
             if (mode === 'sub') { sSub = "0"; document.getElementById('lblSub').innerText = "0"; }
             else { sPpl = "0"; document.getElementById('lblPpl').innerText = "0"; }
             calc();
         }
+        
         function calc() {
             let nSub = parseFloat(sSub) || 0, nPpl = parseInt(sPpl) || 0;
             let vTip = nSub * 0.18, vIvu = nSub * (ivu / 100);
-            document.getElementById('outTip').innerText = `\$${vTip.toFixed(2)}`;
-            document.getElementById('outIvu').innerText = `\$${vIvu.toFixed(2)}`;
+            document.getElementById('outTip').innerText = `$${vTip.toFixed(2)}`;
+            document.getElementById('outIvu').innerText = `$${vIvu.toFixed(2)}`;
             document.getElementById('outPer').innerText = ((nSub + vTip + vIvu) / (nPpl > 0 ? nPpl : 1)).toFixed(2);
         }
     </script>
