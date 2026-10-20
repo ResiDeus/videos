@@ -3,158 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PR IVU Calc - Terminal de Mano</title>
-    <!-- Tailwind CSS para el posicionamiento general -->
+    <title>PR IVU Calc</title>
     <script src="https://tailwindcss.com"></script>
-    <!-- Fuente Mono de alta legibilidad para cajas de datos -->
-    <link href="https://googleapis.com" rel="stylesheet">
     <style>
         html, body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background-color: #0c0414; /* Fondo exterior ultra oscuro */
+            margin: 0; padding: 0; width: 100vw; height: 100vh;
+            background-color: #0c0414;
         }
-        /* Bloqueo estricto y centralización del chasis estilo beeper de formato vertical alargado */
-        .chasis-calculadora {
-            width: 320px;
-            height: 540px; /* Incremento vertical para hacerlo más grande y alargado */
+        /* Chasis forzado verticalmente de forma compacta */
+        .chasis-calc {
+            width: 320px; height: 500px;
             background-color: #241434;
             border: 4px solid #ff007f;
             box-shadow: 0 0 25px rgba(255, 0, 127, 0.4);
         }
-        /* Pantalla LCD Retro con Máximo Contraste (Fondo claro, letras negras) */
+        /* Pantalla LCD de alto contraste */
         .pantalla-lcd {
-            background-color: #92b043; /* Verde oliva clásico de pantallas monocromáticas */
+            background-color: #92b043;
             border: 3px solid #000000;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
-            color: #000000; /* Texto negro puro para lectura perfecta */
+            color: #000000;
         }
-        /* Botones Numéricos Grandes Verticales con Relieve Físico Tridimensional */
-        .boton-calc {
+        /* Botonera gigante optimizada para el tacto */
+        .btn-tecla {
             background-color: #3c1e54;
             border-bottom: 5px solid #1a0826;
             border-right: 2px solid #1a0826;
             color: #00f0ff;
+            font-size: 1.5rem;
             font-weight: bold;
-            transition: all 0.05s ease;
         }
-        .boton-calc:active {
+        .btn-tecla:active {
             border-bottom: 1px solid #1a0826;
             border-right: 1px solid #1a0826;
             transform: translateY(4px);
             background-color: #ff007f;
             color: #000000;
         }
-        /* Estilos de botones selectores de IVU */
-        .btn-ivu-inactivo {
-            background-color: #1a0826;
-            border: 1px solid #ff007f;
-            color: #ff007f;
-        }
-        .btn-ivu-activo {
-            background-color: #ff007f;
-            border: 2px solid #ffffff;
-            color: #000000;
-            box-shadow: 0 0 10px #ff007f;
-        }
-        /* Recuadro de campo seleccionado para ingresar datos */
-        .campo-enfocado {
-            background-color: rgba(255, 0, 127, 0.2) !important;
-            border: 2px solid #ff007f !important;
-        }
+        .btn-ivu-off { background-color: #1a0826; border: 1px solid #ff007f; color: #ff007f; }
+        .btn-ivu-on { background-color: #ff007f; border: 2px solid #ffffff; color: #000000; box-shadow: 0 0 10px #ff007f; }
+        .focus-box { background-color: rgba(255, 0, 127, 0.25) !important; border: 2px solid #ff007f !important; }
     </style>
 </head>
-<body class="w-full h-full flex items-center justify-center select-none">
+<!-- CENTRALIZACIÓN COMPLETA MEDIANTE POSICIONAMIENTO ABSOLUTO GEOMÉTRICO -->
+<body class="absolute inset-0 flex items-center justify-center select-none overflow-hidden">
 
-    <!-- CHASIS TOTALMENTE EN EL CENTRO GEOMÉTRICO DE LA PANTALLA DEL NAVEGADOR -->
-    <div class="chasis-calculadora rounded-3xl p-5 flex flex-col justify-between shrink-0">
+    <div class="chasis-calc rounded-3xl p-4 flex flex-col justify-between">
         
-        <!-- PANTALLA LCD (MÁXIMA LEGIBILIDAD) -->
-        <div class="pantalla-lcd rounded-lg p-3 flex flex-col justify-between text-right h-28 shrink-0 font-mono">
-            <div class="flex justify-between items-center text-[10px] font-bold border-b border-black/30 pb-0.5">
+        <!-- PANTALLA LCD -->
+        <div class="pantalla-lcd rounded-lg p-3 flex flex-col justify-between text-right h-24 font-mono font-bold">
+            <div class="flex justify-between items-center text-[10px] border-b border-black/30 pb-0.5">
                 <span>TERMINAL FISCAL PR</span>
                 <span id="txtIvuActual">IVU: 11.5%</span>
             </div>
-            <div class="flex flex-col text-right justify-end space-y-0.5 font-bold">
-                <div class="text-[11px]">PROPINA (18%): <span id="outTip">$0.00</span></div>
-                <div class="text-[11px]">IVU LIQUIDO: <span id="outIvu">$0.00</span></div>
-                <div class="text-2xl font-black tracking-wide mt-0.5">
-                    <span class="text-xs mr-1">TOTAL C/U:</span>$<span id="outPerPerson">0.00</span>
-                </div>
+            <div class="flex flex-col text-right justify-end space-y-0.5">
+                <div class="text-[11px]">PROPINA (18%): <span id="outTip">\$0.00</span></div>
+                <div class="text-[11px]">IVU LIQUIDO: <span id="outIvu">\$0.00</span></div>
+                <div class="text-xl font-black mt-0.5">TOTAL C/U: \$<span id="outPerPerson">0.00</span></div>
             </div>
         </div>
 
-        <!-- INDICADORES TÁCTILES CON TEXTO BLANCO PURO TOTALMENTE VISIBLE -->
-        <div class="grid grid-cols-2 gap-2 text-xs font-bold shrink-0">
-            <div id="cajaSubtotal" class="bg-[#120520] border border-purple-900 p-2 rounded-xl cursor-pointer campo-enfocado" onclick="cambiarEnfoque('subtotal')">
-                <span class="text-white block text-[10px] uppercase tracking-wider font-extrabold mb-0.5">1. Cuenta Base</span>
-                <span class="text-white font-mono text-sm">$<span id="lblSubtotal">0</span></span>
+        <!-- INDICADORES TÁCTILES EN BLANCO PURO ASIGNADO -->
+        <div class="grid grid-cols-2 gap-2 text-xs font-bold font-sans">
+            <div id="cajaSubtotal" class="bg-[#120520] border border-purple-900 p-2 rounded-xl cursor-pointer focus-box" onclick="cambiarEnfoque('subtotal')">
+                <span class="text-white block text-[10px] uppercase font-bold">1. Cuenta Base</span>
+                <span class="text-white font-mono text-sm">\$<span id="lblSubtotal">0</span></span>
             </div>
             <div id="cajaPersonas" class="bg-[#120520] border border-purple-900 p-2 rounded-xl cursor-pointer" onclick="cambiarEnfoque('personas')">
-                <span class="text-white block text-[10px] uppercase tracking-wider font-extrabold mb-0.5">2. Personas</span>
+                <span class="text-white block text-[10px] uppercase font-bold">2. Personas</span>
                 <span class="text-white font-mono text-sm"><span id="lblPersonas">0</span></span>
             </div>
         </div>
 
-        <!-- SELECTOR DE IVU DE PUERTO RICO -->
-        <div class="grid grid-cols-3 gap-1.5 text-xs font-bold shrink-0">
-            <button id="ivu115" onclick="cambiarIvu(11.5)" class="py-2.5 rounded-lg btn-ivu-activo">11.5%</button>
-            <button id="ivu6" onclick="cambiarIvu(6.0)" class="py-2.5 rounded-lg btn-ivu-inactivo">6.0%</button>
-            <button id="ivu0" onclick="cambiarIvu(0.0)" class="py-2.5 rounded-lg btn-ivu-inactivo">0.0%</button>
+        <!-- SELECTOR IVU -->
+        <div class="grid grid-cols-3 gap-1.5 text-xs font-bold font-sans">
+            <button id="ivu115" onclick="cambiarIvu(11.5)" class="py-2 rounded-lg btn-ivu-on">11.5%</button>
+            <button id="ivu6" onclick="cambiarIvu(6.0)" class="py-2 rounded-lg btn-ivu-off">6.0%</button>
+            <button id="ivu0" onclick="cambiarIvu(0.0)" class="py-2 rounded-lg btn-ivu-off">0.0%</button>
         </div>
 
-        <!-- TECLADO NUMÉRICO LITERAL CON BOTONES MUCHO MÁS GRANDES -->
-        <div class="grid grid-cols-4 gap-2 flex-1 pt-2">
-            <!-- Fila 1 -->
-            <button onclick="marcarNumero('7')" class="boton-calc text-2xl rounded-xl font-mono">7</button>
-            <button onclick="marcarNumero('8')" class="boton-calc text-2xl rounded-xl font-mono">8</button>
-            <button onclick="marcarNumero('9')" class="boton-calc text-2xl rounded-xl font-mono">9</button>
-            <button onclick="borrarTodo()" class="text-base rounded-xl font-bold bg-red-900 border border-red-500 text-red-200 active:bg-red-500 active:text-black flex items-center justify-center transition-all">C</button>
+        <!-- TECLADO NUMÉRICO MAXIMIZADO PARA EL TACTO (SIN BOTÓN COMPARTIR) -->
+        <div class="grid grid-cols-3 gap-2 flex-1 pt-2 font-sans">
+            <button onclick="marcarNumero('7')" class="btn-tecla rounded-xl">7</button>
+            <button onclick="marcarNumero('8')" class="btn-tecla rounded-xl">8</button>
+            <button onclick="marcarNumero('9')" class="btn-tecla rounded-xl">9</button>
             
-            <!-- Fila 2 -->
-            <button onclick="marcarNumero('4')" class="boton-calc text-2xl rounded-xl font-mono">4</button>
-            <button onclick="marcarNumero('5')" class="boton-calc text-2xl rounded-xl font-mono">5</button>
-            <button onclick="marcarNumero('6')" class="boton-calc text-2xl rounded-xl font-mono">6</button>
-            <button onclick="compartirWhatsApp()" class="row-span-3 h-full text-xl rounded-xl font-bold bg-gradient-to-b from-emerald-600 to-green-700 text-white border border-emerald-400 active:from-green-400 active:to-green-100 active:text-black flex items-center justify-center p-1 text-center shadow-lg transition-all">&gt;&gt;&gt;</button>
+            <button onclick="marcarNumero('4')" class="btn-tecla rounded-xl">4</button>
+            <button onclick="marcarNumero('5')" class="btn-tecla rounded-xl">5</button>
+            <button onclick="marcarNumero('6')" class="btn-tecla rounded-xl">6</button>
             
-            <!-- Fila 3 -->
-            <button onclick="marcarNumero('1')" class="boton-calc text-2xl rounded-xl font-mono">1</button>
-            <button onclick="marcarNumero('2')" class="boton-calc text-2xl rounded-xl font-mono">2</button>
-            <button onclick="marcarNumero('3')" class="boton-calc text-2xl rounded-xl font-mono">3</button>
+            <button onclick="marcarNumero('1')" class="btn-tecla rounded-xl">1</button>
+            <button onclick="marcarNumero('2')" class="btn-tecla rounded-xl">2</button>
+            <button onclick="marcarNumero('3')" class="btn-tecla rounded-xl">3</button>
             
-            <!-- Fila 4 -->
-            <button onclick="marcarNumero('0')" class="boton-calc col-span-2 text-2xl rounded-xl font-mono">0</button>
-            <button onclick="marcarNumero('.')" class="boton-calc text-2xl rounded-xl font-mono">.</button>
+            <button onclick="borrarTodo()" class="text-sm rounded-xl font-bold bg-red-900 border border-red-500 text-red-200 active:bg-red-500 active:text-black">C</button>
+            <button onclick="marcarNumero('0')" class="btn-tecla rounded-xl">0</button>
+            <button onclick="marcarNumero('.')" class="btn-tecla rounded-xl">.</button>
         </div>
     </div>
 
-    <!-- CEREBRO OPERATIVO INTEGRADO -->
     <script>
-        let tasaIvu = 11.5;
-        let campoActivo = 'subtotal'; 
-        let textoSubtotal = "0";
-        let textoPersonas = "0";
+        let tasaIvu = 11.5, campoActivo = 'subtotal', textoSubtotal = "0", textoPersonas = "0";
 
         function cambiarEnfoque(campo) {
             campoActivo = campo;
-            document.getElementById('cajaSubtotal').classList.remove('campo-enfocado');
-            document.getElementById('cajaPersonas').classList.remove('campo-enfocado');
-            
-            if (campo === 'subtotal') document.getElementById('cajaSubtotal').classList.add('campo-enfocado');
-            if (campo === 'personas') document.getElementById('cajaPersonas').classList.add('campo-enfocado');
+            document.getElementById('cajaSubtotal').classList.remove('focus-box');
+            document.getElementById('cajaPersonas').classList.remove('focus-box');
+            document.getElementById(campo === 'subtotal' ? 'cajaSubtotal' : 'cajaPersonas').classList.add('focus-box');
         }
 
         function cambiarIvu(porcentaje) {
             tasaIvu = porcentaje;
-            ['ivu115', 'ivu6', 'ivu0'].forEach(id => {
-                document.getElementById(id).className = "py-2.5 rounded-lg btn-ivu-inactivo";
-            });
-
+            ['ivu115', 'ivu6', 'ivu0'].forEach(id => document.getElementById(id).className = "py-2 rounded-lg btn-ivu-off");
             let idActivo = porcentaje === 11.5 ? 'ivu115' : porcentaje === 6.0 ? 'ivu6' : 'ivu0';
-            document.getElementById(idActivo).className = "py-2.5 rounded-lg btn-ivu-activo";
+            document.getElementById(idActivo).className = "py-2 rounded-lg btn-ivu-on";
             document.getElementById('txtIvuActual').innerText = `IVU: ${porcentaje.toFixed(1)}%`;
             ejecutarCalculos();
         }
@@ -175,67 +136,21 @@
         }
 
         function borrarTodo() {
-            if (campoActivo === 'subtotal') {
-                textoSubtotal = "0";
-                document.getElementById('lblSubtotal').innerText = "0";
-            } else {
-                textoPersonas = "0";
-                document.getElementById('lblPersonas').innerText = "0";
-            }
+            if (campoActivo === 'subtotal') { textoSubtotal = "0"; document.getElementById('lblSubtotal').innerText = "0"; }
+            else { textoPersonas = "0"; document.getElementById('lblPersonas').innerText = "0"; }
             ejecutarCalculos();
         }
 
         function ejecutarCalculos() {
             let subtotalNumerico = parseFloat(textoSubtotal) || 0;
             let personasNumerico = parseInt(textoPersonas) || 0;
-
             let valorPropina = subtotalNumerico * 0.18;
             let valorIvu = subtotalNumerico * (tasaIvu / 100);
-            let valorTotal = subtotalNumerico + valorPropina + valorIvu;
-            
             let divisor = personasNumerico > 0 ? personasNumerico : 1;
-            let valorPorPersona = valorTotal / divisor;
-
+            
             document.getElementById('outTip').innerText = `$${valorPropina.toFixed(2)}`;
             document.getElementById('outIvu').innerText = `$${valorIvu.toFixed(2)}`;
-            document.getElementById('outPerPerson').innerText = valorPorPersona.toFixed(2);
-        }
-
-        function compartirWhatsApp() {
-            let perPerson = document.getElementById('outPerPerson').innerText;
-            let tip = document.getElementById('outTip').innerText;
-            
-            let text = `📟 *PR BEEPER CALC* 📟\n`;
-            text += `Cuota individual: *$${perPerson}*\n`;
-            text += `Incluye Propina Auto (18%): ${tip}\n`;
-            text += `Dividido entre: ${textoPersonas} personas\n`;
-            text += `¡Enviado vía beeper por ATH Móvil! 🇵🇷`;
-
-            if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(text).then(() => {
-                    alert('¡Mensaje copiado! Listo para pegar en WhatsApp.');
-                }).catch(err => {
-                    fallbackCopiarTexto(text);
-                });
-            } else {
-                fallbackCopiarTexto(text);
-            }
-        }
-
-        function fallbackCopiarTexto(texto) {
-            const textArea = document.createElement("textarea");
-            textArea.value = texto;
-            textArea.style.position = "fixed"; 
-            document.body.appendChild(textArea);
-            textArea.focus();
-            textArea.select();
-            try {
-                document.execCommand('copy');
-                alert('¡Mensaje copiado con éxito!');
-            } catch (err) {
-                alert('Error al copiar. Inténtalo de nuevo.');
-            }
-            document.body.removeChild(textArea);
+            document.getElementById('outPerPerson').innerText = ((subtotalNumerico + valorPropina + valorIvu) / divisor).toFixed(2);
         }
     </script>
 </body>
