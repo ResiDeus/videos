@@ -116,7 +116,7 @@
                 <span id="txtIvu">IVU: 11.5%</span>
             </div>
             <div class="lcd-body">
-                <div id="rowTip" style="opacity: 0.2;">PROPINA (18%): <span id="outTip">$0.00</span></div>
+                <div id="rowTip" style="opacity: 0.2;">PROPINA (18%): <span id="outTip">.00</span></div>
                 <div>IVU: <span id="outIvu">$0.00</span></div>
                 <!-- Cambia dinámicamente de TOTAL CTA a C/U -->
                 <div class="lcd-total"><span id="lblTotalType">TOTAL</span>: $<span id="outPer">0.00</span></div>
@@ -127,7 +127,7 @@
             <!-- Cuenta Base siempre está encendida en foco o en reposo -->
             <div id="cajaSub" class="caja-data btn-on on-anim" onclick="focusF('sub')">
                 <span class="lbl-title">Cuenta</span>
-                <span class="lbl-val">\$<span id="lblSub">0</span></span>
+                <span class="lbl-val">$<span id="lblSub">0</span></span>
             </div>
             <!-- Personas ahora se apaga y se enciende de forma interactiva al presionarlo -->
             <div id="cajaPpl" class="caja-data btn-off" onclick="togglePersonasMode()">
@@ -197,7 +197,7 @@
                 }
                 mode = 'ppl'; // Cambia el foco automáticamente al contador de personas
                 document.getElementById('lblPpl').innerText = sPpl;
-                document.getElementById('lblTotalType').innerText = "C/U";
+                document.getElementById('lblTotalType').innerText = "CADA UNO";
             } else {
                 // Al apagarlo con el mismo botón, mantenemos guardado el número pero visualmente dice OFF
                 mode = 'sub'; 
