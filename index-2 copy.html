@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ IVU-CALC 2000 ⚡</title>
+    <!-- Fuentes Estilo Retro / Pixel -->
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #008080; /* Clásico verde azulado de Windows 95/98 */
+            --win-bg: #d4d0c8;   /* Gris de sistema operativo retro */
+            --win-border-light: #ffffff;
+            --win-border-dark: #808080;
+            --cyber-pink: #ff007f;
+            --cyber-cyan: #00ffff;
+            --lcd-green: #a3b899;
+            --lcd-text: #1b2614;
+        }
+
+        * {
+            box-sizing: border-box;
+            image-rendering: pixelated;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            /* Patrón de cuadrícula cibernética del año 2000 */
+            background-image: 
+                linear-gradient(rgba(0, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+            font-family: 'Share Tech Mono', monospace;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Contenedor estilo Ventana de Windows clásica */
+        .window {
+            background: var(--win-bg);
+            border-top: 2px solid var(--win-border-light);
+            border-left: 2px solid var(--win-border-light);
+            border-right: 2px solid #404040;
+            border-bottom: 2px solid #404040;
+            box-shadow: inset 1px 1px 0px var(--win-border-light), 
+                        inset -1px -1px 0px var(--win-border-dark),
+                        5px 5px 15px rgba(0, 0, 0, 0.4);
+            width: 100%;
+            max-width: 420px;
+            padding: 3px;
+            position: relative;
+        }
+
+        /* Barra de título con degradado azul marino */
+        .title-bar {
+            background: linear-gradient(90deg, #000080, #1084d0);
+            color: white;
+            padding: 6px 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            font-size: 14px;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px #000;
+        }
+
+        .title-bar-text {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .title-bar-controls button {
+            background: var(--win-bg);
+            border-top: 1px solid var(--win-border-light);
+            border-left: 1px solid var(--win-border-light);
+            border-right: 1px solid #000;
+            border-bottom: 1px solid #000;
+            font-size: 10px;
+            font-weight: bold;
+            width: 16px;
+            height: 14px;
+            cursor: pointer;
+            padding: 0;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Cuerpo interno de la aplicación */
+        .window-body {
+            padding: 20px;
+            background: #e4e0d8;
+            border: 1px solid var(--win-border-dark);
+            margin-top: 4px;
+        }
+
+        /* Pantalla de Cristal Líquido (LCD) */
+        .lcd-screen {
+            background-color: var(--lcd-green);
+            border: inset 3px #808080;
+            padding: 15px;
+            font-family: 'VT323', monospace;
+            color: var(--lcd-text);
+            text-align: right;
+            margin-bottom: 20px;
+            box-shadow: inset 2px 2px 5px rgba(0,0,0,0.5);
+            border-radius: 2px;
+        }
+
+        .lcd-main-display {
+            font-size: 42px;
+            line-height: 1;
+            font-weight: bold;
+            letter-spacing: 1px;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .lcd-sub-display {
+            font-size: 16px;
+            opacity: 0.8;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 13px;
+            font-weight: bold;
+            color: #222;
+            text-transform: uppercase;
+        }
+
+        /* Formularios con relieve biselado hacia adentro */
+        input[type="number"], select {
+            width: 100%;
+            padding: 8px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 16px;
+            background: #ffffff;
+            border: inset 2px #808080;
+            color: #000;
+            outline: none;
+        }
+
+        input[type="number"]:focus, select:focus {
+            background: #fffcee;
+            border-color: var(--cyber-pink);
+        }
+
+        /* Tabla de desglose de datos retro */
+        .status-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 14px;
+            background: #d4d0c8;
+            border: inset 2px #fff;
+        }
+
+        .status-table td {
+            border: 1px solid var(--win-border-dark);
+            padding: 6px 10px;
+        }
+
+        .status-table td:first-child {
+            font-weight: bold;
+            background: #c0c0c0;
+            width: 60%;
+        }
+
+        .status-table td:last-child {
+            text-align: right;
+            font-family: 'VT323', monospace;
+            font-size: 20px;
+            background: #ffffff;
+            color: #000080;
+        }
+
+        /* Elementos de marquesina retro */
+        .marquee-container {
+            background: #000;
+            color: var(--cyber-cyan);
+            font-size: 12px;
+            padding: 3px;
+            margin-top: 15px;
+            border: inset 2px #808080;
+            overflow: hidden;
+        }
+
+        .sparkle {
+            color: var(--cyber-pink);
+        }
+    </style>
+</head>
+<body>
+
+<div class="window">
+    <div class="title-bar">
+        <div class="title-bar-text">
+            <span>💾</span> IVU_ADVANCED_CALC_V2.0.EXE
+        </div>
+        <div class="title-bar-controls">
+            <button aria-label="Minimize">0</button>
+            <button aria-label="Maximize">1</button>
+            <button aria-label="Close" onclick="alert('Goodbye World!')">X</button>
+        </div>
+    </div>
+    
+    <div class="window-body">
+        <!-- Pantalla de la calculadora interactiva -->
+        <div class="lcd-screen">
+            <div class="lcd-sub-display" id="lcdStatus">ESPERANDO IMPORTE...</div>
+            <div class="lcd-main-display" id="resGrandTotal">$0.00</div>
+        </div>
+
+        <div class="form-group">
+            <label for="amount">Monto Base ($):</label>
+            <input type="number" id="amount" placeholder="0.00" step="0.01" min="0" oninput="calculateIVU()">
+        </div>
+
+        <div class="form-group">
+            <label for="taxType">Seleccionar Tasa/Tarifa:</label>
+            <select id="taxType" onchange="calculateIVU()">
+                <option value="general">TASA GENERAL DE PR (11.5%)</option>
+                <option value="prepared_food">ALIMENTOS PREPARADOS (7.0%)</option>
+            </select>
+        </div>
+
+        <!-- Tabla con el desglose del IVU estatal y municipal -->
+        <table class="status-table">
+            <tr>
+                <td>SUBTOTAL BASE</td>
+                <td id="resBase">$0.00</td>
+            </tr>
+            <tr>
+                <td>IVU ESTATAL (<span id="lblState">10.5</span>%)</td>
+                <td id="resState">$0.00</td>
+            </tr>
+            <tr>
+                <td>IVU MUNICIPAL (<span id="lblMunicipal">1.0</span>%)</td>
+                <td id="resMunicipal">$0.00</td>
+            </tr>
+            <tr>
+                <td>IVU TOTAL</td>
+                <td id="resTaxTotal">$0.00</td>
+            </tr>
+        </table>
+
+        <!-- Banner animado nostálgico -->
+        <div class="marquee-container">
+            <marquee scrollamount="3">
+                <span class="sparkle">✦</span> HACIENDA COMPLIANT <span class="sparkle">✦</span> BIENVENIDOS AL CIBERESPACIO DEL IVU <span class="sparkle">✦</span> TOTALMENTE OPTIMIZADO PARA NETSCAPE NAVIGATOR <span class="sparkle">✦</span>
+            </marquee>
+        </div>
+    </div>
+</div>
+
+<script>
+    function calculateIVU() {
+        const amountInput = document.getElementById('amount').value;
+        const taxType = document.getElementById('taxType').value;
+        
+        const baseAmount = parseFloat(amountInput) || 0;
+        
+        let stateRate = 0.105;     
+        let municipalRate = 0.01;   
+
+        if (taxType === 'prepared_food') {
+            stateRate = 0.07;       
+            municipalRate = 0.00;   
+            document.getElementById('lcdStatus').innerText = "ALIMENTOS PREPARADOS 7%";
+        } else {
+            document.getElementById('lcdStatus').innerText = baseAmount > 0 ? "CALCULO COMPLETO 11.5%" : "ESPERANDO IMPORTE...";
+        }
+
+        const stateTax = baseAmount * stateRate;
+        const municipalTax = baseAmount * municipalRate;
+        const totalTax = stateTax + municipalTax;
+        const grandTotal = baseAmount + totalTax;
+
+        document.getElementById('lblState').innerText = (stateRate * 100).toFixed(1);
+        document.getElementById('lblMunicipal').innerText = (municipalRate * 100).toFixed(1);
+
+        document.getElementById('resBase').innerText = formatCurrency(baseAmount);
+        document.getElementById('resState').innerText = formatCurrency(stateTax);
+        document.getElementById('resMunicipal').innerText = formatCurrency(municipalTax);
+        document.getElementById('resTaxTotal').innerText = formatCurrency(totalTax);
+        document.getElementById('resGrandTotal').innerText = formatCurrency(grandTotal);
+    }
+
+    function formatCurrency(value) {
+        return new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD'
+        }).format(value);
+    }
+</script>
+
+</body>
+</html>
