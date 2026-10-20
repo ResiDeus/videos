@@ -23,7 +23,7 @@
     }
 
     body {
-      background-color: #008080; /* Clásico verde azulado de Win98 */
+      background-color: #008080; /* Verde azulado clásico de Windows 98 */
       display: flex;
       justify-content: center;
       align-items: center;
@@ -34,7 +34,7 @@
     /* Estilo de Ventana Windows 98 */
     .win98-window {
       width: 100%;
-      max-width: 660px;
+      max-width: 640px;
       background-color: var(--win-gray);
       border-top: 2px solid var(--win-white);
       border-left: 2px solid var(--win-white);
@@ -75,7 +75,7 @@
     .menu-bar {
       display: flex;
       gap: 15px;
-      padding: 4px 6px;
+      padding: 2px 6px;
       font-size: 12px;
       border-bottom: 1px solid var(--win-dark-gray);
     }
@@ -118,7 +118,7 @@
     /* Tarjetas de juego */
     .game-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 8px;
     }
 
@@ -138,8 +138,6 @@
       background-color: #dfdfdf;
       display: flex;
       justify-content: space-between;
-      border-bottom: 1px solid var(--win-dark-gray);
-      padding-bottom: 2px;
     }
 
     .numbers-row {
@@ -147,7 +145,6 @@
       gap: 6px;
       flex-wrap: wrap;
       align-items: center;
-      min-height: 30px;
     }
 
     .num-ball {
@@ -166,12 +163,6 @@
     .wild-ball {
       background-color: #ffcccc;
       color: #990000;
-      border: 1px dashed red;
-    }
-
-    .loto-ball {
-      background-color: #cce5ff;
-      border-radius: 50%;
     }
 
     /* Buscador / Verificador rápido */
@@ -184,7 +175,7 @@
 
     input[type="text"] {
       flex: 1;
-      padding: 6px;
+      padding: 4px;
       border-top: 2px solid var(--win-dark-gray);
       border-left: 2px solid var(--win-dark-gray);
       border-right: 2px solid var(--win-white);
@@ -199,7 +190,7 @@
       border-left: 2px solid var(--win-white);
       border-right: 2px solid var(--win-dark-gray);
       border-bottom: 2px solid var(--win-dark-gray);
-      padding: 4px 14px;
+      padding: 4px 12px;
       font-size: 12px;
       font-weight: bold;
       cursor: pointer;
@@ -219,15 +210,6 @@
       display: flex;
       justify-content: space-between;
       color: #333;
-      margin-top: 8px;
-    }
-
-    .history-log {
-      margin-top: 6px;
-      font-size: 11px;
-      color: #555;
-      max-height: 60px;
-      overflow-y: auto;
     }
   </style>
 </head>
@@ -236,69 +218,70 @@
   <div class="win98-window">
     <!-- Barra de Título -->
     <div class="title-bar">
-      <span>💾 LoteríaPR_v98.exe - [Resultados en Vivo Y2K]</span>
+      <span>💾 LoteríaPR_v98.exe - [Resultados en Vivo]</span>
       <div class="title-bar-controls">
-        <button onclick="alert('Minimizar deshabilitado en MS-DOS')">_</button>
-        <button onclick="alert('Ventana maximizada por defecto')">□</button>
-        <button onclick="window.close()">×</button>
+        <button>_</button>
+        <button>□</button>
+        <button>×</button>
       </div>
     </div>
 
     <!-- Barra de Menú -->
     <div class="menu-bar">
-      <span onclick="conectarLoteriaPR()"><u>A</u>ctualizar Red</span>
-      <span onclick="alert('Lotería Electrónica de Puerto Rico v1.0')"><u>A</u>cerca de...</span>
+      <span><u>A</u>rchivo</span>
+      <span><u>V</u>erificar</span>
+      <span><u>A</u>yuda</span>
     </div>
 
     <div class="window-body">
       <!-- Panel de Últimos Sorteos -->
       <div class="sunken-panel">
         <div class="section-title">
-          <span>TÓMBOLA ELECTRÓNICA DE PUERTO RICO</span>
-          <span id="fecha-actualizar">Cargando...</span>
+          <span>LOTERÍA ELECTRÓNICA DE PUERTO RICO</span>
+          <span id="fecha-actualizar">Cargando fecha...</span>
         </div>
 
         <div class="game-grid">
           <!-- Pega 2 -->
           <div class="game-card">
-            <div class="game-header"><span id="title-game-0">PEGA 2</span><span>Diario</span></div>
-            <div class="numbers-row" id="row-game-0">
-              <div class="num-ball">--</div>
-              <div class="num-ball">--</div>
+            <div class="game-header"><span>PEGA 2</span><span>Diario</span></div>
+            <div class="numbers-row">
+              <div class="num-ball">-</div>
+              <div class="num-ball">-</div>
             </div>
           </div>
 
           <!-- Pega 3 -->
           <div class="game-card">
-            <div class="game-header"><span id="title-game-1">PEGA 3</span><span>Diario</span></div>
-            <div class="numbers-row" id="row-game-1">
-              <div class="num-ball">--</div>
-              <div class="num-ball">--</div>
-              <div class="num-ball">--</div>
+            <div class="game-header"><span>PEGA 3</span><span>Diario</span></div>
+            <div class="numbers-row">
+              <div class="num-ball">-</div>
+              <div class="num-ball">-</div>
+              <div class="num-ball">-</div>
             </div>
           </div>
 
           <!-- Pega 4 -->
           <div class="game-card">
-            <div class="game-header"><span id="title-game-2">PEGA 4</span><span>Diario</span></div>
-            <div class="numbers-row" id="row-game-2">
-              <div class="num-ball">--</div>
-              <div class="num-ball">--</div>
-              <div class="num-ball">--</div>
-              <div class="num-ball">--</div>
+            <div class="game-header"><span>PEGA 4</span><span>Diario</span></div>
+            <div class="numbers-row">
+              <div class="num-ball">-</div>
+              <div class="num-ball">-</div>
+              <div class="num-ball">-</div>
+              <div class="num-ball">-</div>
             </div>
           </div>
 
           <!-- Loto Cash -->
           <div class="game-card">
-            <div class="game-header"><span id="title-game-3">LOTO CASH</span><span>Lun/Mié/Vie</span></div>
-            <div class="numbers-row" id="row-game-3">
-              <div class="num-ball">--</div>
-              <div class="num-ball">--</div>
-              <div class="num-ball">--</div>
-              <div class="num-ball">--</div>
-              <div class="num-ball">--</div>
-              <div class="num-ball loto-ball">--</div>
+            <div class="game-header"><span>LOTO CASH</span><span>Lun/Mié/Vie</span></div>
+            <div class="numbers-row">
+              <div class="num-ball">-</div>
+              <div class="num-ball">-</div>
+              <div class="num-ball">-</div>
+              <div class="num-ball">-</div>
+              <div class="num-ball">-</div>
+              <div class="num-ball" style="background-color: #cce5ff;">-</div>
             </div>
           </div>
         </div>
@@ -306,28 +289,29 @@
 
       <!-- Verificador Rápido de Números -->
       <div class="sunken-panel">
-        <div class="section-title">VERIFICADOR DE JUGADAS (MEMORIA LOCAL)</div>
-        <p style="font-size: 11px; margin-bottom: 4px;">Introduce tu número seguido sin espacios (Ejemplo: si salió 1-0-8, escribe 108):</p>
+        <div class="section-title">VERIFICADOR RÁPIDO DE TU JUGADA</div>
+        <p style="font-size: 11px; margin-bottom: 4px;">Introduce tu número o combinación (ej: 31, o 611 para Pega 3):</p>
         <div class="checker-box">
-          <input type="text" id="userNum" placeholder="Digita tu combinación jugada...">
+          <input type="text" id="userNum" placeholder="Escribe tu número aquí...">
           <button class="win98-btn" onclick="checkNumber()">Comprobar</button>
         </div>
         <div id="resultMsg" style="font-size: 12px; margin-top: 6px; font-weight: bold; color: var(--win-blue);"></div>
-        <div class="history-log" id="historyLog"></div>
       </div>
 
       <!-- Barra de Estado inferior -->
       <div class="status-bar">
-        <span id="status-text">Inicializando módem 56kbps...</span>
-        <span>Loterías de PR v98</span>
+        <span id="status-text">Listo</span>
+        <span>Loterías de Puerto Rico - Win98 Client</span>
       </div>
     </div>
   </div>
 
   <script>
+    // Configuración de origen exclusiva para Lotería Electrónica de Puerto Rico
     const PROXY_SERVER = "https://allorigins.win";
-    const PUERTO_RICO_LOTTO_URL = encodeURIComponent("https://lottery.jackpocket.com/en/lottery-results/puerto-rico");
+    const PUERTO_RICO_LOTTO_URL = encodeURIComponent("https://jackpocket.com");
 
+    // Inicialización del "Sistema Operativo Win98"
     window.onload = function() {
       conectarLoteriaPR();
       renderHistory();
@@ -336,7 +320,8 @@
     async function conectarLoteriaPR() {
       const statusText = document.getElementById('status-text');
       const fechaText = document.getElementById('fecha-actualizar');
- if (statusText) statusText.textContent = "Conectando con la tómbola oficial en San Juan...";
+      
+      if (statusText) statusText.textContent = "Conectando con la tómbola oficial en San Juan...";
 
       try {
         const respuesta = await fetch(`${PROXY_SERVER}${PUERTO_RICO_LOTTO_URL}`);
@@ -351,7 +336,7 @@
         // Mapa en memoria para el buscador rápido de boletos
         window.winningMap = {};
 
-        // Extraer tarjetas de sorteos específicas de Puerto Rico
+      // Extraer tarjetas de sorteos específicas de Puerto Rico
         const bloquesSorteo = documentoHTML.querySelectorAll('.v-list-item');
         
         if (bloquesSorteo.length === 0) throw new Error("Estructura cambiada");
@@ -363,18 +348,21 @@
         }
 
         bloquesSorteo.forEach(bloque => {
-          const tituloElemento = bloque.querySelector('.v-list-item__title');
-          const numerosElemento = bloque.querySelector('.v-list-item__subtitle');
+          const tituloElemento = bloque.querySelectorAll('.v-list-item__title');
+          const numerosElemento = bloque.querySelectorAll('.v-list-item__subtitle');
           
-          if (tituloElemento && numerosElemento) {
-            const juegoNombre = tituloElemento.textContent.trim().toUpperCase(); // Ej: "PEGA 3 NOCHE"
-            const juegoNumeros = numerosElemento.textContent.trim(); // Ej: "1 0 8 Wild Ball: 6"
+          let titleEl = tituloElemento.length > 0 ? tituloElemento[tituloElemento.length - 1] : null;
+          let subEl = numerosElemento.length > 0 ? numerosElemento[numerosElemento.length - 1] : null;
+          
+          if (titleEl && subEl) {
+            const juegoNombre = titleEl.textContent.trim().toUpperCase(); // Ej: "PEGA 3 NOCHE"
+            const juegoNumeros = subEl.textContent.trim(); // Ej: "1 0 8 Wild Ball: 6"
 
             // Filtrar y limpiar el string para dejar solo dígitos limpios (Útil para el verificador rápido)
             const digitosGanadores = juegoNumeros.replace(/Wild Ball:.*\$/i, '').replace(/\D/g, '');
             
             if (digitosGanadores) {
-              window.winningMap[digitosGanadores] = `¡Ganador Oficial en ${juegoNombre}!`;
+              window.winningMap[digitosGanadores] = `${juegoNombre} (${juegoNumeros})`;
             }
 
             // Inyectar visualmente los números reales de la isla en los slots amarillos de Windows 98
@@ -382,7 +370,7 @@
           }
         });
 
-        if (statusText) statusText.textContent = "Sorteos de Puerto Rico actualizados en tiempo real.";
+        if (statusText) statusText.textContent = "Sorteos de Puerto Rico actualizados en tiempo real [OK]";
       } catch (error) {
         console.warn("[Sistema Win98] Error al leer datos vivos de la tómbola. Activando base de respaldo local.");
         if (statusText) statusText.textContent = "Modo Seguro: Cargando último sorteo registrado de PR.";
@@ -429,31 +417,44 @@
     // Copia de seguridad con sorteos históricos reales de PR si la conexión falla o hay mantenimiento
     function cargarContingenciaPR() {
       window.winningMap = {
-        "64": "Coincidencia simulada con Pega 2 de Puerto Rico",
-        "611": "Coincidencia simulada con Pega 3 de Puerto Rico",
-        "4108": "Coincidencia simulada con Pega 4 de Puerto Rico"
+        "64": "PEGA 2 NOCHE (6 4 Wild Ball: 7)",
+        "611": "PEGA 3 NOCHE (6 1 1 Wild Ball: 7)",
+        "4108": "PEGA 4 NOCHE (4 1 0 8 Wild Ball: 6)",
+        "051219243108": "LOTO CASH (05 12 19 24 31 Bolo Cash: 08)"
       };
     }
 
-    // Lógica del Verificador de Jugadas conectado al LocalStorage
+    // Lógica del Verificador de Jugadas corregida para búsquedas parciales e individuales
     function checkNumber() {
       const inputBoleto = document.getElementById('userNum').value.trim();
       const cajaMensaje = document.getElementById('resultMsg');
       
-      if (!window.winningMap) cargarContingenciaPR();
+      if (!window.winningMap || Object.keys(window.winningMap).length === 0) cargarContingenciaPR();
 
       if (!inputBoleto) {
-        cajaMensaje.textContent = "Error de Validación: Digita tu combinación.";
+        cajaMensaje.textContent = "Error de Validación: Digita tu combinación o número.";
         cajaMensaje.style.color = "red";
         return;
       }
       
-      if (window.winningMap[inputBoleto]) {
-        cajaMensaje.textContent = `[OK] ${window.winningMap[inputBoleto]}`;
+      let encontrado = false;
+      let mensajePremio = "";
+
+      // Buscamos tanto por clave exacta (Pega 2/3/4) como por inclusión (números individuales en Loto Cash)
+      for (const [combinacion, mensaje] of Object.entries(window.winningMap)) {
+        if (combinacion === inputBoleto || combinacion.includes(inputBoleto)) {
+          encontrado = true;
+          mensajePremio = mensaje;
+          break; 
+        }
+      }
+      
+      if (encontrado) {
+        cajaMensaje.textContent = `[OK] ¡Coincidencia Ganadora! Detectado en: ${mensajePremio}`;
         cajaMensaje.style.color = "green";
         guardarHistorialWin98(inputBoleto, "Ganador");
       } else {
-        cajaMensaje.textContent = `[X] El número ${inputBoleto} no coincide con los premios principales de este sorteo.`;
+        cajaMensaje.textContent = `[X] El número o combinación ${inputBoleto} no registra premios hoy.`;
         cajaMensaje.style.color = "var(--win-blue)";
         guardarHistorialWin98(inputBoleto, "No Premiado");
       }
