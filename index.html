@@ -45,7 +45,7 @@
     #visualizer { width: 100%; height: 150px; background: var(--black); border: 2px solid; border-color: var(--dark) var(--white) var(--white) var(--dark); margin-bottom: 8px; display: block; }
     
     /* Barra de Tareas e Inicio */
-    .taskbar { position: absolute; bottom: 0; left: 0; right: 0; height: 40px; background: var(--gray); border-top: 2px solid var(--white); display: flex; justify-content: space-between; align-items: center; padding: 2px 8px; z-index: 9999; }
+    .taskbar { position: absolute; bottom: 0; left: 0; right: 0; height: 40px; background: var(--gray); border-top: 2px solid var(--white); display: flex; justify-content: space-between; align-items: center; padding: 2px 8px; z-index: 9999; overflow: visible; }
     .start-btn { font-weight: bold; background: var(--gray); border: 2px solid; border-color: var(--white) var(--dark) var(--dark) var(--white); padding: 4px 10px; display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 13px; }
     .start-btn:active, .start-btn.open { border-color: var(--dark) var(--white) var(--white) var(--dark); padding: 5px 9px 3px 11px; }
     
@@ -145,12 +145,12 @@
     <div class="taskbar-apps" id="taskbar-apps-container"></div>
     
     <!-- System Tray con Control de Volumen y Reloj -->
-    <div class="systray" style="display: flex; align-items: center; gap: 8px;">
-      <div style="display: flex; align-items: center; gap: 4px; position: relative;">
+    <!-- System Tray con Control de Volumen y Reloj -->
+    <div class="systray" style="display: flex; align-items: center; gap: 8px; position: relative;">
+      <div style="display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; position: relative;">
         <span style="font-size: 16px; cursor: pointer;" onclick="toggleVolSlider(event)" title="Volumen">🔊</span>
-
-                <div id="vol-container" style="display: none; position: absolute; bottom: 35px; right: -10px; background: var(--gray); border: 2px solid; border-color: var(--white) var(--dark) var(--dark) var(--white); padding: 8px 4px; z-index: 10001; transform: rotate(-90deg); transform-origin: bottom right;">
-          <input type="range" id="vol-slider" min="0" max="1" step="0.05" value="1" oninput="changeVolume(this.value)" style="width: 80px; cursor: pointer;">
+        <div id="vol-container" style="display: none; position: absolute; bottom: 38px; right: 0; background: var(--gray); border: 2px solid; border-color: var(--white) var(--dark) var(--dark) var(--white); padding: 10px 6px; z-index: 10005; box-shadow: 2px 2px 10px rgba(0,0,0,0.3); width: 34px; height: 120px; text-align: center;">
+          <input type="range" id="vol-slider" min="0" max="1" step="0.05" value="1" oninput="changeVolume(this.value)" style="writing-mode: vertical-lr; direction: rtl; width: 16px; height: 100px; cursor: pointer; display: inline-block;">
         </div>
       </div>
       <span id="clock" style="cursor: pointer;" onclick="playWin98ErrorSound()" title="Hacer clic para sonido de error">00:00 AM</span>
@@ -246,9 +246,16 @@
     function closeStartMenu() { document.getElementById('start-menu').style.display = 'none'; document.getElementById('btn-start').classList.remove('open'); document.getElementById('vol-container').style.display = 'none'; }
     setInterval(() => { document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }); }, 1000);
 
-    // --- MANEJADOR DE VOLUMEN (SYSTRAY) ---
-    function toggleVolSlider(e) { e.stopPropagation(); const v = document.getElementById('vol-container'); v.style.display = v.style.display === 'block' ? 'none' : 'block'; }
-    function changeVolume(val) { document.getElementById('audio-player').volume = val; }
+    // --- MANEJADOR DE VOLUMEN (SYSTRAY) REPARADO ---
+    function toggleVolSlider(e) { 
+      e.stopPropagation(); 
+      const v = document.getElementById('vol-container'); 
+      v.style.display = v.style.display === 'block' ? 'none' : 'block';
+    }
+    function changeVolume(val) { 
+      const audioPlayer = document.getElementById('audio-player');
+      if (audioPlayer) audioPlayer.volume = val; 
+    }
 
     // --- SÍNTESIS DE SONIDO DE ERROR WINDOWS (CHORD.WAV) ---
     function playWin98ErrorSound() {
