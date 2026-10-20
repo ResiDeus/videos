@@ -15,14 +15,21 @@
         
         .chasis { width: 327px; height: auto; min-height: 480px; background: #241434; border: 4px solid #ff007f; box-shadow: 0 0 25px #ff007f80; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; border-radius: 24px; overflow: hidden; display: flex; flex-direction: column; padding: 8px; gap: 6px; }
         
-        .lcd { width: 100%; height: 165px; background: #92b043; border: 2px solid #000; border-radius: 14px; color: #000; box-shadow: inset 0 4px 10px rgba(0,0,0,0.4); font-weight: bold; padding: 10px; display: flex; flex-direction: column; justify-content: space-between; }
+        .lcd { width: 100%; height: 165px; background: #92b043; border: 2px solid #000; border-radius: 14px; color: #000; box-shadow: inset 0 4px 10px rgba(0,0,0,0.4); font-weight: bold; padding: 10px; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
         .lcd-header { display: flex; justify-content: space-between; font-size: 11px; border-bottom: 1px solid rgba(0,0,0,0.2); }
         
-        /* CORRECCIÓN FINAL PARA MÓVILES: -webkit-appearance: none desactiva la barra nativa invisible */
-        .lcd-historial { flex-grow: 1; font-size: 11px; margin: 4px 0; overflow-y: scroll; max-height: 45px; text-align: left; padding-right: 6px; border-bottom: 1px dashed rgba(0, 0, 0, 0.2); -webkit-overflow-scrolling: touch; }
-        .lcd-historial::-webkit-scrollbar { -webkit-appearance: none; width: 6px !important; display: block !important; }
-        .lcd-historial::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2) !important; border-radius: 10px !important; }
-        .lcd-historial::-webkit-scrollbar-thumb { background: #ff007f !important; border: 1px solid #000 !important; border-radius: 10px !important; box-shadow: 0 0 4px #ff007f !important; }
+        /* CAJA CON CONTENEDOR DE SCROLL E INDICADOR UNIVERSAL PARA SAFARI */
+        .lcd-wrapper { position: relative; flex-grow: 1; display: flex; flex-direction: column; margin: 4px 0; max-height: 45px; }
+        .lcd-historial { flex-grow: 1; font-size: 11px; overflow-y: scroll; text-align: left; padding-right: 4px; -webkit-overflow-scrolling: touch; }
+        
+        /* Barra para navegadores compatibles (PC/Android) */
+        .lcd-historial::-webkit-scrollbar { width: 5px; display: block; }
+        .lcd-historial::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.1); }
+        .lcd-historial::-webkit-scrollbar-thumb { background: #ff007f; border-radius: 4px; }
+        
+        /* FLECHA FLOTANTE RETRO PARA MÓVILES (Desaparece al scrollear mediante JS) */
+        .scroll-hint { position: absolute; bottom: 1px; right: 2px; font-size: 8px; color: rgba(0,0,0,0.6); animation: bounce 1.2s infinite ease-in-out; pointer-events: none; display: none; background: rgba(146, 176, 67, 0.9); padding: 0 2px; border-radius: 3px; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(2px); } }
         
         .lcd-body { text-align: right; font-size: 11px; }
         .lcd-total { font-size: 26px; font-weight: 900; }
@@ -58,7 +65,13 @@
     <div class="chasis">
         <div class="lcd">
             <div class="lcd-header"><span id="lblArt">CALCULADORA</span><span id="txtIvu">IVU: 11.5%</span></div>
-            <div class="lcd-historial" id="listaPrecios"><i>Lista vacía...</i></div>
+            
+            <div class="lcd-wrapper">
+                <!-- Se añade un detector de scroll 'onscroll' para la flecha -->
+                <div class="lcd-historial" id="listaPrecios" onscroll="detectarDesplazamiento()"><i>Lista vacía...</i></div>
+                <div class="scroll-hint" id="flechaGuia">▼ deslizar</div>
+            </div>
+
             <div class="lcd-body">
                 <div id="rowTip" style="opacity: 0.2;">PROPINA (18%): <span id="outTip">$0.00</span></div>
                 <div>IVU: <span id="outIvu">$0.00</span></div>
@@ -188,9 +201,21 @@
                 sSub = "0"; document.getElementById('lblSub').innerText = "0";
                 const con = document.getElementById('listaPrecios');
                 con.innerHTML = preciosGuardados.map((p, i) => `<div>• Art #${i+1}: $${p.toFixed(2)}</div>`).join('');
+                
+                // CONTROL DE FLECHA GUÍA EN MÓVIL
+                const f = document.getElementById('flechaGuia');
+                if (con.scrollHeight > con.clientHeight) {
+                    f.style.display = "block"; // Se activa la advertencia si hay contenido oculto abajo
+                }
+                
                 con.scrollTop = con.scrollHeight;
                 calc();
             }
+        }
+
+        // ESCONDE EL AVISO EN CUANTO EL USUARIO TOCA E INTERACTÚA CON LA LISTA
+        function detectarDesplazamiento() {
+            document.getElementById('flechaGuia').style.display = "none";
         }
 
         function clr() {
@@ -199,6 +224,7 @@
                 sSub = "0"; cuentaAcumulada = 0; preciosGuardados = [];
                 document.getElementById('lblSub').innerText = "0";
                 document.getElementById('listaPrecios').innerHTML = "<i>Lista vacía...</i>";
+                document.getElementById('flechaGuia').style.display = "none";
             } else { sPpl = "1"; document.getElementById('lblPpl').innerText = "1"; }
             calc();
         }
