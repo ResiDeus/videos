@@ -220,7 +220,7 @@
 
     function verRemedio() {
       const a = document.getElementById('remedio-selector').value; const d = document.getElementById('remedio-result');
-      const l = { empacho: "Aceite de oliva en vientre en forma de cruz y té de menta.", resfriado: "Té de jengibre, malojillo, ajo machacado y miel pura.", mal_de_ojo: "Pulsera de azabache con cuentas rojas y ruda fresca." };
+      const l = { empacho: "Aceite de oliva en vientre en forma de cruz y té de menta.", resfriado: "Té de jengibre, limoncillo, ajo machacado y miel pura.", mal_de_ojo: "Pulsera de azabache con hilos rojos y ruda fresca." };
       d.innerHTML = a ? `📜 <b>FÓRMULA BOTÁNICA:</b><br>${l[a]}` : "Abre la base de datos medicinal tradicional.";
     }
 
@@ -238,7 +238,7 @@
 
       if (pInfo.costa && temp >= 85) {
         playWin98ErrorSound(); let t = 42 * 60;
-        consejo.innerHTML = `<b style="color:var(--neon-pink);">⚠️ EVAPORACIÓN ACTIVA:</b> Bochorno severo detectado en ${pName}. Humero subiendo por las alcantarillas. Sella las ventanas de aluminio.`;
+        consejo.innerHTML = `<b style="color:var(--neon-pink);">⚠️ EVAPORACIÓN ACTIVA:</b> Cucarachero severo detectado en ${pName}. Humedad subiendo por las alcantarillas. Cierra las ventanas.`;
         c_interval = setInterval(() => { t--; let m = Math.floor(t / 60); let s = t % 60; timer.textContent = `INVASIÓN EN: ${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`; if (t <= 0) { clearInterval(c_interval); timer.textContent = "CRÍTICO: INVASIÓN"; playWin98ErrorSound(); } }, 1000);
       } else { timer.textContent = "SISTEMA: ESTABLE"; consejo.innerHTML = `Presión barométrica normal en ${pName}. Subsuelo frío. Riesgo de plagas: CERO.`; }
     }
