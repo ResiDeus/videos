@@ -172,12 +172,48 @@
         let ivu = 11.5, mode = 'sub', sSub = "0", sPpl = "0", incluirPropina = false;
         let modoPersonasActivo = false; // Controla si la división de personas está encendida o apagada
 
+        // --- SISTEMA DE AUDIO SYNTHWAVE ---
+        function reproducirSonido(tipo) {
+            try {
+                // Crear el contexto de audio del navegador
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContext) return;
+                const ctx = new AudioContext();
+                
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                
+                if (tipo === 'menu') {
+                    // Sonido para botones de menú: un tono agudo y rápido (estilo interfaz retro)
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(800, ctx.currentTime); 
+                    osc.frequency.exponentialRampToValueAtTime(400, ctx.currentTime + 0.1);
+                    gain.gain.setValueAtTime(0.1, ctx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.12);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.12);
+                } else if (tipo === 'tecla') {
+                    // Sonido para números: un "click" o tono corto más grave
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(350, ctx.currentTime);
+                    gain.gain.setValueAtTime(0.15, ctx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.05);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.05);
+                }
+            } catch (e) {
+                console.log("Audio no soportado o bloqueado por el navegador:", e);
+            }
+        }
+
         function focusF(f) {
+            reproducirSonido('menu'); // Sonido de menú
             if (f === 'sub') {
-                // Al presionar Cuenta, solo apagamos visualmente el modo personas
                 if (modoPersonasActivo) {
                     modoPersonasActivo = false;
-                    // Mantenemos el valor de sPpl guardado en la variable, pero mostramos OFF
                     document.getElementById('lblPpl').innerText = "OFF";
                     document.getElementById('lblTotalType').innerText = "TOTAL";
                     calc();
@@ -188,18 +224,17 @@
         }
 
         function togglePersonasMode() {
+            reproducirSonido('menu'); // Sonido de menú
             modoPersonasActivo = !modoPersonasActivo;
             
             if (modoPersonasActivo) {
-                // NUEVO: Si sPpl es "0" o está vacío, sugerimos "2". Si ya tenía un número guardado, lo mantiene.
                 if (sPpl === "0" || sPpl === "") {
                     sPpl = "2"; 
                 }
-                mode = 'ppl'; // Cambia el foco automáticamente al contador de personas
+                mode = 'ppl'; 
                 document.getElementById('lblPpl').innerText = sPpl;
-                document.getElementById('lblTotalType').innerText = "CADA UNO";
+                document.getElementById('lblTotalType').innerText = "C/U";
             } else {
-                // Al apagarlo con el mismo botón, mantenemos guardado el número pero visualmente dice OFF
                 mode = 'sub'; 
                 document.getElementById('lblPpl').innerText = "OFF";
                 document.getElementById('lblTotalType').innerText = "TOTAL";
@@ -208,15 +243,12 @@
             calc();
         }
 
-
         function actualizarEstilosPaneles() {
             const cajaSub = document.getElementById('cajaSub');
             const cajaPpl = document.getElementById('cajaPpl');
 
-            // Setear Cuenta Base: si el foco está en 'sub', se ilumina
             cajaSub.className = mode === 'sub' ? "caja-data btn-on on-anim" : "caja-data btn-off";
             
-            // Setear Personas dinámicamente según su estado de encendido y foco
             if (!modoPersonasActivo) {
                 cajaPpl.className = "caja-data btn-off";
             } else {
@@ -224,8 +256,8 @@
             }
         }
 
-
         function toggleTip() {
+            reproducirSonido('menu'); // Sonido de menú
             incluirPropina = !incluirPropina;
             const btn = document.getElementById('btnPropina');
             btn.className = incluirPropina ? "btn-cfg btn-on" : "btn-cfg btn-off";
@@ -234,6 +266,7 @@
         }
 
         function setI(p) {
+            reproducirSonido('menu'); // Sonido de menú
             ivu = p;
             ['ivu115', 'ivu6', 'ivu0'].forEach(id => { document.getElementById(id).className = "btn-cfg btn-off"; });
             let idActivo = p === 11.5 ? 'ivu115' : p === 6.0 ? 'ivu6' : 'ivu0';
@@ -243,6 +276,7 @@
         }
 
         function num(c) {
+            reproducirSonido('tecla'); // Sonido de tecla numérica
             if (mode === 'sub') {
                 if (sSub === "0" && c !== '.') sSub = "";
                 if (c === '.' && sSub.includes('.')) return;
@@ -256,6 +290,7 @@
         }
 
         function bksp() {
+            reproducirSonido('tecla'); // Sonido de tecla numérica
             if (mode === 'sub') {
                 sSub = sSub.slice(0, -1); if (sSub === "" || sSub === "-") sSub = "0";
                 document.getElementById('lblSub').innerText = sSub;
@@ -267,6 +302,7 @@
         }
 
         function clr() {
+            reproducirSonido('tecla'); // Sonido de tecla numérica
             if (mode === 'sub') { sSub = "0"; document.getElementById('lblSub').innerText = "0"; }
             else { sPpl = "1"; document.getElementById('lblPpl').innerText = "1"; }
             calc();
@@ -274,7 +310,7 @@
 
         function calc() {
             let nSub = parseFloat(sSub) || 0;
-            let nPpl = modoPersonasActivo ? (parseInt(sPpl) || 1) : 1; // Si está OFF, divide estrictamente entre 1
+            let nPpl = modoPersonasActivo ? (parseInt(sPpl) || 1) : 1; 
             
             let vTip = incluirPropina ? (nSub * 0.18) : 0;
             let vIvu = nSub * (ivu / 100);
@@ -284,6 +320,7 @@
             document.getElementById('outIvu').innerText = `$${vIvu.toFixed(2)}`;
             document.getElementById('outPer').innerText = ((nSub + vTip + vIvu) / divisor).toFixed(2);
         }
+
     </script>
 </body>
 </html>
