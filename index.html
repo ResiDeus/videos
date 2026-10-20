@@ -8,10 +8,10 @@
     <style>
         html, body { margin: 0; width: 100vw; height: 100vh; background: #0c0414; overflow: hidden; position: relative; }
         
-        /* CHASIS RETRO ESTRICTO CON ALTURA CONGELADA */
+        /* CHASIS RETRO COMPACTADO AL RAS (Se eliminó todo el espacio inferior) */
         .chasis { 
             width: 335px; 
-            height: 440px; /* Se congeló la altura para evitar que se alargue el borde */
+            height: 410px; /* Reducido al tamaño exacto de los componentes para evitar vacíos */
             background: #241434; 
             border: 4px solid #ff007f; 
             box-shadow: 0 0 25px #ff007f80; 
@@ -31,7 +31,7 @@
             font-weight: bold; 
         }
         
-        /* MATRIZ DE BOTONES COMPACTADOS */
+        /* MATRIZ DE BOTONES COMPACTADOS DE BORDE A BORDE */
         .grid-teclado {
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr)); 
@@ -39,7 +39,6 @@
             width: 100%; 
         }
 
-        /* Se redujo la altura de las teclas a 32px para generar espacio libre arriba */
         .btn-t { 
             height: 32px;
             background: linear-gradient(180deg, #44186c 0%, #290d45 40%, #170529 100%);
@@ -64,6 +63,7 @@
     </style>
 </head>
 <body class="select-none">
+    <!-- Se eliminó el padding inferior (pb-0) para que las teclas colisionen directamente con el borde -->
     <div class="chasis rounded-3xl pt-4 px-4 pb-0 flex flex-col justify-between overflow-hidden">
         
         <!-- PANTALLA LCD -->
@@ -99,8 +99,8 @@
             <button id="tipOff" onclick="toggleTip(false)" class="py-2 rounded-lg btn-off text-red-400 border-red-400">NO</button>
         </div>
 
-        <!-- TECLADO ALINEADO ESTRICTAMENTE ABAJO (JUSTIFY-END) DE BORDE A BORDE -->
-        <div class="-mx-4 flex-1 flex flex-col justify-end">
+        <!-- TECLADO DE BORDE A BORDE AJUSTADO AL LÍMITE INFERIOR -->
+        <div class="-mx-4 shrink-0">
             <div class="grid-teclado font-sans">
                 <button onclick="num('7')" class="btn-t">7</button>
                 <button onclick="num('8')" class="btn-t">8</button>
