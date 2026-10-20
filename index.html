@@ -1,128 +1,3 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PR IVU Calc - Beeper Edition</title>
-    <style>
-        /* --- FONDO ANIMADO SYNTHWAVE --- */
-        html, body { 
-            margin: 0; padding: 0; width: 100vw; height: 100vh; 
-            background: linear-gradient(180deg, #09011a 0%, #2c044d 100%); 
-            overflow: hidden; position: relative;
-            font-family: monospace;
-        }
-        .sky { 
-            position: absolute; width: 100%; height: 100%; top: 0; left: 0; 
-            background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent), radial-gradient(1.5px 1px at 75px 120px, #fff9, transparent), radial-gradient(1px 2px at 150px 50px, #00f0ff, transparent), radial-gradient(2px 1.5px at 230px 280px, #ff007f, transparent); 
-            background-size: 380px 380px; animation: twk 4s infinite linear; z-index: 1; 
-        }
-        .grid3d { 
-            position: absolute; width: 100%; height: 40%; bottom: 0; left: 0; 
-            background-image: linear-gradient(rgba(255, 0, 127, 0.2) 2px, transparent 2px), linear-gradient(90deg, rgba(255, 0, 127, 0.2) 2px, transparent 2px); 
-            background-size: 40px 40px; transform: perspective(180px) rotateX(65deg); transform-origin: top center; animation: gM 2.5s infinite linear; z-index: 1; 
-        }
-        @keyframes twk { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
-        @keyframes gM { 0% { background-position: 0 0; } 100% { background-position: 0 40px; } }
-
-        /* --- CHASIS DE CALCULADORA ESTRICTO --- */
-        .chasis { 
-            width: 327px; /* Ancho neto interno de la máquina */
-            height: 420px; 
-            background: #241434; 
-            border: 4px solid #ff007f; 
-            box-shadow: 0 0 25px #ff007f80; 
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-            z-index: 10;
-            border-radius: 24px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        /* PANTALLA LCD QUE COLISIONA DIRECTAMENTE ABAJO SIN SEPARACIÓN */
-        .lcd { 
-            width: 100%;
-            height: 176px; /* Alargada al ras */
-            background: #92b043; 
-            border-bottom: 3px solid #000000; 
-            color: #000000; 
-            box-shadow: inset 0 4px 10px rgba(0,0,0,0.4); 
-            font-weight: bold;
-            box-sizing: border-box;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .lcd-header { display: flex; justify-content: space-between; font-size: 11px; border-b: 1px solid rgba(0,0,0,0.2); padding-bottom: 4px; }
-        .lcd-body { text-align: right; font-size: 12px; }
-        .lcd-total { font-size: 34px; font-weight: 900; margin-top: 8px; letter-spacing: -1px; }
-
-        /* MENUS DE ENTRADA EN PARALELO */
-        .row-menus { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 6px 6px 0 6px; }
-        .caja-data { padding: 8px; border-radius: 12px; text-align: center; cursor: pointer; font-size: 11px; }
-        .btn-off { background: #1a0826; border: 2px solid #ff007f; color: #ff007f; }
-        .btn-on { background: #ff007f; border: 2px solid #fff; color: #000; font-weight: bold; }
-        .lbl-title { color: #ffffff !important; font-weight: 900; text-transform: uppercase; display: block; margin-bottom: 2px; }
-        .lbl-val { font-size: 15px; font-weight: 900; }
-        
-        /* FILA TRIBUTARIA Y PROPINA */
-        .row-config { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; padding: 6px; }
-        .btn-cfg { padding: 8px 0; border-radius: 8px; font-size: 10px; font-weight: bold; cursor: pointer; text-align: center; }
-        .btn-tip-yes { color: #22c55e; border: 2px solid #22c55e; }
-        .btn-tip-no { color: #ef4444; border: 2px solid #ef4444; }
-
-        /* TECLADO DE BORDE A BORDE NETO */
-        .pad-num { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: #241434; }
-        .btn-key { 
-            height: 34px;
-            background: linear-gradient(180deg, #44186c 0%, #170529 100%); 
-            border: 1px solid #00f0ff44; 
-            color: #00f0ff; font-size: 1.3rem; font-weight: bold; 
-            text-shadow: 0 0 5px #00f0ff80;
-            cursor: pointer;
-        }
-        .btn-key:active { background: linear-gradient(180deg, #ff007f 0%, #a30052 100%); border: 1px solid #fff; color: #fff; }
-        .btn-back { background: linear-gradient(180deg, #5c2c06 0%, #241001 100%); border-color: #f59e0b44; color: #fbbf24; }
-
-        /* BOTÓN CLEAR TOTALMENTE MASIVO TOQUE LATERAL */
-        .btn-clear { 
-            width: 100%;
-            height: 36px;
-            background: linear-gradient(180deg, #701a1a 0%, #300707 100%);
-            border: none;
-            border-top: 2px solid #ef4444;
-            color: #f87171;
-            font-size: 1.5rem;
-            font-weight: bold;
-            cursor: pointer;
-            text-align: center;
-        }
-        .btn-clear:active { background: #ef4444; color: #000; }
-
-        @keyframes glow { 0%, 100% { box-shadow: 0 0 10px #ff007f; } 50% { box-shadow: 0 0 22px #ff007f; } }
-        .on-anim { animation: glow 1.5s infinite ease-in-out; }
-    </style>
-</head>
-<body>
-
-    <div class="sky"></div>
-    <div class="grid3d"></div>
-
-    <div class="chasis">
-        <!-- PANTALLA LCD MASIVA EXTENDIDA -->
-        <div class="lcd">
-            <div class="lcd-header">
-                <span>TERMINAL FISCAL PR</span>
-                <span id="txtIvu">IVU: 11.5%</span>
-            </div>
-            <div class="lcd-body">
-                <div id="rowTip">PROPINA AUTO (18%): <span id="outTip">$0.00</span></div>
-                <div>IVU LIQUIDO: <span id="outIvu">$0.00</span></div>
-                <div class="lcd-total">C/U: $<span id="outPer">0.00</span></div>
-            </div>
-        </div>
         <!-- MENUS DE DATOS SINCRO TOCANDO LA PANTALLA -->
         <div class="row-menus">
             <div id="cajaSub" class="caja-data btn-on on-anim" onclick="focusF('sub')">
@@ -135,13 +10,13 @@
             </div>
         </div>
 
-        <!-- CONFIGURACIÓN PARALELA DE IVU Y PROPINA -->
+        <!-- CONFIGURACIÓN PARALELA DE IVU Y PROPINA ÚNICA -->
         <div class="row-config">
             <button id="ivu115" onclick="setI(11.5)" class="btn-cfg btn-on">11.5%</button>
             <button id="ivu6" onclick="setI(6.0)" class="btn-cfg btn-off">6.0%</button>
             <button id="ivu0" onclick="setI(0.0)" class="btn-cfg btn-off">0.0%</button>
-            <button id="tipOn" onclick="toggleTip(true)" class="btn-cfg btn-on btn-tip-yes">SÍ</button>
-            <button id="tipOff" onclick="toggleTip(false)" class="btn-cfg btn-off btn-tip-no">NO</button>
+            <!-- BOTÓN DE PALANCA INTEGRADO PARA PROPINA (Inicia desactivado) -->
+            <button id="btnPropina" onclick="toggleTip()" class="btn-cfg btn-off btn-propina-toggle">PROPINA</button>
         </div>
 
         <!-- TECLADO NUMÉRICO AJUSTADO DE BORDE A BORDE -->
@@ -169,7 +44,7 @@
 
     <!-- MOTOR LÓGICO DE ARQUITECTURA PURA -->
     <script>
-        let ivu = 11.5, mode = 'sub', sSub = "0", sPpl = "0", incluirPropina = true;
+        let ivu = 11.5, mode = 'sub', sSub = "0", sPpl = "0", incluirPropina = false; // Inicia apagada la propina
 
         function focusF(f) {
             mode = f;
@@ -177,11 +52,18 @@
             document.getElementById('cajaPpl').className = f === 'ppl' ? "caja-data btn-on on-anim" : "caja-data btn-off";
         }
 
-        function toggleTip(bool) {
-            incluirPropina = bool;
-            document.getElementById('tipOn').className = bool ? "btn-cfg btn-on btn-tip-yes" : "btn-cfg btn-off btn-tip-yes";
-            document.getElementById('tipOff').className = bool ? "btn-cfg btn-off btn-tip-no" : "btn-cfg btn-on btn-tip-no";
-            document.getElementById('rowTip').style.opacity = bool ? "1" : "0.2";
+        function toggleTip() {
+            // Invierte el estado lógico actual (Falso a Verdadero / Verdadero a Falso)
+            incluirPropina = !incluirPropina;
+            
+            const btn = document.getElementById('btnPropina');
+            if (incluirPropina) {
+                btn.className = "btn-cfg btn-on btn-propina-toggle";
+                document.getElementById('rowTip').style.opacity = "1";
+            } else {
+                btn.className = "btn-cfg btn-off btn-propina-toggle";
+                document.getElementById('rowTip').style.opacity = "0.2";
+            }
             calc();
         }
 
