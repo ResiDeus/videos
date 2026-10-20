@@ -10,27 +10,29 @@
             margin: 0; padding: 0; width: 100vw; height: 100vh;
             background-color: #0c0414;
         }
-        /* Chasis forzado verticalmente de forma compacta */
+        /* Chasis vertical expandido para dar aire y espacio armónico */
         .chasis-calc {
-            width: 320px; height: 510px;
+            width: 335px; 
+            height: 570px; /* Más alto para separar los componentes limpiamente */
             background-color: #241434;
             border: 4px solid #ff007f;
             box-shadow: 0 0 25px rgba(255, 0, 127, 0.4);
         }
-        /* Pantalla LCD de alto contraste */
+        /* Pantalla LCD de alto contraste con respiro interno */
         .pantalla-lcd {
             background-color: #92b043;
             border: 3px solid #000000;
             color: #000000;
         }
-        /* Botonera gigante optimizada para el tacto */
+        /* Botonera expandida y cómoda para el uso táctil */
         .btn-tecla {
             background-color: #3c1e54;
             border-bottom: 5px solid #1a0826;
             border-right: 2px solid #1a0826;
             color: #00f0ff;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: bold;
+            transition: all 0.05s ease;
         }
         .btn-tecla:active {
             border-bottom: 1px solid #1a0826;
@@ -39,7 +41,7 @@
             background-color: #ff007f;
             color: #000000;
         }
-        /* Estilos sincronizados para selectores e indicadores (Mismo sistema de color) */
+        /* Sistema unificado de color de los porcentajes de IVU */
         .btn-ivu-off { 
             background-color: #1a0826; 
             border: 1px solid #ff007f; 
@@ -56,57 +58,57 @@
 </head>
 <body class="absolute inset-0 flex items-center justify-center select-none overflow-hidden">
 
-    <div class="chasis-calc rounded-3xl p-4 flex flex-col justify-between">
+    <div class="chasis-calc rounded-3xl p-5 flex flex-col justify-between">
         
         <!-- PANTALLA LCD -->
-        <div class="pantalla-lcd rounded-lg p-3 flex flex-col justify-between text-right h-24 font-mono font-bold">
-            <div class="flex justify-between items-center text-[10px] border-b border-black/30 pb-0.5">
+        <div class="pantalla-lcd rounded-xl p-3.5 flex flex-col justify-between text-right h-28 shrink-0 font-mono font-bold mb-2">
+            <div class="flex justify-between items-center text-[10px] border-b border-black/30 pb-1">
                 <span>TERMINAL FISCAL PR</span>
                 <span id="txtIvuActual">IVU: 11.5%</span>
             </div>
             <div class="flex flex-col text-right justify-end space-y-0.5">
                 <div class="text-[11px]">PROPINA (18%): <span id="outTip">\$0.00</span></div>
                 <div class="text-[11px]">IVU LIQUIDO: <span id="outIvu">\$0.00</span></div>
-                <div class="text-xl font-black mt-0.5">TOTAL C/U: \$<span id="outPerPerson">0.00</span></div>
+                <div class="text-2xl font-black mt-1">TOTAL C/U: \$<span id="outPerPerson">0.00</span></div>
             </div>
         </div>
 
-        <!-- INDICADORES TÁCTILES MÁS GRANDES Y SINCRONIZADOS CON EL COLOR DEL IVU -->
-        <div class="grid grid-cols-2 gap-2 text-xs font-bold font-sans">
-            <div id="cajaSubtotal" class="btn-ivu-on p-3.5 rounded-xl cursor-pointer text-center" onclick="cambiarEnfoque('subtotal')">
+        <!-- INDICADORES TÁCTILES AMPLIADOS Y ESPACIOSOS -->
+        <div class="grid grid-cols-2 gap-3 text-xs font-bold font-sans mb-2">
+            <div id="cajaSubtotal" class="btn-ivu-on py-4 rounded-xl cursor-pointer text-center transition-all duration-150" onclick="cambiarEnfoque('subtotal')">
                 <span class="block text-[10px] uppercase tracking-wider mb-0.5 opacity-80">1. Cuenta Base</span>
                 <span class="font-mono text-base block font-black">\$<span id="lblSubtotal">0</span></span>
             </div>
-            <div id="cajaPersonas" class="btn-ivu-off p-3.5 rounded-xl cursor-pointer text-center" onclick="cambiarEnfoque('personas')">
+            <div id="cajaPersonas" class="btn-ivu-off py-4 rounded-xl cursor-pointer text-center transition-all duration-150" onclick="cambiarEnfoque('personas')">
                 <span class="block text-[10px] uppercase tracking-wider mb-0.5 opacity-80">2. Personas</span>
                 <span class="font-mono text-base block font-black"><span id="lblPersonas">0</span></span>
             </div>
         </div>
 
-        <!-- SELECTOR IVU -->
-        <div class="grid grid-cols-3 gap-1.5 text-xs font-bold font-sans">
-            <button id="ivu115" onclick="cambiarIvu(11.5)" class="py-2.5 rounded-lg btn-ivu-on">11.5%</button>
-            <button id="ivu6" onclick="cambiarIvu(6.0)" class="py-2.5 rounded-lg btn-ivu-off">6.0%</button>
-            <button id="ivu0" onclick="cambiarIvu(0.0)" class="py-2.5 rounded-lg btn-ivu-off">0.0%</button>
+        <!-- SELECTOR IVU CON ESPACIADO INFERIOR -->
+        <div class="grid grid-cols-3 gap-2 text-xs font-bold font-sans mb-3">
+            <button id="ivu115" onclick="cambiarIvu(11.5)" class="py-2.5 rounded-xl btn-ivu-on">11.5%</button>
+            <button id="ivu6" onclick="cambiarIvu(6.0)" class="py-2.5 rounded-xl btn-ivu-off">6.0%</button>
+            <button id="ivu0" onclick="cambiarIvu(0.0)" class="py-2.5 rounded-xl btn-ivu-off">0.0%</button>
         </div>
 
-        <!-- TECLADO NUMÉRICO MAXIMIZADO PARA EL TACTO -->
-        <div class="grid grid-cols-3 gap-2 flex-1 pt-2 font-sans">
-            <button onclick="marcarNumero('7')" class="btn-tecla rounded-xl">7</button>
-            <button onclick="marcarNumero('8')" class="btn-tecla rounded-xl">8</button>
-            <button onclick="marcarNumero('9')" class="btn-tecla rounded-xl">9</button>
+        <!-- TECLADO NUMÉRICO ESPACIADO Y MAXIMIZADO -->
+        <div class="grid grid-cols-3 gap-2.5 flex-1 font-sans">
+            <button onclick="marcarNumero('7')" class="btn-tecla rounded-2xl">7</button>
+            <button onclick="marcarNumero('8')" class="btn-tecla rounded-2xl">8</button>
+            <button onclick="marcarNumero('9')" class="btn-tecla rounded-2xl">9</button>
             
-            <button onclick="marcarNumero('4')" class="btn-tecla rounded-xl">4</button>
-            <button onclick="marcarNumero('5')" class="btn-tecla rounded-xl">5</button>
-            <button onclick="marcarNumero('6')" class="btn-tecla rounded-xl">6</button>
+            <button onclick="marcarNumero('4')" class="btn-tecla rounded-2xl">4</button>
+            <button onclick="marcarNumero('5')" class="btn-tecla rounded-2xl">5</button>
+            <button onclick="marcarNumero('6')" class="btn-tecla rounded-2xl">6</button>
             
-            <button onclick="marcarNumero('1')" class="btn-tecla rounded-xl">1</button>
-            <button onclick="marcarNumero('2')" class="btn-tecla rounded-xl">2</button>
-            <button onclick="marcarNumero('3')" class="btn-tecla rounded-xl">3</button>
+            <button onclick="marcarNumero('1')" class="btn-tecla rounded-2xl">1</button>
+            <button onclick="marcarNumero('2')" class="btn-tecla rounded-2xl">2</button>
+            <button onclick="marcarNumero('3')" class="btn-tecla rounded-2xl">3</button>
             
-            <button onclick="borrarTodo()" class="text-sm rounded-xl font-bold bg-red-900 border border-red-500 text-red-200 active:bg-red-500 active:text-black">C</button>
-            <button onclick="marcarNumero('0')" class="btn-tecla rounded-xl">0</button>
-            <button onclick="marcarNumero('.')" class="btn-tecla rounded-xl">.</button>
+            <button onclick="borrarTodo()" class="text-base rounded-2xl font-bold bg-red-900 border border-red-500 text-red-200 active:bg-red-500 active:text-black transition-all">C</button>
+            <button onclick="marcarNumero('0')" class="btn-tecla rounded-2xl">0</button>
+            <button onclick="marcarNumero('.')" class="btn-tecla rounded-2xl">.</button>
         </div>
     </div>
 
@@ -115,18 +117,18 @@
 
         function cambiarEnfoque(campo) {
             campoActivo = campo;
-            document.getElementById('cajaSubtotal').className = "btn-ivu-off p-3.5 rounded-xl cursor-pointer text-center";
-            document.getElementById('cajaPersonas').className = "btn-ivu-off p-3.5 rounded-xl cursor-pointer text-center";
+            document.getElementById('cajaSubtotal').className = "btn-ivu-off py-4 rounded-xl cursor-pointer text-center transition-all duration-150";
+            document.getElementById('cajaPersonas').className = "btn-ivu-off py-4 rounded-xl cursor-pointer text-center transition-all duration-150";
             
             let idFoco = campo === 'subtotal' ? 'cajaSubtotal' : 'cajaPersonas';
-            document.getElementById(idFoco).className = "btn-ivu-on p-3.5 rounded-xl cursor-pointer text-center";
+            document.getElementById(idFoco).className = "btn-ivu-on py-4 rounded-xl cursor-pointer text-center transition-all duration-150";
         }
 
         function cambiarIvu(porcentaje) {
             tasaIvu = porcentaje;
-            ['ivu115', 'ivu6', 'ivu0'].forEach(id => document.getElementById(id).className = "py-2.5 rounded-lg btn-ivu-off");
+            ['ivu115', 'ivu6', 'ivu0'].forEach(id => document.getElementById(id).className = "py-2.5 rounded-xl btn-ivu-off");
             let idActivo = porcentaje === 11.5 ? 'ivu115' : porcentaje === 6.0 ? 'ivu6' : 'ivu0';
-            document.getElementById(idActivo).className = "py-2.5 rounded-lg btn-ivu-on";
+            document.getElementById(idActivo).className = "py-2.5 rounded-xl btn-ivu-on";
             document.getElementById('txtIvuActual').innerText = `IVU: ${porcentaje.toFixed(1)}%`;
             ejecutarCalculos();
         }
