@@ -234,7 +234,7 @@
             <label for="taxType">Seleccionar Tasa/Tarifa:</label>
             <select id="taxType" onchange="calculateIVU()">
                 <option value="general">TASA GENERAL DE PR (11.5%)</option>
-                <option value="prepared_food">ALIMENTOS PREPARADOS (6.0%)</option>
+                <option value="prepared_food">ALIMENTOS PREPARADOS (7.0%)</option>
             </select>
         </div>
 
@@ -278,9 +278,9 @@
         let municipalRate = 0.01;   
 
         if (taxType === 'prepared_food') {
-            stateRate = 0.06;       
+            stateRate = 0.07;       
             municipalRate = 0.00;   
-            document.getElementById('lcdStatus').innerText = "ALIMENTOS PREPARADOS 6%";
+            document.getElementById('lcdStatus').innerText = "ALIMENTOS PREPARADOS 7%";
         } else {
             document.getElementById('lcdStatus').innerText = baseAmount > 0 ? "CALCULO COMPLETO 11.5%" : "ESPERANDO IMPORTE...";
         }
