@@ -13,9 +13,10 @@
             font-family: 'Share Tech Mono', monospace;
             background-color: #0c0414; /* Fondo exterior ultra oscuro */
         }
-        /* Bloqueo estricto del chasis estilo beeper para evitar deformaciones */
+        /* Bloqueo estricto y centralización del chasis estilo beeper de formato vertical alargado */
         .chasis-calculadora {
-            width: 310px;
+            width: 320px;
+            height: 520px; /* Incremento vertical para hacerlo más grande y alargado */
             background-color: #241434;
             border: 4px solid #ff007f;
             box-shadow: 0 0 25px rgba(255, 0, 127, 0.4);
@@ -27,13 +28,14 @@
             box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
             color: #000000; /* Texto negro puro para lectura perfecta */
         }
-        /* Botones Numéricos con Relieve Físico Tridimensional */
+        /* Botones Numéricos Verticales con Relieve Físico Tridimensional */
         .boton-calc {
             background-color: #3c1e54;
             border-bottom: 4px solid #1a0826;
             border-right: 2px solid #1a0826;
             color: #00f0ff;
             font-weight: bold;
+            transition: all 0.05s ease;
         }
         .boton-calc:active {
             border-bottom: 1px solid #1a0826;
@@ -61,10 +63,10 @@
         }
     </style>
 </head>
-<body class="h-screen w-screen flex items-center justify-center p-2 select-none overflow-hidden">
+<body class="h-screen w-screen flex flex-col items-center justify-center m-0 p-0 select-none overflow-hidden">
 
-    <!-- COMPONENTE CENTRALIZADO EN LA PANTALLA -->
-    <div class="chasis-calculadora rounded-3xl p-4 flex flex-col space-y-3 shrink-0 mx-auto my-auto">
+    <!-- CHASIS TOTALMENTE EN EL CENTRO GEOMÉTRICO DE LA PANTALLA -->
+    <div class="chasis-calculadora rounded-3xl p-5 flex flex-col justify-between shrink-0">
         
         <!-- PANTALLA LCD (MÁXIMA LEGIBILIDAD) -->
         <div class="pantalla-lcd rounded-lg p-3 flex flex-col justify-between text-right h-28 shrink-0 font-mono">
@@ -81,51 +83,51 @@
             </div>
         </div>
 
-        <!-- INDICADORES TÁCTILES DE MEMORIA INTERNA -->
-        <div class="grid grid-cols-2 gap-2 text-xs font-bold">
+        <!-- INDICADORES TÁCTILES CON TEXTO CAMBIADO A BLANCO PURO -->
+        <div class="grid grid-cols-2 gap-2 text-xs font-bold shrink-0">
             <div id="cajaSubtotal" class="bg-[#120520] border border-purple-900 p-2 rounded-xl cursor-pointer campo-enfocado" onclick="cambiarEnfoque('subtotal')">
-                <span class="text-cyan-400 block text-[9px] uppercase tracking-wider">1. Cuenta Base</span>
-                <span class="text-white font-mono text-sm">$<span id="lblSubtotal">0</span></span>
+                <span class="text-white block text-[9px] uppercase tracking-wider font-extrabold mb-0.5">1. Cuenta Base</span>
+                <span class="text-cyan-400 font-mono text-sm">$<span id="lblSubtotal">0</span></span>
             </div>
             <div id="cajaPersonas" class="bg-[#120520] border border-purple-900 p-2 rounded-xl cursor-pointer" onclick="cambiarEnfoque('personas')">
-                <span class="text-pink-500 block text-[9px] uppercase tracking-wider">2. Personas</span>
-                <span class="text-white font-mono text-sm"><span id="lblPersonas">0</span></span>
+                <span class="text-white block text-[9px] uppercase tracking-wider font-extrabold mb-0.5">2. Personas</span>
+                <span class="text-pink-500 font-mono text-sm"><span id="lblPersonas">0</span></span>
             </div>
         </div>
 
         <!-- SELECTOR DE IVU DE PUERTO RICO -->
-        <div class="grid grid-cols-3 gap-1.5 text-xs font-bold">
-            <button id="ivu115" onclick="cambiarIvu(11.5)" class="py-1.5 rounded-lg btn-ivu-activo">11.5%</button>
-            <button id="ivu6" onclick="cambiarIvu(6.0)" class="py-1.5 rounded-lg btn-ivu-inactivo">6.0%</button>
-            <button id="ivu0" onclick="cambiarIvu(0.0)" class="py-1.5 rounded-lg btn-ivu-inactivo">0.0%</button>
+        <div class="grid grid-cols-3 gap-1.5 text-xs font-bold shrink-0">
+            <button id="ivu115" onclick="cambiarIvu(11.5)" class="py-2.5 rounded-lg btn-ivu-activo">11.5%</button>
+            <button id="ivu6" onclick="cambiarIvu(6.0)" class="py-2.5 rounded-lg btn-ivu-inactivo">6.0%</button>
+            <button id="ivu0" onclick="cambiarIvu(0.0)" class="py-2.5 rounded-lg btn-ivu-inactivo">0.0%</button>
         </div>
 
-        <!-- TECLADO NUMÉRICO LITERAL -->
-        <div class="grid grid-cols-4 gap-2 flex-1">
+        <!-- TECLADO NUMÉRICO LITERAL ALARGADO -->
+        <div class="grid grid-cols-4 gap-2 flex-1 pt-2">
             <!-- Fila 1 -->
-            <button onclick="marcarNumero('7')" class="boton-calc h-11 text-lg rounded-xl font-mono">7</button>
-            <button onclick="marcarNumero('8')" class="boton-calc h-11 text-lg rounded-xl font-mono">8</button>
-            <button onclick="marcarNumero('9')" class="boton-calc h-11 text-lg rounded-xl font-mono">9</button>
-            <button onclick="borrarTodo()" class="h-11 text-xs rounded-xl font-bold bg-red-900 border border-red-500 text-red-200 active:bg-red-500 active:text-black">C</button>
+            <button onclick="marcarNumero('7')" class="boton-calc text-xl rounded-xl font-mono">7</button>
+            <button onclick="marcarNumero('8')" class="boton-calc text-xl rounded-xl font-mono">8</button>
+            <button onclick="marcarNumero('9')" class="boton-calc text-xl rounded-xl font-mono">9</button>
+            <button onclick="borrarTodo()" class="text-xs rounded-xl font-bold bg-red-900 border border-red-500 text-red-200 active:bg-red-500 active:text-black transition-all">C</button>
             
             <!-- Fila 2 -->
-            <button onclick="marcarNumero('4')" class="boton-calc h-11 text-lg rounded-xl font-mono">4</button>
-            <button onclick="marcarNumero('5')" class="boton-calc h-11 text-lg rounded-xl font-mono">5</button>
-            <button onclick="marcarNumero('6')" class="boton-calc h-11 text-lg rounded-xl font-mono">6</button>
-            <button onclick="compartirWhatsApp()" class="row-span-3 h-auto text-[10px] rounded-xl font-bold bg-gradient-to-b from-emerald-600 to-green-700 text-white border border-emerald-400 active:from-green-400 active:to-green-100 active:text-black uppercase tracking-wider p-1 text-center shadow-lg">WhatsApp</button>
+            <button onclick="marcarNumero('4')" class="boton-calc text-xl rounded-xl font-mono">4</button>
+            <button onclick="marcarNumero('5')" class="boton-calc text-xl rounded-xl font-mono">5</button>
+            <button onclick="marcarNumero('6')" class="boton-calc text-xl rounded-xl font-mono">6</button>
+            <button onclick="compartirWhatsApp()" class="row-span-3 h-full text-[11px] rounded-xl font-bold bg-gradient-to-b from-emerald-600 to-green-700 text-white border border-emerald-400 active:from-green-400 active:to-green-100 active:text-black uppercase tracking-wider p-1 flex items-center justify-center text-center shadow-lg transition-all">WhatsApp</button>
             
             <!-- Fila 3 -->
-            <button onclick="marcarNumero('1')" class="boton-calc h-11 text-lg rounded-xl font-mono">1</button>
-            <button onclick="marcarNumero('2')" class="boton-calc h-11 text-lg rounded-xl font-mono">2</button>
-            <button onclick="marcarNumero('3')" class="boton-calc h-11 text-lg rounded-xl font-mono">3</button>
+            <button onclick="marcarNumero('1')" class="boton-calc text-xl rounded-xl font-mono">1</button>
+            <button onclick="marcarNumero('2')" class="boton-calc text-xl rounded-xl font-mono">2</button>
+            <button onclick="marcarNumero('3')" class="boton-calc text-xl rounded-xl font-mono">3</button>
             
             <!-- Fila 4 -->
-            <button onclick="marcarNumero('0')" class="boton-calc col-span-2 h-11 text-lg rounded-xl font-mono">0</button>
-            <button onclick="marcarNumero('.')" class="boton-calc h-11 text-lg rounded-xl font-mono">.</button>
+            <button onclick="marcarNumero('0')" class="boton-calc col-span-2 text-xl rounded-xl font-mono">0</button>
+            <button onclick="marcarNumero('.')" class="boton-calc text-xl rounded-xl font-mono">.</button>
         </div>
     </div>
 
-    <!-- CEREBRO OPERATIVO INTEGRADO (CORREGIDO) -->
+    <!-- CEREBRO OPERATIVO INTEGRADO (SIN ERRORES) -->
     <script>
         let tasaIvu = 11.5;
         let campoActivo = 'subtotal'; 
@@ -144,11 +146,11 @@
         function cambiarIvu(porcentaje) {
             tasaIvu = porcentaje;
             ['ivu115', 'ivu6', 'ivu0'].forEach(id => {
-                document.getElementById(id).className = "py-1.5 rounded-lg btn-ivu-inactivo";
+                document.getElementById(id).className = "py-2.5 rounded-lg btn-ivu-inactivo";
             });
 
             let idActivo = porcentaje === 11.5 ? 'ivu115' : porcentaje === 6.0 ? 'ivu6' : 'ivu0';
-            document.getElementById(idActivo).className = "py-1.5 rounded-lg btn-ivu-activo";
+            document.getElementById(idActivo).className = "py-2.5 rounded-lg btn-ivu-activo";
             document.getElementById('txtIvuActual').innerText = `IVU: ${porcentaje.toFixed(1)}%`;
             ejecutarCalculos();
         }
@@ -191,7 +193,6 @@
             let valorPorPersona = valorTotal / divisor;
 
             document.getElementById('outTip').innerText = `$${valorPropina.toFixed(2)}`;
-            document.getElementById('outTip').innerText = `$${valorPropina.toFixed(2)}`;
             document.getElementById('outIvu').innerText = `$${valorIvu.toFixed(2)}`;
             document.getElementById('outPerPerson').innerText = valorPorPersona.toFixed(2);
         }
@@ -206,7 +207,6 @@
             text += `Dividido entre: ${textoPersonas} personas\n`;
             text += `¡Enviado vía beeper por ATH Móvil! 🇵🇷`;
 
-            // SISTEMA DE SEGURIDAD CONTRA ERRORES DE NAVEGACIÓN LOCAL
             if (navigator.clipboard && window.isSecureContext) {
                 navigator.clipboard.writeText(text).then(() => {
                     alert('¡Mensaje copiado! Listo para pegar en WhatsApp.');
