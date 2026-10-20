@@ -6,66 +6,28 @@
     <title>PR IVU Calc</title>
     <script src="https://tailwindcss.com"></script>
     <style>
-        html, body { margin: 0; width: 100vw; height: 100vh; background: #0c0414; overflow: hidden; position: relative; }
-        
-        /* CHASIS RETRO COMPACTADO AL RAS (Se eliminó todo el espacio inferior) */
-        .chasis { 
-            width: 335px; 
-            height: 410px; /* Reducido al tamaño exacto de los componentes para evitar vacíos */
-            background: #241434; 
-            border: 4px solid #ff007f; 
-            box-shadow: 0 0 25px #ff007f80; 
-            position: absolute; 
-            top: 50%; 
-            left: 50%; 
-            transform: translate(-50%, -50%); 
-        }
-        
-        /* PANTALLA LCD MAXIMIZADA */
-        .lcd { 
-            background: #92b043; 
-            border: 3px solid #000; 
-            color: #000; 
-            box-shadow: inset 0 4px 10px rgba(0,0,0,0.4); 
-            font-family: monospace; 
-            font-weight: bold; 
-        }
-        
-        /* MATRIZ DE BOTONES COMPACTADOS DE BORDE A BORDE */
-        .grid-teclado {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr)); 
-            gap: 4px;
-            width: 100%; 
-        }
-
-        .btn-t { 
-            height: 32px;
-            background: linear-gradient(180deg, #44186c 0%, #290d45 40%, #170529 100%);
-            border: 1px solid rgba(0, 240, 255, 0.4); border-top: 2px solid rgba(255, 255, 255, 0.2);
-            color: #00f0ff; font-size: 1.3rem; font-weight: bold;
-            box-shadow: 0 3px 5px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.15);
-            text-shadow: 0 0 5px rgba(0, 240, 255, 0.5); transition: all 0.05s ease;
-        }
-        .btn-t:active { background: linear-gradient(180deg, #ff007f 0%, #a30052 100%); border: 1px solid #fff; color: #fff; text-shadow: none; transform: translateY(2px); }
-        
-        .btn-c-base {
-            grid-column: span 3; 
-            width: 100%;
-            height: 32px;
-        }
-
+        html, body { margin: 0; width: 100vw; height: 100vh; background: linear-gradient(180deg, #09011a 0%, #2c044d 100%); overflow: hidden; position: relative; }
+        .sky { position: absolute; width: 100%; height: 100%; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent), radial-gradient(1.5px 1px at 75px 120px, #fff9, transparent), radial-gradient(1px 2px at 150px 50px, #00f0ff, transparent), radial-gradient(2px 1.5px at 230px 280px, #ff007f, transparent); background-size: 380px 380px; animation: twk 4s infinite linear; }
+        .grid3d { position: absolute; width: 100%; height: 40%; bottom: 0; background-image: linear-gradient(rgba(255, 0, 127, 0.2) 2px, transparent 2px), linear-gradient(90deg, rgba(255, 0, 127, 0.2) 2px, transparent 2px); background-size: 40px 40px; transform: perspective(180px) rotateX(65deg); transform-origin: top center; animation: gM 2.5s infinite linear; }
+        .chasis { width: 335px; height: 410px; background: #241434; border: 4px solid #ff007f; box-shadow: 0 0 25px #ff007f80; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; justify-content: space-between; z-index: 10; }
+        .lcd { background: #92b043; border: 3px solid #000; color: #000; box-shadow: inset 0 4px 10px #0006; font-family: monospace; font-weight: bold; }
+        .grid-t { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3px; width: 100%; }
+        .btn-t { height: 32px; background: linear-gradient(180deg, #44186c 0%, #170529 100%); border: 1px solid #00f0ff66; border-top: 2px solid #fff2; color: #00f0ff; font-size: 1.3rem; font-weight: bold; text-shadow: 0 0 5px #00f0ff80; }
+        .btn-t:active { background: linear-gradient(180deg, #ff007f 0%, #a30052 100%); border: 1px solid #fff; color: #fff; transform: translateY(2px); }
         .btn-off { background: #1a0826; border: 2px solid #ff007f; color: #ff007f; }
         .btn-on { background: #ff007f; border: 2px solid #fff; color: #000; font-weight: bold; }
         .txt-b { color: #fff !important; font-weight: 900 !important; text-transform: uppercase; }
+        @keyframes twk { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+        @keyframes gM { 0% { background-position: 0 0; } 100% { background-position: 0 40px; } }
         @keyframes glow { 0%, 100% { box-shadow: 0 0 10px #ff007f; } 50% { box-shadow: 0 0 22px #ff007f; } }
         .on-anim { animation: glow 1.5s infinite ease-in-out; }
     </style>
 </head>
 <body class="select-none">
-    <!-- Se eliminó el padding inferior (pb-0) para que las teclas colisionen directamente con el borde -->
-    <div class="chasis rounded-3xl pt-4 px-4 pb-0 flex flex-col justify-between overflow-hidden">
-        
+
+    <div class="sky"></div><div class="grid3d"></div>
+
+    <div class="chasis rounded-3xl pt-4 px-4 pb-0 overflow-hidden">
         <!-- PANTALLA LCD -->
         <div class="lcd rounded-xl p-4 flex flex-col justify-between text-right h-40 mb-2 shrink-0">
             <div class="flex justify-between border-b border-black/30 pb-1 text-[11px]">
@@ -78,20 +40,18 @@
             </div>
         </div>
 
-        <!-- MENUS DE DATOS SINCRO -->
+        <!-- MENUS DE DATOS -->
         <div class="grid grid-cols-2 gap-2 text-xs font-bold mb-2 shrink-0 w-full">
             <div id="cajaSub" class="btn-on on-anim p-2 rounded-xl cursor-pointer text-center" onclick="focusF('sub')">
-                <span class="txt-b text-[10px]">1. Cuenta Base</span>
-                <span class="font-mono text-base block font-black">\$<span id="lblSub">0</span></span>
+                <span class="txt-b text-[10px]">1. Cuenta Base</span><span class="txt-b text-base block font-black">\$<span id="lblSub">0</span></span>
             </div>
             <div id="cajaPpl" class="btn-off p-2 rounded-xl cursor-pointer text-center" onclick="focusF('ppl')">
-                <span class="txt-b text-[10px]">2. Personas</span>
-                <span class="font-mono text-base block font-black"><span id="lblPpl">0</span></span>
+                <span class="txt-b text-[10px]">2. Personas</span><span class="txt-b text-base block font-black"><span id="lblPpl">0</span></span>
             </div>
         </div>
 
-        <!-- FILA ÚNICA DE 5 COLUMNAS PURAS -->
-        <div class="grid grid-cols-5 gap-1 mb-2 shrink-0 w-full font-sans text-[10px] font-bold">
+        <!-- CONFIGURACIÓN IVU Y PROPINA -->
+        <div class="grid grid-cols-5 gap-1 mb-2 shrink-0 w-full font-sans text-[11px] font-bold">
             <button id="ivu115" onclick="setI(11.5)" class="py-2 rounded-lg btn-on">11.5%</button>
             <button id="ivu6" onclick="setI(6.0)" class="py-2 rounded-lg btn-off">6.0%</button>
             <button id="ivu0" onclick="setI(0.0)" class="py-2 rounded-lg btn-off">0.0%</button>
@@ -99,95 +59,62 @@
             <button id="tipOff" onclick="toggleTip(false)" class="py-2 rounded-lg btn-off text-red-400 border-red-400">NO</button>
         </div>
 
-        <!-- TECLADO DE BORDE A BORDE AJUSTADO AL LÍMITE INFERIOR -->
-        <div class="-mx-4 shrink-0">
-            <div class="grid-teclado font-sans">
-                <button onclick="num('7')" class="btn-t">7</button>
-                <button onclick="num('8')" class="btn-t">8</button>
-                <button onclick="num('9')" class="btn-t">9</button>
-                
-                <button onclick="num('4')" class="btn-t">4</button>
-                <button onclick="num('5')" class="btn-t">5</button>
-                <button onclick="num('6')" class="btn-t">6</button>
-                
-                <button onclick="num('1')" class="btn-t">1</button>
-                <button onclick="num('2')" class="btn-t">2</button>
-                <button onclick="num('3')" class="btn-t">3</button>
-                
-                <button onclick="num('.')" class="btn-t">.</button>
-                <button onclick="num('0')" class="btn-t">0</button>
-                <button onclick="bksp()" class="btn-t bg-gradient-to-b from-amber-800 to-amber-950 text-amber-400 border-amber-600">←</button>
-                
-                <button onclick="clr()" class="btn-t btn-c-base bg-gradient-to-b from-red-800 to-red-950 text-red-400 border-red-600 text-xl flex items-center justify-center font-bold">C</button>
+        <!-- TECLADO BORDE A BORDE -->
+        <div class="-mx-4 mt-1 shrink-0">
+            <div class="grid-t font-sans">
+                <button onclick="num('7')" class="btn-t">7</button><button onclick="num('8')" class="btn-t">8</button><button onclick="num('9')" class="btn-t">9</button>
+                <button onclick="num('4')" class="btn-t">4</button><button onclick="num('5')" class="btn-t">5</button><button onclick="num('6')" class="btn-t">6</button>
+                <button onclick="num('1')" class="btn-t">1</button><button onclick="num('2')" class="btn-t">2</button><button onclick="num('3')" class="btn-t">3</button>
+                <button onclick="num('.')" class="btn-t">.</button><button onclick="num('0')" class="btn-t">0</button><button onclick="bksp()" class="btn-t bg-gradient-to-b from-amber-800 to-amber-950 text-amber-400 border-amber-600">←</button>
+                <button onclick="clr()" class="btn-t col-span-3 bg-gradient-to-b from-red-800 to-red-950 text-red-400 border-red-600 text-xl flex items-center justify-center font-bold">C</button>
             </div>
         </div>
     </div>
 
     <script>
         let ivu = 11.5, mode = 'sub', sSub = "0", sPpl = "0", incluirPropina = true;
-        
         function focusF(f) {
             mode = f;
             document.getElementById('cajaSub').className = f === 'sub' ? "btn-on on-anim p-2 rounded-xl cursor-pointer text-center" : "btn-off p-2 rounded-xl cursor-pointer text-center";
             document.getElementById('cajaPpl').className = f === 'ppl' ? "btn-on on-anim p-2 rounded-xl cursor-pointer text-center" : "btn-off p-2 rounded-xl cursor-pointer text-center";
         }
-        
         function toggleTip(bool) {
             incluirPropina = bool;
             document.getElementById('tipOn').className = bool ? "py-2 rounded-lg btn-on text-emerald-400 border-emerald-400" : "py-2 rounded-lg btn-off text-emerald-400 border-emerald-400";
             document.getElementById('tipOff').className = bool ? "py-2 rounded-lg btn-off text-red-400 border-red-400" : "py-2 rounded-lg btn-on text-red-400 border-red-400";
-            document.getElementById('rowTip').style.opacity = bool ? "1" : "0.2";
-            calc();
+            document.getElementById('rowTip').style.opacity = bool ? "1" : "0.2"; calc();
         }
-
         function setI(p) {
-            ivu = p;
-            ['ivu115', 'ivu6', 'ivu0'].forEach(id => { document.getElementById(id).className = "py-2 rounded-lg btn-off"; });
-            let idActivo = p === 11.5 ? 'ivu115' : p === 6.0 ? 'ivu6' : 'ivu0';
-            document.getElementById(idActivo).className = "py-2 rounded-lg btn-on";
-            document.getElementById('txtIvu').innerText = `IVU: ${p.toFixed(1)}%`;
-            calc();
+            ivu = p; ['ivu115', 'ivu6', 'ivu0'].forEach(id => { document.getElementById(id).className = "py-2 rounded-lg btn-off"; });
+            document.getElementById(p === 11.5 ? 'ivu115' : p === 6.0 ? 'ivu6' : 'ivu0').className = "py-2 rounded-lg btn-on";
+            document.getElementById('txtIvu').innerText = `IVU: ${p.toFixed(1)}%`; calc();
         }
-        
         function num(c) {
             if (mode === 'sub') {
-                if (sSub === "0" && c !== '.') sSub = "";
-                if (c === '.' && sSub.includes('.')) return;
+                if (sSub === "0" && c !== '.') sSub = ""; if (c === '.' && sSub.includes('.')) return;
                 sSub += c; document.getElementById('lblSub').innerText = sSub;
             } else {
-                if (c === '.') return;
-                if (sPpl === "0") sPpl = "";
+                if (c === '.') return; if (sPpl === "0") sPpl = "";
                 sPpl += c; document.getElementById('lblPpl').innerText = sPpl;
             }
             calc();
         }
-
         function bksp() {
-            if (mode === 'sub') {
-                sSub = sSub.slice(0, -1); if (sSub === "" || sSub === "-") sSub = "0";
-                document.getElementById('lblSub').innerText = sSub;
-            } else {
-                sPpl = sPpl.slice(0, -1); if (sPpl === "") sPpl = "0";
-                document.getElementById('lblPpl').innerText = sPpl;
-            }
+            if (mode === 'sub') { sSub = sSub.slice(0, -1); if (sSub === "" || sSub === "-") sSub = "0"; document.getElementById('lblSub').innerText = sSub; }
+            else { sPpl = sPpl.slice(0, -1); if (sPpl === "") sPpl = "0"; document.getElementById('lblPpl').innerText = sPpl; }
             calc();
         }
-        
         function clr() {
             if (mode === 'sub') { sSub = "0"; document.getElementById('lblSub').innerText = "0"; }
             else { sPpl = "0"; document.getElementById('lblPpl').innerText = "0"; }
             calc();
         }
-        
         function calc() {
             let nSub = parseFloat(sSub) || 0, nPpl = parseInt(sPpl) || 0;
-            let vTip = incluirPropina ? (nSub * 0.18) : 0;
-            let vIvu = nSub * (ivu / 100);
-            let divisor = nPpl > 0 ? nPpl : 1;
-            
+            let vTip = incluirPropina ? (nSub * 0.18) : 0, vIvu = nSub * (ivu / 100);
             document.getElementById('outTip').innerText = `\$${vTip.toFixed(2)}`;
             document.getElementById('outIvu').innerText = `\$${vIvu.toFixed(2)}`;
-            document.getElementById('outPer').innerText = ((nSub + vTip + vIvu) / divisor).toFixed(2);
+            document.getElementById('outPer').innerText = ((nSub + vTip + vIvu) / (nPpl > 0 ? nPpl : 1)).toFixed(2);
         }
     </script>
 </body>
