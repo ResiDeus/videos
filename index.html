@@ -61,18 +61,15 @@
 
         /* MENUS DE ENTRADA EN PARALELO */
         .row-menus { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 6px 6px 0 6px; }
-        .caja-data { padding: 8px; border-radius: 12px; text-align: center; cursor: pointer; font-size: 11px; }
-        .btn-off { background: #1a0826; border: 2px solid #ff007f; color: #ff007f; }
-        .btn-on { background: #ff007f; border: 2px solid #fff; color: #000; font-weight: bold; }
+        .caja-data { padding: 8px; border-radius: 12px; text-align: center; cursor: pointer; font-size: 11px; transition: all 0.15s ease; }
+        .btn-off { background: #1a0826; border: 2px solid #ff007f; color: #ff007f; opacity: 0.5; }
+        .btn-on { background: #ff007f; border: 2px solid #fff; color: #000; font-weight: bold; opacity: 1; }
         .lbl-title { color: #ffffff !important; font-weight: 900; text-transform: uppercase; display: block; margin-bottom: 2px; }
         .lbl-val { font-size: 15px; font-weight: 900; }
         
-        /* FILA TRIBUTARIA Y PROPINA UNIFICADA */
+        /* FILA TRIBUTARIA Y PROPINA PERGAMINADA (4 BOTONES IGUALES) */
         .row-config { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 6px; }
         .btn-cfg { padding: 8px 0; border-radius: 8px; font-size: 10px; font-weight: bold; cursor: pointer; text-align: center; }
-        
-        /* Ajuste específico para que el botón de propina abarque el espacio de los dos anteriores */
-        .btn-propina-toggle { grid-column: span 1; }
 
         /* TECLADO DE BORDE A BORDE NETO */
         .pad-num { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: #241434; }
@@ -121,18 +118,21 @@
             <div class="lcd-body">
                 <div id="rowTip" style="opacity: 0.2;">PROPINA AUTO (18%): <span id="outTip">$0.00</span></div>
                 <div>IVU LIQUIDO: <span id="outIvu">$0.00</span></div>
-                <div class="lcd-total">C/U: $<span id="outPer">0.00</span></div>
+                <!-- Cambia dinámicamente de TOTAL CTA a C/U -->
+                <div class="lcd-total"><span id="lblTotalType">TOTAL CTA</span>: $<span id="outPer">0.00</span></div>
             </div>
         </div>
-        <!-- MENUS DE DATOS SINCRO TOCANDO LA PANTALLA -->
+        <!-- MENUS DE DATOS SINCRO CON BOTONES DE ACTIVACIÓN INTELIGENTES -->
         <div class="row-menus">
+            <!-- Cuenta Base siempre está encendida en foco o en reposo -->
             <div id="cajaSub" class="caja-data btn-on on-anim" onclick="focusF('sub')">
                 <span class="lbl-title">1. Cuenta Base</span>
                 <span class="lbl-val">\$<span id="lblSub">0</span></span>
             </div>
-            <div id="cajaPpl" class="caja-data btn-off" onclick="focusF('ppl')">
+            <!-- Personas ahora se apaga y se enciende de forma interactiva al presionarlo -->
+            <div id="cajaPpl" class="caja-data btn-off" onclick="togglePersonasMode()">
                 <span class="lbl-title">2. Personas</span>
-                <span class="lbl-val"><span id="lblPpl">0</span></span>
+                <span class="lbl-val"><span id="lblPpl">OFF</span></span>
             </div>
         </div>
 
@@ -141,8 +141,7 @@
             <button id="ivu115" onclick="setI(11.5)" class="btn-cfg btn-on">11.5%</button>
             <button id="ivu6" onclick="setI(6.0)" class="btn-cfg btn-off">6.0%</button>
             <button id="ivu0" onclick="setI(0.0)" class="btn-cfg btn-off">0.0%</button>
-            <!-- BOTÓN DE PALANCA INTEGRADO PARA PROPINA (Inicia desactivado) -->
-            <button id="btnPropina" onclick="toggleTip()" class="btn-cfg btn-off btn-propina-toggle">PROPINA</button>
+            <button id="btnPropina" onclick="toggleTip()" class="btn-cfg btn-off">PROPINA</button>
         </div>
 
         <!-- TECLADO NUMÉRICO AJUSTADO DE BORDE A BORDE -->
@@ -168,28 +167,57 @@
         <button onclick="clr()" class="btn-clear">C</button>
     </div>
 
-    <!-- MOTOR LÓGICO DE ARQUITECTURA PURA -->
+    <!-- MOTOR LÓGICO DE ARQUITECTURA INTELIGENTE -->
     <script>
-        let ivu = 11.5, mode = 'sub', sSub = "0", sPpl = "0", incluirPropina = false; // Inicia apagada la propina
+        let ivu = 11.5, mode = 'sub', sSub = "0", sPpl = "0", incluirPropina = false;
+        let modoPersonasActivo = false; // Controla si la división de personas está encendida o apagada
 
         function focusF(f) {
+            // Si el modo personas está apagado, no puedes darle foco táctil
+            if (f === 'ppl' && !modoPersonasActivo) return;
+            
             mode = f;
-            document.getElementById('cajaSub').className = f === 'sub' ? "caja-data btn-on on-anim" : "caja-data btn-off";
-            document.getElementById('cajaPpl').className = f === 'ppl' ? "caja-data btn-on on-anim" : "caja-data btn-off";
+            actualizarEstilosPaneles();
+        }
+
+        function togglePersonasMode() {
+            modoPersonasActivo = !modoPersonasActivo;
+            
+            if (modoPersonasActivo) {
+                sPpl = "2"; // Arranca sugerido en 2 personas al encenderse
+                mode = 'ppl'; // Cambia el foco automáticamente al contador de personas
+                document.getElementById('lblPpl').innerText = sPpl;
+                document.getElementById('lblTotalType').innerText = "C/U";
+            } else {
+                sPpl = "0";
+                mode = 'sub'; // Devuelve el foco a la cuenta base obligatoriamente
+                document.getElementById('lblPpl').innerText = "OFF";
+                document.getElementById('lblTotalType').innerText = "TOTAL CTA";
+            }
+            actualizarEstilosPaneles();
+            calc();
+        }
+
+        function actualizarEstilosPaneles() {
+            const cajaSub = document.getElementById('cajaSub');
+            const cajaPpl = document.getElementById('cajaPpl');
+
+            // Setear Cuenta Base
+            cajaSub.className = mode === 'sub' ? "caja-data btn-on on-anim" : "caja-data btn-off";
+            
+            // Setear Personas dinámicamente según su estado de encendido y foco
+            if (!modoPersonasActivo) {
+                cajaPpl.className = "caja-data btn-off";
+            } else {
+                cajaPpl.className = mode === 'ppl' ? "caja-data btn-on on-anim" : "caja-data bg-[#ff007f]/20 border border-[#ff007f] text-[#ff007f]";
+            }
         }
 
         function toggleTip() {
-            // Invierte el estado lógico actual (Falso a Verdadero / Verdadero a Falso)
             incluirPropina = !incluirPropina;
-            
             const btn = document.getElementById('btnPropina');
-            if (incluirPropina) {
-                btn.className = "btn-cfg btn-on btn-propina-toggle";
-                document.getElementById('rowTip').style.opacity = "1";
-            } else {
-                btn.className = "btn-cfg btn-off btn-propina-toggle";
-                document.getElementById('rowTip').style.opacity = "0.2";
-            }
+            btn.className = incluirPropina ? "btn-cfg btn-on" : "btn-cfg btn-off";
+            document.getElementById('rowTip').style.opacity = incluirPropina ? "1" : "0.2";
             calc();
         }
 
@@ -209,7 +237,7 @@
                 sSub += c; document.getElementById('lblSub').innerText = sSub;
             } else {
                 if (c === '.') return;
-                if (sPpl === "0") sPpl = "";
+                if (sPpl === "0" || sPpl === "2" && document.getElementById('lblPpl').innerText === "2") sPpl = ""; 
                 sPpl += c; document.getElementById('lblPpl').innerText = sPpl;
             }
             calc();
@@ -228,12 +256,14 @@
 
         function clr() {
             if (mode === 'sub') { sSub = "0"; document.getElementById('lblSub').innerText = "0"; }
-            else { sPpl = "0"; document.getElementById('lblPpl').innerText = "0"; }
+            else { sPpl = "1"; document.getElementById('lblPpl').innerText = "1"; }
             calc();
         }
 
         function calc() {
-            let nSub = parseFloat(sSub) || 0, nPpl = parseInt(sPpl) || 0;
+            let nSub = parseFloat(sSub) || 0;
+            let nPpl = modoPersonasActivo ? (parseInt(sPpl) || 1) : 1; // Si está OFF, divide estrictamente entre 1
+            
             let vTip = incluirPropina ? (nSub * 0.18) : 0;
             let vIvu = nSub * (ivu / 100);
             let divisor = nPpl > 0 ? nPpl : 1;
