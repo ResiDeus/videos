@@ -176,26 +176,17 @@
             // Si el modo personas está apagado, no puedes darle foco táctil
             if (f === 'ppl' && !modoPersonasActivo) return;
             
-            mode = f;
-            actualizarEstilosPaneles();
-        }
-
-        function togglePersonasMode() {
-            modoPersonasActivo = !modoPersonasActivo;
-            
-            if (modoPersonasActivo) {
-                sPpl = "2"; // Arranca sugerido en 2 personas al encenderse
-                mode = 'ppl'; // Cambia el foco automáticamente al contador de personas
-                document.getElementById('lblPpl').innerText = sPpl;
-                document.getElementById('lblTotalType').innerText = "C/U";
-            } else {
+            // NUEVO: Si se presiona el botón de cuenta ('sub'), apagamos por completo el modo personas
+            if (f === 'sub' && modoPersonasActivo) {
+                modoPersonasActivo = false;
                 sPpl = "0";
-                mode = 'sub'; // Devuelve el foco a la cuenta base obligatoriamente
                 document.getElementById('lblPpl').innerText = "OFF";
                 document.getElementById('lblTotalType').innerText = "TOTAL";
+                calc(); // Recalcula el total para reflejar que ya no divide por personas
             }
+            
+            mode = f;
             actualizarEstilosPaneles();
-            calc();
         }
 
         function actualizarEstilosPaneles() {
