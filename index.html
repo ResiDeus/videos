@@ -40,7 +40,7 @@
             flex-direction: column;
         }
         
-        /* PANTALLA LCD REESTRUCTURADA CON EL TOTAL ARRIBA */
+        /* PANTALLA LCD QUE COLISIONA DIRECTAMENTE ABAJO SIN SEPARACIÓN */
         .lcd { 
             width: 100%;
             height: 176px; 
@@ -50,20 +50,14 @@
             box-shadow: inset 0 4px 10px rgba(0,0,0,0.4); 
             font-weight: bold;
             box-sizing: border-box;
-            padding: 14px;
+            padding: 16px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
-        .lcd-header { display: flex; justify-content: space-between; font-size: 10px; border-bottom: 1px solid rgba(0,0,0,0.2); padding-bottom: 2px; text-transform: uppercase; }
-        
-        /* Contenedor del Monto Principal Solicitado */
-        .lcd-main-box { text-align: right; margin-top: 2px; }
-        .lcd-type-label { font-size: 11px; text-transform: uppercase; display: block; text-align: left; opacity: 0.8; }
-        .lcd-total-value { font-size: 32px; font-weight: 900; line-height: 1; word-break: break-all; letter-spacing: -1px; }
-        
-        /* Auditoría de desgloses abajo */
-        .lcd-audit-row { display: flex; justify-content: space-between; font-size: 11px; margin-top: 4px; border-top: 1px solid rgba(0,0,0,0.15); padding-top: 4px; }
+        .lcd-header { display: flex; justify-content: space-between; font-size: 11px; border-bottom: 1px solid rgba(0,0,0,0.2); padding-bottom: 4px; }
+        .lcd-body { text-align: right; font-size: 12px; }
+        .lcd-total { font-size: 34px; font-weight: 900; margin-top: 8px; letter-spacing: -1px; }
 
         /* MENUS DE ENTRADA EN PARALELO */
         .row-menus { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 6px 6px 0 6px; }
@@ -115,33 +109,27 @@
     <div class="grid3d"></div>
 
     <div class="chasis">
-        <!-- PANTALLA LCD CON DISEÑO INVERTIDO (TOTAL ARRIBA, AUDITORÍA ABAJO) -->
+        <!-- PANTALLA LCD MASIVA EXTENDIDA -->
         <div class="lcd">
             <div class="lcd-header">
                 <span>TERMINAL FISCAL PR</span>
                 <span id="txtIvu">IVU: 11.5%</span>
             </div>
-            
-            <!-- EL MONTO IMPORTANTE AHORA ESTÁ ARRIBA -->
-            <div class="lcd-main-box">
-                <span id="lblTotalType" class="lcd-type-label">TOTAL CTA:</span>
-                <div class="lcd-total-value">$<span id="outPer">0.00</span></div>
-            </div>
-
-            <!-- DESGLOSES SECUNDARIOS MOVIDOS A LA BASE DEL CRISTAL VERDE -->
             <div class="lcd-body">
-                <div class="lcd-audit-row">
-                    <div>PROPINA (18%): <span id="outTip">$0.00</span></div>
-                    <div>IVU LIQ: <span id="outIvu">$0.00</span></div>
-                </div>
+                <div id="rowTip" style="opacity: 0.2;">PROPINA AUTO (18%): <span id="outTip">$0.00</span></div>
+                <div>IVU LIQUIDO: <span id="outIvu">$0.00</span></div>
+                <!-- Cambia dinámicamente de TOTAL CTA a C/U -->
+                <div class="lcd-total"><span id="lblTotalType">TOTAL CTA</span>: $<span id="outPer">0.00</span></div>
             </div>
         </div>
-        <!-- MENUS DE DATOS SINCRO TOCANDO LA PANTALLA -->
+        <!-- MENUS DE DATOS SINCRO CON BOTONES DE ACTIVACIÓN INTELIGENTES -->
         <div class="row-menus">
+            <!-- Cuenta Base siempre está encendida en foco o en reposo -->
             <div id="cajaSub" class="caja-data btn-on on-anim" onclick="focusF('sub')">
                 <span class="lbl-title">1. Cuenta Base</span>
                 <span class="lbl-val">\$<span id="lblSub">0</span></span>
             </div>
+            <!-- Personas ahora se apaga y se enciende de forma interactiva al presionarlo -->
             <div id="cajaPpl" class="caja-data btn-off" onclick="togglePersonasMode()">
                 <span class="lbl-title">2. Personas</span>
                 <span class="lbl-val"><span id="lblPpl">OFF</span></span>
@@ -182,10 +170,12 @@
     <!-- MOTOR LÓGICO DE ARQUITECTURA INTELIGENTE -->
     <script>
         let ivu = 11.5, mode = 'sub', sSub = "0", sPpl = "0", incluirPropina = false;
-        let modoPersonasActivo = false;
+        let modoPersonasActivo = false; // Controla si la división de personas está encendida o apagada
 
         function focusF(f) {
+            // Si el modo personas está apagado, no puedes darle foco táctil
             if (f === 'ppl' && !modoPersonasActivo) return;
+            
             mode = f;
             actualizarEstilosPaneles();
         }
@@ -194,15 +184,15 @@
             modoPersonasActivo = !modoPersonasActivo;
             
             if (modoPersonasActivo) {
-                sPpl = "2"; 
-                mode = 'ppl'; 
+                sPpl = "2"; // Arranca sugerido en 2 personas al encenderse
+                mode = 'ppl'; // Cambia el foco automáticamente al contador de personas
                 document.getElementById('lblPpl').innerText = sPpl;
-                document.getElementById('lblTotalType').innerText = "C/U:";
+                document.getElementById('lblTotalType').innerText = "C/U";
             } else {
                 sPpl = "0";
-                mode = 'sub'; 
+                mode = 'sub'; // Devuelve el foco a la cuenta base obligatoriamente
                 document.getElementById('lblPpl').innerText = "OFF";
-                document.getElementById('lblTotalType').innerText = "TOTAL CTA:";
+                document.getElementById('lblTotalType').innerText = "TOTAL CTA";
             }
             actualizarEstilosPaneles();
             calc();
@@ -212,8 +202,10 @@
             const cajaSub = document.getElementById('cajaSub');
             const cajaPpl = document.getElementById('cajaPpl');
 
+            // Setear Cuenta Base
             cajaSub.className = mode === 'sub' ? "caja-data btn-on on-anim" : "caja-data btn-off";
             
+            // Setear Personas dinámicamente según su estado de encendido y foco
             if (!modoPersonasActivo) {
                 cajaPpl.className = "caja-data btn-off";
             } else {
@@ -270,7 +262,7 @@
 
         function calc() {
             let nSub = parseFloat(sSub) || 0;
-            let nPpl = modoPersonasActivo ? (parseInt(sPpl) || 1) : 1; 
+            let nPpl = modoPersonasActivo ? (parseInt(sPpl) || 1) : 1; // Si está OFF, divide estrictamente entre 1
             
             let vTip = incluirPropina ? (nSub * 0.18) : 0;
             let vIvu = nSub * (ivu / 100);
