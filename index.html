@@ -8,7 +8,6 @@
         * { box-sizing: border-box; }
         html, body { margin: 0; padding: 0; width: 100vw; height: 100vh; overflow: hidden; position: relative; font-family: monospace; transition: background 0.3s ease; }
         
-        /* SOLUCIÓN AL FONDO BLANCO: TEMAS COMPLETO SOBRE BODY */
         body.theme-cyberpunk { background: linear-gradient(180deg, #09011a 0%, #2c044d 100%) !important; }
         body.theme-retro-gold { background: linear-gradient(180deg, #1c1917 0%, #44403c 100%) !important; }
         body.theme-matrix { background: linear-gradient(180deg, #022c22 0%, #050505 100%) !important; }
@@ -82,39 +81,36 @@
         body.theme-retro-gold .btn-key { background: linear-gradient(180deg, #57534e 0%, #1c1917 100%); border-color: #a8a29e; color: #fbbf24; }
         body.theme-matrix .btn-key { background: linear-gradient(180deg, #064e3b 0%, #022c22 100%); border-color: #34d399; color: #34d399; }
         body.theme-sunset .btn-key { background: linear-gradient(180deg, #7c2d12 0%, #451a03 100%); border-color: #fb923c; color: #fdba74; }
-        .btn-back { background: linear-gradient(180deg, #5c2c06 0%, #241001 100%); color: #fbbf24; }
+        
+        /* CORRECCIÓN: BOTÓN DE BORRAR SINCRONIZADO AL COLOR NUMÉRICO VIOLETA */
+        .btn-back { background: linear-gradient(180deg, #44186c 0%, #170529 100%) !important; color: #00f0ff !important; border-color: #00f0ff44 !important; }
+        body.theme-retro-gold .btn-back { background: linear-gradient(180deg, #57534e 0%, #1c1917 100%) !important; color: #fbbf24 !important; border-color: #a8a29e !important; }
+        body.theme-matrix .btn-back { background: linear-gradient(180deg, #064e3b 0%, #022c22 100%) !important; color: #34d399 !important; border-color: #34d399 !important; }
+        body.theme-sunset .btn-back { background: linear-gradient(180deg, #7c2d12 0%, #451a03 100%) !important; color: #fdba74 !important; border-color: #fb923c !important; }
+
         .btn-key:disabled { opacity: 0.2 !important; cursor: not-allowed !important; filter: grayscale(100%); background: #1a0b24 !important; color: #555 !important; }
 
-        /* NUEVO MAQUILLAJE: BOTONES PRINCIPALES DE ACCIÓN ARCADE */
+        /* NUEVO DISEÑO COHESIONADO: ACCIONES PLANAS ESTILO CUENTA/SPLIT */
         .row-acciones { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding-bottom: 2px; }
-        .btn-clear, .btn-add, .btn-theme, .btn-receipt { height: 38px; border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: all 0.15s ease; text-transform: uppercase; font-family: monospace; }
-        .btn-clear:active, .btn-add:active, .btn-theme:active, .btn-receipt:active { transform: translateY(2px); box-shadow: none !important; }
-
-        /* DISEÑO DE BOTONES: TEMA CYBERPUNK */
-        body.theme-cyberpunk .btn-clear { background: linear-gradient(180deg, #ef4444 0%, #991b1b 100%); border: 1px solid #fee2e2; border-bottom: 4px solid #450a0a; color: #fff; text-shadow: 0 1px 3px #000; }
-        body.theme-cyberpunk .btn-add { background: linear-gradient(180deg, #10b981 0%, #065f46 100%); border: 1px solid #d1fae5; border-bottom: 4px solid #064e3b; color: #fff; text-shadow: 0 1px 3px #000; }
-        body.theme-cyberpunk .btn-theme { background: linear-gradient(180deg, #64748b 0%, #334155 100%); border: 1px solid #f1f5f9; border-bottom: 4px solid #1e293b; color: #fff; text-shadow: 0 1px 3px #000; }
-        body.theme-cyberpunk .btn-receipt { background: linear-gradient(180deg, #38bdf8 0%, #0284c7 100%); border: 1px solid #e0f2fe; border-bottom: 4px solid #0369a1; color: #fff; text-shadow: 0 1px 3px #000; }
-
-        /* DISEÑO DE BOTONES: TEMA RETRO GOLD */
-        body.theme-retro-gold .btn-clear { background: linear-gradient(180deg, #78716c 0%, #44403c 100%); border: 1px solid #d6d3d1; border-bottom: 4px solid #1c1917; color: #ef4444; }
-        body.theme-retro-gold .btn-add { background: linear-gradient(180deg, #f59e0b 0%, #b45309 100%); border: 1px solid #fef3c7; border-bottom: 4px solid #78350f; color: #fff; }
-        body.theme-retro-gold .btn-theme { background: linear-gradient(180deg, #a8a29e 0%, #57534e 100%); border: 1px solid #e7e5e4; border-bottom: 4px solid #2c2a29; color: #fbbf24; }
-        body.theme-retro-gold .btn-receipt { background: linear-gradient(180deg, #fbbf24 0%, #d97706 100%); border: 1px solid #fffbeb; border-bottom: 4px solid #9a3412; color: #1c1917; }
-
-        /* DISEÑO DE BOTONES: TEMA MATRIX */
-        body.theme-matrix .btn-clear { background: linear-gradient(180deg, #059669 0%, #022c22 100%); border: 1px solid #a7f3d0; border-bottom: 4px solid #042f2e; color: #ef4444; }
-        body.theme-matrix .btn-add { background: linear-gradient(180deg, #34d399 0%, #047857 100%); border: 1px solid #fff; border-bottom: 4px solid #064e3b; color: #000; font-weight: 900; }
-        body.theme-matrix .btn-theme { background: linear-gradient(180deg, #10b981 0%, #064e3b 100%); border: 1px solid #d1fae5; border-bottom: 4px solid #022c22; color: #000; }
-        body.theme-matrix .btn-receipt { background: linear-gradient(180deg, #65a30d 0%, #3f6212 100%); border: 1px solid #ecfccb; border-bottom: 4px solid #1a2e05; color: #fff; }
-
-        /* DISEÑO DE BOTONES: TEMA SUNSET */
-        body.theme-sunset .btn-clear { background: linear-gradient(180deg, #dc2626 0%, #7c2d12 100%); border: 1px solid #fee2e2; border-bottom: 4px solid #451a03; color: #fff; }
-        body.theme-sunset .btn-add { background: linear-gradient(180deg, #ea580c 0%, #9a3412 100%); border: 1px solid #ffedd5; border-bottom: 4px solid #431407; color: #fff; }
-        body.theme-sunset .btn-theme { background: linear-gradient(180deg, #f97316 0%, #c2410c 100%); border: 1px solid #ffedd5; border-bottom: 4px solid #292524; color: #fff; }
-        body.theme-sunset .btn-receipt { background: linear-gradient(180deg, #f59e0b 0%, #b45309 100%); border: 1px solid #fef3c7; border-bottom: 4px solid #7c2d12; color: #fff; }
+        .btn-clear, .btn-add, .btn-theme, .btn-receipt { height: 38px; border-radius: 10px; font-size: 9px; font-weight: bold; cursor: pointer; transition: all 0.2s ease; text-transform: uppercase; display: flex; justify-content: center; align-items: center; font-family: monospace; }
         
-        .btn-clear:disabled, .btn-add:disabled { opacity: 0.15 !important; box-shadow: none !important; border-color: #444 !important; background: #11051c !important; color: #555 !important; text-shadow: none !important; }
+        /* INTEGRACIÓN CYBERPUNK */
+        body.theme-cyberpunk .btn-clear, body.theme-cyberpunk .btn-theme { background: #1a0826; border: 2px solid #ff007f; color: #ff007f; opacity: 0.7; }
+        body.theme-cyberpunk .btn-add, body.theme-cyberpunk .btn-receipt { background: #ff007f; border: 2px solid #fff; color: #000; font-weight: bold; }
+        
+        /* INTEGRACIÓN RETRO GOLD */
+        body.theme-retro-gold .btn-clear, body.theme-retro-gold .btn-theme { background: #1c1917; border: 2px solid #d97706; color: #d97706; }
+        body.theme-retro-gold .btn-add, body.theme-retro-gold .btn-receipt { background: #d97706; border: 2px solid #fff; color: #fff; }
+
+        /* INTEGRACIÓN MATRIX */
+        body.theme-matrix .btn-clear, body.theme-matrix .btn-theme { background: #022c22; border: 2px solid #10b981; color: #10b981; }
+        body.theme-matrix .btn-add, body.theme-matrix .btn-receipt { background: #10b981; border: 2px solid #fff; color: #000; }
+
+        /* INTEGRACIÓN SUNSET */
+        body.theme-sunset .btn-clear, body.theme-sunset .btn-theme { background: #292524; border: 2px solid #f97316; color: #f97316; }
+        body.theme-sunset .btn-add, body.theme-sunset .btn-receipt { background: #f97316; border: 2px solid #fff; color: #fff; }
+
+        .btn-clear:disabled, .btn-add:disabled { opacity: 0.15 !important; box-shadow: none !important; border-color: #444 !important; background: #11051c !important; color: #555 !important; }
 
         @keyframes glow { 0%, 100% { box-shadow: 0 0 8px #ff007f; opacity: 0.85; } 50% { box-shadow: 0 0 12px #ff007f; opacity: 1; } }
         body.theme-retro-gold .on-anim { animation: glowGold 1.2s infinite ease-in-out; }
@@ -176,7 +172,6 @@
             <button id="ivu0" onclick="setI(0.0)" class="btn-cfg btn-off">0.0%</button>
         </div>
 
-        <!-- SECCIÓN DE ACCIONES REDISEÑADA COMPLETAMENTE -->
         <div class="row-acciones">
             <button id="btnResetGlobal" class="btn-clear" onclick="clr()">C Reset</button>
             <button id="btnAnadirGlobal" class="btn-add" onclick="addProducto()">+ Añadir</button>
