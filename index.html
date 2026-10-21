@@ -366,6 +366,7 @@
         }
 
                 // 🎛️ MOTOR DEL INTERRUPTOR ÚNICO DE IVU (Alterna dinámicamente entre 11.5% y 0%)
+                // 🎛️ MOTOR DEL INTERRUPTOR ÚNICO DE IVU (Estilos de texto blanco y números negros)
         function conmutarIvu() {
             reproducirSonido('menu');
             const btn = document.getElementById('btnToggleIvu');
@@ -373,11 +374,12 @@
             if (ivu === 11.5) {
                 ivu = 0.0;
                 btn.className = "btn-cfg btn-off"; // Se vuelve opaco (greyed out)
-                btn.innerText = "0%";               // Cambia el texto a 0%
+                btn.innerHTML = "IVU 0.0%";         // Muestra el texto apagado en gris estándar
             } else {
                 ivu = 11.5;
-                btn.className = "btn-cfg btn-on";  // Se vuelve brillante/activado
-                btn.innerText = "IVU";              // Cambia el texto a IVU
+                btn.className = "btn-cfg btn-on";  // Se vuelve brillante (Fondo neón, Texto blanco)
+                // Usamos color: #000 para forzar únicamente al número "11.5%" a pintarse en negro nítido
+                btn.innerHTML = 'IVU <span style="color: #000; font-weight: 900;">11.5%</span>';
             }
             actualizarHeaderIndicadores(); calc();
         }
@@ -464,9 +466,12 @@
             sTip = "15"; memoriaTipPct = "15"; incluirPropina = false; recienEntradoAPropina = false; 
             
             // Fuerza al botón interruptor a reiniciarse en modo IVU (11.5%) brillante
-            ivu = 11.5;
+                        ivu = 11.5;
             const btnHolo = document.getElementById('btnToggleIvu');
-            if(btnHolo) { btnHolo.className = "btn-cfg btn-on"; btnHolo.innerText = "IVU"; }
+            if(btnHolo) { 
+                btnHolo.className = "btn-cfg btn-on"; 
+                btnHolo.innerHTML = 'IVU <span style="color: #000; font-weight: 900;">11.5%</span>'; 
+            }
             
             seleccionarMenu('sub');
         }
