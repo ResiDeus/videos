@@ -39,7 +39,6 @@
         
         .lcd-historial::-webkit-scrollbar { width: 5px; display: block; }
         .lcd-historial::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.1); }
-        
         body.theme-cyberpunk .lcd-historial::-webkit-scrollbar-thumb { background: #ff007f; }
         body.theme-retro-gold .lcd-historial::-webkit-scrollbar-thumb { background: #d97706; }
         body.theme-matrix .lcd-historial::-webkit-scrollbar-thumb { background: #10b981; }
@@ -89,11 +88,36 @@
         .btn-back { background: linear-gradient(180deg, #5c2c06 0%, #241001 100%); color: #fbbf24; }
         .btn-key:disabled { opacity: 0.2 !important; cursor: not-allowed !important; filter: grayscale(100%); background: #1a0b24 !important; color: #555 !important; }
 
+        /* DISEÑO DE BOTONES DE ACCIÓN ADAPTATIVOS POR TEMA */
         .row-acciones { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding-bottom: 2px; }
-        .btn-clear { height: 38px; background: linear-gradient(180deg, #991b1b 0%, #450a0a 100%); border: 2px solid #ef4444; box-shadow: 0 0 10px #ef444460; border-radius: 8px; color: #fee2e2; text-shadow: 0 0 5px #ef4444; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: all 0.2s ease; }
-        .btn-add { height: 38px; background: linear-gradient(180deg, #065f46 0%, #064e3b 100%); border: 2px solid #10b981; box-shadow: 0 0 10px #10b98160; border-radius: 8px; color: #d1fae5; text-shadow: 0 0 5px #10b981; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: all 0.2s ease; }
+        .btn-clear, .btn-add, .btn-theme, .btn-receipt { height: 38px; border-radius: 8px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: all 0.2s ease; }
+        .btn-theme, .btn-receipt { font-size: 0.9rem; }
+
+        /* COLORES CYBERPUNK */
+        body.theme-cyberpunk .btn-clear { background: linear-gradient(180deg, #991b1b 0%, #450a0a 100%); border: 2px solid #ef4444; box-shadow: 0 0 10px #ef444460; color: #fee2e2; text-shadow: 0 0 5px #ef4444; }
+        body.theme-cyberpunk .btn-add { background: linear-gradient(180deg, #065f46 0%, #064e3b 100%); border: 2px solid #10b981; box-shadow: 0 0 10px #10b98160; color: #d1fae5; text-shadow: 0 0 5px #10b981; }
+        body.theme-cyberpunk .btn-theme { background: linear-gradient(180deg, #475569 0%, #1e293b 100%); border: 2px solid #64748b; box-shadow: 0 0 10px #64748b60; color: #f1f5f9; text-shadow: 0 0 5px #64748b; }
+        body.theme-cyberpunk .btn-receipt { background: linear-gradient(180deg, #0284c7 0%, #0369a1 100%); border: 2px solid #38bdf8; box-shadow: 0 0 10px #38bdf860; color: #e0f2fe; text-shadow: 0 0 5px #38bdf8; }
+
+        /* COLORES RETRO GOLD */
+        body.theme-retro-gold .btn-clear { background: linear-gradient(180deg, #44403c 0%, #292524 100%); border: 2px solid #a8a29e; box-shadow: 0 0 10px #a8a29e40; color: #ef4444; }
+        body.theme-retro-gold .btn-add { background: linear-gradient(180deg, #b45309 0%, #78350f 100%); border: 2px solid #f59e0b; box-shadow: 0 0 10px #f59e0b50; color: #fff; }
+        body.theme-retro-gold .btn-theme { background: linear-gradient(180deg, #292524 0%, #1c1917 100%); border: 2px solid #78716c; box-shadow: 0 0 10px #78716c40; color: #d97706; }
+        body.theme-retro-gold .btn-receipt { background: linear-gradient(180deg, #d97706 0%, #b45309 100%); border: 2px solid #fbbf24; box-shadow: 0 0 10px #fbbf2450; color: #fff; }
+
+        /* COLORES MATRIX */
+        body.theme-matrix .btn-clear { background: linear-gradient(180deg, #064e3b 0%, #022c22 100%); border: 2px solid #059669; box-shadow: 0 0 10px #05966940; color: #ef4444; text-shadow: 0 0 3px #ef4444; }
+        body.theme-matrix .btn-add { background: linear-gradient(180deg, #047857 0%, #064e3b 100%); border: 2px solid #10b981; box-shadow: 0 0 12px #10b98160; color: #000; font-weight: 900; }
+        body.theme-matrix .btn-theme { background: linear-gradient(180deg, #022c22 0%, #0a0a0a 100%); border: 2px solid #047857; box-shadow: 0 0 8px #04785740; color: #34d399; }
+        body.theme-matrix .btn-receipt { background: linear-gradient(180deg, #10b981 0%, #059669 100%); border: 2px solid #34d399; box-shadow: 0 0 12px #34d39960; color: #000; font-weight: 900; }
+
+        /* COLORES SUNSET */
+        body.theme-sunset .btn-clear { background: linear-gradient(180deg, #7c2d12 0%, #451a03 100%); border: 2px solid #ea580c; box-shadow: 0 0 10px #ea580c40; color: #fecdd3; }
+        body.theme-sunset .btn-add { background: linear-gradient(180deg, #c2410c 0%, #9a3412 100%); border: 2px solid #f97316; box-shadow: 0 0 10px #f9731660; color: #fff; text-shadow: 0 0 4px #b45309; }
+        body.theme-sunset .btn-theme { background: linear-gradient(180deg, #451a03 0%, #292524 100%); border: 2px solid #9a3412; box-shadow: 0 0 8px #9a341240; color: #fdba74; }
+        body.theme-sunset .btn-receipt { background: linear-gradient(180deg, #ea580c 0%, #c2410c 100%); border: 2px solid #fdba74; box-shadow: 0 0 10px #fdba7460; color: #fff; }
         
-        .btn-clear:disabled, .btn-add:disabled { opacity: 0.15 !important; box-shadow: none !important; border-color: #444 !important; background: #11051c !important; color: #555 !important; }
+        .btn-clear:disabled, .btn-add:disabled { opacity: 0.15 !important; box-shadow: none !important; border-color: #444 !important; background: #11051c !important; color: #555 !important; text-shadow: none !important; }
 
         @keyframes glow { 0%, 100% { box-shadow: 0 0 8px #ff007f; opacity: 0.85; } 50% { box-shadow: 0 0 12px #ff007f; opacity: 1; } }
         body.theme-retro-gold .on-anim { animation: glowGold 1.2s infinite ease-in-out; }
@@ -160,8 +184,8 @@
             <button id="btnAnadirGlobal" class="btn-add" onclick="addProducto()">+ Añadir</button>
         </div>
         <div class="row-acciones">
-            <button class="btn-clear" style="background: linear-gradient(180deg, #475569 0%, #1e293b 100%); border-color: #64748b; font-size:0.9rem;" onclick="rotarTema()">TEMA</button>
-            <button class="btn-add" style="background: linear-gradient(180deg, #0284c7 0%, #0369a1 100%); border-color: #38bdf8; font-size:0.9rem;" onclick="exportarRecibo()">RECIBO</button>
+            <button class="btn-theme" onclick="rotarTema()">TEMA</button>
+            <button class="btn-receipt" onclick="exportarRecibo()">RECIBO</button>
         </div>
 
         <div class="pad-num">
@@ -225,7 +249,6 @@
                 mode = f;
             }
             
-            // Apagar clases visuales base
             ['cajaSub', 'cajaPpl', 'cajaDesc', 'cajaTip'].forEach(id => {
                 document.getElementById(id).className = 'caja-data btn-off';
             });
@@ -233,7 +256,6 @@
                 if(el) el.classList.remove('blink-num');
             });
 
-            // CORRECCIÓN INTERACTIVA: Encendido dinámico persistente si Desc > 0
             if (parseInt(sDesc) > 0 && mode !== 'desc') {
                 document.getElementById('cajaDesc').className = "caja-data btn-on";
             }
@@ -241,6 +263,7 @@
             if (mode === 'sub') {
                 modoPersonasActivo = false;
                 numPpl.innerText = sPpl === "0" ? "OFF" : sPpl;
+                document.getElementById('lblTotalType').innerText = "TOTAL";
                 btnReset.disabled = false;
                 btnAnadir.disabled = false;
                 btnPunto.disabled = false; 
@@ -250,6 +273,7 @@
                 modoPersonasActivo = true;
                 if (sPpl === "OFF" || sPpl === "0" || sPpl === "") sPpl = "2";
                 numPpl.innerText = sPpl;
+                document.getElementById('lblTotalType').innerText = "C/U";
                 btnReset.disabled = true;
                 btnAnadir.disabled = true;
                 btnPunto.disabled = true; 
@@ -427,6 +451,7 @@
             document.body.classList.remove(themes[temaActualIdx]);
             temaActualIdx = (temaActualIdx + 1) % themes.length;
             document.body.classList.add(themes[temaActualIdx]);
+            calc();
         }
 
         function exportarRecibo() {
