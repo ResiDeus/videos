@@ -155,6 +155,16 @@
         .btn-holo:active {
             background: rgba(255, 255, 255, 0.1);
         }
+        
+        /* 📟 ANIMACIÓN RETRO EXCLUSIVA PARA EL PARPADEO DE TEXTO NEGRO EN EL LCD VERDE */
+        @keyframes parpadeoLcd { 
+            0%, 100% { opacity: 1; } 
+            50% { opacity: 0; } 
+        }
+        .lcd-parpadeo { 
+            animation: parpadeoLcd 1s infinite steps(2, start); 
+        }
+
         .on-anim { animation: glow 1.2s infinite ease-in-out; }
     </style>
 </head>
@@ -169,7 +179,7 @@
             </div>
             <div class="lcd-wrapper">
                 <div class="listaPrecios-container" style="flex-grow: 1; position: relative; display: flex; flex-direction: column; overflow: hidden;">
-                    <div class="lcd-historial" id="listaPrecios" onscroll="detectarDesplazamiento()"><i>Lista vacía...</i></div>
+                    <div class="lcd-historial" id="listaPrecios" onscroll="detectarDesplazamiento()"><i class="lcd-parpadeo">Añade artículos a la lista...</i></div>
                     <div class="scroll-hint" id="flechaGuia">▼ deslizar</div>
                 </div>
             </div>
@@ -402,7 +412,7 @@
 
         function clr() {
             reproducirSonido('tecla'); sSub = "0"; cuentaAcumulada = 0; preciosGuardados = [];
-            document.getElementById('lblSub').innerText = "0"; document.getElementById('listaPrecios').innerHTML = '<i class="blink-num">Añade artículos a la lista...</i>';
+            document.getElementById('lblSub').innerText = "0"; document.getElementById('listaPrecios').innerHTML = '<i class="lcd-parpadeo">Añade artículos a la lista...</i>';
             document.getElementById('flechaGuia').style.display = "none"; sPpl = "0"; modoSerruchoActivo = false; memoriaSerruchoCortes = "2";
             document.getElementById('lblPpl').innerText = "N/A"; sDesc = "0"; memoriaDescuentoPct = "0"; modoDescuentoActivo = false; document.getElementById('lblDesc').innerText = "0";
             sTip = "15"; memoriaTipPct = "15"; incluirPropina = false; recienEntradoAPropina = false; seleccionarMenu('sub');
