@@ -128,6 +128,7 @@
     <div class="sky"></div>
     <div class="grid3d"></div>
     <div class="chasis" id="calcChasis">
+        <!-- PANTALLA LCD CON CLASE IDENTIFICADA PARA EL GLITCH -->
         <div class="lcd" id="pantallaVerde">
             <div class="lcd-header">
                 <span id="txtHeaderIndicadores">IVU: 11.5%</span>
@@ -144,8 +145,8 @@
                 <!-- TOTAL PRINCIPAL FIJO ARRIBA -->
                 <div class="lcd-total" style="margin-bottom: 1px;">TOTAL: $<span id="outPer">0.00</span></div>
                 
-                <!-- REGLA: Removido el numero de personas al lado del total de la pantalla verde -->
-                <div id="rowPersonaCuota" style="opacity: 0.25; font-size: 11px; margin-top: 1px;"><span id="txtSerruchoLabelType">SERRUCHO: N/A</span><span id="outPerPersonaLine"></span></div>
+                <!-- REGLA: Muestra SERRUCHO (C/U): N/A de corrido cuando está inactivo -->
+                <div id="rowPersonaCuota" style="opacity: 0.25; font-size: 11px; margin-top: 1px;"><span id="txtSerruchoLabelType">SERRUCHO (C/U): N/A</span><span id="outPerPersonaLine"></span></div>
             </div>
         </div>
 
@@ -234,6 +235,7 @@
             document.getElementById('txtHeaderIndicadores').innerText = texto;
         }
 
+        /* REGLA: Conservación estricta de memoria en Serrucho al cambiar de menú o apagar (Default cambia a 2) */
         function seleccionarMenu(f) {
             reproducirSonido('menu');
             const btnReset = document.getElementById('btnResetGlobal'), btnAnadir = document.getElementById('btnAnadirGlobal'), btnPunto = document.getElementById('btnPunto');
@@ -246,7 +248,9 @@
                     if (parsedPpl < 2) { sPpl = "0"; memoriaPersonasNum = "2"; }
                 } else { 
                     modoPersonasActivo = true; mode = 'ppl'; 
-                    sPpl = memoriaPersonasNum === "2" ? "0" : memoriaPersonasNum; 
+                    // REGLA: Si la memoria interna estaba limpia, arranca en 2 por default, si no, recupera el dato escrito
+                    sPpl = (memoriaPersonasNum === "" || memoriaPersonasNum === "0" || memoriaPersonasNum === "1") ? "2" : memoriaPersonasNum;
+                    memoriaPersonasNum = sPpl;
                 }
             } else {
                 if (mode === 'ppl') {
@@ -269,6 +273,7 @@
             if (modoPersonasActivo && mode !== 'ppl') document.getElementById('cajaPpl').className = "caja-data btn-on";
 
             if (mode === 'sub') {
+                // REGLA: Los visores físicos muestran N/A si están inactivos, pero la memoria se queda guardada
                 numPpl.innerText = modoPersonasActivo ? memoriaPersonasNum : "N/A";
                 numDesc.innerText = modoDescuentoActivo ? memoriaDescuentoPct : "0";
                 numTip.innerText = incluirPropina ? memoriaTipPct : "0";
@@ -302,7 +307,6 @@
                 sSub += c; if(parseFloat(sSub) > 99999) sSub = "99999";
                 document.getElementById('lblSub').innerText = sSub;
             } else if (mode === 'ppl') {
-                // REGLA: Permite escribir el 0 o 1 de forma libre
                 if (sPpl === "N/A" || sPpl === "0") sPpl = "";
                 sPpl = (sPpl + c).substring(0, 2);
                 let valInt = parseInt(sPpl) || 0;
@@ -325,9 +329,7 @@
             reproducirSonido('tecla');
             if (mode === 'sub') { sSub = sSub.slice(0, -1); if (!sSub) sSub = "0"; document.getElementById('lblSub').innerText = sSub; }
             else if (mode === 'ppl') { 
-                sPpl = sPpl.slice(0, -1); 
-                // REGLA: Si se borra todo, se muestra un 0 permanente
-                if (!sPpl) { sPpl = "0"; }
+                sPpl = sPpl.slice(0, -1); if (!sPpl) { sPpl = "0"; }
                 memoriaPersonasNum = sPpl === "0" || sPpl === "1" ? "2" : sPpl;
                 document.getElementById('lblPpl').innerText = sPpl; 
             }
@@ -339,11 +341,7 @@
         function ce() {
             reproducirSonido('tecla');
             if (mode === 'sub') { sSub = "0"; document.getElementById('lblSub').innerText = "0"; }
-            else if (mode === 'ppl') { 
-                // REGLA: Si le das clear al serrucho, se restablece a 0 en pantalla
-                sPpl = "0"; memoriaPersonasNum = "2"; modoPersonasActivo = true; 
-                document.getElementById('lblPpl').innerText = "0"; 
-            }
+            else if (mode === 'ppl') { sPpl = "0"; memoriaPersonasNum = "2"; modoPersonasActivo = true; document.getElementById('lblPpl').innerText = "0"; }
             else if (mode === 'desc') { sDesc = "0"; memoriaDescuentoPct = "0"; modoDescuentoActivo = true; document.getElementById('lblDesc').innerText = "0"; }
             else if (mode === 'tip') { sTip = "0"; memoriaTipPct = "0"; recienEntradoAPropina = true; incluirPropina = true; document.getElementById('lblTip').innerText = "0"; }
             actualizarHeaderIndicadores(); calc();
@@ -388,13 +386,13 @@
             document.getElementById('outDesc').innerText = `-$${rebajaTotal.toFixed(2)}`; document.getElementById('outTip').innerText = `$${propinaTotal.toFixed(2)}`;
             document.getElementById('outIvu').innerText = `$${impuestoTotal.toFixed(2)}`; document.getElementById('outDescPctText').innerText = modoDescuentoActivo ? sDesc : "0";
             
-            // REGLA: Eliminado permanentemente el numero de personas entre parentesis de la pantalla verde
+            // REGLA: Estructura fija en mayúsculas sostenidas y N/A limpio cuando el botón está deshabilitado
             if (modoPersonasActivo) {
                 document.getElementById('txtSerruchoLabelType').innerText = `SERRUCHO (C/U): `;
                 document.getElementById('outPerPersonaLine').innerText = `$${porPersona.toFixed(2)}`;
                 document.getElementById('rowPersonaCuota').style.opacity = "1";
             } else {
-                document.getElementById('txtSerruchoLabelType').innerText = `SERRUCHO: N/A`;
+                document.getElementById('txtSerruchoLabelType').innerText = `SERRUCHO (C/U): N/A`;
                 document.getElementById('outPerPersonaLine').innerText = ``;
                 document.getElementById('rowPersonaCuota').style.opacity = "0.25";
             }
