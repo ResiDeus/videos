@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Calculadora Ponle TAX</title>
+    <title>Calculadora de ResiDeus</title>
     <style>
         * { box-sizing: border-box; }
         html, body { margin: 0; padding: 0; width: 100vw; height: 100vh; overflow: hidden; position: relative; font-family: monospace; transition: background 0.3s ease; }
@@ -71,12 +71,12 @@
         body.theme-matrix .btn-off .lbl-title { color: #10b981; }
         body.theme-sunset .btn-off .lbl-title { color: #f97316; }
 
-        .lbl-val { font-size: 16px; font-weight: 900; display: inline-block; line-height: 1; }
+        .lbl-val { font-size: 14px; font-weight: 900; display: inline-block; line-height: 1; }
         
         @keyframes blinkFast { 0%, 100% { opacity: 1; } 50% { opacity: 0.15; } }
         .blink-num { animation: blinkFast 0.5s infinite steps(2, start); text-shadow: 0 0 10px rgba(255,255,255,0.6); }
 
-        .row-config { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+        .row-config { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
         .btn-cfg { padding: 6px 0; border-radius: 8px; font-size: 10px; font-weight: bold; cursor: pointer; text-align: center; }
 
         .pad-num { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
@@ -113,7 +113,7 @@
         <!-- PANTALLA LCD -->
         <div class="lcd">
             <div class="lcd-header">
-                <span id="lblArt">CALCULADORA</span>
+                <span id="lblArt">Calculadora de ResiDeus</span>
                 <span id="txtHeaderIndicadores">TAX: 11.5%</span>
             </div>
             <div class="lcd-wrapper">
@@ -123,7 +123,7 @@
 
             <div class="lcd-body">
                 <div id="rowDesc" style="opacity: 0.3;">DESC: <span id="outDesc">-$0.00</span></div>
-                <div id="rowTip" style="opacity: 0.2;">PROPINA (<span id="txtTipPct">18</span>%): <span id="outTip">$0.00</span></div>
+                <div id="rowTip" style="opacity: 0.2;">PROPINA (<span id="txtTipPct">OFF</span>): <span id="outTip">$0.00</span></div>
                 <div>TAX: <span id="outIvu">$0.00</span></div>
                 <div class="lcd-total"><span id="lblTotalType">TOTAL</span>: $<span id="outPer">0.00</span></div>
             </div>
@@ -145,7 +145,7 @@
             </div>
             <div id="cajaTip" class="caja-data btn-off" onclick="seleccionarMenu('tip')">
                 <span class="lbl-title">Prop %</span>
-                <span class="lbl-val"><span id="lblTip">18</span>%</span>
+                <span class="lbl-val"><span id="lblTip">OFF</span></span>
             </div>
         </div>
 
@@ -153,7 +153,6 @@
             <button id="ivu115" onclick="setI(11.5)" class="btn-cfg btn-on">11.5%</button>
             <button id="ivu7" onclick="setI(7.0)" class="btn-cfg btn-off">7.0%</button>
             <button id="ivu0" onclick="setI(0.0)" class="btn-cfg btn-off">0.0%</button>
-            <button id="btnPropina" onclick="toggleTip()" class="btn-cfg btn-off">PROPINA</button>
         </div>
 
         <div class="row-acciones">
@@ -174,7 +173,7 @@
     </div>
     <script>
         let ivu = 11.5, mode = 'sub', sSub = "0", sPpl = "OFF", incluirPropina = false, modoPersonasActivo = false;
-        let sDesc = "0", sTip = "18"; 
+        let sDesc = "0", sTip = "18"; // El porcentaje por defecto se establece en 18%
         let preciosGuardados = [], cuentaAcumulada = 0;
         let themes = ['theme-cyberpunk', 'theme-retro-gold', 'theme-matrix', 'theme-sunset'];
         let temaActualIdx = 0;
@@ -219,7 +218,18 @@
             const numDesc = document.getElementById('lblDesc');
             const numTip = document.getElementById('lblTip');
 
-            mode = f;
+            // Si se selecciona el menú de propina, este cambia su estado alternando de ON a OFF
+            if (f === 'tip') {
+                incluirPropina = !incluirPropina;
+                if (!incluirPropina) {
+                    // Si se apaga, volvemos automáticamente al menú de la cuenta
+                    mode = 'sub';
+                } else {
+                    mode = 'tip';
+                }
+            } else {
+                mode = f;
+            }
             
             ['cajaSub', 'cajaPpl', 'cajaDesc', 'cajaTip'].forEach(id => {
                 document.getElementById(id).className = 'caja-data btn-off';
@@ -228,45 +238,43 @@
                 if(el) el.classList.remove('blink-num');
             });
 
-            if (f === 'sub') {
+            // Lógica de renderizado según el modo activo resultante
+            if (mode === 'sub') {
                 modoPersonasActivo = false;
                 numPpl.innerText = sPpl === "0" ? "OFF" : sPpl;
-                document.getElementById('lblTotalType').innerText = "TOTAL";
                 btnReset.disabled = false;
                 btnAnadir.disabled = false;
                 btnPunto.disabled = false; 
                 numSub.classList.add('blink-num');
                 document.getElementById('cajaSub').className = "caja-data btn-on on-anim";
-            } else if (f === 'ppl') {
+            } else if (mode === 'ppl') {
                 modoPersonasActivo = true;
                 if (sPpl === "OFF" || sPpl === "0" || sPpl === "") sPpl = "2";
                 numPpl.innerText = sPpl;
-                document.getElementById('lblTotalType').innerText = "C/U";
                 btnReset.disabled = true;
                 btnAnadir.disabled = true;
                 btnPunto.disabled = true; 
                 numPpl.classList.add('blink-num');
                 document.getElementById('cajaPpl').className = "caja-data btn-on on-anim";
-            } else if (f === 'desc') {
+            } else if (mode === 'desc') {
                 btnReset.disabled = true;
                 btnAnadir.disabled = true;
                 btnPunto.disabled = true;
                 numDesc.classList.add('blink-num');
                 document.getElementById('cajaDesc').className = "caja-data btn-on on-anim";
-            } else if (f === 'tip') {
+            } else if (mode === 'tip') {
                 btnReset.disabled = true;
                 btnAnadir.disabled = true;
                 btnPunto.disabled = true;
                 numTip.classList.add('blink-num');
                 document.getElementById('cajaTip').className = "caja-data btn-on on-anim";
             }
-            calc();
-        }
+            
+            // Si la propina está habilitada pero no estamos en su menú, se resalta como activa
+            if (incluirPropina && mode !== 'tip') {
+                document.getElementById('cajaTip').className = "caja-data btn-on";
+            }
 
-        function toggleTip() {
-            reproducirSonido('menu'); incluirPropina = !incluirPropina;
-            document.getElementById('btnPropina').className = incluirPropina ? "btn-cfg btn-on" : "btn-cfg btn-off";
-            document.getElementById('rowTip').style.opacity = incluirPropina ? "1" : "0.2";
             actualizarHeaderIndicadores();
             calc();
         }
@@ -307,9 +315,7 @@
                 let valInt = parseInt(sTip) || 0;
                 if(valInt > 50) sTip = "50";
                 document.getElementById('lblTip').innerText = sTip;
-                if(incluirPropina) document.getElementById('txtTipPct').innerText = sTip;
             }
-            actualizarHeaderIndicadores();
             calc();
         }
         function bksp() {
@@ -324,11 +330,9 @@
                 sDesc = sDesc.slice(0, -1); if (!sDesc) sDesc = "0";
                 document.getElementById('lblDesc').innerText = sDesc;
             } else if (mode === 'tip') {
-                sTip = sTip.slice(0, -1); if (!sTip) sTip = "0";
+                sTip = sTip.slice(0, -1); if (!sTip) sTip = "18";
                 document.getElementById('lblTip').innerText = sTip;
-                if(incluirPropina) document.getElementById('txtTipPct').innerText = sTip;
             }
-            actualizarHeaderIndicadores();
             calc();
         }
 
@@ -386,11 +390,9 @@
             } else if (mode === 'desc') {
                 sDesc = "0"; document.getElementById('lblDesc').innerText = "0";
             } else if (mode === 'tip') {
-                sTip = "18"; document.getElementById('lblTip').innerText = "18";
-                if(incluirPropina) document.getElementById('txtTipPct').innerText = "18";
+                sTip = "18"; incluirPropina = false;
             }
-            actualizarHeaderIndicadores();
-            calc();
+            seleccionarMenu('sub');
         }
 
         function calc() {
@@ -412,7 +414,11 @@
             document.getElementById('outIvu').innerText = `$${impuestoTotal.toFixed(2)}`;
             document.getElementById('outPer').innerText = porPersona.toFixed(2);
             
-            document.getElementById('lblArt').innerText = preciosGuardados.length ? `Cuenta (${preciosGuardados.length} art.)` : "CALCULADORA";
+            // Renderizado de textos condicionales en botones
+            document.getElementById('lblTip').innerText = incluirPropina ? `${sTip}%` : "OFF";
+            document.getElementById('txtTipPct').innerText = incluirPropina ? `${sTip}%` : "OFF";
+            
+            document.getElementById('lblArt').innerText = preciosGuardados.length ? `Cuenta (${preciosGuardados.length} art.)` : "Calculadora de ResiDeus";
             
             document.getElementById('rowDesc').style.opacity = (descPct > 0) ? "1" : "0.3";
             document.getElementById('rowTip').style.opacity = incluirPropina ? "1" : "0.2";
@@ -438,7 +444,7 @@
             let propinaTotal = subtotalDescontado * (tipPct / 100);
             let totalNetoGlobal = subtotalDescontado + impuestoTotal + propinaTotal;
 
-            let txt = `=== RECIBO PONLE TAX ===\n`;
+            let txt = `=== Calculadora de ResiDeus ===\n`;
             txt += `Fecha: ${new Date().toLocaleString()}\n`;
             txt += `Tax Config: ${ivu.toFixed(1)}%\n`;
             txt += `-----------------------\n`;
@@ -464,7 +470,7 @@
                 txt += ` CUOTA POR PERSONA: $${(totalNetoGlobal / nPpl).toFixed(2)}\n`;
             }
             txt += `=======================\n`;
-            txt += `¡Gracias por usar Ponle TAX!`;
+            txt += `¡Gracias por usar Calculadora de ResiDeus!`;
 
             alert(txt);
             console.log(txt);
