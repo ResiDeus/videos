@@ -55,7 +55,6 @@
         .lcd-historial { flex-grow: 1; font-size: 11px; overflow-y: auto; text-align: left; padding-right: 4px; -webkit-overflow-scrolling: touch; }
         .lcd-historial::-webkit-scrollbar { width: 5px; display: block; }
         .lcd-historial::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.1); }
-        
         body.theme-cyberpunk .lcd-historial::-webkit-scrollbar-thumb { background: #ff007f; }
         body.theme-retro-gold .lcd-historial::-webkit-scrollbar-thumb { background: #d97706; }
         body.theme-matrix .lcd-historial::-webkit-scrollbar-thumb { background: #10b981; }
@@ -127,6 +126,15 @@
         body.theme-matrix .on-anim { animation: glowMatrix 1.2s infinite ease-in-out; }
         body.theme-sunset .on-anim { animation: glowSunset 1.2s infinite ease-in-out; }
         .on-anim { animation: glow 1.2s infinite ease-in-out; }
+        
+        @keyframes glowGold { 0%, 100% { box-shadow: 0 0 8px #d97706; } 50% { box-shadow: 0 0 12px #d97706; } }
+        @keyframes glowMatrix { 0%, 100% { box-shadow: 0 0 8px #10b981; } 50% { box-shadow: 0 0 12px #10b981; } }
+        @keyframes glowSunset { 0%, 100% { box-shadow: 0 0 8px #f97316; } 50% { box-shadow: 0 0 12px #f97316; } }
+    </style> <!-- CRÍTICO: ETIQUETA SERRADA EXÁCTAMENTE AQUÍ -->
+</head>
+<body class="theme-cyberpunk">
+    <div class="sky"></div>
+    <div class="grid3d"></div>
     <div class="chasis">
         <!-- PANTALLA LCD -->
         <div class="lcd">
@@ -228,7 +236,6 @@
             document.getElementById('txtHeaderIndicadores').innerText = texto;
         }
 
-        /* SOLUCIÓN AL APAGADO ACCIDENTAL: Nueva validación de estados de navegación */
         function seleccionarMenu(f) {
             reproducirSonido('menu');
             const btnReset = document.getElementById('btnResetGlobal');
@@ -241,7 +248,6 @@
             const numTip = document.getElementById('lblTip');
 
             if (f === 'tip') {
-                // REGLA: Si ya estás dentro del menú tip, apágala. Si vienes de fuera, enciéndela/mantenla y entra sin apagar
                 if (mode === 'tip') {
                     incluirPropina = false;
                     mode = 'sub';
@@ -249,7 +255,7 @@
                 } else {
                     incluirPropina = true;
                     mode = 'tip';
-                    recienEntradoAPropina = true; // Habilita la sobreescritura del "18" al teclear
+                    recienEntradoAPropina = true;
                 }
             } else {
                 mode = f;
@@ -354,7 +360,7 @@
                 sDesc = sDesc.slice(0, -1); if (!sDesc) sDesc = "0";
                 document.getElementById('lblDesc').innerText = sDesc;
             } else if (mode === 'tip') {
-                sTip = sTip.slice(0, -1); if (!sTip) sTip = "0";
+                sTip = sTip.slice(0, -1); if (!sTip) sTip = "18";
                 document.getElementById('lblTip').innerText = sTip;
             }
             calc();
