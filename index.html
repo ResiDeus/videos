@@ -215,11 +215,11 @@
                 <span class="lbl-val"><span id="lblTip">0</span>%</span>
             </div>
         </div>
-        <div class="row-config">
-            <button id="ivu115" onclick="setI(11.5)" class="btn-cfg btn-on">11.5%</button>
-            <button id="ivu7" onclick="setI(7.0)" class="btn-cfg btn-off">7.0%</button>
-            <button id="ivu0" onclick="setI(0.0)" class="btn-cfg btn-off">0.0%</button>
+        <div class="row-config" style="grid-template-columns: 1fr;">
+            <!-- 🎛️ BOTÓN INTERRUPTOR ÚNICO PARA EL IVU (Alterna entre 11.5% y 0%) -->
+            <button id="btnToggleIvu" onclick="conmutarIvu()" class="btn-cfg btn-on" style="width: 100%;">IVU</button>
         </div>
+
 
         <div class="pad-num">
             <button id="btnResetGlobal" class="btn-key btn-action-text" onclick="clr()">Resetear</button>
@@ -365,10 +365,20 @@
             actualizarHeaderIndicadores(); calc();
         }
 
-        function setI(p) {
-            reproducirSonido('menu'); ivu = p;
-            ['ivu115', 'ivu7', 'ivu0'].forEach(id => document.getElementById(id).className = "btn-cfg btn-off");
-            document.getElementById(p === 11.5 ? 'ivu115' : p === 7.0 ? 'ivu7' : 'ivu0').className = "btn-cfg btn-on";
+                // 🎛️ MOTOR DEL INTERRUPTOR ÚNICO DE IVU (Alterna dinámicamente entre 11.5% y 0%)
+        function conmutarIvu() {
+            reproducirSonido('menu');
+            const btn = document.getElementById('btnToggleIvu');
+            
+            if (ivu === 11.5) {
+                ivu = 0.0;
+                btn.className = "btn-cfg btn-off"; // Se vuelve opaco (greyed out)
+                btn.innerText = "0%";               // Cambia el texto a 0%
+            } else {
+                ivu = 11.5;
+                btn.className = "btn-cfg btn-on";  // Se vuelve brillante/activado
+                btn.innerText = "IVU";              // Cambia el texto a IVU
+            }
             actualizarHeaderIndicadores(); calc();
         }
 
@@ -451,7 +461,14 @@
             document.getElementById('lblSub').innerText = "0"; document.getElementById('listaPrecios').innerHTML = '<i class="lcd-tipeo">Añade artículos a la lista</i>';
             document.getElementById('flechaGuia').style.display = "none"; sPpl = "0"; modoSerruchoActivo = false; memoriaSerruchoCortes = "2";
             document.getElementById('lblPpl').innerText = "N/A"; sDesc = "0"; memoriaDescuentoPct = "0"; modoDescuentoActivo = false; document.getElementById('lblDesc').innerText = "0";
-            sTip = "15"; memoriaTipPct = "15"; incluirPropina = false; recienEntradoAPropina = false; seleccionarMenu('sub');
+            sTip = "15"; memoriaTipPct = "15"; incluirPropina = false; recienEntradoAPropina = false; 
+            
+            // Fuerza al botón interruptor a reiniciarse en modo IVU (11.5%) brillante
+            ivu = 11.5;
+            const btnHolo = document.getElementById('btnToggleIvu');
+            if(btnHolo) { btnHolo.className = "btn-cfg btn-on"; btnHolo.innerText = "IVU"; }
+            
+            seleccionarMenu('sub');
         }
 
         function calc() {
