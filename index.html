@@ -139,6 +139,7 @@
                 </div>
             </div>
             <div class="lcd-body">
+                <!-- Opacidades iniciales animadas de forma limpia con CSS transitions -->
                 <div id="rowDesc" style="opacity: 0.3; transition: opacity 0.15s ease;">DESCUENTO: <span id="outDesc">-$0.00</span></div>
                 <div id="rowTip" style="opacity: 0.2; transition: opacity 0.15s ease;">PROPINA: <span id="outTip">$0.00</span></div>
                 <div>IVU: <span id="outIvu">$0.00</span></div>
@@ -342,7 +343,6 @@
                 cuentaAcumulada += val; sSub = "0"; document.getElementById('lblSub').innerText = "0";
                 const con = document.getElementById('listaPrecios');
                 
-                // SOLUCIÓN COMPLETA: Corregido el formateador de string literal para evitar errores de compilacion en Safari
                 con.innerHTML = preciosGuardados.map((item, i) => '<div>• Artículo #' + (i+1) + ': $' + item.total.toFixed(2) + ' (Neto: $' + item.precio.toFixed(2) + ')</div>').join('');
                 if(preciosGuardados.length > 0) {
                     let totalConTaxAcumulado = preciosGuardados.reduce((sum, item) => sum + item.total, 0);
@@ -384,17 +384,18 @@
             document.getElementById('outPer').innerText = totalNetoGlobal.toFixed(2);
             document.getElementById('outDescPctText').innerText = modoDescuentoActivo ? memoriaDescuentoPct : "0";
             
+            // CORREGIDO: Cuando el botón se enciende, la fila en el LCD verde sube a opacidad 1 (100% brillante / Habilitada)
             document.getElementById('rowDesc').style.opacity = modoDescuentoActivo ? "1" : "0.3";
             document.getElementById('rowTip').style.opacity = incluirPropina ? "1" : "0.3";
 
             if (modoSerruchoActivo) {
                 document.getElementById('txtSerruchoLabelType').innerText = `SERRUCHO (C/U): `;
                 document.getElementById('outPerPersonaLine').innerText = '$' + porSerrucho.toFixed(2);
-                document.getElementById('rowPersonaCuota').style.opacity = "1";
+                document.getElementById('rowPersonaCuota').style.opacity = "1"; // Sube a 100% brillante si se activa el serrucho
             } else {
                 document.getElementById('txtSerruchoLabelType').innerText = `SERRUCHO (C/U): N/A`;
                 document.getElementById('outPerPersonaLine').innerText = ``;
-                document.getElementById('rowPersonaCuota').style.opacity = "0.3";
+                document.getElementById('rowPersonaCuota').style.opacity = "0.3"; // Regresa a opaco si está apagado
             }
             
             document.getElementById('lblTip').innerText = incluirPropina ? memoriaTipPct : "0"; 
@@ -404,6 +405,12 @@
             document.getElementById('lblArt').innerText = preciosGuardados.length ? `Cuenta (${preciosGuardados.length} artículos)` : "Calculadora de ResiDeus";
             actualizarHeaderIndicadores();
         }
+
+        document.addEventListener('click', function(e) {
+            if (mode === 'ppl' && !e.target.closest('#cajaPpl') && !e.target.closest('.pad-num')) {
+                // Removida la sobreescritura automática molesta de clicks externos para proteger tu 0 y 1
+            }
+        });
 
         function rotarTema() {
             reproducirSonido('menu'); document.body.classList.remove(themes[temaActualIdx]);
