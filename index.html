@@ -446,17 +446,30 @@
             actualizarHeaderIndicadores(); calc();
         }
 
+        // ➕ FUNCIÓN COMPLETA PARA ACUMULAR ARTÍCULOS RETENIENDO SU IVU INDIVIDUAL
         function addProducto() {
             let val = parseFloat(sSub) || 0;
             if (val > 0) {
                 reproducirSonido('add');
                 let dPct = modoDescuentoActivo ? (parseInt(memoriaDescuentoPct) || 0) : 0;
-                let rebaja = val * (dPct / 100), precioDescontado = val - rebaja, ivuIndividual = precioDescontado * (ivu / 100), totalArticulo = precioDescontado + ivuIndividual;
-                preciosGuardados.push({ precio: val, descuento: rebaja, ivuCalculado: ivuIndividual, total: totalArticulo });
+                let rebaja = val * (dPct / 100), precioDescontado = val - rebaja;
+                
+                // 🚨 CAPTURA Y CONGELACIÓN: Guardamos el valor actual del IVU fijo en este artículo
+                let ivuIndividual = precioDescontado * (ivu / 100);
+                let totalArticulo = precioDescontado + ivuIndividual;
+                
+                preciosGuardados.push({ 
+                    precio: val, 
+                    descuento: rebaja, 
+                    ivuCalculado: ivuIndividual, 
+                    porcientoIvuUsado: ivu, // Bloqueamos si fue 11.5% o 0.0%
+                    total: totalArticulo 
+                });
+                
                 cuentaAcumulada += val; sSub = "0"; document.getElementById('lblSub').innerText = "0";
                 const con = document.getElementById('listaPrecios');
                 
-                con.innerHTML = preciosGuardados.map((item, i) => '<div>• Artículo #' + (i+1) + ': $' + item.total.toFixed(2) + ' (Neto: $' + item.precio.toFixed(2) + ')</div>').join('');
+                con.innerHTML = preciosGuardados.map((item, i) => '<div>• Art. #' + (i+1) + ': $' + item.total.toFixed(2) + ' (IVU: ' + item.porcientoIvuUsado.toFixed(1) + '%)</div>').join('');
                 if(preciosGuardados.length > 0) {
                     let totalConTaxAcumulado = preciosGuardados.reduce((sum, item) => sum + item.total, 0);
                     con.innerHTML += '<div style="border-top:1px dashed rgba(0,0,0,0.3); font-weight:900; margin-top:2px;">Base Acum. (w/IVU): $' + totalConTaxAcumulado.toFixed(2) + '</div>';
@@ -466,56 +479,61 @@
             }
         }
 
-        function detectarDesplazamiento() { document.getElementById('flechaGuia').style.display = "none"; }
-
         function clr() {
             reproducirSonido('tecla'); sSub = "0"; cuentaAcumulada = 0; preciosGuardados = [];
-            document.getElementById('lblSub').innerText = "0"; document.getElementById('listaPrecios').innerHTML = '<i class="lcd-tipeo">Añade artículos a la lista</i>';
+            document.getElementById('lblSub').innerText = "0"; document.getElementById('listaPrecios').innerHTML = "<i>Lista vacía...</i>";
             document.getElementById('flechaGuia').style.display = "none"; sPpl = "0"; modoSerruchoActivo = false; memoriaSerruchoCortes = "2";
             document.getElementById('lblPpl').innerText = "N/A"; sDesc = "0"; memoriaDescuentoPct = "0"; modoDescuentoActivo = false; document.getElementById('lblDesc').innerText = "0";
-            sTip = "15"; memoriaTipPct = "15"; incluirPropina = false; recienEntradoAPropina = false; 
+            sTip = "15"; memoriaTipPct = "15"; incluirPropina = false; recienEntradoAPropina = false;
             
-            // Fuerza al botón interruptor a reiniciarse en modo IVU (11.5%) brillante
-                        ivu = 11.5;
+            ivu = 11.5;
             const btnHolo = document.getElementById('btnToggleIvu');
-            const titleTextHolo = document.getElementById('btnIvuTitleText');
             const valTextHolo = document.getElementById('btnIvuValText');
-            if(btnHolo && titleTextHolo && valTextHolo) { 
+            if(btnHolo && valTextHolo) { 
                 btnHolo.className = "caja-data btn-on"; 
-                titleTextHolo.style.color = "#fff";
                 valTextHolo.innerText = "11.5%";
                 valTextHolo.style.color = "#000";
             }
-
-
-            
             seleccionarMenu('sub');
         }
 
+
+        // 🧮 PROCESADOR MATEMÁTICO DE VALORES MIXTOS EN TIEMPO REAL
         function calc() {
             let numPplRaw = parseInt(sPpl);
             let nSerrucho = (modoSerruchoActivo && !isNaN(numPplRaw) && numPplRaw > 1) ? numPplRaw : 1;
             let dPct = modoDescuentoActivo ? (parseInt(memoriaDescuentoPct) || 0) : 0;
             let tPct = incluirPropina ? (parseInt(memoriaTipPct) || 0) : 0;
-            let nSub = cuentaAcumulada + (parseFloat(sSub) || 0);
             
-            let rebajaTotal = nSub * (dPct / 100);
+            // 🚨 SUMATORIA MIXTA HISTÓRICA: Procesamos los impuestos ya congelados en el historial
+            let sumaPreciosGuardados = preciosGuardados.reduce((sum, item) => sum + item.precio, 0);
+            let sumaDescuentosGuardados = preciosGuardados.reduce((sum, item) => sum + item.descuento, 0);
+            let impuestoTotalAcumulado = preciosGuardados.reduce((sum, item) => sum + item.ivuCalculado, 0);
+            
+            // Procesamos el valor que se está escribiendo actualmente en el teclado en vivo
+            let precioEnTeclado = parseFloat(sSub) || 0;
+            let descuentoEnTeclado = precioEnTeclado * (dPct / 100);
+            let precioDescontadoTeclado = precioEnTeclado - descuentoEnTeclado;
+            let impuestoEnTeclado = precioDescontadoTeclado * (ivu / 100); // Usa el IVU del botón actual
+            
+            // Consolidación final granular
+            let nSub = sumaPreciosGuardados + precioEnTeclado;
+            let rebajaTotal = sumaDescuentosGuardados + descuentoEnTeclado;
+            let impuestoTotal = impuestoTotalAcumulado + impuestoEnTeclado;
+            
             let subtotalDescontado = nSub - rebajaTotal;
-            let impuestoTotal = subtotalDescontado * (ivu / 100);
             let propinaTotal = subtotalDescontado * (tPct / 100);
             let totalNetoGlobal = subtotalDescontado + impuestoTotal + propinaTotal;
             let porSerrucho = totalNetoGlobal / nSerrucho;
             
-            document.getElementById('outDesc').innerText = '-$' + rebajaTotal.toFixed(2); 
-            document.getElementById('outTip').innerText = '$' + propinaTotal.toFixed(2);
-            document.getElementById('outIvu').innerText = '$' + impuestoTotal.toFixed(2); 
+            document.getElementById('outDesc').innerText = '-\$' + rebajaTotal.toFixed(2); 
+            document.getElementById('outTip').innerText = '\$' + propinaTotal.toFixed(2);
+            document.getElementById('outIvu').innerText = '\$' + impuestoTotal.toFixed(2); 
             document.getElementById('outPer').innerText = totalNetoGlobal.toFixed(2);
             
-            // 🚨 SOLUCIÓN OPACIDAD: Las filas suben a 100% brillante (opacity: 1) de cantazo al encender cada botón
             document.getElementById('rowDesc').style.opacity = modoDescuentoActivo ? "1" : "0.3";
             document.getElementById('rowTip').style.opacity = incluirPropina ? "1" : "0.3";
 
-            // 🚨 SOLUCIÓN SERRUCHO: Actualización al instante con cálculo matemático exacto en tiempo real
             if (modoSerruchoActivo) {
                 document.getElementById('txtSerruchoLabelType').innerText = `SERRUCHO (C/U): `;
                 document.getElementById('outPerPersonaLine').innerText = '$' + porSerrucho.toFixed(2);
@@ -534,46 +552,56 @@
             actualizarHeaderIndicadores();
         }
 
-        function rotarTema() {
-            reproducirSonido('menu');
-            document.body.classList.remove(themes[temaActualIdx]);
-            temaActualIdx = (temaActualIdx + 1) % themes.length;
-            document.body.classList.add(themes[temaActualIdx]);
-            calc();
-        }
-
+        // 🌌 CONSTRUCTOR DE IMPRESIÓN VECTORIAL DE LA PROYECCIÓN HOLOGRÁFICA FISCAL MIXTA
         function abrirHologramaRecibo() {
             reproducirSonido('caja');
             let numPplRaw = parseInt(sPpl); 
-            let nSerruchoInternal = (modoSerruchoActivo && !isNaN(numPplRaw) && numPplRaw > 1) ? numPplRaw : 1;
+            let nPpl = (modoSerruchoActivo && !isNaN(numPplRaw) && numPplRaw > 1) ? numPplRaw : 1;
             let dPct = modoDescuentoActivo ? (parseInt(memoriaDescuentoPct) || 0) : 0;
             let tPct = incluirPropina ? (parseInt(memoriaTipPct) || 0) : 0;
-            let nSub = cuentaAcumulada + (parseFloat(sSub) || 0);
-            let rebajaTotal = nSub * (dPct / 100), subtotalDescontado = nSub - rebajaTotal, impuestoTotal = subtotalDescontado * (ivu / 100), propinaTotal = subtotalDescontado * (tPct / 100), totalNetoGlobal = subtotalDescontado + impuestoTotal + propinaTotal;
+            
+            // Recalculamos con la misma matriz mixta para pintar el ticket nítido
+            let sumaPreciosGuardados = preciosGuardados.reduce((sum, item) => sum + item.precio, 0);
+            let sumaDescuentosGuardados = preciosGuardados.reduce((sum, item) => sum + item.descuento, 0);
+            let impuestoTotalAcumulado = preciosGuardados.reduce((sum, item) => sum + item.ivuCalculado, 0);
+            
+            let precioEnTeclado = parseFloat(sSub) || 0;
+            let descuentoEnTeclado = precioEnTeclado * (dPct / 100);
+            let precioDescontadoTeclado = precioEnTeclado - descuentoEnTeclado;
+            let impuestoEnTeclado = precioDescontadoTeclado * (ivu / 100);
+            
+            let nSub = sumaPreciosGuardados + precioEnTeclado;
+            let rebajaTotal = sumaDescuentosGuardados + descuentoEnTeclado;
+            let impuestoTotal = impuestoTotalAcumulado + impuestoEnTeclado;
+            
+            let subtotalDescontado = nSub - rebajaTotal;
+            let propinaTotal = subtotalDescontado * (tPct / 100);
+            let totalNetoGlobal = subtotalDescontado + impuestoTotal + propinaTotal;
             
             let txt = `===============================\n   CALCULADORA DE RESIDEUS\n===============================\n`;
             txt += `Fecha: ${new Date().toLocaleDateString()} | Hora: ${new Date().toLocaleTimeString()}\n`;
-            txt += `Configuración IVU: ${ivu.toFixed(1)}%\n-------------------------------\n`;
+            txt += `-------------------------------\n`;
             
             if(preciosGuardados.length > 0) {
                 txt += `Artículos Guardados:\n`;
                 preciosGuardados.forEach((a, i) => {
-                    txt += ` #${i+1}: $${a.total.toFixed(2)}  (Neto: $${a.precio.toFixed(2)})\n`;
+                    // Pintamos en el recibo el IVU real con el que se guardó ese producto
+                    txt += ` #${i+1}: $${a.total.toFixed(2)}  (IVU: ${a.porcientoIvuUsado.toFixed(1)}%)\n`;
                 });
                 txt += `-------------------------------\n`;
             }
             
-            txt += `Total Neto:     $${nSub.toFixed(2)}\n`;
-            if(dPct > 0) txt += `Descuento (-${dPct}%):  -$${rebajaTotal.toFixed(2)}\n`;
-            if(tPct > 0) txt += `Propina (${tPct}%):     $${propinaTotal.toFixed(2)}\n`;
-            txt += `IVU Facturado:     $${impuestoTotal.toFixed(2)}\n`;
+            txt += `Importe Base:      $${nSub.toFixed(2)}\n`;
+            if(rebajaTotal > 0) txt += `Descuento:         -$${rebajaTotal.toFixed(2)}\n`;
+            if(propinaTotal > 0) txt += `Propina (${tPct}%):     $${propinaTotal.toFixed(2)}\n`;
+            txt += `IVU Acumulado:     $${impuestoTotal.toFixed(2)}\n`;
             txt += `===============================\n`;
-            txt += `TOTAL:        $${totalNetoGlobal.toFixed(2)}\n`;
+            txt += `TOTAL NETO:        $${totalNetoGlobal.toFixed(2)}\n`;
             txt += `===============================\n`;
             
             if(modoSerruchoActivo && numPplRaw > 1) {
                 txt += `SERRUCHO COMPARTIDO: ${numPplRaw} partes\n`;
-                txt += `CUOTA INDIVIDUAL:  $${(totalNetoGlobal / nSerruchoInternal).toFixed(2)}\n`;
+                txt += `CUOTA INDIVIDUAL:  $${(totalNetoGlobal / nPpl).toFixed(2)}\n`;
                 txt += `===============================\n`;
             }
             txt += ` ¡Gracias por usar la app!`;
@@ -583,6 +611,7 @@
             document.getElementById('btnCopiarHolo').innerText = "Copiar";
             document.getElementById('visorHolograma').classList.add('activo');
         }
+
 
         function cerrarHologramaRecibo() {
             reproducirSonido('menu');
