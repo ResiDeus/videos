@@ -111,15 +111,13 @@
         body.theme-matrix .on-anim { animation: glowMatrix 1.2s infinite ease-in-out; }
         body.theme-sunset .on-anim { animation: glowSunset 1.2s infinite ease-in-out; }
         .on-anim { animation: glow 1.2s infinite ease-in-out; }
-        @keyframes glowGold { 0%, 100% { box-shadow: 0 0 8px #d97706; } 50% { box-shadow: 0 0 12px #d97706; } }
-        @keyframes glowMatrix { 0%, 100% { box-shadow: 0 0 8px #10b981; } 50% { box-shadow: 0 0 12px #10b981; } }
-        @keyframes glowSunset { 0%, 100% { box-shadow: 0 0 8px #f97316; } 50% { box-shadow: 0 0 12px #f97316; } }
     </style>
 </head>
 <body class="theme-cyberpunk">
     <div class="sky"></div>
     <div class="grid3d"></div>
     <div class="chasis">
+        <!-- PANTALLA LCD CORREGIDA CON TOTAL SIEMPRE FIJO -->
         <div class="lcd">
             <div class="lcd-header">
                 <span id="lblArt">Calculadora de ResiDeus</span>
@@ -133,7 +131,12 @@
                 <div id="rowDesc" style="opacity: 0.3;">DESCUENTO: <span id="outDesc">-$0.00</span></div>
                 <div id="rowTip" style="opacity: 0.2;">PROPINA (<span id="txtTipPct">OFF</span>): <span id="outTip">$0.00</span></div>
                 <div>TAX: <span id="outIvu">$0.00</span></div>
-                <div class="lcd-total"><span id="lblTotalType">TOTAL</span>: $<span id="outPer">0.00</span></div>
+                
+                <!-- NUEVA LÍNEA POR PERSONA: Pequena y deshabilitable -->
+                <div id="rowPersonaCuota" style="opacity: 0.25; font-size: 11px; margin-bottom: 2px;">C/U (<span id="txtCantPers">OFF</span>): <span id="outPerPersonaLine">$0.00</span></div>
+                
+                <!-- TOTAL SIEMPRE FIJO Y PRINCIPAL -->
+                <div class="lcd-total">TOTAL: $<span id="outPer">0.00</span></div>
             </div>
         </div>
 
@@ -212,6 +215,7 @@
             document.getElementById('txtHeaderIndicadores').innerText = texto;
         }
 
+        /* CORRECCIÓN: Los botones de acción se deshabilitan SOLO en descuento/propina, permitiendo usar número y borrar en Personas */
         function seleccionarMenu(f) {
             reproducirSonido('menu');
             const btnReset = document.getElementById('btnResetGlobal'), btnAnadir = document.getElementById('btnAnadirGlobal'), btnPunto = document.getElementById('btnPunto');
@@ -234,12 +238,12 @@
 
             if (mode === 'sub') {
                 numPpl.innerText = modoPersonasActivo ? memoriaPersonasNum : "OFF";
-                document.getElementById('lblTotalType').innerText = modoPersonasActivo ? `C/U (${memoriaPersonasNum} pers.)` : "TOTAL";
                 btnReset.disabled = false; btnAnadir.disabled = false; btnPunto.disabled = false; 
                 numSub.classList.add('blink-num'); document.getElementById('cajaSub').className = "caja-data btn-on on-anim";
             } else if (mode === 'ppl') {
-                numPpl.innerText = sPpl; document.getElementById('lblTotalType').innerText = `C/U (${sPpl} pers.)`;
-                btnReset.disabled = true; btnAnadir.disabled = true; btnPunto.disabled = true; 
+                numPpl.innerText = sPpl;
+                // REPARADO: Quitamos los bloqueos para que el teclado responda al 100% en personas
+                btnReset.disabled = false; btnAnadir.disabled = false; btnPunto.disabled = true; 
                 numPpl.classList.add('blink-num'); document.getElementById('cajaPpl').className = "caja-data btn-on on-anim";
             } else if (mode === 'desc') {
                 btnReset.disabled = true; btnAnadir.disabled = true; btnPunto.disabled = true;
@@ -266,22 +270,21 @@
                 sSub += c; if(parseFloat(sSub) > 99999) sSub = "99999";
                 document.getElementById('lblSub').innerText = sSub;
             } else if (mode === 'ppl') {
+                // REPARADO: Escritura limpia para numero de personas
                 if (c === '.' || sPpl === "OFF" || sPpl === "0" || sPpl === "2") sPpl = "";
                 sPpl = (sPpl + c).substring(0, 2); let valInt = parseInt(sPpl) || 0;
                 if(valInt > 50) sPpl = "50";
                 if(valInt === 0) { sPpl = "OFF"; modoPersonasActivo = false; }
-                else { memoriaPersonasNum = sPpl; }
+                else { memoriaPersonasNum = sPpl; modoPersonasActivo = true; }
                 document.getElementById('lblPpl').innerText = sPpl;
             } else if (mode === 'desc') {
                 if (c === '.' || sDesc === "0") sDesc = "";
                 sDesc = (sDesc + c).substring(0, 2); let valInt = parseInt(sDesc) || 0;
-                if(valInt > 99) sDesc = "99";
-                document.getElementById('lblDesc').innerText = sDesc;
+                if(valInt > 99) sDesc = "99"; document.getElementById('lblDesc').innerText = sDesc;
             } else if (mode === 'tip') {
                 if (recienEntradoAPropina || sTip === "0") { sTip = ""; recienEntradoAPropina = false; }
                 if (c === '.') return; sTip = (sTip + c).substring(0, 2); let valInt = parseInt(sTip) || 0;
-                if(valInt > 50) sTip = "50";
-                document.getElementById('lblTip').innerText = sTip;
+                if(valInt > 50) sTip = "50"; document.getElementById('lblTip').innerText = sTip;
             }
             calc();
         }
@@ -289,7 +292,13 @@
         function bksp() {
             reproducirSonido('tecla');
             if (mode === 'sub') { sSub = sSub.slice(0, -1); if (!sSub) sSub = "0"; document.getElementById('lblSub').innerText = sSub; }
-            else if (mode === 'ppl') { sPpl = sPpl.slice(0, -1); if (!sPpl || sPpl === "0") { sPpl = "OFF"; modoPersonasActivo = false; } else { memoriaPersonasNum = sPpl; } document.getElementById('lblPpl').innerText = sPpl; }
+            else if (mode === 'ppl') { 
+                // REPARADO: Borrado secuencial de digitos en personas
+                sPpl = sPpl.slice(0, -1); 
+                if (!sPpl || sPpl === "0" || sPpl === "OFF") { sPpl = "OFF"; modoPersonasActivo = false; } 
+                else { memoriaPersonasNum = sPpl; modoPersonasActivo = true; } 
+                document.getElementById('lblPpl').innerText = sPpl; 
+            }
             else if (mode === 'desc') { sDesc = sDesc.slice(0, -1); if (!sDesc) sDesc = "0"; document.getElementById('lblDesc').innerText = sDesc; }
             else if (mode === 'tip') { sTip = sTip.slice(0, -1); if (!sTip) sTip = "18"; document.getElementById('lblTip').innerText = sTip; }
             calc();
@@ -332,13 +341,27 @@
         function calc() {
             let nSub = cuentaAcumulada + (parseFloat(sSub) || 0), nPpl = (modoPersonasActivo && sPpl !== "OFF") ? (parseInt(sPpl) || 1) : 1, descPct = parseInt(sDesc) || 0, tipPct = incluirPropina ? (parseInt(sTip) || 0) : 0;
             let rebajaTotal = nSub * (descPct / 100), subtotalDescontado = nSub - rebajaTotal, impuestoTotal = subtotalDescontado * (ivu / 100), propinaTotal = subtotalDescontado * (tipPct / 100), totalNetoGlobal = subtotalDescontado + impuestoTotal + propinaTotal;
-            document.getElementById('outDesc').innerText = `-$${rebajaTotal.toFixed(2)}`; document.getElementById('outTip').innerText = `$${propinaTotal.toFixed(2)}`;
-            document.getElementById('outIvu').innerText = `$${impuestoTotal.toFixed(2)}`; document.getElementById('outPer').innerText = (totalNetoGlobal / nPpl).toFixed(2);
-            document.getElementById('lblTip').innerText = incluirPropina ? `${sTip}%` : "OFF"; document.getElementById('txtTipPct').innerText = incluirPropina ? `${sTip}%` : "OFF";
-            document.getElementById('lblDesc').innerText = sDesc; document.getElementById('lblPpl').innerText = modoPersonasActivo ? sPpl : "OFF";
-            document.getElementById('lblTotalType').innerText = modoPersonasActivo ? `C/U (${memoriaPersonasNum} pers.)` : "TOTAL";
+            let porPersona = totalNetoGlobal / (nPpl > 0 ? nPpl : 1);
+            
+            document.getElementById('outDesc').innerText = `-$${rebajaTotal.toFixed(2)}`; 
+            document.getElementById('outTip').innerText = `$${propinaTotal.toFixed(2)}`;
+            document.getElementById('outIvu').innerText = `$${impuestoTotal.toFixed(2)}`;
+            
+            // PANEL DE DIVISION CON OPACIDAD INTELIGENTE
+            document.getElementById('outPerPersonaLine').innerText = `$${porPersona.toFixed(2)}`;
+            document.getElementById('txtCantPers').innerText = modoPersonasActivo ? `${memoriaPersonasNum} pers.` : "OFF";
+            document.getElementById('rowPersonaCuota').style.opacity = modoPersonasActivo ? "1" : "0.25";
+            
+            // TOTAL FIJO SIEMPRE VISIBLE ABAJO
+            document.getElementById('outPer').innerText = totalNetoGlobal.toFixed(2);
+            
+            document.getElementById('lblTip').innerText = incluirPropina ? `${sTip}%` : "OFF"; 
+            document.getElementById('txtTipPct').innerText = incluirPropina ? `${sTip}%` : "OFF";
+            document.getElementById('lblDesc').innerText = sDesc; 
+            document.getElementById('lblPpl').innerText = modoPersonasActivo ? sPpl : "OFF";
             document.getElementById('lblArt').innerText = preciosGuardados.length ? `Cuenta (${preciosGuardados.length} art.)` : "Calculadora de ResiDeus";
-            document.getElementById('rowDesc').style.opacity = (descPct > 0) ? "1" : "0.3"; document.getElementById('rowTip').style.opacity = incluirPropina ? "1" : "0.2";
+            document.getElementById('rowDesc').style.opacity = (descPct > 0) ? "1" : "0.3"; 
+            document.getElementById('rowTip').style.opacity = incluirPropina ? "1" : "0.2";
             actualizarHeaderIndicadores();
         }
 
@@ -347,6 +370,7 @@
             temaActualIdx = (temaActualIdx + 1) % themes.length; document.body.classList.add(themes[temaActualIdx]); calc();
         }
 
+        /* SOLUCIÓN: Genera el ticket con los desgloses de personas y lo copia en automático */
         function exportarRecibo() {
             reproducirSonido('add');
             let nSub = cuentaAcumulada + (parseFloat(sSub) || 0), nPpl = (modoPersonasActivo && sPpl !== "OFF") ? (parseInt(sPpl) || 1) : 1, descPct = parseInt(sDesc) || 0, tipPct = incluirPropina ? (parseInt(sTip) || 0) : 0;
@@ -357,9 +381,15 @@
             if(descPct > 0) txt += ` Descuento (${descPct}%): -$${rebajaTotal.toFixed(2)}\n`;
             if(tipPct > 0) txt += ` Propina (${tipPct}%): $${propinaTotal.toFixed(2)}\n`;
             txt += ` Impuestos: $${impuestoTotal.toFixed(2)}\n Total Neto: $${totalNetoGlobal.toFixed(2)}\n`;
-            if(nPpl > 1) txt += `-----------------------\n Dividido entre: ${nPpl} personas\n CUOTA POR PERSONA: $${(totalNetoGlobal / nPpl).toFixed(2)}\n`;
+            if(modoPersonasActivo && nPpl > 1) txt += `-----------------------\n Dividido entre: ${nPpl} personas\n CUOTA POR PERSONA: $${(totalNetoGlobal / nPpl).toFixed(2)}\n`;
             txt += `=======================\n¡Gracias por usar Calculadora de ResiDeus!`;
-            alert(txt); console.log(txt);
+            
+            // MECANISMO DE COPIADO AUTOMÁTICO EN PORTAPAPELES DE IPHONE/ANDROID
+            navigator.clipboard.writeText(txt).then(() => {
+                alert("¡Recibo copiado al portapapeles con éxito!\n\n" + txt);
+            }).catch(() => {
+                alert(txt); // Respaldo si el navegador bloquea permisos
+            });
         }
         actualizarHeaderIndicadores(); calc();
     </script>
