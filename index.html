@@ -27,8 +27,9 @@
         body.theme-matrix { background: linear-gradient(180deg, #022c22 0%, #050505 100%) !important; }
         body.theme-sunset { background: linear-gradient(180deg, #451a03 0%, #78350f 100%) !important; }
 
-        .sky { position: absolute; width: 100%; height: 100%; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent), radial-gradient(1.5px 1px at 75px 120px, #fff9, transparent); background-size: 380px 380px; z-index: 1; animation: twk 4s infinite linear; }
-        .grid3d { position: absolute; width: 100%; height: 40%; bottom: 0; background-size: 40px 40px; transform: perspective(180px) rotateX(65deg); transform-origin: top center; z-index: 1; animation: gM 2.5s infinite linear; }
+        /* SOLUCIÓN: Agregado pointer-events: none para que el fondo no tape los clicks del usuario */
+        .sky { position: absolute; width: 100%; height: 100%; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent), radial-gradient(1.5px 1px at 75px 120px, #fff9, transparent); background-size: 380px 380px; z-index: 1; animation: twk 4s infinite linear; pointer-events: none; }
+        .grid3d { position: absolute; width: 100%; height: 40%; bottom: 0; background-size: 40px 40px; transform: perspective(180px) rotateX(65deg); transform-origin: top center; z-index: 1; animation: gM 2.5s infinite linear; pointer-events: none; }
         
         body.theme-cyberpunk .grid3d { background-image: linear-gradient(rgba(255, 0, 127, 0.2) 2px, transparent 2px), linear-gradient(90deg, rgba(255, 0, 127, 0.2) 2px, transparent 2px); }
         body.theme-retro-gold .grid3d { background-image: linear-gradient(rgba(217, 119, 6, 0.2) 2px, transparent 2px), linear-gradient(90deg, rgba(217, 119, 6, 0.2) 2px, transparent 2px); }
@@ -37,6 +38,7 @@
 
         @keyframes twk { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
         @keyframes gM { 0% { background-position: 0 0; } 100% { background-position: 0 40px; } }
+        
         .chasis { width: 340px; height: auto; min-height: 580px; background: #241434; border: 4px solid #ff007f; box-shadow: 0 0 25px #ff007f80; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; border-radius: 24px; overflow: hidden; display: flex; flex-direction: column; padding: 8px; gap: 6px; transition: all 0.3s ease; }
         body.theme-retro-gold .chasis { background: #292524; border-color: #d97706; box-shadow: 0 0 25px #d9770680; }
         body.theme-matrix .chasis { background: #0a0a0a; border-color: #10b981; box-shadow: 0 0 25px #10b98180; }
@@ -135,7 +137,7 @@
                 <!-- TOTAL PRINCIPAL FIJO ARRIBA -->
                 <div class="lcd-total" style="margin-bottom: 1px;">TOTAL: $<span id="outPer">0.00</span></div>
                 
-                <!-- REGLA: "TOTAL C/U" reemplazado por la etiqueta criolla "SERRUCHO" -->
+                <!-- REGLA: TOTAL C/U muestra dinamicamente (1 pers.) si Serrucho esta inactivo -->
                 <div id="rowPersonaCuota" style="opacity: 0.25; font-size: 11px; margin-top: 1px;">SERRUCHO (<span id="txtCantPers">1 pers.</span>): <span id="outPerPersonaLine">$0.00</span></div>
             </div>
         </div>
@@ -146,7 +148,6 @@
                 <span class="lbl-val">$<span id="lblSub" class="blink-num">0</span></span>
             </div>
             <div id="cajaPpl" class="caja-data btn-off" onclick="seleccionarMenu('ppl')">
-                <!-- REGLA: Reemplazado "Personas" por "Serrucho" -->
                 <span class="lbl-title">Serrucho</span>
                 <span class="lbl-val"><span id="lblPpl">1</span></span>
             </div>
@@ -210,7 +211,6 @@
             } catch (e) {}
         }
 
-        // REGLA: Reformateada la visualización del Top para usar etiquetas TIP y OFF de forma compacta
         function actualizarHeaderIndicadores() {
             let texto = `IVU: ${ivu.toFixed(1)}%`;
             if (incluirPropina && parseInt(sTip) > 0) { texto += ` | TIP: ${sTip}%`; }
@@ -317,7 +317,6 @@
                 cuentaAcumulada += val; sSub = "0"; document.getElementById('lblSub').innerText = "0";
                 const con = document.getElementById('listaPrecios');
                 
-                // REGLA: Formato corregido -> "• Artículo #1: $PrecioConIVU (Neto: $PrecioBase)"
                 con.innerHTML = preciosGuardados.map((item, i) => `<div>• Artículo #${i+1}: $${item.total.toFixed(2)} (Neto: $${item.precio.toFixed(2)})</div>`).join('');
                 if(preciosGuardados.length > 0) {
                     let totalConTaxAcumulado = preciosGuardados.reduce((sum, item) => sum + item.total, 0);
@@ -347,7 +346,6 @@
             document.getElementById('outIvu').innerText = `$${impuestoTotal.toFixed(2)}`; document.getElementById('outDescPctText').innerText = modoDescuentoActivo ? sDesc : "0";
             document.getElementById('outPerPersonaLine').innerText = `$${porPersona.toFixed(2)}`;
             
-            // REGLA: SERRUCHO muestra dinamicamente (1 pers.) si esta inactivo
             document.getElementById('txtCantPers').innerText = modoPersonasActivo ? `${memoriaPersonasNum} pers.` : "1 pers.";
             document.getElementById('rowPersonaCuota').style.opacity = modoPersonasActivo ? "1" : "0.25";
             document.getElementById('outPer').innerText = totalNetoGlobal.toFixed(2);
@@ -384,7 +382,6 @@
             });
         }
         actualizarHeaderIndicadores(); calc();
-        }
     </script>
 </body>
 </html>
