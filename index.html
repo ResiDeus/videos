@@ -139,7 +139,6 @@
                 </div>
             </div>
             <div class="lcd-body">
-                <!-- Las opacidades iniciales cambian dinámicamente con JS -->
                 <div id="rowDesc" style="opacity: 0.3; transition: opacity 0.15s ease;">DESCUENTO: <span id="outDesc">-$0.00</span></div>
                 <div id="rowTip" style="opacity: 0.2; transition: opacity 0.15s ease;">PROPINA: <span id="outTip">$0.00</span></div>
                 <div>IVU: <span id="outIvu">$0.00</span></div>
@@ -195,7 +194,7 @@
     <script>
         let ivu = 11.5, mode = 'sub', sSub = "0", incluirPropina = false, modoPersonasActivo = false, modoDescuentoActivo = false;
         let sDesc = "0", sTip = "15", sPpl = "2"; 
-        let memoriaDescuentoPct = "0", memoriaTipPct = "15", memoriaPersonasNum = "2";
+        let memoriaDescuentoPct = "0", memoriaTipPct = "15", memoriaSerruchoCortes = "2";
         let preciosGuardados = [], cuentaAcumulada = 0;
         let themes = ['theme-cyberpunk', 'theme-retro-gold', 'theme-matrix', 'theme-sunset'], temaActualIdx = 0, recienEntradoAPropina = false;
 
@@ -244,7 +243,7 @@
 
             if (f === 'ppl') {
                 if (mode === 'ppl') { modoPersonasActivo = false; mode = 'sub'; }
-                else { modoPersonasActivo = true; mode = 'ppl'; sPpl = memoriaPersonasNum; }
+                else { modoPersonasActivo = true; mode = 'ppl'; sPpl = memoriaSerruchoCortes; }
             } else if (f === 'tip') {
                 if (mode === 'tip') { incluirPropina = false; mode = 'sub'; recienEntradoAPropina = false; }
                 else { incluirPropina = true; mode = 'tip'; sTip = memoriaTipPct; recienEntradoAPropina = true; }
@@ -260,7 +259,7 @@
             if (modoPersonasActivo && mode !== 'ppl') document.getElementById('cajaPpl').className = "caja-data btn-on";
 
             if (mode === 'sub') {
-                numPpl.innerText = modoPersonasActivo ? memoriaPersonasNum : "N/A";
+                numPpl.innerText = modoPersonasActivo ? memoriaSerruchoCortes : "N/A";
                 numDesc.innerText = modoDescuentoActivo ? memoriaDescuentoPct : "0";
                 numTip.innerText = incluirPropina ? memoriaTipPct : "0";
                 btnReset.disabled = false; btnAnadir.disabled = false; btnPunto.disabled = false; 
@@ -294,8 +293,9 @@
                 document.getElementById('lblSub').innerText = sSub;
             } else if (mode === 'ppl') {
                 if (sPpl === "N/A" || sPpl === "0") sPpl = "";
+                // REGLA NUEVA: Permite ingresar libremente el 0 y el 1 sin bloqueos automáticos en caliente
                 sPpl = (sPpl + c).substring(0, 2);
-                memoriaPersonasNum = sPpl === "" ? "0" : sPpl;
+                memoriaSerruchoCortes = sPpl === "" ? "0" : sPpl;
                 modoPersonasActivo = true; document.getElementById('lblPpl').innerText = sPpl === "" ? "0" : sPpl;
             } else if (mode === 'desc') {
                 if (c === '.' || sDesc === "0") sDesc = "";
@@ -305,7 +305,6 @@
             } else if (mode === 'tip') {
                 if (recienEntradoAPropina || sTip === "0") { sTip = ""; recienEntradoAPropina = false; }
                 if (c === '.') return; 
-                // FIJADO: Teclado libre para capturar dos dígitos en la propina sin traba (ej. 25)
                 sTip = (sTip + c).substring(0, 2);
                 memoriaTipPct = sTip === "" ? "0" : sTip;
                 incluirPropina = true; document.getElementById('lblTip').innerText = sTip === "" ? "0" : sTip;
@@ -316,8 +315,13 @@
         function bksp() {
             reproducirSonido('tecla');
             if (mode === 'sub') { sSub = sSub.slice(0, -1); if (!sSub) sSub = "0"; document.getElementById('lblSub').innerText = sSub; }
-            else if (mode === 'ppl') { sPpl = sPpl.slice(0, -1); if (!sPpl) { sPpl = "0"; } memoriaPersonasNum = sPpl; document.getElementById('lblPpl').innerText = sPpl; }
-            else if (mode === 'desc') { sDesc = sDesc.slice(0, -1); if (!sDesc) { sDesc = "0"; } memoriaDescuentoPct = dDesc; document.getElementById('lblDesc').innerText = sDesc; }
+            else if (mode === 'ppl') { 
+                sPpl = sPpl.slice(0, -1); 
+                // REGLA NUEVA: Muestra 0 fijo si borras todo en el serrucho
+                if (!sPpl) { sPpl = "0"; }
+                memoriaSerruchoCortes = sPpl; document.getElementById('lblPpl').innerText = sPpl; 
+            }
+            else if (mode === 'desc') { sDesc = sDesc.slice(0, -1); if (!sDesc) { sDesc = "0"; } memoriaDescuentoPct = sDesc; document.getElementById('lblDesc').innerText = sDesc; }
             else if (mode === 'tip') { sTip = sTip.slice(0, -1); if (!sTip) { sTip = "0"; } memoriaTipPct = sTip; document.getElementById('lblTip').innerText = sTip; }
             calc();
         }
@@ -325,7 +329,7 @@
         function ce() {
             reproducirSonido('tecla');
             if (mode === 'sub') { sSub = "0"; document.getElementById('lblSub').innerText = "0"; }
-            else if (mode === 'ppl') { sPpl = "0"; memoriaPersonasNum = "2"; modoPersonasActivo = true; document.getElementById('lblPpl').innerText = "0"; }
+            else if (mode === 'ppl') { sPpl = "0"; memoriaSerruchoCortes = "0"; modoPersonasActivo = true; document.getElementById('lblPpl').innerText = "0"; }
             else if (mode === 'desc') { sDesc = "0"; memoriaDescuentoPct = "0"; modoDescuentoActivo = true; document.getElementById('lblDesc').innerText = "0"; }
             else if (mode === 'tip') { sTip = "0"; memoriaTipPct = "0"; recienEntradoAPropina = true; incluirPropina = true; document.getElementById('lblTip').innerText = "0"; }
             actualizarHeaderIndicadores(); calc();
@@ -340,10 +344,10 @@
                 preciosGuardados.push({ precio: val, descuento: rebaja, ivuCalculado: ivuIndividual, total: totalArticulo });
                 cuentaAcumulada += val; sSub = "0"; document.getElementById('lblSub').innerText = "0";
                 const con = document.getElementById('listaPrecios');
-                con.innerHTML = preciosGuardados.map((item, i) => `<div>• Artículo #${i+1}: $${item.total.toFixed(2)} (Neto: $${item.precio.toFixed(2)})</div>`).join('');
+                con.innerHTML = preciosGuardados.map((item, i) => `<div>• Artículo #\${i+1}: \[{item.total.toFixed(2)} (Neto:\]{item.precio.toFixed(2)})</div>`).join('');
                 if(preciosGuardados.length > 0) {
                     let totalConTaxAcumulado = preciosGuardados.reduce((sum, item) => sum + item.total, 0);
-                    con.innerHTML += `<div style="border-top:1px dashed rgba(0,0,0,0.3); font-weight:900; margin-top:2px;">Base Acum. (w/IVU): $${totalConTaxAcumulado.toFixed(2)}</div>`;
+                    con.innerHTML += `<div style="border-top:1px dashed rgba(0,0,0,0.3); font-weight:900; margin-top:2px;">Base Acum. (w/IVU): \$\${totalConTaxAcumulado.toFixed(2)}</div>`;
                 }
                 const f = document.getElementById('flechaGuia'); if (con.scrollHeight > con.clientHeight) f.style.display = "block";
                 con.scrollTop = con.scrollHeight; calc();
@@ -355,14 +359,16 @@
         function clr() {
             reproducirSonido('tecla'); sSub = "0"; cuentaAcumulada = 0; preciosGuardados = [];
             document.getElementById('lblSub').innerText = "0"; document.getElementById('listaPrecios').innerHTML = "<i>Lista vacía...</i>";
-            document.getElementById('flechaGuia').style.display = "none"; sPpl = "0"; modoPersonasActivo = false; memoriaPersonasNum = "2";
+            document.getElementById('flechaGuia').style.display = "none"; sPpl = "0"; modoPersonasActivo = false; memoriaSerruchoCortes = "2";
             document.getElementById('lblPpl').innerText = "N/A"; sDesc = "0"; memoriaDescuentoPct = "0"; modoDescuentoActivo = false; document.getElementById('lblDesc').innerText = "0";
             sTip = "15"; memoriaTipPct = "15"; incluirPropina = false; recienEntradoAPropina = false; seleccionarMenu('sub');
         }
 
         function calc() {
             let numPplRaw = parseInt(sPpl);
-            let nPpl = (modoPersonasActivo && !isNaN(numPplRaw) && numPplRaw > 1) ? numPplRaw : 1;
+            // REGLA SERRUCHO BORICUA: Si dejas 0 o 1, el motor calcula la division entre 1 de forma segura tras bastidores para no romper la matemática
+            let nSerrucho = (modoPersonasActivo && !isNaN(numPplRaw) && numPplRaw > 1) ? numPplRaw : 1;
+
             let dPct = modoDescuentoActivo ? (parseInt(memoriaDescuentoPct) || 0) : 0;
             let tPct = incluirPropina ? (parseInt(memoriaTipPct) || 0) : 0;
             let nSub = cuentaAcumulada + (parseFloat(sSub) || 0);
@@ -372,47 +378,39 @@
             let impuestoTotal = subtotalDescontado * (ivu / 100);
             let propinaTotal = subtotalDescontado * (tPct / 100);
             let totalNetoGlobal = subtotalDescontado + impuestoTotal + propinaTotal;
-            let porPersona = totalNetoGlobal / nPpl;
+            let porSerrucho = totalNetoGlobal / nSerrucho;
             
-            document.getElementById('outDesc').innerText = `-$${rebajaTotal.toFixed(2)}`; 
-            document.getElementById('outTip').innerText = `$${propinaTotal.toFixed(2)}`;
-            document.getElementById('outIvu').innerText = `$${impuestoTotal.toFixed(2)}`; 
+            document.getElementById('outDesc').innerText = `-\$\${rebajaTotal.toFixed(2)}`; 
+            document.getElementById('outTip').innerText = `\$\${propinaTotal.toFixed(2)}`;
+            document.getElementById('outIvu').innerText = `\$\${impuestoTotal.toFixed(2)}`; 
             document.getElementById('outPer').innerText = totalNetoGlobal.toFixed(2);
+            document.getElementById('outDescPctText').innerText = modoDescuentoActivo ? memoriaDescuentoPct : "0";
             
-            // REGLA CLAVE CORREGIDA: Cuando el botón se enciende, la fila en el LCD verde sube a opacidad 1 (100% brillante / Habilitada)
             document.getElementById('rowDesc').style.opacity = modoDescuentoActivo ? "1" : "0.3";
             document.getElementById('rowTip').style.opacity = incluirPropina ? "1" : "0.3";
 
             if (modoPersonasActivo) {
                 document.getElementById('txtSerruchoLabelType').innerText = `SERRUCHO (C/U): `;
-                document.getElementById('outPerPersonaLine').innerText = `$${porPersona.toFixed(2)}`;
-                document.getElementById('rowPersonaCuota').style.opacity = "1"; // Sube a 100% brillante si se activa el serrucho
+                document.getElementById('outPerPersonaLine').innerText = `\$\${porSerrucho.toFixed(2)}`;
+                document.getElementById('rowPersonaCuota').style.opacity = "1";
             } else {
                 document.getElementById('txtSerruchoLabelType').innerText = `SERRUCHO (C/U): N/A`;
                 document.getElementById('outPerPersonaLine').innerText = ``;
-                document.getElementById('rowPersonaCuota').style.opacity = "0.3"; // Se queda opaca (greyed out) si está apagada
+                document.getElementById('rowPersonaCuota').style.opacity = "0.3";
             }
             
             document.getElementById('lblTip').innerText = incluirPropina ? memoriaTipPct : "0"; 
-            document.getElementById('txtTipPct').innerText = incluirPropina ? `${memoriaTipPct}%` : "0%"
+            document.getElementById('txtTipPct').innerText = incluirPropina ? `${memoriaTipPct}%` : "0%";
             document.getElementById('lblDesc').innerText = modoDescuentoActivo ? memoriaDescuentoPct : "0"; 
-            if (mode !== 'ppl') { document.getElementById('lblPpl').innerText = modoPersonasActivo ? memoriaPersonasNum : "N/A"; }
+            if (mode !== 'ppl') { document.getElementById('lblPpl').innerText = modoPersonasActivo ? memoriaSerruchoCortes : "N/A"; }
             document.getElementById('lblArt').innerText = preciosGuardados.length ? `Cuenta (${preciosGuardados.length} artículos)` : "Calculadora de ResiDeus";
             actualizarHeaderIndicadores();
         }
-
-        document.addEventListener('click', function(e) {
-            if (mode === 'ppl' && !e.target.closest('#cajaPpl') && !e.target.closest('.pad-num')) {
-                let parsed = parseInt(sPpl) || 0; if (parsed < 2) { sPpl = "0"; memoriaPersonasNum = "2"; calc(); }
-            }
-        });
 
         function rotarTema() {
             reproducirSonido('menu'); document.body.classList.remove(themes[temaActualIdx]);
             temaActualIdx = (temaActualIdx + 1) % themes.length; document.body.classList.add(themes[temaActualIdx]); calc();
         }
-
-        function exportarRecibo() {
             reproducirSonido('add');
             let numPplRaw = parseInt(sPpl); 
             let nPpl = (modoPersonasActivo && !isNaN(numPplRaw) && numPplRaw > 1) ? numPplRaw : 1;
@@ -420,6 +418,8 @@
             let tPct = incluirPropina ? (parseInt(memoriaTipPct) || 0) : 0;
             let nSub = cuentaAcumulada + (parseFloat(sSub) || 0);
             let rebajaTotal = nSub * (dPct / 100), subtotalDescontado = nSub - rebajaTotal, impuestoTotal = subtotalDescontado * (ivu / 100), propinaTotal = subtotalDescontado * (tPct / 100), totalNetoGlobal = subtotalDescontado + impuestoTotal + propinaTotal;
+            
+            // FORMATO CRILLO BORICUA ADAPTADO AL SERRUCHO
             let txt = `=== Calculadora de ResiDeus ===\nFecha: ${new Date().toLocaleString()}\nIVU Config: ${ivu.toFixed(1)}%\n-----------------------\n`;
             if(preciosGuardados.length > 0) { txt += `Historial Guardado:\n`; preciosGuardados.forEach((a, i) => { txt += `  Artículo #${i+1}: $${a.total.toFixed(2)} -> Neto: $${a.precio.toFixed(2)}\n`; }); txt += `-----------------------\n`; }
             txt += `Desglose de Totales:\n Importe Base: $${nSub.toFixed(2)}\n`;
