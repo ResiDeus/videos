@@ -1,0 +1,21 @@
+{
+  "short_name": "ResiDeus",
+  "name": "Calculadora de ResiDeus",
+  "icons": [
+    {
+      "src": "./icon.jpg?v=200",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "./icon.jpg?v=200",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ],
+  "start_url": "./index.html",
+  "background_color": "#241434",
+  "theme_color": "#ff007f",
+  "display": "standalone",
+  "orientation": "portrait"
+}
