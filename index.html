@@ -525,12 +525,12 @@
                 txt += `-------------------------------\n`;
             }
             
-            txt += `TOTAL (sin IVU):      $${nSub.toFixed(2)}\n`;
+            txt += `Total Neto:     $${nSub.toFixed(2)}\n`;
             if(dPct > 0) txt += `Descuento (-${dPct}%):  -$${rebajaTotal.toFixed(2)}\n`;
             if(tPct > 0) txt += `Propina (${tPct}%):     $${propinaTotal.toFixed(2)}\n`;
             txt += `IVU Facturado:     $${impuestoTotal.toFixed(2)}\n`;
             txt += `===============================\n`;
-            txt += `TOTAL (con IVU):        $${totalNetoGlobal.toFixed(2)}\n`;
+            txt += `TOTAL:        $${totalNetoGlobal.toFixed(2)}\n`;
             txt += `===============================\n`;
             
             if(modoSerruchoActivo && numPplRaw > 1) {
