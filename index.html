@@ -474,11 +474,13 @@
             sTip = "15"; memoriaTipPct = "15"; incluirPropina = false; recienEntradoAPropina = false; 
             
             // Fuerza al botón interruptor a reiniciarse en modo IVU (11.5%) brillante
-            ivu = 11.5;
+                        ivu = 11.5;
             const btnHolo = document.getElementById('btnToggleIvu');
+            const titleTextHolo = document.getElementById('btnIvuTitleText');
             const valTextHolo = document.getElementById('btnIvuValText');
-            if(btnHolo && valTextHolo) { 
-                btnHolo.className = "btn-cfg btn-on"; 
+            if(btnHolo && titleTextHolo && valTextHolo) { 
+                btnHolo.className = "caja-data btn-on"; 
+                titleTextHolo.style.color = "#fff";
                 valTextHolo.innerText = "11.5%";
                 valTextHolo.style.color = "#000";
             }
