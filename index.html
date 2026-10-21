@@ -144,7 +144,7 @@
                 <!-- TOTAL PRINCIPAL FIJO ARRIBA -->
                 <div class="lcd-total" style="margin-bottom: 1px;">TOTAL: $<span id="outPer">0.00</span></div>
                 
-                <!-- REGLA: Removido "pers" y cambiado a C/U en mayúsculas sostenidas -->
+                <!-- REGLA: Removido el numero de personas al lado del total de la pantalla verde -->
                 <div id="rowPersonaCuota" style="opacity: 0.25; font-size: 11px; margin-top: 1px;"><span id="txtSerruchoLabelType">SERRUCHO: N/A</span><span id="outPerPersonaLine"></span></div>
             </div>
         </div>
@@ -234,7 +234,6 @@
             document.getElementById('txtHeaderIndicadores').innerText = texto;
         }
 
-        /* REGLA: Valida que si el serrucho se apaga o se deja en 0 o 1, internamente mantenga el minimo de 2 para el cálculo */
         function seleccionarMenu(f) {
             reproducirSonido('menu');
             const btnReset = document.getElementById('btnResetGlobal'), btnAnadir = document.getElementById('btnAnadirGlobal'), btnPunto = document.getElementById('btnPunto');
@@ -244,16 +243,15 @@
                 if (mode === 'ppl') { 
                     modoPersonasActivo = false; mode = 'sub'; 
                     let parsedPpl = parseInt(sPpl) || 0;
-                    if (parsedPpl < 2) { sPpl = "2"; memoriaPersonasNum = "2"; }
+                    if (parsedPpl < 2) { sPpl = "0"; memoriaPersonasNum = "2"; }
                 } else { 
                     modoPersonasActivo = true; mode = 'ppl'; 
-                    sPpl = memoriaPersonasNum; 
-                    if (sPpl === "" || sPpl === "0" || sPpl === "1") sPpl = ""; // Deja vacío para escribir libremente
+                    sPpl = memoriaPersonasNum === "2" ? "0" : memoriaPersonasNum; 
                 }
             } else {
                 if (mode === 'ppl') {
                     let parsedPpl = parseInt(sPpl) || 0;
-                    if (parsedPpl < 2) { sPpl = "2"; memoriaPersonasNum = "2"; }
+                    if (parsedPpl < 2) { sPpl = "0"; memoriaPersonasNum = "2"; }
                 }
                 if (f === 'tip') {
                     if (mode === 'tip') { incluirPropina = false; mode = 'sub'; recienEntradoAPropina = false; }
@@ -277,7 +275,7 @@
                 btnReset.disabled = false; btnAnadir.disabled = false; btnPunto.disabled = false; 
                 numSub.classList.add('blink-num'); document.getElementById('cajaSub').className = "caja-data btn-on on-anim";
             } else if (mode === 'ppl') {
-                numPpl.innerText = sPpl === "" ? " " : sPpl; btnReset.disabled = false; btnAnadir.disabled = true; btnPunto.disabled = true; 
+                numPpl.innerText = sPpl; btnReset.disabled = false; btnAnadir.disabled = true; btnPunto.disabled = true; 
                 numPpl.classList.add('blink-num'); document.getElementById('cajaPpl').className = "caja-data btn-on on-anim";
             } else if (mode === 'desc') {
                 numDesc.innerText = sDesc; btnReset.disabled = false; btnAnadir.disabled = true; btnPunto.disabled = true;
@@ -304,13 +302,13 @@
                 sSub += c; if(parseFloat(sSub) > 99999) sSub = "99999";
                 document.getElementById('lblSub').innerText = sSub;
             } else if (mode === 'ppl') {
-                // REPARADO: Permite escribir libremente cualquier digito incluyendo el 0 y el 1
-                if (sPpl === "N/A") sPpl = "";
+                // REGLA: Permite escribir el 0 o 1 de forma libre
+                if (sPpl === "N/A" || sPpl === "0") sPpl = "";
                 sPpl = (sPpl + c).substring(0, 2);
                 let valInt = parseInt(sPpl) || 0;
                 if (valInt > 99) sPpl = "99";
                 memoriaPersonasNum = sPpl === "" || sPpl === "0" || sPpl === "1" ? "2" : sPpl;
-                modoPersonasActivo = true; document.getElementById('lblPpl').innerText = sPpl === "" ? " " : sPpl;
+                modoPersonasActivo = true; document.getElementById('lblPpl').innerText = sPpl === "" ? "0" : sPpl;
             } else if (mode === 'desc') {
                 if (c === '.' || sDesc === "0") sDesc = "";
                 sDesc = (sDesc + c).substring(0, 2); let valInt = parseInt(sDesc) || 0;
@@ -327,10 +325,11 @@
             reproducirSonido('tecla');
             if (mode === 'sub') { sSub = sSub.slice(0, -1); if (!sSub) sSub = "0"; document.getElementById('lblSub').innerText = sSub; }
             else if (mode === 'ppl') { 
-                // REPARADO: Permite borrar completamente para dejar vacio y escribir otro numero libre
                 sPpl = sPpl.slice(0, -1); 
-                memoriaPersonasNum = sPpl === "" || sPpl === "0" || sPpl === "1" ? "2" : sPpl;
-                document.getElementById('lblPpl').innerText = sPpl === "" ? " " : sPpl; 
+                // REGLA: Si se borra todo, se muestra un 0 permanente
+                if (!sPpl) { sPpl = "0"; }
+                memoriaPersonasNum = sPpl === "0" || sPpl === "1" ? "2" : sPpl;
+                document.getElementById('lblPpl').innerText = sPpl; 
             }
             else if (mode === 'desc') { sDesc = sDesc.slice(0, -1); if (!sDesc || sDesc === "0") { sDesc = "0"; memoriaDescuentoPct = "0"; } else { memoriaDescuentoPct = sDesc; } document.getElementById('lblDesc').innerText = sDesc; }
             else if (mode === 'tip') { sTip = sTip.slice(0, -1); if (!sTip || sTip === "0") { sTip = "0"; memoriaTipPct = "0"; } else { memoriaTipPct = sTip; } document.getElementById('lblTip').innerText = sTip; }
@@ -340,7 +339,11 @@
         function ce() {
             reproducirSonido('tecla');
             if (mode === 'sub') { sSub = "0"; document.getElementById('lblSub').innerText = "0"; }
-            else if (mode === 'ppl') { sPpl = ""; memoriaPersonasNum = "2"; modoPersonasActivo = true; document.getElementById('lblPpl').innerText = " "; }
+            else if (mode === 'ppl') { 
+                // REGLA: Si le das clear al serrucho, se restablece a 0 en pantalla
+                sPpl = "0"; memoriaPersonasNum = "2"; modoPersonasActivo = true; 
+                document.getElementById('lblPpl').innerText = "0"; 
+            }
             else if (mode === 'desc') { sDesc = "0"; memoriaDescuentoPct = "0"; modoDescuentoActivo = true; document.getElementById('lblDesc').innerText = "0"; }
             else if (mode === 'tip') { sTip = "0"; memoriaTipPct = "0"; recienEntradoAPropina = true; incluirPropina = true; document.getElementById('lblTip').innerText = "0"; }
             actualizarHeaderIndicadores(); calc();
@@ -369,7 +372,7 @@
         function clr() {
             reproducirSonido('tecla'); sSub = "0"; cuentaAcumulada = 0; preciosGuardados = [];
             document.getElementById('lblSub').innerText = "0"; document.getElementById('listaPrecios').innerHTML = "<i>Lista vacía...</i>";
-            document.getElementById('flechaGuia').style.display = "none"; sPpl = "2"; modoPersonasActivo = false; memoriaPersonasNum = "2";
+            document.getElementById('flechaGuia').style.display = "none"; sPpl = "0"; modoPersonasActivo = false; memoriaPersonasNum = "2";
             document.getElementById('lblPpl').innerText = "N/A"; sDesc = "0"; memoriaDescuentoPct = "0"; modoDescuentoActivo = false; document.getElementById('lblDesc').innerText = "0";
             sTip = "0"; memoriaTipPct = "0"; incluirPropina = false; recienEntradoAPropina = false; seleccionarMenu('sub');
         }
@@ -385,10 +388,10 @@
             document.getElementById('outDesc').innerText = `-$${rebajaTotal.toFixed(2)}`; document.getElementById('outTip').innerText = `$${propinaTotal.toFixed(2)}`;
             document.getElementById('outIvu').innerText = `$${impuestoTotal.toFixed(2)}`; document.getElementById('outDescPctText').innerText = modoDescuentoActivo ? sDesc : "0";
             
-            // REGLA: Removido "pers" y cambiado el desglose verde a TOTAL C/U en mayusculas sostenidas
+            // REGLA: Eliminado permanentemente el numero de personas entre parentesis de la pantalla verde
             if (modoPersonasActivo) {
                 document.getElementById('txtSerruchoLabelType').innerText = `SERRUCHO (C/U): `;
-                document.getElementById('outPerPersonaLine').innerText = `$${porPersona.toFixed(2)} (${memoriaPersonasNum})`;
+                document.getElementById('outPerPersonaLine').innerText = `$${porPersona.toFixed(2)}`;
                 document.getElementById('rowPersonaCuota').style.opacity = "1";
             } else {
                 document.getElementById('txtSerruchoLabelType').innerText = `SERRUCHO: N/A`;
@@ -408,7 +411,7 @@
         document.addEventListener('click', function(e) {
             if (mode === 'ppl' && !e.target.closest('#cajaPpl') && !e.target.closest('.pad-num')) {
                 let parsed = parseInt(sPpl) || 0;
-                if (parsed < 2) { sPpl = "2"; memoriaPersonasNum = "2"; calc(); }
+                if (parsed < 2) { sPpl = "0"; memoriaPersonasNum = "2"; calc(); }
             }
         });
 
