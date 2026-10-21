@@ -27,7 +27,6 @@
         body.theme-matrix { background: linear-gradient(180deg, #022c22 0%, #050505 100%) !important; }
         body.theme-sunset { background: linear-gradient(180deg, #451a03 0%, #78350f 100%) !important; }
 
-        /* SOLUCIÓN: Agregado pointer-events: none para que el fondo no tape los clicks del usuario */
         .sky { position: absolute; width: 100%; height: 100%; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent), radial-gradient(1.5px 1px at 75px 120px, #fff9, transparent); background-size: 380px 380px; z-index: 1; animation: twk 4s infinite linear; pointer-events: none; }
         .grid3d { position: absolute; width: 100%; height: 40%; bottom: 0; background-size: 40px 40px; transform: perspective(180px) rotateX(65deg); transform-origin: top center; z-index: 1; animation: gM 2.5s infinite linear; pointer-events: none; }
         
@@ -44,7 +43,7 @@
         body.theme-matrix .chasis { background: #0a0a0a; border-color: #10b981; box-shadow: 0 0 25px #10b98180; }
         body.theme-sunset .chasis { background: #451a03; border-color: #f97316; box-shadow: 0 0 25px #f9731680; }
 
-        .lcd { width: 100%; height: 175px; background: #92b043; border: 2px solid #000; border-radius: 14px; color: #000; box-shadow: inset 0 4px 10px rgba(0,0,0,0.4); font-weight: bold; padding: 8px; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
+        .lcd { width: 100%; height: 175px; background: #92b043; border: 2px solid #000; border-radius: 14px; color: #000; box-shadow: inset 0 4px 10px rgba(0,0,0,0.4); font-weight: bold; padding: 8px; display: flex; flex-direction: column; justify-content: space-between; position: relative; transition: filter 0.05s ease, opacity 0.05s ease; }
         .lcd-header { display: flex; justify-content: space-between; font-size: 11px; border-bottom: 1px solid rgba(0,0,0,0.2); }
         .lcd-wrapper { position: relative; flex-grow: 1; display: flex; flex-direction: column; margin: 4px 0; max-height: 55px; }
         .lcd-historial { flex-grow: 1; font-size: 11px; overflow-y: auto; text-align: left; padding-right: 4px; -webkit-overflow-scrolling: touch; }
@@ -54,6 +53,14 @@
         body.theme-retro-gold .lcd-historial::-webkit-scrollbar-thumb { background: #d97706; }
         body.theme-matrix .lcd-historial::-webkit-scrollbar-thumb { background: #10b981; }
         body.theme-sunset .lcd-historial::-webkit-scrollbar-thumb { background: #f97316; }
+
+        /* NUEVA ANIMACIÓN RETRO GLITCH: Parpadeo de interferencia de fósforo CRT */
+        @keyframes terminalGlitch {
+            0% { opacity: 0.4; filter: hue-rotate(90deg) contrast(1.5); }
+            50% { opacity: 0.9; filter: skewX(-3deg) brightness(1.3); }
+            100% { opacity: 1; filter: none; }
+        }
+        .glitch-active { animation: terminalGlitch 0.12s steps(2, start) infinite; }
 
         .scroll-hint { position: absolute; bottom: 1px; right: 2px; font-size: 8px; color: rgba(0,0,0,0.6); animation: bounce 1.2s infinite ease-in-out; pointer-events: none; display: none; background: rgba(146, 176, 67, 0.9); padding: 0 2px; border-radius: 3px; }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(2px); } }
@@ -113,16 +120,18 @@
         body.theme-matrix .on-anim { animation: glowMatrix 1.2s infinite ease-in-out; }
         body.theme-sunset .on-anim { animation: glowSunset 1.2s infinite ease-in-out; }
         .on-anim { animation: glow 1.2s infinite ease-in-out; }
+        @keyframes glowGold { 0%, 100% { box-shadow: 0 0 8px #d97706; } 50% { box-shadow: 0 0 12px #d97706; } }
+        @keyframes glowMatrix { 0%, 100% { box-shadow: 0 0 8px #10b981; } 50% { box-shadow: 0 0 12px #10b981; } }
+        @keyframes glowSunset { 0%, 100% { box-shadow: 0 0 8px #f97316; } 50% { box-shadow: 0 0 12px #f97316; } }
     </style>
 </head>
 <body class="theme-cyberpunk">
     <div class="sky"></div>
     <div class="grid3d"></div>
-    <div class="chasis">
-        <!-- PANTALLA LCD CON TOP LIMPIO Y FILA DE SERRUCHO BORICUA -->
-        <div class="lcd">
+    <div class="chasis" id="calcChasis">
+        <!-- PANTALLA LCD CON CLASE IDENTIFICADA PARA EL GLITCH -->
+        <div class="lcd" id="pantallaVerde">
             <div class="lcd-header">
-                <!-- REGLA: Removido el titulo estatico para dejar espacio completo a los indicadores -->
                 <span id="txtHeaderIndicadores">IVU: 11.5%</span>
             </div>
             <div class="lcd-wrapper">
@@ -137,7 +146,7 @@
                 <!-- TOTAL PRINCIPAL FIJO ARRIBA -->
                 <div class="lcd-total" style="margin-bottom: 1px;">TOTAL: $<span id="outPer">0.00</span></div>
                 
-                <!-- REGLA: TOTAL C/U muestra dinamicamente (1 pers.) si Serrucho esta inactivo -->
+                <!-- TOTAL SERRUCHO BORICUA DEBAJO -->
                 <div id="rowPersonaCuota" style="opacity: 0.25; font-size: 11px; margin-top: 1px;">SERRUCHO (<span id="txtCantPers">1 pers.</span>): <span id="outPerPersonaLine">$0.00</span></div>
             </div>
         </div>
@@ -189,7 +198,19 @@
         let preciosGuardados = [], cuentaAcumulada = 0;
         let themes = ['theme-cyberpunk', 'theme-retro-gold', 'theme-matrix', 'theme-sunset'], temaActualIdx = 0, recienEntradoAPropina = false;
 
+        // NUEVA FUNCIÓN GLOBAL: Dispara un choque estático eléctrico CRT de 120 milisegundos en la pantalla verde
+        function dispararEfectoGlitch() {
+            const lcd = document.getElementById('pantallaVerde');
+            if (lcd) {
+                lcd.classList.add('glitch-active');
+                setTimeout(() => {
+                    lcd.classList.remove('glitch-active');
+                }, 120);
+            }
+        }
+
         function reproducirSonido(tipo) {
+            dispararEfectoGlitch(); // Se ejecuta en CADA pulsación de tecla
             try {
                 const ctx = new (window.AudioContext || window.webkitAudioContext)();
                 const osc = ctx.createOscillator(), gain = ctx.createGain();
@@ -316,7 +337,6 @@
                 preciosGuardados.push({ precio: val, descuento: rebaja, ivuCalculado: ivuIndividual, total: totalArticulo });
                 cuentaAcumulada += val; sSub = "0"; document.getElementById('lblSub').innerText = "0";
                 const con = document.getElementById('listaPrecios');
-                
                 con.innerHTML = preciosGuardados.map((item, i) => `<div>• Artículo #${i+1}: $${item.total.toFixed(2)} (Neto: $${item.precio.toFixed(2)})</div>`).join('');
                 if(preciosGuardados.length > 0) {
                     let totalConTaxAcumulado = preciosGuardados.reduce((sum, item) => sum + item.total, 0);
