@@ -5,16 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Calculadora de ResiDeus</title>
 
-    <!-- CONFIGURACIÓN ESPECÍFICA PARA PANTALLA DE INICIO DE IPHONE -->
+    <!-- 📱 APP WEB PROGRESIVA (PWA) / CONFIGURACIÓN DE PANTALLA DE INICIO IPHONE -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="ResiDeus">
     
-    <!-- ENLACES CORREGIDOS CON RUTA RELATIVA PARA TU PORTFOLIO -->
+    <!-- 🖼️ ICONOS DE LA APLICACIÓN (Modifica las rutas relativas si cambias tus archivos) -->
     <link rel="icon" type="image/jpeg" href="./icon.jpg?v=200">
     <link rel="apple-touch-icon" type="image/jpeg" href="./icon.jpg?v=200">
 
     <style>
+        /* ==========================================================================
+           🎨 SECCIÓN 1: ESTILOS CSS BASE Y ANIMACIONES CYBERPUNK
+           ========================================================================== */
         * { box-sizing: border-box; }
         html, body { 
             margin: 0; padding: 0; width: 100vw; height: 100vh; 
@@ -22,11 +25,12 @@
             transition: background 0.3s ease; 
         }
         
+        /* 🌈 GRADIENTES DE FONDO PARA LOS DIFERENTES TEMAS SELECCIONABLES */
         body.theme-cyberpunk { background: linear-gradient(180deg, #09011a 0%, #2c044d 100%) !important; }
         body.theme-retro-gold { background: linear-gradient(180deg, #1c1917 0%, #44403c 100%) !important; }
         body.theme-matrix { background: linear-gradient(180deg, #022c22 0%, #050505 100%) !important; }
         body.theme-sunset { background: linear-gradient(180deg, #451a03 0%, #78350f 100%) !important; }
-
+        /* ✨ ELEMENTOS VISUALES DE AMBIENTACIÓN REGLA RETRO (Estrellas y Malla 3D) */
         .sky { position: absolute; width: 100%; height: 100%; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent), radial-gradient(1.5px 1px at 75px 120px, #fff9, transparent); background-size: 380px 380px; z-index: 1; animation: twk 4s infinite linear; pointer-events: none; }
         .grid3d { position: absolute; width: 100%; height: 40%; bottom: 0; background-size: 40px 40px; transform: perspective(180px) rotateX(65deg); transform-origin: top center; z-index: 1; animation: gM 2.5s infinite linear; pointer-events: none; }
         
@@ -38,11 +42,12 @@
         @keyframes twk { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
         @keyframes gM { 0% { background-position: 0 0; } 100% { background-position: 0 40px; } }
         
+        /* 📟 CONFIGURACIÓN DEL CHASIS FÍSICO DE LA CALCULADORA */
         .chasis { width: 340px; height: auto; min-height: 580px; background: #241434; border: 4px solid #ff007f; box-shadow: 0 0 25px #ff007f80; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; border-radius: 24px; overflow: hidden; display: flex; flex-direction: column; padding: 8px; gap: 6px; transition: all 0.3s ease; }
         body.theme-retro-gold .chasis { background: #292524; border-color: #d97706; box-shadow: 0 0 25px #d9770680; }
         body.theme-matrix .chasis { background: #0a0a0a; border-color: #10b981; box-shadow: 0 0 25px #10b98180; }
         body.theme-sunset .chasis { background: #451a03; border-color: #f97316; box-shadow: 0 0 25px #f9731680; }
-
+        /* 🟢 ESTILOS DE LA PANTALLA LCD VERDE RETRO */
         .lcd { width: 100%; height: 175px; background: #92b043; border: 2px solid #000; border-radius: 14px; color: #000; box-shadow: inset 0 4px 10px rgba(0,0,0,0.4); font-weight: bold; padding: 8px; display: flex; flex-direction: column; justify-content: space-between; position: relative; transition: filter 0.05s ease, opacity 0.05s ease; }
         .lcd-header { display: flex; justify-content: space-between; font-size: 11px; border-bottom: 1px solid rgba(0,0,0,0.2); }
         .lcd-wrapper { position: relative; flex-grow: 1; display: flex; flex-direction: column; margin: 4px 0; max-height: 55px; }
@@ -54,6 +59,7 @@
         body.theme-matrix .lcd-historial::-webkit-scrollbar-thumb { background: #10b981; }
         body.theme-sunset .lcd-historial::-webkit-scrollbar-thumb { background: #f97316; }
 
+        /* ⚡ ANIMACIÓN DE PARPADEO ELÉCTRICO CRT (EFECTO GLITCH DE ENTRADA) */
         @keyframes terminalGlitch {
             0% { opacity: 0.4; filter: hue-rotate(90deg) contrast(1.5); }
             50% { opacity: 0.9; filter: skewX(-3deg) brightness(1.3); }
@@ -61,26 +67,11 @@
         }
         .glitch-active { animation: terminalGlitch 0.12s steps(2, start) infinite; }
 
-        /* ESTILOS DEL INTERFAZ DEL RECIBO HOLOGRÁFICO CON DISEÑO CRT INTERFERENCIA */
-        .holograma-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10, 2, 24, 0.75); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 100; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
-        .holograma-overlay.activo { opacity: 1; pointer-events: auto; }
-        
-        .holograma-ticket { width: 320px; max-height: 80vh; background: rgba(25, 10, 50, 0.85); border: 2px solid #00f0ff; box-shadow: 0 0 30px rgba(0, 240, 255, 0.4), inset 0 0 15px rgba(0, 240, 255, 0.2); border-radius: 16px; padding: 16px; position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 12px; transform: scale(0.85); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); color: #00f0ff; text-shadow: 0 0 8px rgba(0, 240, 255, 0.6); font-family: monospace; }
-        .holograma-overlay.activo .holograma-ticket { transform: scale(1); }
-        
-        body.theme-retro-gold .holograma-ticket { border-color: #fbbf24; color: #fbbf24; text-shadow: 0 0 8px rgba(251, 191, 36, 0.6); background: rgba(41, 37, 36, 0.9); box-shadow: 0 0 30px rgba(251, 191, 36, 0.4); }
-        body.theme-matrix .holograma-ticket { border-color: #10b981; color: #10b981; text-shadow: 0 0 8px rgba(16, 185, 129, 0.6); background: rgba(10, 10, 10, 0.9); box-shadow: 0 0 30px rgba(16, 185, 129, 0.4); }
-        body.theme-sunset .holograma-ticket { border-color: #f97316; color: #f97316; text-shadow: 0 0 8px rgba(249, 115, 22, 0.6); background: rgba(69, 26, 3, 0.9); box-shadow: 0 0 30px rgba(249, 115, 22, 0.4); }
-
-        .holograma-lineas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06)); background-size: 100% 4px, 6px 100%; pointer-events: none; z-index: 5; }
-        .holograma-scrollable { flex-grow: 1; overflow-y: auto; font-size: 12px; line-height: 1.4; white-space: pre-wrap; padding-right: 4px; border: 1px solid rgba(0, 240, 255, 0.2); border-radius: 8px; padding: 8px; background: rgba(0, 0, 0, 0.3); }
-        .holograma-footer { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .btn-holo { padding: 8px; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; border: 1px solid; font-family: monospace; font-size: 11px; text-align: center; background: transparent; }
-        
         .scroll-hint { position: absolute; bottom: 1px; right: 2px; font-size: 8px; color: rgba(0,0,0,0.6); animation: bounce 1.2s infinite ease-in-out; pointer-events: none; display: none; background: rgba(146, 176, 67, 0.9); padding: 0 2px; border-radius: 3px; }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(2px); } }
         .lcd-body { text-align: right; font-size: 10px; line-height: 1.2; }
         .lcd-total { font-size: 24px; font-weight: 900; }
+        /* 🔘 ESTILOS DE LOS BOTONES DE MENÚ Y TECLADO NUMÉRICO */
         .row-menus { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
         .caja-data { padding: 4px 2px; border-radius: 10px; text-align: center; cursor: pointer; font-size: 9px; transition: all 0.2s ease; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 52px; }
         .btn-off { background: #1a0826; border: 2px solid #ff007f; color: #ff007f; opacity: 0.5; box-shadow: none !important; }
@@ -104,7 +95,6 @@
         .blink-num { animation: blinkFast 0.5s infinite steps(2, start); text-shadow: 0 0 10px rgba(255,255,255,0.6); }
         .row-config { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
         .btn-cfg { padding: 6px 0; border-radius: 8px; font-size: 10px; font-weight: bold; cursor: pointer; text-align: center; }
-
         .pad-num { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-bottom: 2px; }
         .btn-key { height: 38px; background: linear-gradient(180deg, #44186c 0%, #170529 100%); border: 1px solid #00f0ff44; border-radius: 6px; color: #00f0ff; font-size: 1.1rem; font-weight: bold; cursor: pointer; text-transform: uppercase; display: flex; justify-content: center; align-items: center; font-family: monospace; }
         .btn-key.btn-action-text { font-size: 9px; }
@@ -128,11 +118,31 @@
         body.theme-matrix .btn-receipt { background: #10b981; border: 2px solid #fff; color: #000; }
         body.theme-sunset .btn-theme { background: #292524; border: 2px solid #f97316; color: #f97316; }
         body.theme-sunset .btn-receipt { background: #f97316; border: 2px solid #fff; color: #fff; }
+
+        /* 🔮 PROYECCIÓN VECTORIAL CYBERPUNK DEL RECIBO HOLOGRÁFICO */
+        .holograma-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10, 2, 24, 0.75); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 100; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+        .holograma-overlay.activo { opacity: 1; pointer-events: auto; }
+        .holograma-ticket { width: 320px; max-height: 80vh; background: rgba(25, 10, 50, 0.85); border: 2px solid #00f0ff; box-shadow: 0 0 30px rgba(0, 240, 255, 0.4), inset 0 0 15px rgba(0, 240, 255, 0.2); border-radius: 16px; padding: 16px; position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 12px; transform: scale(0.85); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); color: #00f0ff; text-shadow: 0 0 8px rgba(0, 240, 255, 0.6); font-family: monospace; }
+        .holograma-overlay.activo .holograma-ticket { transform: scale(1); }
+        
+        body.theme-retro-gold .holograma-ticket { border-color: #fbbf24; color: #fbbf24; text-shadow: 0 0 8px rgba(251, 191, 36, 0.6); background: rgba(41, 37, 36, 0.9); box-shadow: 0 0 30px rgba(251, 191, 36, 0.4); }
+        body.theme-matrix .holograma-ticket { border-color: #10b981; color: #10b981; text-shadow: 0 0 8px rgba(16, 185, 129, 0.6); background: rgba(10, 10, 10, 0.9); box-shadow: 0 0 30px rgba(16, 185, 129, 0.4); }
+        body.theme-sunset .holograma-ticket { border-color: #f97316; color: #f97316; text-shadow: 0 0 8px rgba(249, 115, 22, 0.6); background: rgba(69, 26, 3, 0.9); box-shadow: 0 0 30px rgba(249, 115, 22, 0.4); }
+
+        .holograma-lineas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06)); background-size: 100% 4px, 6px 100%; pointer-events: none; z-index: 5; }
+        .holograma-scrollable { flex-grow: 1; overflow-y: auto; font-size: 12px; line-height: 1.4; white-space: pre-wrap; padding-right: 4px; border: 1px solid rgba(0, 240, 255, 0.2); border-radius: 8px; padding: 8px; background: rgba(0, 0, 0, 0.3); }
+        .holograma-footer { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .btn-holo { padding: 8px; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; border: 1px solid; font-family: monospace; font-size: 11px; text-align: center; background: transparent; }
+
+        body.theme-retro-gold .on-anim { animation: glowGold 1.2s infinite ease-in-out; }
+        body.theme-matrix .on-anim { animation: glowMatrix 1.2s infinite ease-in-out; }
+        body.theme-sunset .on-anim { animation: glowSunset 1.2s infinite ease-in-out; }
     </style>
 </head>
 <body class="theme-cyberpunk">
     <div class="sky"></div>
     <div class="grid3d"></div>
+
     <div class="chasis" id="calcChasis">
         <div class="lcd" id="pantallaVerde">
             <div class="lcd-header">
@@ -163,7 +173,6 @@
                 <span class="lbl-val"><span id="lblPpl">N/A</span></span>
             </div>
             <div id="cajaDesc" class="caja-data btn-off" onclick="seleccionarMenu('desc')">
-                <!-- REGLA CORREGIDA: Cambiado DTO: por DESCUENTO completo -->
                 <span class="lbl-title">Descuento</span>
                 <span class="lbl-val">-<span id="lblDesc">0</span>%</span>
             </div>
@@ -172,7 +181,6 @@
                 <span class="lbl-val"><span id="lblTip">0</span>%</span>
             </div>
         </div>
-
         <div class="row-config">
             <button id="ivu115" onclick="setI(11.5)" class="btn-cfg btn-on">11.5%</button>
             <button id="ivu7" onclick="setI(7.0)" class="btn-cfg btn-off">7.0%</button>
@@ -195,12 +203,11 @@
         </div>
     </div>
 
-    <!-- ESTRUCTURA MODAL PARA LA PROYECCIÓN HOLOGRÁFICA DEL RECIBO CRILLO -->
     <div class="holograma-overlay" id="visorHolograma">
         <div class="holograma-ticket">
             <div class="holograma-lineas"></div>
             <div style="font-weight: 900; text-align: center; letter-spacing: 1px; font-size: 14px;">PROYECCIÓN RECIBO</div>
-            <div class="holograma-scrollable" id="textoContenidoHolo">Cargando datos vectoriales...</div>
+            <div class="holograma-scrollable" id="textoContenidoHolo">Cargando flujos vectoriales...</div>
             <div class="holograma-footer">
                 <button class="btn-holo" id="btnCopiarHolo" onclick="copiarTextoHolograma()" style="color:inherit; border-color:currentColor;">Copiar</button>
                 <button class="btn-holo" onclick="cerrarHologramaRecibo()" style="color:inherit; border-color:currentColor;">Cerrar</button>
@@ -208,12 +215,14 @@
         </div>
     </div>
     <script>
+        // 💾 CONTROL DE ESTADOS, MEMORIAS DE BOTONES Y ACUMULADORES FISCALES
         let ivu = 11.5, mode = 'sub', sSub = "0", incluirPropina = false, modoSerruchoActivo = false, modoDescuentoActivo = false;
         let sDesc = "0", sTip = "15", sPpl = "2"; 
         let memoriaDescuentoPct = "0", memoriaTipPct = "15", memoriaSerruchoCortes = "2";
         let preciosGuardados = [], cuentaAcumulada = 0, textoReciboGlobal = "";
         let themes = ['theme-cyberpunk', 'theme-retro-gold', 'theme-matrix', 'theme-sunset'], temaActualIdx = 0, recienEntradoAPropina = false;
 
+        // 🟢 SINTETIZADOR DE AUDIO RETRO (Modifica las frecuencias y tipos de onda para cambiar los sonidos)
         function dispararEfectoGlitch() {
             const lcd = document.getElementById('pantallaVerde');
             if (lcd) {
@@ -300,7 +309,6 @@
             document.getElementById(p === 11.5 ? 'ivu115' : p === 7.0 ? 'ivu7' : 'ivu0').className = "btn-cfg btn-on";
             actualizarHeaderIndicadores(); calc();
         }
-
         function num(c) {
             reproducirSonido('tecla');
             if (mode === 'sub') {
@@ -331,7 +339,10 @@
         function bksp() {
             reproducirSonido('tecla');
             if (mode === 'sub') { sSub = sSub.slice(0, -1); if (!sSub) sSub = "0"; document.getElementById('lblSub').innerText = sSub; }
-            else if (mode === 'ppl') { sPpl = sPpl.slice(0, -1); if (!sPpl) { sPpl = "0"; } memoriaSerruchoCortes = sPpl; document.getElementById('lblPpl').innerText = sPpl; }
+            else if (mode === 'ppl') { 
+                sPpl = sPpl.slice(0, -1); if (!sPpl) { sPpl = "0"; }
+                memoriaSerruchoCortes = sPpl; document.getElementById('lblPpl').innerText = sPpl; 
+            }
             else if (mode === 'desc') { sDesc = sDesc.slice(0, -1); if (!sDesc) { sDesc = "0"; } memoriaDescuentoPct = sDesc; document.getElementById('lblDesc').innerText = sDesc; }
             else if (mode === 'tip') { sTip = sTip.slice(0, -1); if (!sTip) { sTip = "0"; } memoriaTipPct = sTip; document.getElementById('lblTip').innerText = sTip; }
             calc();
@@ -355,10 +366,11 @@
                 preciosGuardados.push({ precio: val, descuento: rebaja, ivuCalculado: ivuIndividual, total: totalArticulo });
                 cuentaAcumulada += val; sSub = "0"; document.getElementById('lblSub').innerText = "0";
                 const con = document.getElementById('listaPrecios');
-                con.innerHTML = preciosGuardados.map((item, i) => '<div>• Artículo #' + (i+1) + ': ' + item.total.toFixed(2) + ' (Neto: ' + item.precio.toFixed(2) + ')</div>').join('');
+                
+                con.innerHTML = preciosGuardados.map((item, i) => '<div>• Artículo #' + (i+1) + ': $' + item.total.toFixed(2) + ' (Neto: $' + item.precio.toFixed(2) + ')</div>').join('');
                 if(preciosGuardados.length > 0) {
                     let totalConTaxAcumulado = preciosGuardados.reduce((sum, item) => sum + item.total, 0);
-                    con.innerHTML += '<div style="border-top:1px dashed rgba(0,0,0,0.3); font-weight:900; margin-top:2px;">Base Acum. (w/IVU): \$' + totalConTaxAcumulado.toFixed(2) + '</div>';
+                    con.innerHTML += '<div style="border-top:1px dashed rgba(0,0,0,0.3); font-weight:900; margin-top:2px;">Base Acum. (w/IVU): $' + totalConTaxAcumulado.toFixed(2) + '</div>';
                 }
                 const f = document.getElementById('flechaGuia'); if (con.scrollHeight > con.clientHeight) f.style.display = "block";
                 con.scrollTop = con.scrollHeight; calc();
@@ -378,18 +390,25 @@
         function calc() {
             let numPplRaw = parseInt(sPpl);
             let nSerrucho = (modoSerruchoActivo && !isNaN(numPplRaw) && numPplRaw > 1) ? numPplRaw : 1;
+
             let dPct = modoDescuentoActivo ? (parseInt(memoriaDescuentoPct) || 0) : 0;
             let tPct = incluirPropina ? (parseInt(memoriaTipPct) || 0) : 0;
             let nSub = cuentaAcumulada + (parseFloat(sSub) || 0);
-            let rebajaTotal = nSub * (dPct / 100), subtotalDescontado = nSub - rebajaTotal, impuestoTotal = subtotalDescontado * (ivu / 100), propinaTotal = subtotalDescontado * (tPct / 100), totalNetoGlobal = subtotalDescontado + impuestoTotal + propinaTotal;
+            
+            let rebajaTotal = nSub * (dPct / 100);
+            let subtotalDescontado = nSub - rebajaTotal;
+            let impuestoTotal = subtotalDescontado * (ivu / 100);
+            let propinaTotal = subtotalDescontado * (tPct / 100);
+            let totalNetoGlobal = subtotalDescontado + impuestoTotal + propinaTotal;
             let porSerrucho = totalNetoGlobal / nSerrucho;
             
-            document.getElementById('outDesc').innerText = '-\$' + rebajaTotal.toFixed(2); 
-            document.getElementById('outTip').innerText = '\$' + propinaTotal.toFixed(2);
-            document.getElementById('outIvu').innerText = '\$' + impuestoTotal.toFixed(2); 
+            document.getElementById('outDesc').innerText = '-$' + rebajaTotal.toFixed(2); 
+            document.getElementById('outTip').innerText = '$' + propinaTotal.toFixed(2);
+            document.getElementById('outIvu').innerText = '$' + impuestoTotal.toFixed(2); 
             document.getElementById('outPer').innerText = totalNetoGlobal.toFixed(2);
             document.getElementById('outDescPctText').innerText = modoDescuentoActivo ? memoriaDescuentoPct : "0";
             
+            // 🚨 SOLUCIÓN: Si están activos los botones cambian inmediatamente a opacidad brillante (1)
             document.getElementById('rowDesc').style.opacity = modoDescuentoActivo ? "1" : "0.3";
             document.getElementById('rowTip').style.opacity = incluirPropina ? "1" : "0.3";
 
@@ -411,10 +430,6 @@
             actualizarHeaderIndicadores();
         }
 
-        function rotarTema() {
-            reproducirSonido('menu'); document.body.classList.remove(themes[temaActualIdx]);
-            temaActualIdx = (temaActualIdx + 1) % themes.length; document.body.classList.add(themes[temaActualIdx]); calc();
-        }
         function abrirHologramaRecibo() {
             reproducirSonido('add');
             let numPplRaw = parseInt(sPpl); 
