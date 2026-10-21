@@ -117,10 +117,10 @@
     <div class="sky"></div>
     <div class="grid3d"></div>
     <div class="chasis">
-        <!-- PANTALLA LCD CON REEMPLAZO A REGLAS DE ETIQUETAS SOLICITADAS -->
+        <!-- PANTALLA LCD CON TOP LIMPIO Y FILA DE SERRUCHO BORICUA -->
         <div class="lcd">
             <div class="lcd-header">
-                <span id="lblArt">Calculadora de ResiDeus</span>
+                <!-- REGLA: Removido el titulo estatico para dejar espacio completo a los indicadores -->
                 <span id="txtHeaderIndicadores">IVU: 11.5%</span>
             </div>
             <div class="lcd-wrapper">
@@ -135,8 +135,8 @@
                 <!-- TOTAL PRINCIPAL FIJO ARRIBA -->
                 <div class="lcd-total" style="margin-bottom: 1px;">TOTAL: $<span id="outPer">0.00</span></div>
                 
-                <!-- REGLA: TOTAL C/U muestra (1 pers.) por defecto cuando Personas está inactivo -->
-                <div id="rowPersonaCuota" style="opacity: 0.25; font-size: 11px; margin-top: 1px;">TOTAL C/U (<span id="txtCantPers">1 pers.</span>): <span id="outPerPersonaLine">$0.00</span></div>
+                <!-- REGLA: "TOTAL C/U" reemplazado por la etiqueta criolla "SERRUCHO" -->
+                <div id="rowPersonaCuota" style="opacity: 0.25; font-size: 11px; margin-top: 1px;">SERRUCHO (<span id="txtCantPers">1 pers.</span>): <span id="outPerPersonaLine">$0.00</span></div>
             </div>
         </div>
 
@@ -146,18 +146,16 @@
                 <span class="lbl-val">$<span id="lblSub" class="blink-num">0</span></span>
             </div>
             <div id="cajaPpl" class="caja-data btn-off" onclick="seleccionarMenu('ppl')">
-                <span class="lbl-title">Personas</span>
-                <!-- REGLA: Inicializa visualmente en 1 cuando está OFF -->
+                <!-- REGLA: Reemplazado "Personas" por "Serrucho" -->
+                <span class="lbl-title">Serrucho</span>
                 <span class="lbl-val"><span id="lblPpl">1</span></span>
             </div>
             <div id="cajaDesc" class="caja-data btn-off" onclick="seleccionarMenu('desc')">
                 <span class="lbl-title">Descuento</span>
-                <!-- REGLA: Inicializa visualmente en 0 cuando está OFF -->
                 <span class="lbl-val"><span id="lblDesc">0</span>%</span>
             </div>
             <div id="cajaTip" class="caja-data btn-off" onclick="seleccionarMenu('tip')">
                 <span class="lbl-title">Propina</span>
-                <!-- REGLA: Inicializa visualmente en 0 cuando está OFF -->
                 <span class="lbl-val"><span id="lblTip">0</span>%</span>
             </div>
         </div>
@@ -185,11 +183,8 @@
     </div>
     <script>
         let ivu = 11.5, mode = 'sub', sSub = "0", incluirPropina = false, modoPersonasActivo = false, modoDescuentoActivo = false;
-        
-        // MEMORIAS INTERNAS: Almacenan los números reales tras bambalinas
         let sDesc = "0", sTip = "18", sPpl = "2"; 
         let memoriaDescuentoPct = "0", memoriaTipPct = "18", memoriaPersonasNum = "2";
-        
         let preciosGuardados = [], cuentaAcumulada = 0;
         let themes = ['theme-cyberpunk', 'theme-retro-gold', 'theme-matrix', 'theme-sunset'], temaActualIdx = 0, recienEntradoAPropina = false;
 
@@ -215,7 +210,7 @@
             } catch (e) {}
         }
 
-        // REGLA: Traducidas etiquetas de cabecera superior -> PROPINA: TIP | DESCUENTO: OFF
+        // REGLA: Reformateada la visualización del Top para usar etiquetas TIP y OFF de forma compacta
         function actualizarHeaderIndicadores() {
             let texto = `IVU: ${ivu.toFixed(1)}%`;
             if (incluirPropina && parseInt(sTip) > 0) { texto += ` | TIP: ${sTip}%`; }
@@ -246,7 +241,6 @@
             if (modoPersonasActivo && mode !== 'ppl') document.getElementById('cajaPpl').className = "caja-data btn-on";
 
             if (mode === 'sub') {
-                // REGLA: Los botones inactivos muestran visualmente 0 o 1, pero conservan sus variables internas
                 numPpl.innerText = modoPersonasActivo ? memoriaPersonasNum : "1";
                 numDesc.innerText = modoDescuentoActivo ? memoriaDescuentoPct : "0";
                 numTip.innerText = incluirPropina ? memoriaTipPct : "0";
@@ -283,20 +277,15 @@
                 if (c === '.' || sPpl === "1" || sPpl === "2") sPpl = "";
                 sPpl = (sPpl + c).substring(0, 2); let valInt = parseInt(sPpl) || 0;
                 if(valInt > 50) sPpl = "50"; if(valInt === 0) sPpl = "1";
-                memoriaPersonasNum = sPpl; modoPersonasActivo = true;
-                document.getElementById('lblPpl').innerText = sPpl;
+                memoriaPersonasNum = sPpl; modoPersonasActivo = true; document.getElementById('lblPpl').innerText = sPpl;
             } else if (mode === 'desc') {
                 if (c === '.' || sDesc === "0") sDesc = "";
                 sDesc = (sDesc + c).substring(0, 2); let valInt = parseInt(sDesc) || 0;
-                if(valInt > 99) sDesc = "99";
-                memoriaDescuentoPct = sDesc; modoDescuentoActivo = true;
-                document.getElementById('lblDesc').innerText = sDesc;
+                if(valInt > 99) sDesc = "99"; memoriaDescuentoPct = sDesc; modoDescuentoActivo = true; document.getElementById('lblDesc').innerText = sDesc;
             } else if (mode === 'tip') {
                 if (recienEntradoAPropina || sTip === "0" || sTip === "18") sTip = "";
                 if (c === '.') return; sTip = (sTip + c).substring(0, 2); let valInt = parseInt(sTip) || 0;
-                if(valInt > 50) sTip = "50";
-                memoriaTipPct = sTip; incluirPropina = true;
-                document.getElementById('lblTip').innerText = sTip;
+                if(valInt > 50) sTip = "50"; memoriaTipPct = sTip; incluirPropina = true; document.getElementById('lblTip').innerText = sTip;
             }
             calc();
         }
@@ -327,6 +316,8 @@
                 preciosGuardados.push({ precio: val, descuento: rebaja, ivuCalculado: ivuIndividual, total: totalArticulo });
                 cuentaAcumulada += val; sSub = "0"; document.getElementById('lblSub').innerText = "0";
                 const con = document.getElementById('listaPrecios');
+                
+                // REGLA: Formato corregido -> "• Artículo #1: $PrecioConIVU (Neto: $PrecioBase)"
                 con.innerHTML = preciosGuardados.map((item, i) => `<div>• Artículo #${i+1}: $${item.total.toFixed(2)} (Neto: $${item.precio.toFixed(2)})</div>`).join('');
                 if(preciosGuardados.length > 0) {
                     let totalConTaxAcumulado = preciosGuardados.reduce((sum, item) => sum + item.total, 0);
@@ -352,26 +343,19 @@
             let rebajaTotal = nSub * (descPct / 100), subtotalDescontado = nSub - rebajaTotal, impuestoTotal = subtotalDescontado * (ivu / 100), propinaTotal = subtotalDescontado * (tipPct / 100), totalNetoGlobal = subtotalDescontado + impuestoTotal + propinaTotal;
             let porPersona = totalNetoGlobal / nPpl;
             
-            document.getElementById('outDesc').innerText = `-$${rebajaTotal.toFixed(2)}`; 
-            document.getElementById('outTip').innerText = `$${propinaTotal.toFixed(2)}`;
-            document.getElementById('outIvu').innerText = `$${impuestoTotal.toFixed(2)}`;
-            document.getElementById('outDescPctText').innerText = modoDescuentoActivo ? sDesc : "0";
-            
+            document.getElementById('outDesc').innerText = `-$${rebajaTotal.toFixed(2)}`; document.getElementById('outTip').innerText = `$${propinaTotal.toFixed(2)}`;
+            document.getElementById('outIvu').innerText = `$${impuestoTotal.toFixed(2)}`; document.getElementById('outDescPctText').innerText = modoDescuentoActivo ? sDesc : "0";
             document.getElementById('outPerPersonaLine').innerText = `$${porPersona.toFixed(2)}`;
-            // REGLA: TOTAL C/U muestra dinámicamente "(1 pers.)" cuando Personas está inactivo
+            
+            // REGLA: SERRUCHO muestra dinamicamente (1 pers.) si esta inactivo
             document.getElementById('txtCantPers').innerText = modoPersonasActivo ? `${memoriaPersonasNum} pers.` : "1 pers.";
             document.getElementById('rowPersonaCuota').style.opacity = modoPersonasActivo ? "1" : "0.25";
-            
             document.getElementById('outPer').innerText = totalNetoGlobal.toFixed(2);
             
-            // REGLA: Los visores de los botones bajan visualmente a 0 o 1 cuando están inactivos
-            document.getElementById('lblTip').innerText = incluirPropina ? memoriaTipPct : "0"; 
-            document.getElementById('txtTipPct').innerText = incluirPropina ? `${sTip}%` : "0%";
-            document.getElementById('lblDesc').innerText = modoDescuentoActivo ? sDesc : "0"; 
-            document.getElementById('lblPpl').innerText = modoPersonasActivo ? sPpl : "1";
-            document.getElementById('lblArt').innerText = preciosGuardados.length ? `Cuenta (${preciosGuardados.length} artí.)` : "Calculadora de ResiDeus";
-            document.getElementById('rowDesc').style.opacity = (descPct > 0) ? "1" : "0.3"; 
-            document.getElementById('rowTip').style.opacity = incluirPropina ? "1" : "0.2";
+            document.getElementById('lblTip').innerText = incluirPropina ? memoriaTipPct : "0"; document.getElementById('txtTipPct').innerText = incluirPropina ? `${sTip}%` : "0%";
+            document.getElementById('lblDesc').innerText = modoDescuentoActivo ? sDesc : "0"; document.getElementById('lblPpl').innerText = modoPersonasActivo ? sPpl : "1";
+            document.getElementById('lblArt').innerText = preciosGuardados.length ? `Cuenta (${preciosGuardados.length} artículos)` : "Calculadora de ResiDeus";
+            document.getElementById('rowDesc').style.opacity = (descPct > 0) ? "1" : "0.3"; document.getElementById('rowTip').style.opacity = incluirPropina ? "1" : "0.2";
             actualizarHeaderIndicadores();
         }
 
@@ -390,16 +374,17 @@
             if(descPct > 0) txt += ` Descuento (${descPct}%): -$${rebajaTotal.toFixed(2)}\n`;
             if(tipPct > 0) txt += ` Propina (${tipPct}%): $${propinaTotal.toFixed(2)}\n`;
             txt += ` IVU Calculado: $${impuestoTotal.toFixed(2)}\n Total Neto: $${totalNetoGlobal.toFixed(2)}\n`;
-            if(modoPersonasActivo && nPpl > 1) txt += `-----------------------\n Dividido entre: ${nPpl} personas\n TOTAL C/U POR PERSONA: $${(totalNetoGlobal / nPpl).toFixed(2)}\n`;
-            txt += `=======================\n¡Gracias por usar Calculadora de ResiDeus!`;
+            if(modoPersonasActivo && nPpl > 1) txt += `-----------------------\n SERRUCHO COMPARTIDO: ${nPpl} personas\n CUOTA INDIVIDUAL (TOTAL C/U): $${(totalNetoGlobal / nPpl).toFixed(2)}\n`;
+            txt += `=======================\n¡Gracias por usar la Calculadora de ResiDeus!`;
             
-            navigator.clipboard.writeText(txt).then(() => {alert("¡Recibo copiado al portapapeles con éxito!\n\n" + txt);
+            navigator.clipboard.writeText(txt).then(() => {
+                alert("¡Recibo copiado al portapapeles con éxito!\n\n" + txt);
             }).catch(() => {
                 alert(txt);
             });
         }
         actualizarHeaderIndicadores(); calc();
+        }
     </script>
 </body>
 </html>
-
