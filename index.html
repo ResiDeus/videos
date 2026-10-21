@@ -144,7 +144,7 @@
                 <!-- TOTAL PRINCIPAL FIJO ARRIBA -->
                 <div class="lcd-total" style="margin-bottom: 1px;">TOTAL: $<span id="outPer">0.00</span></div>
                 
-                <!-- REGLA: Contenedor dinámico que conmuta entre SERRUCHO: N/A y SERRUCHO (c/u): -->
+                <!-- REGLA: Removido "pers" y cambiado a C/U en mayúsculas sostenidas -->
                 <div id="rowPersonaCuota" style="opacity: 0.25; font-size: 11px; margin-top: 1px;"><span id="txtSerruchoLabelType">SERRUCHO: N/A</span><span id="outPerPersonaLine"></span></div>
             </div>
         </div>
@@ -156,7 +156,6 @@
             </div>
             <div id="cajaPpl" class="caja-data btn-off" onclick="seleccionarMenu('ppl')">
                 <span class="lbl-title">Serrucho</span>
-                <!-- REGLA: Inicializa visualmente en N/A cuando está inactivo -->
                 <span class="lbl-val"><span id="lblPpl">N/A</span></span>
             </div>
             <div id="cajaDesc" class="caja-data btn-off" onclick="seleccionarMenu('desc')">
@@ -192,8 +191,6 @@
     </div>
     <script>
         let ivu = 11.5, mode = 'sub', sSub = "0", incluirPropina = false, modoPersonasActivo = false, modoDescuentoActivo = false;
-        
-        // REGLA: Memorias base corregidas. El Serrucho arranca internamente en 2 pers.
         let sDesc = "0", sTip = "0", sPpl = "2"; 
         let memoriaDescuentoPct = "0", memoriaTipPct = "0", memoriaPersonasNum = "2";
         let preciosGuardados = [], cuentaAcumulada = 0;
@@ -237,22 +234,35 @@
             document.getElementById('txtHeaderIndicadores').innerText = texto;
         }
 
+        /* REGLA: Valida que si el serrucho se apaga o se deja en 0 o 1, internamente mantenga el minimo de 2 para el cálculo */
         function seleccionarMenu(f) {
             reproducirSonido('menu');
             const btnReset = document.getElementById('btnResetGlobal'), btnAnadir = document.getElementById('btnAnadirGlobal'), btnPunto = document.getElementById('btnPunto');
             const numSub = document.getElementById('lblSub'), numPpl = document.getElementById('lblPpl'), numDesc = document.getElementById('lblDesc'), numTip = document.getElementById('lblTip');
 
-            if (f === 'tip') {
-                if (mode === 'tip') { incluirPropina = false; mode = 'sub'; recienEntradoAPropina = false; }
-                else { incluirPropina = true; mode = 'tip'; sTip = memoriaTipPct; recienEntradoAPropina = true; }
-            } else if (f === 'ppl') {
-                if (mode === 'ppl') { modoPersonasActivo = false; mode = 'sub'; }
-                // REGLA: Al prender el serrucho, recupera el numero guardado (minimo 2)
-                else { modoPersonasActivo = true; mode = 'ppl'; sPpl = memoriaPersonasNum; }
-            } else if (f === 'desc') {
-                if (mode === 'desc') { modoDescuentoActivo = false; mode = 'sub'; sDesc = "0"; }
-                else { modoDescuentoActivo = true; mode = 'desc'; sDesc = memoriaDescuentoPct; }
-            } else { mode = f; recienEntradoAPropina = false; }
+            if (f === 'ppl') {
+                if (mode === 'ppl') { 
+                    modoPersonasActivo = false; mode = 'sub'; 
+                    let parsedPpl = parseInt(sPpl) || 0;
+                    if (parsedPpl < 2) { sPpl = "2"; memoriaPersonasNum = "2"; }
+                } else { 
+                    modoPersonasActivo = true; mode = 'ppl'; 
+                    sPpl = memoriaPersonasNum; 
+                    if (sPpl === "" || sPpl === "0" || sPpl === "1") sPpl = ""; // Deja vacío para escribir libremente
+                }
+            } else {
+                if (mode === 'ppl') {
+                    let parsedPpl = parseInt(sPpl) || 0;
+                    if (parsedPpl < 2) { sPpl = "2"; memoriaPersonasNum = "2"; }
+                }
+                if (f === 'tip') {
+                    if (mode === 'tip') { incluirPropina = false; mode = 'sub'; recienEntradoAPropina = false; }
+                    else { incluirPropina = true; mode = 'tip'; sTip = memoriaTipPct; recienEntradoAPropina = true; }
+                } else if (f === 'desc') {
+                    if (mode === 'desc') { modoDescuentoActivo = false; mode = 'sub'; sDesc = "0"; }
+                    else { modoDescuentoActivo = true; mode = 'desc'; sDesc = memoriaDescuentoPct; }
+                } else { mode = f; recienEntradoAPropina = false; }
+            }
             
             ['cajaSub', 'cajaPpl', 'cajaDesc', 'cajaTip'].forEach(id => { document.getElementById(id).className = 'caja-data btn-off'; });
             [numSub, numPpl, numDesc, numTip].forEach(el => { if(el) el.classList.remove('blink-num'); });
@@ -261,14 +271,13 @@
             if (modoPersonasActivo && mode !== 'ppl') document.getElementById('cajaPpl').className = "caja-data btn-on";
 
             if (mode === 'sub') {
-                // REGLA: Muestra N/A cuando está inactivo
                 numPpl.innerText = modoPersonasActivo ? memoriaPersonasNum : "N/A";
                 numDesc.innerText = modoDescuentoActivo ? memoriaDescuentoPct : "0";
                 numTip.innerText = incluirPropina ? memoriaTipPct : "0";
                 btnReset.disabled = false; btnAnadir.disabled = false; btnPunto.disabled = false; 
                 numSub.classList.add('blink-num'); document.getElementById('cajaSub').className = "caja-data btn-on on-anim";
             } else if (mode === 'ppl') {
-                numPpl.innerText = sPpl; btnReset.disabled = false; btnAnadir.disabled = true; btnPunto.disabled = true; 
+                numPpl.innerText = sPpl === "" ? " " : sPpl; btnReset.disabled = false; btnAnadir.disabled = true; btnPunto.disabled = true; 
                 numPpl.classList.add('blink-num'); document.getElementById('cajaPpl').className = "caja-data btn-on on-anim";
             } else if (mode === 'desc') {
                 numDesc.innerText = sDesc; btnReset.disabled = false; btnAnadir.disabled = true; btnPunto.disabled = true;
@@ -295,16 +304,13 @@
                 sSub += c; if(parseFloat(sSub) > 99999) sSub = "99999";
                 document.getElementById('lblSub').innerText = sSub;
             } else if (mode === 'ppl') {
-                // REGLA: Filtro estricto que impide ingresar 0 o 1 como primer digito
-                if (c === '.' || sPpl === "N/A" || sPpl === "2") sPpl = "";
-                let intentoStr = sPpl + c;
-                let intentoInt = parseInt(intentoStr) || 0;
-                if (intentoStr.length === 1 && (c === '0' || c === '1')) { sPpl = "2"; }
-                else { sPpl = intentoStr.substring(0, 2); }
-                let valInt = parseInt(sPpl) || 2;
-                if(valInt > 99) sPpl = "99";
-                if(valInt < 2) sPpl = "2";
-                memoriaPersonasNum = sPpl; modoPersonasActivo = true; document.getElementById('lblPpl').innerText = sPpl;
+                // REPARADO: Permite escribir libremente cualquier digito incluyendo el 0 y el 1
+                if (sPpl === "N/A") sPpl = "";
+                sPpl = (sPpl + c).substring(0, 2);
+                let valInt = parseInt(sPpl) || 0;
+                if (valInt > 99) sPpl = "99";
+                memoriaPersonasNum = sPpl === "" || sPpl === "0" || sPpl === "1" ? "2" : sPpl;
+                modoPersonasActivo = true; document.getElementById('lblPpl').innerText = sPpl === "" ? " " : sPpl;
             } else if (mode === 'desc') {
                 if (c === '.' || sDesc === "0") sDesc = "";
                 sDesc = (sDesc + c).substring(0, 2); let valInt = parseInt(sDesc) || 0;
@@ -321,11 +327,10 @@
             reproducirSonido('tecla');
             if (mode === 'sub') { sSub = sSub.slice(0, -1); if (!sSub) sSub = "0"; document.getElementById('lblSub').innerText = sSub; }
             else if (mode === 'ppl') { 
-                // REGLA: Al borrar, si el campo queda vacio regresa automaticamente al minimo seguro de 2
+                // REPARADO: Permite borrar completamente para dejar vacio y escribir otro numero libre
                 sPpl = sPpl.slice(0, -1); 
-                let valInt = parseInt(sPpl) || 0;
-                if (!sPpl || valInt < 2) { sPpl = "2"; } 
-                memoriaPersonasNum = sPpl; document.getElementById('lblPpl').innerText = sPpl; 
+                memoriaPersonasNum = sPpl === "" || sPpl === "0" || sPpl === "1" ? "2" : sPpl;
+                document.getElementById('lblPpl').innerText = sPpl === "" ? " " : sPpl; 
             }
             else if (mode === 'desc') { sDesc = sDesc.slice(0, -1); if (!sDesc || sDesc === "0") { sDesc = "0"; memoriaDescuentoPct = "0"; } else { memoriaDescuentoPct = sDesc; } document.getElementById('lblDesc').innerText = sDesc; }
             else if (mode === 'tip') { sTip = sTip.slice(0, -1); if (!sTip || sTip === "0") { sTip = "0"; memoriaTipPct = "0"; } else { memoriaTipPct = sTip; } document.getElementById('lblTip').innerText = sTip; }
@@ -335,7 +340,7 @@
         function ce() {
             reproducirSonido('tecla');
             if (mode === 'sub') { sSub = "0"; document.getElementById('lblSub').innerText = "0"; }
-            else if (mode === 'ppl') { sPpl = "2"; memoriaPersonasNum = "2"; modoPersonasActivo = true; document.getElementById('lblPpl').innerText = "2"; }
+            else if (mode === 'ppl') { sPpl = ""; memoriaPersonasNum = "2"; modoPersonasActivo = true; document.getElementById('lblPpl').innerText = " "; }
             else if (mode === 'desc') { sDesc = "0"; memoriaDescuentoPct = "0"; modoDescuentoActivo = true; document.getElementById('lblDesc').innerText = "0"; }
             else if (mode === 'tip') { sTip = "0"; memoriaTipPct = "0"; recienEntradoAPropina = true; incluirPropina = true; document.getElementById('lblTip').innerText = "0"; }
             actualizarHeaderIndicadores(); calc();
@@ -370,17 +375,20 @@
         }
 
         function calc() {
-            let nSub = cuentaAcumulada + (parseFloat(sSub) || 0), nPpl = (modoPersonasActivo) ? (parseInt(sPpl) || 2) : 1, descPct = (modoDescuentoActivo) ? (parseInt(sDesc) || 0) : 0, tipPct = incluirPropina ? (parseInt(sTip) || 0) : 0;
+            let numPplRaw = parseInt(sPpl);
+            let nPpl = (modoPersonasActivo && !isNaN(numPplRaw) && numPplRaw > 1) ? numPplRaw : (modoPersonasActivo ? parseInt(memoriaPersonasNum) : 1);
+            let descPct = (modoDescuentoActivo) ? (parseInt(sDesc) || 0) : 0, tipPct = incluirPropina ? (parseInt(sTip) || 0) : 0;
+            let nSub = cuentaAcumulada + (parseFloat(sSub) || 0);
             let rebajaTotal = nSub * (descPct / 100), subtotalDescontado = nSub - rebajaTotal, impuestoTotal = subtotalDescontado * (ivu / 100), propinaTotal = subtotalDescontado * (tipPct / 100), totalNetoGlobal = subtotalDescontado + impuestoTotal + propinaTotal;
             let porPersona = totalNetoGlobal / nPpl;
             
             document.getElementById('outDesc').innerText = `-$${rebajaTotal.toFixed(2)}`; document.getElementById('outTip').innerText = `$${propinaTotal.toFixed(2)}`;
             document.getElementById('outIvu').innerText = `$${impuestoTotal.toFixed(2)}`; document.getElementById('outDescPctText').innerText = modoDescuentoActivo ? sDesc : "0";
             
-            // REGLA: Modificacion dinamica del string de la pantalla verde segun estado activo/inactivo
+            // REGLA: Removido "pers" y cambiado el desglose verde a TOTAL C/U en mayusculas sostenidas
             if (modoPersonasActivo) {
-                document.getElementById('txtSerruchoLabelType').innerText = `SERRUCHO (c/u): `;
-                document.getElementById('outPerPersonaLine').innerText = `$${porPersona.toFixed(2)} (${memoriaPersonasNum} pers.)`;
+                document.getElementById('txtSerruchoLabelType').innerText = `SERRUCHO (C/U): `;
+                document.getElementById('outPerPersonaLine').innerText = `$${porPersona.toFixed(2)} (${memoriaPersonasNum})`;
                 document.getElementById('rowPersonaCuota').style.opacity = "1";
             } else {
                 document.getElementById('txtSerruchoLabelType').innerText = `SERRUCHO: N/A`;
@@ -391,13 +399,18 @@
             document.getElementById('outPer').innerText = totalNetoGlobal.toFixed(2);
             document.getElementById('lblTip').innerText = incluirPropina ? memoriaTipPct : "0"; document.getElementById('txtTipPct').innerText = incluirPropina ? `${sTip}%` : "0%";
             document.getElementById('lblDesc').innerText = modoDescuentoActivo ? sDesc : "0"; 
-            
-            // REGLA: Sincroniza visualizador del boton fisico a N/A si esta apagado
-            document.getElementById('lblPpl').innerText = modoPersonasActivo ? sPpl : "N/A";
+            if (mode !== 'ppl') { document.getElementById('lblPpl').innerText = modoPersonasActivo ? memoriaPersonasNum : "N/A"; }
             document.getElementById('lblArt').innerText = preciosGuardados.length ? `Cuenta (${preciosGuardados.length} artículos)` : "Calculadora de ResiDeus";
             document.getElementById('rowDesc').style.opacity = (descPct > 0) ? "1" : "0.3"; document.getElementById('rowTip').style.opacity = incluirPropina ? "1" : "0.2";
             actualizarHeaderIndicadores();
         }
+
+        document.addEventListener('click', function(e) {
+            if (mode === 'ppl' && !e.target.closest('#cajaPpl') && !e.target.closest('.pad-num')) {
+                let parsed = parseInt(sPpl) || 0;
+                if (parsed < 2) { sPpl = "2"; memoriaPersonasNum = "2"; calc(); }
+            }
+        });
 
         function rotarTema() {
             reproducirSonido('menu'); document.body.classList.remove(themes[temaActualIdx]);
@@ -406,7 +419,10 @@
 
         function exportarRecibo() {
             reproducirSonido('add');
-            let nSub = cuentaAcumulada +  (parseFloat(sSub) || 0), nPpl = (modoPersonasActivo) ? (parseInt(sPpl) || 2) : 1, descPct = (modoDescuentoActivo) ? (parseInt(sDesc) || 0) : 0, tipPct = incluirPropina ? (parseInt(sTip) || 0) : 0;
+                        let numPplRaw = parseInt(sPpl);
+            let nPpl = (modoPersonasActivo && !isNaN(numPplRaw) && numPplRaw > 1) ? numPplRaw : (modoPersonasActivo ? parseInt(memoriaPersonasNum) : 2);
+            let descPct = (modoDescuentoActivo) ? (parseInt(sDesc) || 0) : 0, tipPct = incluirPropina ? (parseInt(sTip) || 0) : 0;
+            let nSub = cuentaAcumulada + (parseFloat(sSub) || 0);
             let rebajaTotal = nSub * (descPct / 100), subtotalDescontado = nSub - rebajaTotal, impuestoTotal = subtotalDescontado * (ivu / 100), propinaTotal = subtotalDescontado * (tipPct / 100), totalNetoGlobal = subtotalDescontado + impuestoTotal + propinaTotal;
             let txt = `=== Calculadora de ResiDeus ===\nFecha: ${new Date().toLocaleString()}\nIVU Config: ${ivu.toFixed(1)}%\n-----------------------\n`;
             if(preciosGuardados.length > 0) { txt += `Historial Guardado:\n`; preciosGuardados.forEach((a, i) => { txt += `  Artículo #${i+1}: $${a.total.toFixed(2)} -> Neto: $${a.precio.toFixed(2)}\n`; }); txt += `-----------------------\n`; }
