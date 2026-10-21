@@ -240,7 +240,7 @@
     <div class="holograma-overlay" id="visorHolograma">
         <div class="holograma-ticket">
             <div class="holograma-lineas"></div>
-            <div style="font-weight: 900; text-align: center; letter-spacing: 1px; font-size: 14px;">PROYECCIÓN RECIBO</div>
+            <div style="font-weight: 900; text-align: center; letter-spacing: 1px; font-size: 14px;">RECIBO</div>
             <div class="holograma-scrollable" id="textoContenidoHolo">Cargando flujos vectoriales...</div>
             <div class="holograma-footer">
                 <button class="btn-holo" id="btnCopiarHolo" onclick="copiarTextoHolograma()">Copiar</button>
@@ -525,12 +525,12 @@
                 txt += `-------------------------------\n`;
             }
             
-            txt += `Importe Base:      $${nSub.toFixed(2)}\n`;
+            txt += `TOTAL (sin IVU):      $${nSub.toFixed(2)}\n`;
             if(dPct > 0) txt += `Descuento (-${dPct}%):  -$${rebajaTotal.toFixed(2)}\n`;
             if(tPct > 0) txt += `Propina (${tPct}%):     $${propinaTotal.toFixed(2)}\n`;
             txt += `IVU Facturado:     $${impuestoTotal.toFixed(2)}\n`;
             txt += `===============================\n`;
-            txt += `TOTAL NETO:        $${totalNetoGlobal.toFixed(2)}\n`;
+            txt += `TOTAL (con IVU):        $${totalNetoGlobal.toFixed(2)}\n`;
             txt += `===============================\n`;
             
             if(modoSerruchoActivo && numPplRaw > 1) {
