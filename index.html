@@ -173,7 +173,7 @@
     </div>
     <script>
         let ivu = 11.5, mode = 'sub', sSub = "0", sPpl = "OFF", incluirPropina = false, modoPersonasActivo = false;
-        let sDesc = "0", sTip = "18"; // El porcentaje por defecto se establece en 18%
+        let sDesc = "0", sTip = "18"; 
         let preciosGuardados = [], cuentaAcumulada = 0;
         let themes = ['theme-cyberpunk', 'theme-retro-gold', 'theme-matrix', 'theme-sunset'];
         let temaActualIdx = 0;
@@ -218,19 +218,14 @@
             const numDesc = document.getElementById('lblDesc');
             const numTip = document.getElementById('lblTip');
 
-            // Si se selecciona el menú de propina, este cambia su estado alternando de ON a OFF
             if (f === 'tip') {
                 incluirPropina = !incluirPropina;
-                if (!incluirPropina) {
-                    // Si se apaga, volvemos automáticamente al menú de la cuenta
-                    mode = 'sub';
-                } else {
-                    mode = 'tip';
-                }
+                mode = !incluirPropina ? 'sub' : 'tip';
             } else {
                 mode = f;
             }
             
+            // Apagar clases visuales base
             ['cajaSub', 'cajaPpl', 'cajaDesc', 'cajaTip'].forEach(id => {
                 document.getElementById(id).className = 'caja-data btn-off';
             });
@@ -238,7 +233,11 @@
                 if(el) el.classList.remove('blink-num');
             });
 
-            // Lógica de renderizado según el modo activo resultante
+            // CORRECCIÓN INTERACTIVA: Encendido dinámico persistente si Desc > 0
+            if (parseInt(sDesc) > 0 && mode !== 'desc') {
+                document.getElementById('cajaDesc').className = "caja-data btn-on";
+            }
+
             if (mode === 'sub') {
                 modoPersonasActivo = false;
                 numPpl.innerText = sPpl === "0" ? "OFF" : sPpl;
@@ -270,7 +269,6 @@
                 document.getElementById('cajaTip').className = "caja-data btn-on on-anim";
             }
             
-            // Si la propina está habilitada pero no estamos en su menú, se resalta como activa
             if (incluirPropina && mode !== 'tip') {
                 document.getElementById('cajaTip').className = "caja-data btn-on";
             }
@@ -414,9 +412,9 @@
             document.getElementById('outIvu').innerText = `$${impuestoTotal.toFixed(2)}`;
             document.getElementById('outPer').innerText = porPersona.toFixed(2);
             
-            // Renderizado de textos condicionales en botones
             document.getElementById('lblTip').innerText = incluirPropina ? `${sTip}%` : "OFF";
             document.getElementById('txtTipPct').innerText = incluirPropina ? `${sTip}%` : "OFF";
+            document.getElementById('lblDesc').innerText = sDesc;
             
             document.getElementById('lblArt').innerText = preciosGuardados.length ? `Cuenta (${preciosGuardados.length} art.)` : "Calculadora de ResiDeus";
             
