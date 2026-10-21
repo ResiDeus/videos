@@ -4,6 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Calculadora de ResiDeus</title>
+
+    <!-- CONFIGURACIÓN ESPECÍFICA PARA PANTALLA DE INICIO DE IPHONE -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ResiDeus">
+    
+    <!-- ENLACE AL ICONO DE APPLE TOUCH (180x180 PNG en tu repositorio GitHub) -->
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    
+    <!-- Favicon estándar para navegadores tradicionales -->
+    <link rel="icon" type="image/png" sizes="32x32" href="apple-touch-icon.png">
+
     <style>
         * { box-sizing: border-box; }
         html, body { margin: 0; padding: 0; width: 100vw; height: 100vh; overflow: hidden; position: relative; font-family: monospace; transition: background 0.3s ease; }
@@ -15,7 +28,6 @@
 
         .sky { position: absolute; width: 100%; height: 100%; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent), radial-gradient(1.5px 1px at 75px 120px, #fff9, transparent); background-size: 380px 380px; z-index: 1; animation: twk 4s infinite linear; }
         .grid3d { position: absolute; width: 100%; height: 40%; bottom: 0; background-size: 40px 40px; transform: perspective(180px) rotateX(65deg); transform-origin: top center; z-index: 1; animation: gM 2.5s infinite linear; }
-        
         body.theme-cyberpunk .grid3d { background-image: linear-gradient(rgba(255, 0, 127, 0.2) 2px, transparent 2px), linear-gradient(90deg, rgba(255, 0, 127, 0.2) 2px, transparent 2px); }
         body.theme-retro-gold .grid3d { background-image: linear-gradient(rgba(217, 119, 6, 0.2) 2px, transparent 2px), linear-gradient(90deg, rgba(217, 119, 6, 0.2) 2px, transparent 2px); }
         body.theme-matrix .grid3d { background-image: linear-gradient(rgba(16, 185, 129, 0.2) 2px, transparent 2px), linear-gradient(90deg, rgba(16, 185, 129, 0.2) 2px, transparent 2px); }
@@ -32,11 +44,11 @@
 
         .lcd { width: 100%; height: 175px; background: #92b043; border: 2px solid #000; border-radius: 14px; color: #000; box-shadow: inset 0 4px 10px rgba(0,0,0,0.4); font-weight: bold; padding: 8px; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
         .lcd-header { display: flex; justify-content: space-between; font-size: 11px; border-bottom: 1px solid rgba(0,0,0,0.2); }
+
         .lcd-wrapper { position: relative; flex-grow: 1; display: flex; flex-direction: column; margin: 4px 0; max-height: 55px; }
         .lcd-historial { flex-grow: 1; font-size: 11px; overflow-y: auto; text-align: left; padding-right: 4px; -webkit-overflow-scrolling: touch; }
         .lcd-historial::-webkit-scrollbar { width: 5px; display: block; }
         .lcd-historial::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.1); }
-        
         body.theme-cyberpunk .lcd-historial::-webkit-scrollbar-thumb { background: #ff007f; }
         body.theme-retro-gold .lcd-historial::-webkit-scrollbar-thumb { background: #d97706; }
         body.theme-matrix .lcd-historial::-webkit-scrollbar-thumb { background: #10b981; }
@@ -89,19 +101,14 @@
 
         .btn-key:disabled { opacity: 0.2 !important; cursor: not-allowed !important; filter: grayscale(100%); background: #1a0b24 !important; color: #555 !important; }
 
-        /* REJILLAS OPERATIVAS REORGANIZADAS */
         .row-acciones-triple { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; padding-bottom: 2px; }
         .row-acciones-inferior { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-top: 2px; }
 
         .btn-clear, .btn-add, .btn-theme, .btn-receipt, .btn-ce { border-radius: 10px; font-weight: bold; cursor: pointer; transition: all 0.2s ease; text-transform: uppercase; display: flex; justify-content: center; align-items: center; font-family: monospace; }
         
-        /* BOTONES DE ARRIBA (TAMAÑO NORMAL) */
         .btn-clear, .btn-add, .btn-ce { height: 38px; font-size: 9px; }
-        
-        /* BOTONES DE ABAJO (MÁS PEQUEÑOS Y COMPACTOS) */
         .btn-theme, .btn-receipt { height: 28px; font-size: 8px; opacity: 0.8; }
 
-        /* ESTILOS DE COLOR DE BOTONES SEGÚN EL TEMA */
         body.theme-cyberpunk .btn-clear, body.theme-cyberpunk .btn-theme, body.theme-cyberpunk .btn-ce { background: #1a0826; border: 2px solid #ff007f; color: #ff007f; }
         body.theme-cyberpunk .btn-add, body.theme-cyberpunk .btn-receipt { background: #ff007f; border: 2px solid #fff; color: #000; }
         
@@ -176,14 +183,14 @@
             <button id="ivu0" onclick="setI(0.0)" class="btn-cfg btn-off">0.0%</button>
         </div>
 
-        <!-- 1. BOTONES DE ACCIÓN ARRIBA (DEBAJO DE LOS PORCENTAJES) -->
+        <!-- ACCIONES ARRIBA DE LAS TECLAS -->
         <div class="row-acciones-triple">
             <button id="btnResetGlobal" class="btn-clear" onclick="clr()">Resetear</button>
             <button id="btnCeGlobal" class="btn-ce" onclick="ce()">Clear</button>
             <button id="btnAnadirGlobal" class="btn-add" onclick="addProducto()">+ Añadir</button>
         </div>
 
-        <!-- 2. TECLADO NUMÉRICO EN EL CENTRO -->
+        <!-- TECLADO NUMÉRICO EN EL CENTRO -->
         <div class="pad-num">
             <button onclick="num('7')" class="btn-key">7</button><button onclick="num('8')" class="btn-key">8</button><button onclick="num('9')" class="btn-key">9</button>
             <button onclick="num('4')" class="btn-key">4</button><button onclick="num('5')" class="btn-key">5</button><button onclick="num('6')" class="btn-key">6</button>
@@ -191,7 +198,7 @@
             <button id="btnPunto" onclick="num('.')" class="btn-key">.</button><button onclick="num('0')" class="btn-key">0</button><button onclick="bksp()" class="btn-key btn-back">←</button>
         </div>
 
-        <!-- 3. BOTONES DE UTILIDAD ABAJO (MÁS PEQUEÑOS DEBAJO DEL PAD) -->
+        <!-- ACCIONES COMPACTAS EN LA BASE INFERIOR -->
         <div class="row-acciones-inferior">
             <button class="btn-theme" onclick="rotarTema()">TEMA</button>
             <button class="btn-receipt" onclick="exportarRecibo()">RECIBO</button>
@@ -373,11 +380,7 @@
                 document.getElementById('lblDesc').innerText = "0";
             } else if (mode === 'tip') {
                 sTip = "18";
-                if(incluirPropina) {
-                    document.getElementById('lblTip').innerText = "18%";
-                } else {
-                    document.getElementById('lblTip').innerText = "OFF";
-                }
+                document.getElementById('lblTip').innerText = incluirPropina ? "18%" : "OFF";
             }
             actualizarHeaderIndicadores();
             calc();
