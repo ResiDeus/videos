@@ -197,7 +197,7 @@
             </div>
         </div>
 
-                    <!-- 🎛️ BOTONERA UNIFICADA DE 5 COLUMNAS COMPACTAS (TAMAÑOS Y COLORES SOLUCIONADOS) -->
+                            <!-- 🎛️ BOTONERA UNIFICADA DE 5 COLUMNAS COMPACTAS (CORREGIDO AL 100%) -->
         <div class="row-menus" style="grid-template-columns: repeat(5, 1fr);">
             <div id="cajaSub" class="caja-data btn-on on-anim" onclick="seleccionarMenu('sub')">
                 <span class="lbl-title">Cuenta</span>
@@ -215,12 +215,13 @@
                 <span class="lbl-title">Propina</span>
                 <span class="lbl-val"><span id="lblTip">0</span>%</span>
             </div>
-            <!-- 🚨 INTERRUPTOR DEL IVU: Anulados todos los estilos nativos de botón para forzar simetría perfecta -->
-            <button id="btnToggleIvu" onclick="conmutarIvu()" class="caja-data btn-on" style="font-family: inherit; font-size: inherit; font-weight: inherit; width: 100%; height: 100%; min-height: 52px; cursor: pointer; border: none; padding: 0; outline: none; display: flex; flex-direction: column; justify-content: center; align-items: center; text-shadow: inherit; color: inherit;">
+            <!-- 🚨 INTERRUPTOR DEL IVU: Ahora es un DIV idéntico en comportamiento y estilos CSS a los de al lado -->
+            <div id="btnToggleIvu" class="caja-data btn-on" onclick="conmutarIvu()" style="cursor: pointer;">
                 <span id="btnIvuTitleText" class="lbl-title" style="color: #fff;">IVU</span>
                 <span id="btnIvuValText" class="lbl-val" style="color: #000; font-weight: 900;">11.5%</span>
-            </button>
+            </div>
         </div>
+
 
 
         <div class="pad-num">
@@ -368,7 +369,7 @@
         }
 
                 // 🎛️ MOTOR DEL INTERRUPTOR ÚNICO DE IVU (Alterna dinámicamente entre 11.5% y 0%)
-                // 🎛️ MOTOR DEL INTERRUPTOR DE IVU COMPACTO (MANEJO DE COLORES E OPACIDADES)
+                        // 🎛️ MOTOR DEL INTERRUPTOR DE IVU (SINCRONIZACIÓN DE CLASES Y COLORES HEREDADOS)
         function conmutarIvu() {
             reproducirSonido('menu');
             const btn = document.getElementById('btnToggleIvu');
@@ -377,19 +378,20 @@
             
             if (ivu === 11.5) {
                 ivu = 0.0;
-                btn.className = "caja-data btn-off"; // Se vuelve opaco (Fondo oscuro)
-                titleText.style.color = "inherit";   // Toma el color violeta/rosa neón de los botones apagados
+                btn.className = "caja-data btn-off"; // Toma el borde neón apagado y fondo oscuro idéntico a los otros
+                titleText.style.color = "inherit";   // Toma el color rosa/violeta neón exacto de los textos apagados
                 valText.innerText = "0.0%";
                 valText.style.color = "inherit";     // Toma el mismo tono atenuado
             } else {
                 ivu = 11.5;
-                btn.className = "caja-data btn-on";  // Se activa brillante con fondo neón
+                btn.className = "caja-data btn-on";  // Toma el borde brillante y fondo neón encendido
                 titleText.style.color = "#fff";      // Sube a texto blanco nítido
                 valText.innerText = "11.5%";
                 valText.style.color = "#000";         // Fuerza el número a negro sólido
             }
             actualizarHeaderIndicadores(); calc();
         }
+
 
 
         function num(c) {
@@ -484,6 +486,7 @@
                 valTextHolo.innerText = "11.5%";
                 valTextHolo.style.color = "#000";
             }
+
 
             
             seleccionarMenu('sub');
