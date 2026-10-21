@@ -117,7 +117,7 @@
     <div class="sky"></div>
     <div class="grid3d"></div>
     <div class="chasis">
-        <!-- PANTALLA LCD CON REEMPLAZO A IVU -->
+        <!-- PANTALLA LCD CON DISEÑO FIJO -->
         <div class="lcd">
             <div class="lcd-header">
                 <span id="lblArt">Calculadora de ResiDeus</span>
@@ -128,16 +128,15 @@
                 <div class="scroll-hint" id="flechaGuia">▼ deslizar</div>
             </div>
             <div class="lcd-body">
-                <!-- Porcentaje dinámico en paréntesis agregado al lado de DESCUENTO -->
                 <div id="rowDesc" style="opacity: 0.3;">DESCUENTO (<span id="outDescPctText">0</span>%): <span id="outDesc">-$0.00</span></div>
-                <div id="rowTip" style="opacity: 0.2;">PROPINA (<span id="txtTipPct">OFF</span>): <span id="outTip">$0.00</span></div>
+                <div id="rowTip" style="opacity: 0.2;">PROPINA (<span id="txtTipPct">18%</span>): <span id="outTip">$0.00</span></div>
                 <div>IVU: <span id="outIvu">$0.00</span></div>
                 
                 <!-- TOTAL PRINCIPAL FIJO ARRIBA -->
                 <div class="lcd-total" style="margin-bottom: 1px;">TOTAL: $<span id="outPer">0.00</span></div>
                 
                 <!-- TOTAL C/U DEBAJO -->
-                <div id="rowPersonaCuota" style="opacity: 0.25; font-size: 11px; margin-top: 1px;">TOTAL C/U (<span id="txtCantPers">OFF</span>): <span id="outPerPersonaLine">$0.00</span></div>
+                <div id="rowPersonaCuota" style="opacity: 0.25; font-size: 11px; margin-top: 1px;">TOTAL C/U (<span id="txtCantPers">2 pers.</span>): <span id="outPerPersonaLine">$0.00</span></div>
             </div>
         </div>
 
@@ -148,7 +147,7 @@
             </div>
             <div id="cajaPpl" class="caja-data btn-off" onclick="seleccionarMenu('ppl')">
                 <span class="lbl-title">Personas</span>
-                <span class="lbl-val"><span id="lblPpl">OFF</span></span>
+                <span class="lbl-val"><span id="lblPpl">2</span></span>
             </div>
             <div id="cajaDesc" class="caja-data btn-off" onclick="seleccionarMenu('desc')">
                 <span class="lbl-title">Descuento</span>
@@ -156,11 +155,10 @@
             </div>
             <div id="cajaTip" class="caja-data btn-off" onclick="seleccionarMenu('tip')">
                 <span class="lbl-title">Propina</span>
-                <span class="lbl-val"><span id="lblTip">OFF</span></span>
+                <span class="lbl-val"><span id="lblTip">18</span>%</span>
             </div>
         </div>
 
-        <!-- PORCENTAJES DE IVU EN PUERTO RICO -->
         <div class="row-config">
             <button id="ivu115" onclick="setI(11.5)" class="btn-cfg btn-on">11.5%</button>
             <button id="ivu7" onclick="setI(7.0)" class="btn-cfg btn-off">7.0%</button>
@@ -184,7 +182,7 @@
     </div>
     <script>
         let ivu = 11.5, mode = 'sub', sSub = "0", incluirPropina = false, modoPersonasActivo = false, modoDescuentoActivo = false;
-        let sDesc = "0", sTip = "18", memoriaPersonasNum = "2", sPpl = "OFF", memoriaDescuentoPct = "0"; 
+        let sDesc = "0", sTip = "18", memoriaPersonasNum = "2", sPpl = "2", memoriaDescuentoPct = "0"; 
         let preciosGuardados = [], cuentaAcumulada = 0;
         let themes = ['theme-cyberpunk', 'theme-retro-gold', 'theme-matrix', 'theme-sunset'], temaActualIdx = 0, recienEntradoAPropina = false;
 
@@ -210,15 +208,15 @@
             } catch (e) {}
         }
 
+        /* REGLA: Removido el indicador fijo "OFF" del string superior. Solo concatena elementos si están realmente encendidos */
         function actualizarHeaderIndicadores() {
             let texto = `IVU: ${ivu.toFixed(1)}%`;
             if (incluirPropina) { texto += ` | PROPINA: ${sTip}%`; }
-            // REGLA: Si descuento está en OFF, el top superior dice OFF
             if (modoDescuentoActivo && parseInt(sDesc) > 0) { texto += ` | DESCUENTO: ${sDesc}%`; }
-            else { texto += ` | OFF`; }
             document.getElementById('txtHeaderIndicadores').innerText = texto;
         }
 
+        /* REGLA: Filtro protector de doble clic para descuento (mismo sistema que propina) */
         function seleccionarMenu(f) {
             reproducirSonido('menu');
             const btnReset = document.getElementById('btnResetGlobal'), btnAnadir = document.getElementById('btnAnadirGlobal'), btnPunto = document.getElementById('btnPunto');
@@ -228,19 +226,11 @@
                 if (mode === 'tip') { incluirPropina = false; mode = 'sub'; recienEntradoAPropina = false; }
                 else { incluirPropina = true; mode = 'tip'; recienEntradoAPropina = true; }
             } else if (f === 'ppl') {
-                modoPersonasActivo = !modoPersonasActivo;
-                if (modoPersonasActivo) { mode = 'ppl'; sPpl = memoriaPersonasNum; }
-                else { mode = 'sub'; sPpl = "OFF"; }
+                if (mode === 'ppl') { modoPersonasActivo = false; mode = 'sub'; }
+                else { modoPersonasActivo = true; mode = 'ppl'; sPpl = memoriaPersonasNum; }
             } else if (f === 'desc') {
-                // REGLA: Doble click apaga descuento pero recuerda el valor internamente
-                modoDescuentoActivo = !modoDescuentoActivo;
-                if (modoDescuentoActivo) {
-                    mode = 'desc';
-                    sDesc = (memoriaDescuentoPct === "0") ? "0" : memoriaDescuentoPct;
-                } else {
-                    mode = 'sub';
-                    sDesc = "0";
-                }
+                if (mode === 'desc') { modoDescuentoActivo = false; mode = 'sub'; sDesc = "0"; }
+                else { modoDescuentoActivo = true; mode = 'desc'; sDesc = (memoriaDescuentoPct === "0") ? "0" : memoriaDescuentoPct; }
             } else { mode = f; recienEntradoAPropina = false; }
             
             ['cajaSub', 'cajaPpl', 'cajaDesc', 'cajaTip'].forEach(id => { document.getElementById(id).className = 'caja-data btn-off'; });
@@ -250,7 +240,7 @@
             if (modoPersonasActivo && mode !== 'ppl') document.getElementById('cajaPpl').className = "caja-data btn-on";
 
             if (mode === 'sub') {
-                numPpl.innerText = modoPersonasActivo ? memoriaPersonasNum : "OFF";
+                numPpl.innerText = memoriaPersonasNum;
                 numDesc.innerText = modoDescuentoActivo ? memoriaDescuentoPct : "0";
                 btnReset.disabled = false; btnAnadir.disabled = false; btnPunto.disabled = false; 
                 numSub.classList.add('blink-num'); document.getElementById('cajaSub').className = "caja-data btn-on on-anim";
@@ -282,11 +272,11 @@
                 sSub += c; if(parseFloat(sSub) > 99999) sSub = "99999";
                 document.getElementById('lblSub').innerText = sSub;
             } else if (mode === 'ppl') {
-                if (c === '.' || sPpl === "OFF" || sPpl === "0" || sPpl === "2") sPpl = "";
+                if (c === '.' || sPpl === "0" || sPpl === "2") sPpl = "";
                 sPpl = (sPpl + c).substring(0, 2); let valInt = parseInt(sPpl) || 0;
                 if(valInt > 50) sPpl = "50";
-                if(valInt === 0) { sPpl = "OFF"; modoPersonasActivo = false; seleccionarMenu('sub'); }
-                else { memoriaPersonasNum = sPpl; modoPersonasActivo = true; }
+                if(valInt === 0) { sPpl = "1"; }
+                memoriaPersonasNum = sPpl; modoPersonasActivo = true;
                 document.getElementById('lblPpl').innerText = sPpl;
             } else if (mode === 'desc') {
                 if (c === '.' || sDesc === "0") sDesc = "";
@@ -297,7 +287,7 @@
             } else if (mode === 'tip') {
                 if (recienEntradoAPropina || sTip === "0") { sTip = ""; recienEntradoAPropina = false; }
                 if (c === '.') return; sTip = (sTip + c).substring(0, 2); let valInt = parseInt(sTip) || 0;
-                if(valInt > 50) sTip = "50"; document.getElementById('lblTip').innerText = sTip;
+                if(valInt > 50) sTip = "50"; incluirPropina = true; document.getElementById('lblTip').innerText = sTip;
             }
             calc();
         }
@@ -305,18 +295,19 @@
         function bksp() {
             reproducirSonido('tecla');
             if (mode === 'sub') { sSub = sSub.slice(0, -1); if (!sSub) sSub = "0"; document.getElementById('lblSub').innerText = sSub; }
-            else if (mode === 'ppl') { sPpl = sPpl.slice(0, -1); if (!sPpl || sPpl === "0" || sPpl === "OFF") { sPpl = "OFF"; modoPersonasActivo = false; seleccionarMenu('sub'); } else { memoriaPersonasNum = sPpl; modoPersonasActivo = true; } document.getElementById('lblPpl').innerText = sPpl; }
-            else if (mode === 'desc') { sDesc = sDesc.slice(0, -1); if (!sDesc || sDesc === "0") { sDesc = "0"; memoriaDescuentoPct = "0"; modoDescuentoActivo = false; seleccionarMenu('sub'); } else { memoriaDescuentoPct = sDesc; modoDescuentoActivo = true; } document.getElementById('lblDesc').innerText = sDesc; }
+            else if (mode === 'ppl') { sPpl = sPpl.slice(0, -1); if (!sPpl || sPpl === "0") { sPpl = "1"; } memoriaPersonasNum = sPpl; document.getElementById('lblPpl').innerText = sPpl; }
+            else if (mode === 'desc') { sDesc = sDesc.slice(0, -1); if (!sDesc || sDesc === "0") { sDesc = "0"; memoriaDescuentoPct = "0"; } else { memoriaDescuentoPct = sDesc; } document.getElementById('lblDesc').innerText = sDesc; }
             else if (mode === 'tip') { sTip = sTip.slice(0, -1); if (!sTip) sTip = "18"; document.getElementById('lblTip').innerText = sTip; }
             calc();
         }
 
+        /* REGLA: Clear restablece el valor al default nativo sin apagar el menu ni forzar salidas */
         function ce() {
             reproducirSonido('tecla');
             if (mode === 'sub') { sSub = "0"; document.getElementById('lblSub').innerText = "0"; }
-            else if (mode === 'ppl') { sPpl = "OFF"; modoPersonasActivo = false; document.getElementById('lblPpl').innerText = "OFF"; seleccionarMenu('sub'); }
-            else if (mode === 'desc') { sDesc = "0"; modoDescuentoActivo = false; document.getElementById('lblDesc').innerText = "0"; seleccionarMenu('sub'); }
-            else if (mode === 'tip') { sTip = "18"; incluirPropina = false; recienEntradoAPropina = false; document.getElementById('lblTip').innerText = "OFF"; seleccionarMenu('sub'); }
+            else if (mode === 'ppl') { sPpl = "2"; memoriaPersonasNum = "2"; modoPersonasActivo = true; document.getElementById('lblPpl').innerText = "2"; }
+            else if (mode === 'desc') { sDesc = "0"; memoriaDescuentoPct = "0"; modoDescuentoActivo = true; document.getElementById('lblDesc').innerText = "0"; }
+            else if (mode === 'tip') { sTip = "18"; recienEntradoAPropina = true; incluirPropina = true; document.getElementById('lblTip').innerText = "18"; }
             actualizarHeaderIndicadores(); calc();
         }
 
@@ -324,14 +315,11 @@
             let val = parseFloat(sSub) || 0;
             if (val > 0) {
                 reproducirSonido('add');
-                let descPct = parseInt(sDesc) || 0, rebaja = val * (descPct / 100), precioDescontado = val - rebaja, ivuIndividual = precioDescontado * (ivu / 100), totalArticulo = precioDescontado + ivuIndividual;
+                let descPct = (modoDescuentoActivo) ? (parseInt(sDesc) || 0) : 0, rebaja = val * (descPct / 100), precioDescontado = val - rebaja, ivuIndividual = precioDescontado * (ivu / 100), totalArticulo = precioDescontado + ivuIndividual;
                 preciosGuardados.push({ precio: val, descuento: rebaja, ivuCalculado: ivuIndividual, total: totalArticulo });
                 cuentaAcumulada += val; sSub = "0"; document.getElementById('lblSub').innerText = "0";
-                
                 const con = document.getElementById('listaPrecios');
-                // REPLALZO DE STRINGS: Formato "• Artículo #1: $PrecioConIVU (Neto: $PrecioBase)"
                 con.innerHTML = preciosGuardados.map((item, i) => `<div>• Artículo #${i+1}: $${item.total.toFixed(2)} (Neto: $${item.precio.toFixed(2)})</div>`).join('');
-                
                 if(preciosGuardados.length > 0) {
                     let totalConTaxAcumulado = preciosGuardados.reduce((sum, item) => sum + item.total, 0);
                     con.innerHTML += `<div style="border-top:1px dashed rgba(0,0,0,0.3); font-weight:900; margin-top:2px;">Base Acum. (w/IVU): $${totalConTaxAcumulado.toFixed(2)}</div>`;
@@ -346,32 +334,33 @@
         function clr() {
             reproducirSonido('tecla'); sSub = "0"; cuentaAcumulada = 0; preciosGuardados = [];
             document.getElementById('lblSub').innerText = "0"; document.getElementById('listaPrecios').innerHTML = "<i>Lista vacía...</i>";
-            document.getElementById('flechaGuia').style.display = "none"; sPpl = "OFF"; modoPersonasActivo = false; memoriaPersonasNum = "2";
-            document.getElementById('lblPpl').innerText = "OFF"; sDesc = "0"; memoriaDescuentoPct = "0"; modoDescuentoActivo = false; document.getElementById('lblDesc').innerText = "0";
+            document.getElementById('flechaGuia').style.display = "none"; sPpl = "2"; modoPersonasActivo = false; memoriaPersonasNum = "2";
+            document.getElementById('lblPpl').innerText = "2"; sDesc = "0"; memoriaDescuentoPct = "0"; modoDescuentoActivo = false; document.getElementById('lblDesc').innerText = "0";
             sTip = "18"; incluirPropina = false; recienEntradoAPropina = false; seleccionarMenu('sub');
         }
 
         function calc() {
-            let nSub = cuentaAcumulada + (parseFloat(sSub) || 0), nPpl = (modoPersonasActivo && sPpl !== "OFF") ? (parseInt(sPpl) || 1) : 1, descPct = (modoDescuentoActivo) ? (parseInt(sDesc) || 0) : 0, tipPct = incluirPropina ? (parseInt(sTip) || 0) : 0;
+            let nSub = cuentaAcumulada + (parseFloat(sSub) || 0), nPpl = (modoPersonasActivo) ? (parseInt(sPpl) || 1) : 1, descPct = (modoDescuentoActivo) ? (parseInt(sDesc) || 0) : 0, tipPct = incluirPropina ? (parseInt(sTip) || 0) : 0;
             let rebajaTotal = nSub * (descPct / 100), subtotalDescontado = nSub - rebajaTotal, impuestoTotal = subtotalDescontado * (ivu / 100), propinaTotal = subtotalDescontado * (tipPct / 100), totalNetoGlobal = subtotalDescontado + impuestoTotal + propinaTotal;
-            let porPersona = totalNetoGlobal / (nPpl > 0 ? nPpl : 1);
+            let porPersona = totalNetoGlobal / nPpl;
             
             document.getElementById('outDesc').innerText = `-$${rebajaTotal.toFixed(2)}`; 
             document.getElementById('outTip').innerText = `$${propinaTotal.toFixed(2)}`;
             document.getElementById('outIvu').innerText = `$${impuestoTotal.toFixed(2)}`;
-            
-            // Sincroniza porcentaje en paréntesis
             document.getElementById('outDescPctText').innerText = modoDescuentoActivo ? sDesc : "0";
             
             document.getElementById('outPerPersonaLine').innerText = `$${porPersona.toFixed(2)}`;
-            document.getElementById('txtCantPers').innerText = modoPersonasActivo ? `${memoriaPersonasNum} pers.` : "OFF";
+            document.getElementById('txtCantPers').innerText = `${memoriaPersonasNum} pers.`;
             document.getElementById('rowPersonaCuota').style.opacity = modoPersonasActivo ? "1" : "0.25";
             
             document.getElementById('outPer').innerText = totalNetoGlobal.toFixed(2);
-            document.getElementById('lblTip').innerText = incluirPropina ? `${sTip}%` : "OFF"; document.getElementById('txtTipPct').innerText = incluirPropina ? `${sTip}%` : "OFF";
-            document.getElementById('lblDesc').innerText = modoDescuentoActivo ? sDesc : "0"; document.getElementById('lblPpl').innerText = modoPersonasActivo ? sPpl : "OFF";
+            document.getElementById('lblTip').innerText = sTip; 
+            document.getElementById('txtTipPct').innerText = `${sTip}%`;
+            document.getElementById('lblDesc').innerText = sDesc; 
+            document.getElementById('lblPpl').innerText = sPpl;
             document.getElementById('lblArt').innerText = preciosGuardados.length ? `Cuenta (${preciosGuardados.length} artí.)` : "Calculadora de ResiDeus";
-            document.getElementById('rowDesc').style.opacity = (descPct > 0) ? "1" : "0.3"; document.getElementById('rowTip').style.opacity = incluirPropina ? "1" : "0.2";
+            document.getElementById('rowDesc').style.opacity = (descPct > 0) ? "1" : "0.3"; 
+            document.getElementById('rowTip').style.opacity = incluirPropina ? "1" : "0.2";
             actualizarHeaderIndicadores();
         }
 
@@ -382,7 +371,7 @@
 
         function exportarRecibo() {
             reproducirSonido('add');
-            let nSub = cuentaAcumulada + (parseFloat(sSub) || 0), nPpl = (modoPersonasActivo && sPpl !== "OFF") ? (parseInt(sPpl) || 1) : 1, descPct = (modoDescuentoActivo) ? (parseInt(sDesc) || 0) : 0, tipPct = incluirPropina ? (parseInt(sTip) || 0) : 0;
+            let nSub = cuentaAcumulada + (parseFloat(sSub) || 0), nPpl = (modoPersonasActivo) ? (parseInt(sPpl) || 1) : 1, descPct = (modoDescuentoActivo) ? (parseInt(sDesc) || 0) : 0, tipPct = incluirPropina ? (parseInt(sTip) || 0) : 0;
             let rebajaTotal = nSub * (descPct / 100), subtotalDescontado = nSub - rebajaTotal, impuestoTotal = subtotalDescontado * (ivu / 100), propinaTotal = subtotalDescontado * (tipPct / 100), totalNetoGlobal = subtotalDescontado + impuestoTotal + propinaTotal;
             let txt = `=== Calculadora de ResiDeus ===\nFecha: ${new Date().toLocaleString()}\nIVU Config: ${ivu.toFixed(1)}%\n-----------------------\n`;
             if(preciosGuardados.length > 0) { txt += `Historial Guardado:\n`; preciosGuardados.forEach((a, i) => { txt += `  Artículo #${i+1}: $${a.total.toFixed(2)} -> Neto: $${a.precio.toFixed(2)}\n`; }); txt += `-----------------------\n`; }
