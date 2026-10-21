@@ -326,11 +326,11 @@
             } else if (mode === 'ppl') {
                 numPpl.innerText = sPpl; btnReset.disabled = false; btnAnadir.disabled = true; btnPunto.disabled = true; 
                 numPpl.classList.add('blink-num'); document.getElementById('cajaPpl').className = "caja-data btn-on on-anim";
-            } else if (mode === 'desc') {
-                numDesc.innerText = sDesc; btnReset.disabled = false; btnAnadir.disabled = true; btnPunto.disabled = true;
+                        } else if (mode === 'desc') {
+                numDesc.innerText = sDesc; btnReset.disabled = false; btnAnadir.disabled = true; btnPunto.disabled = false;
                 numDesc.classList.add('blink-num'); document.getElementById('cajaDesc').className = "caja-data btn-on on-anim";
             } else if (mode === 'tip') {
-                numTip.innerText = sTip; btnReset.disabled = false; btnAnadir.disabled = true; btnPunto.disabled = true;
+                numTip.innerText = sTip; btnReset.disabled = false; btnAnadir.disabled = true; btnPunto.disabled = false;
                 numTip.classList.add('blink-num'); document.getElementById('cajaTip').className = "caja-data btn-on on-anim";
             }
             if (incluirPropina && mode !== 'tip') document.getElementById('cajaTip').className = "caja-data btn-on";
@@ -357,17 +357,22 @@
                 memoriaSerruchoCortes = sPpl === "" ? "0" : sPpl;
                 modoSerruchoActivo = true; document.getElementById('lblPpl').innerText = sPpl === "" ? "0" : sPpl;
             } else if (mode === 'desc') {
-                if (c === '.' || sDesc === "0") sDesc = "";
-                sDesc = (sDesc + c).substring(0, 2);
+                if (sDesc === "0" && c !== '.') sDesc = "";
+                if (c === '.' && sDesc.includes('.')) return; // Evita que metan dos puntos
+                sDesc = (sDesc + c).substring(0, 4); // Ampliado a 4 para que quepa el decimal (ej: 12.5)
                 memoriaDescuentoPct = sDesc === "" ? "0" : sDesc;
                 modoDescuentoActivo = true; document.getElementById('lblDesc').innerText = sDesc === "" ? "0" : sDesc;
             } else if (mode === 'tip') {
-                if (recienEntradoAPropina || sTip === "0") { sTip = ""; recienEntradoAPropina = false; }
-                if (c === '.') return; 
-                sTip = (sTip + c).substring(0, 2);
+                if (recienEntradoAPropina || sTip === "0") { 
+                    if (c !== '.') { sTip = ""; } 
+                    recienEntradoAPropina = false; 
+                }
+                if (c === '.' && sTip.includes('.')) return; // Evita que metan dos puntos
+                sTip = (sTip + c).substring(0, 4); // Ampliado a 4 para que quepa el decimal (ej: 15.5)
                 memoriaTipPct = sTip === "" ? "0" : sTip;
                 incluirPropina = true; document.getElementById('lblTip').innerText = sTip === "" ? "0" : sTip;
             }
+
             calc();
         }
         function bksp() {
