@@ -82,7 +82,6 @@
         body.theme-matrix .btn-key { background: linear-gradient(180deg, #064e3b 0%, #022c22 100%); border-color: #34d399; color: #34d399; }
         body.theme-sunset .btn-key { background: linear-gradient(180deg, #7c2d12 0%, #451a03 100%); border-color: #fb923c; color: #fdba74; }
         
-        /* CORRECCIÓN: BOTÓN DE BORRAR SINCRONIZADO AL COLOR NUMÉRICO VIOLETA */
         .btn-back { background: linear-gradient(180deg, #44186c 0%, #170529 100%) !important; color: #00f0ff !important; border-color: #00f0ff44 !important; }
         body.theme-retro-gold .btn-back { background: linear-gradient(180deg, #57534e 0%, #1c1917 100%) !important; color: #fbbf24 !important; border-color: #a8a29e !important; }
         body.theme-matrix .btn-back { background: linear-gradient(180deg, #064e3b 0%, #022c22 100%) !important; color: #34d399 !important; border-color: #34d399 !important; }
@@ -90,27 +89,24 @@
 
         .btn-key:disabled { opacity: 0.2 !important; cursor: not-allowed !important; filter: grayscale(100%); background: #1a0b24 !important; color: #555 !important; }
 
-        /* NUEVO DISEÑO COHESIONADO: ACCIONES PLANAS ESTILO CUENTA/SPLIT */
-        .row-acciones { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding-bottom: 2px; }
-        .btn-clear, .btn-add, .btn-theme, .btn-receipt { height: 38px; border-radius: 10px; font-size: 9px; font-weight: bold; cursor: pointer; transition: all 0.2s ease; text-transform: uppercase; display: flex; justify-content: center; align-items: center; font-family: monospace; }
+        /* REJILLA DE ACCIONES AJUSTADA: 3 BOTONES EN LA FILA SUPERIOR */
+        .row-acciones-triple { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; padding-bottom: 2px; }
+        .btn-clear, .btn-add, .btn-theme, .btn-receipt, .btn-ce { height: 38px; border-radius: 10px; font-size: 9px; font-weight: bold; cursor: pointer; transition: all 0.2s ease; text-transform: uppercase; display: flex; justify-content: center; align-items: center; font-family: monospace; }
         
-        /* INTEGRACIÓN CYBERPUNK */
-        body.theme-cyberpunk .btn-clear, body.theme-cyberpunk .btn-theme { background: #1a0826; border: 2px solid #ff007f; color: #ff007f; opacity: 0.7; }
+        /* INTEGRACIÓN DE ESTILOS PLANOS POR TEMA */
+        body.theme-cyberpunk .btn-clear, body.theme-cyberpunk .btn-theme, body.theme-cyberpunk .btn-ce { background: #1a0826; border: 2px solid #ff007f; color: #ff007f; opacity: 0.7; }
         body.theme-cyberpunk .btn-add, body.theme-cyberpunk .btn-receipt { background: #ff007f; border: 2px solid #fff; color: #000; font-weight: bold; }
         
-        /* INTEGRACIÓN RETRO GOLD */
-        body.theme-retro-gold .btn-clear, body.theme-retro-gold .btn-theme { background: #1c1917; border: 2px solid #d97706; color: #d97706; }
+        body.theme-retro-gold .btn-clear, body.theme-retro-gold .btn-theme, body.theme-retro-gold .btn-ce { background: #1c1917; border: 2px solid #d97706; color: #d97706; }
         body.theme-retro-gold .btn-add, body.theme-retro-gold .btn-receipt { background: #d97706; border: 2px solid #fff; color: #fff; }
 
-        /* INTEGRACIÓN MATRIX */
-        body.theme-matrix .btn-clear, body.theme-matrix .btn-theme { background: #022c22; border: 2px solid #10b981; color: #10b981; }
+        body.theme-matrix .btn-clear, body.theme-matrix .btn-theme, body.theme-matrix .btn-ce { background: #022c22; border: 2px solid #10b981; color: #10b981; }
         body.theme-matrix .btn-add, body.theme-matrix .btn-receipt { background: #10b981; border: 2px solid #fff; color: #000; }
 
-        /* INTEGRACIÓN SUNSET */
-        body.theme-sunset .btn-clear, body.theme-sunset .btn-theme { background: #292524; border: 2px solid #f97316; color: #f97316; }
+        body.theme-sunset .btn-clear, body.theme-sunset .btn-theme, body.theme-sunset .btn-ce { background: #292524; border: 2px solid #f97316; color: #f97316; }
         body.theme-sunset .btn-add, body.theme-sunset .btn-receipt { background: #f97316; border: 2px solid #fff; color: #fff; }
 
-        .btn-clear:disabled, .btn-add:disabled { opacity: 0.15 !important; box-shadow: none !important; border-color: #444 !important; background: #11051c !important; color: #555 !important; }
+        .btn-clear:disabled, .btn-add:disabled, .btn-ce:disabled { opacity: 0.15 !important; box-shadow: none !important; border-color: #444 !important; background: #11051c !important; color: #555 !important; }
 
         @keyframes glow { 0%, 100% { box-shadow: 0 0 8px #ff007f; opacity: 0.85; } 50% { box-shadow: 0 0 12px #ff007f; opacity: 1; } }
         body.theme-retro-gold .on-anim { animation: glowGold 1.2s infinite ease-in-out; }
@@ -172,8 +168,10 @@
             <button id="ivu0" onclick="setI(0.0)" class="btn-cfg btn-off">0.0%</button>
         </div>
 
-        <div class="row-acciones">
-            <button id="btnResetGlobal" class="btn-clear" onclick="clr()">C Reset</button>
+        <!-- SOLUCIÓN: FILA SUPERIOR TRIPLE CON BOTÓN CLEAR (CE) -->
+        <div class="row-acciones-triple">
+            <button id="btnResetGlobal" class="btn-clear" onclick="clr()">Resetear</button>
+            <button id="btnCeGlobal" class="btn-ce" onclick="ce()">Clear</button>
             <button id="btnAnadirGlobal" class="btn-add" onclick="addProducto()">+ Añadir</button>
         </div>
         <div class="row-acciones">
@@ -351,6 +349,30 @@
             calc();
         }
 
+        /* SOLUCIÓN NUEVA: FUNCIÓN CLEAR (CE) BORRA EXCLUSIVAMENTE LA ENTRADA ACTUAL */
+        function ce() {
+            reproducirSonido('tecla');
+            if (mode === 'sub') {
+                sSub = "0";
+                document.getElementById('lblSub').innerText = "0";
+            } else if (mode === 'ppl') {
+                sPpl = "OFF";
+                document.getElementById('lblPpl').innerText = "OFF";
+            } else if (mode === 'desc') {
+                sDesc = "0";
+                document.getElementById('lblDesc').innerText = "0";
+            } else if (mode === 'tip') {
+                sTip = "18";
+                if(incluirPropina) {
+                    document.getElementById('lblTip').innerText = "18%";
+                } else {
+                    document.getElementById('lblTip').innerText = "OFF";
+                }
+            }
+            actualizarHeaderIndicadores();
+            calc();
+        }
+
         function addProducto() {
             let val = parseFloat(sSub) || 0;
             if (val > 0) {
@@ -393,20 +415,16 @@
             document.getElementById('flechaGuia').style.display = "none";
         }
 
+        /* RESETEAR CONSERVA SU LÓGICA DE LIMPIEZA TOTAL EN LA MÁQUINA */
         function clr() {
             reproducirSonido('tecla');
-            if (mode === 'sub') {
-                sSub = "0"; cuentaAcumulada = 0; preciosGuardados = [];
-                document.getElementById('lblSub').innerText = "0";
-                document.getElementById('listaPrecios').innerHTML = "<i>Lista vacía...</i>";
-                document.getElementById('flechaGuia').style.display = "none";
-            } else if (mode === 'ppl') { 
-                sPpl = "OFF"; document.getElementById('lblPpl').innerText = "OFF"; 
-            } else if (mode === 'desc') {
-                sDesc = "0"; document.getElementById('lblDesc').innerText = "0";
-            } else if (mode === 'tip') {
-                sTip = "18"; incluirPropina = false;
-            }
+            sSub = "0"; cuentaAcumulada = 0; preciosGuardados = [];
+            document.getElementById('lblSub').innerText = "0";
+            document.getElementById('listaPrecios').innerHTML = "<i>Lista vacía...</i>";
+            document.getElementById('flechaGuia').style.display = "none";
+            sPpl = "OFF"; document.getElementById('lblPpl').innerText = "OFF"; 
+            sDesc = "0"; document.getElementById('lblDesc').innerText = "0";
+            sTip = "18"; incluirPropina = false;
             seleccionarMenu('sub');
         }
 
