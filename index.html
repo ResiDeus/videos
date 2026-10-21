@@ -283,9 +283,37 @@
                     osc.type = 'sine'; osc.frequency.setValueAtTime(450, ctx.currentTime);
                     osc.frequency.exponentialRampToValueAtTime(950, ctx.currentTime + 0.15);
                     gain.gain.setValueAtTime(0.12, ctx.currentTime);
+                } else if (tipo === 'caja') {
+                    // 🔔 CAMPANA DE CAJA REGISTRADORA CIBERNÉTICA
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(1250, ctx.currentTime); // Tono agudo principal
+                    gain.gain.setValueAtTime(0.15, ctx.currentTime);
+                    
+                    // Segundo oscilador en armonía para darle el tono metálico de campana real
+                    const osc2 = ctx.createOscillator();
+                    const gain2 = ctx.createGain();
+                    osc2.type = 'sine';
+                    osc2.frequency.setValueAtTime(1650, ctx.currentTime); // Tono secundario armónico
+                    gain2.gain.setValueAtTime(0.08, ctx.currentTime);
+                    
+                    // Conexiones de la segunda onda
+                    osc2.connect(gain2);
+                    gain2.connect(ctx.destination);
+                    
+                    // Desvanecimiento progresivo metálico largo
+                    gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+                    osc2.start();
+                    osc2.stop(ctx.currentTime + 0.5);
+                    
+                    // Ajuste del desvanecimiento del oscilador principal para que dure más (0.5 segundos)
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.5);
+                    return; // Salimos de la función aquí para ignorar el stop genérico corto de abajo
                 }
                 gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.15);
                 osc.start(); osc.stop(ctx.currentTime + 0.15);
+
             } catch (e) {}
         }
         function actualizarHeaderIndicadores() {
@@ -477,7 +505,7 @@
         }
 
         function abrirHologramaRecibo() {
-            reproducirSonido('add');
+            reproducirSonido('caja');
             let numPplRaw = parseInt(sPpl); 
             let nSerruchoInternal = (modoSerruchoActivo && !isNaN(numPplRaw) && numPplRaw > 1) ? numPplRaw : 1;
             let dPct = modoDescuentoActivo ? (parseInt(memoriaDescuentoPct) || 0) : 0;
@@ -523,7 +551,7 @@
             document.getElementById('visorHolograma').classList.remove('activo');
         }
         function copiarTextoHolograma() {
-            reproducirSonido('add');
+            reproducirSonido('caja');
             navigator.clipboard.writeText(textoReciboGlobal).then(() => {
                 document.getElementById('btnCopiarHolo').innerText = "¡Copiado!";
             }).catch(() => {
