@@ -197,7 +197,7 @@
             </div>
         </div>
 
-                        <!-- 🎛️ BOTONERA UNIFICADA DE 5 COLUMNAS COMPACTAS (ESTILOS CORREGIDOS) -->
+                    <!-- 🎛️ BOTONERA UNIFICADA DE 5 COLUMNAS COMPACTAS (TAMAÑOS Y COLORES SOLUCIONADOS) -->
         <div class="row-menus" style="grid-template-columns: repeat(5, 1fr);">
             <div id="cajaSub" class="caja-data btn-on on-anim" onclick="seleccionarMenu('sub')">
                 <span class="lbl-title">Cuenta</span>
@@ -215,12 +215,13 @@
                 <span class="lbl-title">Propina</span>
                 <span class="lbl-val"><span id="lblTip">0</span>%</span>
             </div>
-            <!-- 🚨 INTERRUPTOR DEL IVU INTEGRADO CON LA MISMA CLASE Y TIPOGRAFÍA MONOESPACIADA -->
-            <button id="btnToggleIvu" onclick="conmutarIvu()" class="caja-data btn-on" style="font-family: inherit; font-size: inherit; width: 100%; height: 100%; min-height: 52px; cursor: pointer;">
-                <span class="lbl-title" style="color: #fff;">IVU</span>
+            <!-- 🚨 INTERRUPTOR DEL IVU: Anulados todos los estilos nativos de botón para forzar simetría perfecta -->
+            <button id="btnToggleIvu" onclick="conmutarIvu()" class="caja-data btn-on" style="font-family: inherit; font-size: inherit; font-weight: inherit; width: 100%; height: 100%; min-height: 52px; cursor: pointer; border: none; padding: 0; outline: none; display: flex; flex-direction: column; justify-content: center; align-items: center; text-shadow: inherit; color: inherit;">
+                <span id="btnIvuTitleText" class="lbl-title" style="color: #fff;">IVU</span>
                 <span id="btnIvuValText" class="lbl-val" style="color: #000; font-weight: 900;">11.5%</span>
             </button>
         </div>
+
 
         <div class="pad-num">
             <button id="btnResetGlobal" class="btn-key btn-action-text" onclick="clr()">Resetear</button>
@@ -367,25 +368,29 @@
         }
 
                 // 🎛️ MOTOR DEL INTERRUPTOR ÚNICO DE IVU (Alterna dinámicamente entre 11.5% y 0%)
-                // 🎛️ MOTOR DEL INTERRUPTOR DE IVU COMPACTO (CORREGIDO CON TIPOGRAFÍA COMBINADA)
+                // 🎛️ MOTOR DEL INTERRUPTOR DE IVU COMPACTO (MANEJO DE COLORES E OPACIDADES)
         function conmutarIvu() {
             reproducirSonido('menu');
             const btn = document.getElementById('btnToggleIvu');
+            const titleText = document.getElementById('btnIvuTitleText');
             const valText = document.getElementById('btnIvuValText');
             
             if (ivu === 11.5) {
                 ivu = 0.0;
-                btn.className = "caja-data btn-off"; // Mantiene la forma, pero se vuelve opaco
+                btn.className = "caja-data btn-off"; // Se vuelve opaco (Fondo oscuro)
+                titleText.style.color = "inherit";   // Toma el color violeta/rosa neón de los botones apagados
                 valText.innerText = "0.0%";
-                valText.style.color = "inherit";     // Toma el color gris/rosa atenuado del botón apagado
+                valText.style.color = "inherit";     // Toma el mismo tono atenuado
             } else {
                 ivu = 11.5;
                 btn.className = "caja-data btn-on";  // Se activa brillante con fondo neón
+                titleText.style.color = "#fff";      // Sube a texto blanco nítido
                 valText.innerText = "11.5%";
-                valText.style.color = "#000";         // Fuerza únicamente al número a ponerse en negro sólido
+                valText.style.color = "#000";         // Fuerza el número a negro sólido
             }
             actualizarHeaderIndicadores(); calc();
         }
+
 
         function num(c) {
             reproducirSonido('tecla');
