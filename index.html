@@ -139,15 +139,16 @@
                 </div>
             </div>
             <div class="lcd-body">
-                <div id="rowDesc" style="opacity: 0.3;">DESCUENTO: <span id="outDesc">-$0.00</span></div>
-                <div id="rowTip" style="opacity: 0.2;">PROPINA: <span id="outTip">$0.00</span></div>
+                <!-- Las opacidades iniciales cambian dinámicamente con JS -->
+                <div id="rowDesc" style="opacity: 0.3; transition: opacity 0.15s ease;">DESCUENTO: <span id="outDesc">-$0.00</span></div>
+                <div id="rowTip" style="opacity: 0.2; transition: opacity 0.15s ease;">PROPINA: <span id="outTip">$0.00</span></div>
                 <div>IVU: <span id="outIvu">$0.00</span></div>
                 
                 <!-- TOTAL PRINCIPAL FIJO ARRIBA -->
                 <div class="lcd-total" style="margin-bottom: 1px;">TOTAL: $<span id="outPer">0.00</span></div>
                 
                 <!-- SERRUCHO COMPARTIDO EN MAYÚSCULAS -->
-                <div id="rowPersonaCuota" style="opacity: 0.25; font-size: 11px; margin-top: 1px;"><span id="txtSerruchoLabelType">SERRUCHO (C/U): N/A</span><span id="outPerPersonaLine"></span></div>
+                <div id="rowPersonaCuota" style="opacity: 0.25; font-size: 11px; margin-top: 1px; transition: opacity 0.15s ease;"><span id="txtSerruchoLabelType">SERRUCHO (C/U): N/A</span><span id="outPerPersonaLine"></span></div>
             </div>
         </div>
 
@@ -304,7 +305,7 @@
             } else if (mode === 'tip') {
                 if (recienEntradoAPropina || sTip === "0") { sTip = ""; recienEntradoAPropina = false; }
                 if (c === '.') return; 
-                // SOLUCIÓN: Habilita la inserción de dos dígitos completos en propina sin bloqueos
+                // FIJADO: Teclado libre para capturar dos dígitos en la propina sin traba (ej. 25)
                 sTip = (sTip + c).substring(0, 2);
                 memoriaTipPct = sTip === "" ? "0" : sTip;
                 incluirPropina = true; document.getElementById('lblTip').innerText = sTip === "" ? "0" : sTip;
@@ -316,7 +317,7 @@
             reproducirSonido('tecla');
             if (mode === 'sub') { sSub = sSub.slice(0, -1); if (!sSub) sSub = "0"; document.getElementById('lblSub').innerText = sSub; }
             else if (mode === 'ppl') { sPpl = sPpl.slice(0, -1); if (!sPpl) { sPpl = "0"; } memoriaPersonasNum = sPpl; document.getElementById('lblPpl').innerText = sPpl; }
-            else if (mode === 'desc') { sDesc = sDesc.slice(0, -1); if (!sDesc) { sDesc = "0"; } memoriaDescuentoPct = sDesc; document.getElementById('lblDesc').innerText = sDesc; }
+            else if (mode === 'desc') { sDesc = sDesc.slice(0, -1); if (!sDesc) { sDesc = "0"; } memoriaDescuentoPct = dDesc; document.getElementById('lblDesc').innerText = sDesc; }
             else if (mode === 'tip') { sTip = sTip.slice(0, -1); if (!sTip) { sTip = "0"; } memoriaTipPct = sTip; document.getElementById('lblTip').innerText = sTip; }
             calc();
         }
@@ -359,12 +360,9 @@
             sTip = "15"; memoriaTipPct = "15"; incluirPropina = false; recienEntradoAPropina = false; seleccionarMenu('sub');
         }
 
-        // SOLUCIÓN: Motor reconstruído por completo utilizando variables limpias e inequívocas para TOTAL y Opacidades
         function calc() {
             let numPplRaw = parseInt(sPpl);
-            let nPpl = (modoPersonasActivo && !isNaN(numPplRaw) && numPplRaw > 1) ? numPplRaw : (modoPersonasActivo ? parseInt(memoriaPersonasNum) : 1);
-            if(nPpl < 1) nPpl = 1;
-
+            let nPpl = (modoPersonasActivo && !isNaN(numPplRaw) && numPplRaw > 1) ? numPplRaw : 1;
             let dPct = modoDescuentoActivo ? (parseInt(memoriaDescuentoPct) || 0) : 0;
             let tPct = incluirPropina ? (parseInt(memoriaTipPct) || 0) : 0;
             let nSub = cuentaAcumulada + (parseFloat(sSub) || 0);
@@ -380,24 +378,23 @@
             document.getElementById('outTip').innerText = `$${propinaTotal.toFixed(2)}`;
             document.getElementById('outIvu').innerText = `$${impuestoTotal.toFixed(2)}`; 
             document.getElementById('outPer').innerText = totalNetoGlobal.toFixed(2);
-            document.getElementById('outDescPctText').innerText = modoDescuentoActivo ? memoriaDescuentoPct : "0";
             
-            // SOLUCIÓN: Habilitación visual de brillo completo (opacidad 1) en tiempo real
+            // REGLA CLAVE CORREGIDA: Cuando el botón se enciende, la fila en el LCD verde sube a opacidad 1 (100% brillante / Habilitada)
             document.getElementById('rowDesc').style.opacity = modoDescuentoActivo ? "1" : "0.3";
-            document.getElementById('rowTip').style.opacity = incluirPropina ? "1" : "0.2";
+            document.getElementById('rowTip').style.opacity = incluirPropina ? "1" : "0.3";
 
             if (modoPersonasActivo) {
                 document.getElementById('txtSerruchoLabelType').innerText = `SERRUCHO (C/U): `;
                 document.getElementById('outPerPersonaLine').innerText = `$${porPersona.toFixed(2)}`;
-                document.getElementById('rowPersonaCuota').style.opacity = "1";
+                document.getElementById('rowPersonaCuota').style.opacity = "1"; // Sube a 100% brillante si se activa el serrucho
             } else {
                 document.getElementById('txtSerruchoLabelType').innerText = `SERRUCHO (C/U): N/A`;
                 document.getElementById('outPerPersonaLine').innerText = ``;
-                document.getElementById('rowPersonaCuota').style.opacity = "0.25";
+                document.getElementById('rowPersonaCuota').style.opacity = "0.3"; // Se queda opaca (greyed out) si está apagada
             }
             
             document.getElementById('lblTip').innerText = incluirPropina ? memoriaTipPct : "0"; 
-            document.getElementById('txtTipPct').innerText = incluirPropina ? `${memoriaTipPct}%` : "0%";
+            document.getElementById('txtTipPct').innerText = incluirPropina ? `${memoriaTipPct}%` : "0%"
             document.getElementById('lblDesc').innerText = modoDescuentoActivo ? memoriaDescuentoPct : "0"; 
             if (mode !== 'ppl') { document.getElementById('lblPpl').innerText = modoPersonasActivo ? memoriaPersonasNum : "N/A"; }
             document.getElementById('lblArt').innerText = preciosGuardados.length ? `Cuenta (${preciosGuardados.length} artículos)` : "Calculadora de ResiDeus";
@@ -418,7 +415,7 @@
         function exportarRecibo() {
             reproducirSonido('add');
             let numPplRaw = parseInt(sPpl); 
-            let nPpl = (modoPersonasActivo && !isNaN(numPplRaw) && numPplRaw > 1) ? numPplRaw : (modoPersonasActivo ? parseInt(memoriaPersonasNum) : 2);
+            let nPpl = (modoPersonasActivo && !isNaN(numPplRaw) && numPplRaw > 1) ? numPplRaw : 1;
             let dPct = modoDescuentoActivo ? (parseInt(memoriaDescuentoPct) || 0) : 0;
             let tPct = incluirPropina ? (parseInt(memoriaTipPct) || 0) : 0;
             let nSub = cuentaAcumulada + (parseFloat(sSub) || 0);
