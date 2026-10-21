@@ -197,7 +197,8 @@
             </div>
         </div>
 
-        <div class="row-menus">
+                <!-- 🎛️ BOTONERA UNIFICADA DE 5 COLUMNAS COMPACTAS -->
+        <div class="row-menus" style="grid-template-columns: repeat(5, 1fr);">
             <div id="cajaSub" class="caja-data btn-on on-anim" onclick="seleccionarMenu('sub')">
                 <span class="lbl-title">Cuenta</span>
                 <span class="lbl-val">$<span id="lblSub" class="blink-num">0</span></span>
@@ -214,11 +215,13 @@
                 <span class="lbl-title">Propina</span>
                 <span class="lbl-val"><span id="lblTip">0</span>%</span>
             </div>
+            <!-- 🚨 INTERRUPTOR DEL IVU INTEGRADO AL FINAL DE LA FILA PRINCIPAL -->
+            <button id="btnToggleIvu" onclick="conmutarIvu()" class="btn-cfg btn-on" style="padding: 4px 2px; border-radius: 10px; font-size: 9px; min-height: 52px; font-family: monospace; cursor: pointer; display: flex; flex-direction: column; justify-content: center; align-items: center; line-height: 1.2;">
+                <span style="font-weight: 900; text-transform: uppercase; display: block; margin-bottom: 2px;">IVU</span>
+                <span id="btnIvuValText" style="color: #000; font-weight: 900; font-size: 11px;">11.5%</span>
+            </button>
         </div>
-        <div class="row-config" style="grid-template-columns: 1fr;">
-            <!-- 🎛️ BOTÓN INTERRUPTOR ÚNICO PARA EL IVU (Alterna entre 11.5% y 0%) -->
-            <button id="btnToggleIvu" onclick="conmutarIvu()" class="btn-cfg btn-on" style="width: 100%;">IVU <span style="color: #000; font-weight: 900;">11.5%</span></button>
-        </div>
+
 
 
         <div class="pad-num">
@@ -366,23 +369,26 @@
         }
 
                 // 🎛️ MOTOR DEL INTERRUPTOR ÚNICO DE IVU (Alterna dinámicamente entre 11.5% y 0%)
-                // 🎛️ MOTOR DEL INTERRUPTOR ÚNICO DE IVU (Estilos de texto blanco y números negros)
+                // 🎛️ MOTOR DEL INTERRUPTOR DE IVU COMPACTO DE LA FILA PRINCIPAL
         function conmutarIvu() {
             reproducirSonido('menu');
             const btn = document.getElementById('btnToggleIvu');
+            const valText = document.getElementById('btnIvuValText');
             
             if (ivu === 11.5) {
                 ivu = 0.0;
-                btn.className = "btn-cfg btn-off"; // Se vuelve opaco (greyed out)
-                btn.innerHTML = "IVU 0.0%";         // Muestra el texto apagado en gris estándar
+                btn.className = "btn-cfg btn-off"; // Se vuelve opaco
+                valText.innerText = "0.0%";         // Cambia el texto del porcentaje
+                valText.style.color = "inherit";   // Toma el color gris del botón apagado
             } else {
                 ivu = 11.5;
-                btn.className = "btn-cfg btn-on";  // Se vuelve brillante (Fondo neón, Texto blanco)
-                // Usamos color: #000 para forzar únicamente al número "11.5%" a pintarse en negro nítido
-                btn.innerHTML = 'IVU <span style="color: #000; font-weight: 900;">11.5%</span>';
+                btn.className = "btn-cfg btn-on";  // Se activa brillante
+                valText.innerText = "11.5%";        // Cambia el texto del porcentaje
+                valText.style.color = "#000";       // Fuerza el número a negro nítido
             }
             actualizarHeaderIndicadores(); calc();
         }
+
 
         function num(c) {
             reproducirSonido('tecla');
@@ -466,12 +472,15 @@
             sTip = "15"; memoriaTipPct = "15"; incluirPropina = false; recienEntradoAPropina = false; 
             
             // Fuerza al botón interruptor a reiniciarse en modo IVU (11.5%) brillante
-                        ivu = 11.5;
+            ivu = 11.5;
             const btnHolo = document.getElementById('btnToggleIvu');
-            if(btnHolo) { 
+            const valTextHolo = document.getElementById('btnIvuValText');
+            if(btnHolo && valTextHolo) { 
                 btnHolo.className = "btn-cfg btn-on"; 
-                btnHolo.innerHTML = 'IVU <span style="color: #000; font-weight: 900;">11.5%</span>'; 
+                valTextHolo.innerText = "11.5%";
+                valTextHolo.style.color = "#000";
             }
+
             
             seleccionarMenu('sub');
         }
