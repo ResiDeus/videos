@@ -95,10 +95,9 @@
         .row-config { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
         .btn-cfg { padding: 6px 0; border-radius: 8px; font-size: 10px; font-weight: bold; cursor: pointer; text-align: center; }
 
-        /* ESTILOS DEL PAD NUMÉRICO UNIFICADO (VIOLETA POR DEFECTO) */
         .pad-num { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-bottom: 2px; }
         .btn-key { height: 38px; background: linear-gradient(180deg, #44186c 0%, #170529 100%); border: 1px solid #00f0ff44; border-radius: 6px; color: #00f0ff; font-size: 1.1rem; font-weight: bold; cursor: pointer; text-transform: uppercase; display: flex; justify-content: center; align-items: center; font-family: monospace; }
-        .btn-key.btn-action-text { font-size: 9px; } /* Ajuste de letra para RESETEAR/AÑADIR */
+        .btn-key.btn-action-text { font-size: 9px; }
 
         body.theme-retro-gold .btn-key { background: linear-gradient(180deg, #57534e 0%, #1c1917 100%); border-color: #a8a29e; color: #fbbf24; }
         body.theme-matrix .btn-key { background: linear-gradient(180deg, #064e3b 0%, #022c22 100%); border-color: #34d399; color: #34d399; }
@@ -183,14 +182,12 @@
             <button id="ivu0" onclick="setI(0.0)" class="btn-cfg btn-off">0.0%</button>
         </div>
 
-        <!-- TECLADO EXTENDIDO UNIFICADO (ACCIONES INTEGRADAS DIRECTAMENTE AQUÍ) -->
+        <!-- TECLADO EXTENDIDO UNIFICADO -->
         <div class="pad-num">
-            <!-- Fila superior del teclado para acciones del sistema -->
             <button id="btnResetGlobal" class="btn-key btn-action-text" onclick="clr()">Resetear</button>
             <button id="btnCeGlobal" class="btn-key btn-action-text" onclick="ce()">Clear</button>
             <button id="btnAnadirGlobal" class="btn-key btn-action-text" onclick="addProducto()">+ Añadir</button>
 
-            <!-- Bloque numérico estándar -->
             <button onclick="num('7')" class="btn-key">7</button><button onclick="num('8')" class="btn-key">8</button><button onclick="num('9')" class="btn-key">9</button>
             <button onclick="num('4')" class="btn-key">4</button><button onclick="num('5')" class="btn-key">5</button><button onclick="num('6')" class="btn-key">6</button>
             <button onclick="num('1')" class="btn-key">1</button><button onclick="num('2')" class="btn-key">2</button><button onclick="num('3')" class="btn-key">3</button>
@@ -209,6 +206,9 @@
         let preciosGuardados = [], cuentaAcumulada = 0;
         let themes = ['theme-cyberpunk', 'theme-retro-gold', 'theme-matrix', 'theme-sunset'];
         let temaActualIdx = 0;
+        
+        // NUEVA VARIABLE DE CONTROL: Detecta si es la primera pulsación al entrar al menú de propinas
+        let recienEntradoAPropina = false;
 
         function reproducirSonido(tipo) {
             try {
@@ -252,9 +252,16 @@
 
             if (f === 'tip') {
                 incluirPropina = !incluirPropina;
-                mode = !incluirPropina ? 'sub' : 'tip';
+                if (!incluirPropina) {
+                    mode = 'sub';
+                    recienEntradoAPropina = false;
+                } else {
+                    mode = 'tip';
+                    recienEntradoAPropina = true; // Se activa la sobreescritura inmediata
+                }
             } else {
                 mode = f;
+                recienEntradoAPropina = false;
             }
             
             ['cajaSub', 'cajaPpl', 'cajaDesc', 'cajaTip'].forEach(id => {
@@ -309,15 +316,6 @@
             calc();
         }
 
-        function setI(p) {
-            reproducirSonido('menu'); ivu = p;
-            ['ivu115', 'ivu7', 'ivu0'].forEach(id => document.getElementById(id).className = "btn-cfg btn-off");
-            let idActivo = p === 11.5 ? 'ivu115' : p === 7.0 ? 'ivu7' : 'ivu0';
-            document.getElementById(idActivo).className = "btn-cfg btn-on";
-            actualizarHeaderIndicadores();
-            calc();
-        }
-
         function num(c) {
             reproducirSonido('tecla');
             if (mode === 'sub') {
@@ -340,7 +338,12 @@
                 if(valInt > 99) sDesc = "99";
                 document.getElementById('lblDesc').innerText = sDesc;
             } else if (mode === 'tip') {
-                if (c === '.' || sTip === "0") sTip = "";
+                // SOLUCIÓN: Si es el primer número tras activar la propina, sobrescribe el 18
+                if (recienEntradoAPropina || sTip === "0") {
+                    sTip = "";
+                    recienEntradoAPropina = false; // Desactiva la sobreescritura para la siguiente cifra
+                }
+                if (c === '.') return; 
                 sTip = (sTip + c).substring(0, 2);
                 let valInt = parseInt(sTip) || 0;
                 if(valInt > 50) sTip = "50";
@@ -360,7 +363,7 @@
                 sDesc = sDesc.slice(0, -1); if (!sDesc) sDesc = "0";
                 document.getElementById('lblDesc').innerText = sDesc;
             } else if (mode === 'tip') {
-                sTip = sTip.slice(0, -1); if (!sTip) sTip = "18";
+                sTip = sTip.slice(0, -1); if (!sTip) sTip = "0";
                 document.getElementById('lblTip').innerText = sTip;
             }
             calc();
@@ -378,8 +381,10 @@
                 sDesc = "0";
                 document.getElementById('lblDesc').innerText = "0";
             } else if (mode === 'tip') {
+                // SOLUCIÓN: Si borras con Clear en propina, vuelve al valor por defecto (18%)
                 sTip = "18";
-                document.getElementById('lblTip').innerText = incluirPropina ? "18%" : "OFF";
+                recienEntradoAPropina = true; // Se lista de nuevo para sobreescritura
+                document.getElementById('lblTip').innerText = "18%";
             }
             actualizarHeaderIndicadores();
             calc();
@@ -435,7 +440,7 @@
             document.getElementById('flechaGuia').style.display = "none";
             sPpl = "OFF"; document.getElementById('lblPpl').innerText = "OFF"; 
             sDesc = "0"; document.getElementById('lblDesc').innerText = "0";
-            sTip = "18"; incluirPropina = false;
+            sTip = "18"; incluirPropina = false; recienEntradoAPropina = false;
             seleccionarMenu('sub');
         }
 
