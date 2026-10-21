@@ -137,7 +137,6 @@
                 <div class="scroll-hint" id="flechaGuia">▼ deslizar</div>
             </div>
             <div class="lcd-body">
-                <!-- REGLA: Paréntesis eliminados de los desgloses del LCD -->
                 <div id="rowDesc" style="opacity: 0.3;">DESCUENTO: <span id="outDesc">-$0.00</span></div>
                 <div id="rowTip" style="opacity: 0.2;">PROPINA: <span id="outTip">$0.00</span></div>
                 <div>IVU: <span id="outIvu">$0.00</span></div>
@@ -160,7 +159,6 @@
                 <span class="lbl-val"><span id="lblPpl">N/A</span></span>
             </div>
             <div id="cajaDesc" class="caja-data btn-off" onclick="seleccionarMenu('desc')">
-                <!-- REGLA: Reemplazada la palabra OFF por DTO: -->
                 <span class="lbl-title">DTO:</span>
                 <span class="lbl-val">-<span id="lblDesc">0</span>%</span>
             </div>
@@ -229,7 +227,6 @@
             } catch (e) {}
         }
 
-        // REGLA: Switcheado el orden del Top de la pantalla (TIP primero, DTO segundo)
         function actualizarHeaderIndicadores() {
             let texto = `IVU: ${ivu.toFixed(1)}%`;
             if (incluirPropina) { texto += ` | TIP: ${sTip}%`; }
@@ -243,15 +240,8 @@
             const numSub = document.getElementById('lblSub'), numPpl = document.getElementById('lblPpl'), numDesc = document.getElementById('lblDesc'), numTip = document.getElementById('lblTip');
 
             if (f === 'ppl') {
-                if (mode === 'ppl') { 
-                    modoPersonasActivo = false; mode = 'sub'; 
-                    let parsedPpl = parseInt(sPpl) || 0;
-                    if (parsedPpl < 2) { sPpl = "0"; memoriaPersonasNum = "2"; }
-                } else { 
-                    modoPersonasActivo = true; mode = 'ppl'; 
-                    sPpl = (memoriaPersonasNum === "" || memoriaPersonasNum === "0" || memoriaPersonasNum === "1") ? "2" : memoriaPersonasNum;
-                    memoriaPersonasNum = sPpl;
-                }
+                if (mode === 'ppl') { modoPersonasActivo = false; mode = 'sub'; }
+                else { modoPersonasActivo = true; mode = 'ppl'; sPpl = memoriaPersonasNum; }
             } else if (f === 'tip') {
                 if (mode === 'tip') { incluirPropina = false; mode = 'sub'; recienEntradoAPropina = false; }
                 else { incluirPropina = true; mode = 'tip'; sTip = memoriaTipPct; recienEntradoAPropina = true; }
@@ -302,7 +292,6 @@
             } else if (mode === 'ppl') {
                 if (sPpl === "N/A" || sPpl === "0") sPpl = "";
                 sPpl = (sPpl + c).substring(0, 2);
-                let valInt = parseInt(sPpl) || 0; if (valInt > 99) sPpl = "99";
                 memoriaPersonasNum = sPpl === "" ? "0" : sPpl;
                 modoPersonasActivo = true; document.getElementById('lblPpl').innerText = sPpl === "" ? "0" : sPpl;
             } else if (mode === 'desc') {
@@ -312,7 +301,7 @@
             } else if (mode === 'tip') {
                 if (recienEntradoAPropina || sTip === "0") sTip = "";
                 if (c === '.') return; 
-                // REPARADO: Se expandio la entrada para digitos de propina libremente hasta 99%
+                // SOLUCIÓN: Captura y retención limpia de dos dígitos para la propina hasta 99%
                 sTip = (sTip + c).substring(0, 2); let valInt = parseInt(sTip) || 0;
                 if(valInt > 99) sTip = "99";
                 memoriaTipPct = sTip; incluirPropina = true; document.getElementById('lblTip').innerText = sTip;
@@ -366,18 +355,23 @@
             sTip = "15"; memoriaTipPct = "15"; incluirPropina = false; recienEntradoAPropina = false; seleccionarMenu('sub');
         }
 
+        // SOLUCIÓN: Motor analítico reconstruido para asegurar refresco en tiempo real de totales y brillos
         function calc() {
             let numPplRaw = parseInt(sPpl);
             let nPpl = (modoPersonasActivo && !isNaN(numPplRaw) && numPplRaw > 1) ? numPplRaw : 1;
             let descPct = (modoDescuentoActivo) ? (parseInt(sDesc) || 0) : 0, tipPct = incluirPropina ? (parseInt(sTip) || 0) : 0;
             let nSub = cuentaAcumulada + (parseFloat(sSub) || 0);
+            
             let rebajaTotal = nSub * (descPct / 100), subtotalDescontado = nSub - rebajaTotal, impuestoTotal = subtotalDescontado * (ivu / 100), propinaTotal = subtotalDescontado * (tipPct / 100), totalNetoGlobal = subtotalDescontado + impuestoTotal + propinaTotal;
             let porPersona = totalNetoGlobal / nPpl;
             
-            document.getElementById('outDesc').innerText = `-$${rebajaTotal.toFixed(2)}`; document.getElementById('outTip').innerText = `$${propinaTotal.toFixed(2)}`;
-            document.getElementById('outIvu').innerText = `$${impuestoTotal.toFixed(2)}`; document.getElementById('outDescPctText').innerText = modoDescuentoActivo ? sDesc : "0";
+            document.getElementById('outDesc').innerText = `-$${rebajaTotal.toFixed(2)}`; 
+            document.getElementById('outTip').innerText = `$${propinaTotal.toFixed(2)}`;
+            document.getElementById('outIvu').innerText = `$${impuestoTotal.toFixed(2)}`; 
+            document.getElementById('outPer').innerText = totalNetoGlobal.toFixed(2);
+            document.getElementById('outDescPctText').innerText = modoDescuentoActivo ? sDesc : "0";
             
-            // REGLA: Brillo al 100% (habilitado) en el visor LCD verde según los estados de los botones
+            // SOLUCIÓN: Forzado de opacidad completa (brillante) si los modos están encendidos
             document.getElementById('rowDesc').style.opacity = modoDescuentoActivo ? "1" : "0.3";
             document.getElementById('rowTip').style.opacity = incluirPropina ? "1" : "0.2";
 
@@ -391,8 +385,8 @@
                 document.getElementById('rowPersonaCuota').style.opacity = "0.25";
             }
             
-            document.getElementById('outPer').innerText = totalNetoGlobal.toFixed(2);
-            document.getElementById('lblTip').innerText = incluirPropina ? memoriaTipPct : "0"; document.getElementById('txtTipPct').innerText = incluirPropina ? `${sTip}%` : "0%";
+            document.getElementById('lblTip').innerText = incluirPropina ? memoriaTipPct : "0"; 
+            document.getElementById('txtTipPct').innerText = incluirPropina ? `${sTip}%` : "0%";
             document.getElementById('lblDesc').innerText = modoDescuentoActivo ? sDesc : "0"; 
             if (mode !== 'ppl') { document.getElementById('lblPpl').innerText = modoPersonasActivo ? memoriaPersonasNum : "N/A"; }
             document.getElementById('lblArt').innerText = preciosGuardados.length ? `Cuenta (${preciosGuardados.length} artículos)` : "Calculadora de ResiDeus";
@@ -411,7 +405,7 @@
         }
 
         function exportarRecibo() {
-                        reproducirSonido('add');
+            reproducirSonido('add');
             let numPplRaw = parseInt(sPpl); 
             let nPpl = (modoPersonasActivo && !isNaN(numPplRaw) && numPplRaw > 1) ? numPplRaw : 1;
             let descPct = (modoDescuentoActivo) ? (parseInt(sDesc) || 0) : 0, tipPct = incluirPropina ? (parseInt(sTip) || 0) : 0;
