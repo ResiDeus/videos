@@ -61,11 +61,26 @@
         }
         .glitch-active { animation: terminalGlitch 0.12s steps(2, start) infinite; }
 
+        /* ESTILOS DEL INTERFAZ DEL RECIBO HOLOGRÁFICO CON DISEÑO CRT INTERFERENCIA */
+        .holograma-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10, 2, 24, 0.75); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 100; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+        .holograma-overlay.activo { opacity: 1; pointer-events: auto; }
+        
+        .holograma-ticket { width: 320px; max-height: 80vh; background: rgba(25, 10, 50, 0.85); border: 2px solid #00f0ff; box-shadow: 0 0 30px rgba(0, 240, 255, 0.4), inset 0 0 15px rgba(0, 240, 255, 0.2); border-radius: 16px; padding: 16px; position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 12px; transform: scale(0.85); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); color: #00f0ff; text-shadow: 0 0 8px rgba(0, 240, 255, 0.6); font-family: monospace; }
+        .holograma-overlay.activo .holograma-ticket { transform: scale(1); }
+        
+        body.theme-retro-gold .holograma-ticket { border-color: #fbbf24; color: #fbbf24; text-shadow: 0 0 8px rgba(251, 191, 36, 0.6); background: rgba(41, 37, 36, 0.9); box-shadow: 0 0 30px rgba(251, 191, 36, 0.4); }
+        body.theme-matrix .holograma-ticket { border-color: #10b981; color: #10b981; text-shadow: 0 0 8px rgba(16, 185, 129, 0.6); background: rgba(10, 10, 10, 0.9); box-shadow: 0 0 30px rgba(16, 185, 129, 0.4); }
+        body.theme-sunset .holograma-ticket { border-color: #f97316; color: #f97316; text-shadow: 0 0 8px rgba(249, 115, 22, 0.6); background: rgba(69, 26, 3, 0.9); box-shadow: 0 0 30px rgba(249, 115, 22, 0.4); }
+
+        .holograma-lineas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06)); background-size: 100% 4px, 6px 100%; pointer-events: none; z-index: 5; }
+        .holograma-scrollable { flex-grow: 1; overflow-y: auto; font-size: 12px; line-height: 1.4; white-space: pre-wrap; padding-right: 4px; border: 1px solid rgba(0, 240, 255, 0.2); border-radius: 8px; padding: 8px; background: rgba(0, 0, 0, 0.3); }
+        .holograma-footer { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .btn-holo { padding: 8px; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; border: 1px solid; font-family: monospace; font-size: 11px; text-align: center; background: transparent; }
+        
         .scroll-hint { position: absolute; bottom: 1px; right: 2px; font-size: 8px; color: rgba(0,0,0,0.6); animation: bounce 1.2s infinite ease-in-out; pointer-events: none; display: none; background: rgba(146, 176, 67, 0.9); padding: 0 2px; border-radius: 3px; }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(2px); } }
         .lcd-body { text-align: right; font-size: 10px; line-height: 1.2; }
         .lcd-total { font-size: 24px; font-weight: 900; }
-
         .row-menus { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
         .caja-data { padding: 4px 2px; border-radius: 10px; text-align: center; cursor: pointer; font-size: 9px; transition: all 0.2s ease; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 52px; }
         .btn-off { background: #1a0826; border: 2px solid #ff007f; color: #ff007f; opacity: 0.5; box-shadow: none !important; }
@@ -113,15 +128,6 @@
         body.theme-matrix .btn-receipt { background: #10b981; border: 2px solid #fff; color: #000; }
         body.theme-sunset .btn-theme { background: #292524; border: 2px solid #f97316; color: #f97316; }
         body.theme-sunset .btn-receipt { background: #f97316; border: 2px solid #fff; color: #fff; }
-
-        @keyframes glow { 0%, 100% { box-shadow: 0 0 8px #ff007f; opacity: 0.85; } 50% { box-shadow: 0 0 12px #ff007f; opacity: 1; } }
-        body.theme-retro-gold .on-anim { animation: glowGold 1.2s infinite ease-in-out; }
-        body.theme-matrix .on-anim { animation: glowMatrix 1.2s infinite ease-in-out; }
-        body.theme-sunset .on-anim { animation: glowSunset 1.2s infinite ease-in-out; }
-        .on-anim { animation: glow 1.2s infinite ease-in-out; }
-        @keyframes glowGold { 0%, 100% { box-shadow: 0 0 8px #d97706; } 50% { box-shadow: 0 0 12px #d97706; } }
-        @keyframes glowMatrix { 0%, 100% { box-shadow: 0 0 8px #10b981; } 50% { box-shadow: 0 0 12px #10b981; } }
-        @keyframes glowSunset { 0%, 100% { box-shadow: 0 0 8px #f97316; } 50% { box-shadow: 0 0 12px #f97316; } }
     </style>
 </head>
 <body class="theme-cyberpunk">
@@ -139,16 +145,11 @@
                 </div>
             </div>
             <div class="lcd-body">
-                <!-- Opacidades iniciales animadas de forma limpia con CSS transitions -->
                 <div id="rowDesc" style="opacity: 0.3; transition: opacity 0.15s ease;">DESCUENTO: <span id="outDesc">-$0.00</span></div>
                 <div id="rowTip" style="opacity: 0.2; transition: opacity 0.15s ease;">PROPINA: <span id="outTip">$0.00</span></div>
                 <div>IVU: <span id="outIvu">$0.00</span></div>
-                
-                <!-- TOTAL PRINCIPAL FIJO ARRIBA -->
                 <div class="lcd-total" style="margin-bottom: 1px;">TOTAL: $<span id="outPer">0.00</span></div>
-                
-                <!-- SERRUCHO COMPARTIDO EN MAYÚSCULAS -->
-                <div id="rowPersonaCuota" style="opacity: 0.3; font-size: 11px; margin-top: 1px; transition: opacity 0.15s ease;"><span id="txtSerruchoLabelType">SERRUCHO (C/U): N/A</span><span id="outPerPersonaLine"></span></div>
+                <div id="rowPersonaCuota" style="opacity: 0.25; font-size: 11px; margin-top: 1px; transition: opacity 0.15s ease;"><span id="txtSerruchoLabelType">SERRUCHO (C/U): N/A</span><span id="outPerPersonaLine"></span></div>
             </div>
         </div>
 
@@ -162,7 +163,8 @@
                 <span class="lbl-val"><span id="lblPpl">N/A</span></span>
             </div>
             <div id="cajaDesc" class="caja-data btn-off" onclick="seleccionarMenu('desc')">
-                <span class="lbl-title">DTO:</span>
+                <!-- REGLA CORREGIDA: Cambiado DTO: por DESCUENTO completo -->
+                <span class="lbl-title">Descuento</span>
                 <span class="lbl-val">-<span id="lblDesc">0</span>%</span>
             </div>
             <div id="cajaTip" class="caja-data btn-off" onclick="seleccionarMenu('tip')">
@@ -189,14 +191,27 @@
 
         <div class="row-acciones-inferior">
             <button class="btn-theme" onclick="rotarTema()">TEMA</button>
-            <button class="btn-receipt" onclick="exportarRecibo()">RECIBO</button>
+            <button class="btn-receipt" onclick="abrirHologramaRecibo()">RECIBO</button>
+        </div>
+    </div>
+
+    <!-- ESTRUCTURA MODAL PARA LA PROYECCIÓN HOLOGRÁFICA DEL RECIBO CRILLO -->
+    <div class="holograma-overlay" id="visorHolograma">
+        <div class="holograma-ticket">
+            <div class="holograma-lineas"></div>
+            <div style="font-weight: 900; text-align: center; letter-spacing: 1px; font-size: 14px;">PROYECCIÓN RECIBO</div>
+            <div class="holograma-scrollable" id="textoContenidoHolo">Cargando datos vectoriales...</div>
+            <div class="holograma-footer">
+                <button class="btn-holo" id="btnCopiarHolo" onclick="copiarTextoHolograma()" style="color:inherit; border-color:currentColor;">Copiar</button>
+                <button class="btn-holo" onclick="cerrarHologramaRecibo()" style="color:inherit; border-color:currentColor;">Cerrar</button>
+            </div>
         </div>
     </div>
     <script>
         let ivu = 11.5, mode = 'sub', sSub = "0", incluirPropina = false, modoSerruchoActivo = false, modoDescuentoActivo = false;
         let sDesc = "0", sTip = "15", sPpl = "2"; 
         let memoriaDescuentoPct = "0", memoriaTipPct = "15", memoriaSerruchoCortes = "2";
-        let preciosGuardados = [], cuentaAcumulada = 0;
+        let preciosGuardados = [], cuentaAcumulada = 0, textoReciboGlobal = "";
         let themes = ['theme-cyberpunk', 'theme-retro-gold', 'theme-matrix', 'theme-sunset'], temaActualIdx = 0, recienEntradoAPropina = false;
 
         function dispararEfectoGlitch() {
@@ -285,6 +300,7 @@
             document.getElementById(p === 11.5 ? 'ivu115' : p === 7.0 ? 'ivu7' : 'ivu0').className = "btn-cfg btn-on";
             actualizarHeaderIndicadores(); calc();
         }
+
         function num(c) {
             reproducirSonido('tecla');
             if (mode === 'sub') {
@@ -315,11 +331,7 @@
         function bksp() {
             reproducirSonido('tecla');
             if (mode === 'sub') { sSub = sSub.slice(0, -1); if (!sSub) sSub = "0"; document.getElementById('lblSub').innerText = sSub; }
-            else if (mode === 'ppl') { 
-                sPpl = sPpl.slice(0, -1); if (!sPpl) { sPpl = "0"; }
-                memoriaSerruchoCortes = sPpl; document.getElementById('lblPpl').innerText = sPpl; 
-            }
-            // FIJADO: Corregido dDesc por sDesc para que no tire error de sistema en la app
+            else if (mode === 'ppl') { sPpl = sPpl.slice(0, -1); if (!sPpl) { sPpl = "0"; } memoriaSerruchoCortes = sPpl; document.getElementById('lblPpl').innerText = sPpl; }
             else if (mode === 'desc') { sDesc = sDesc.slice(0, -1); if (!sDesc) { sDesc = "0"; } memoriaDescuentoPct = sDesc; document.getElementById('lblDesc').innerText = sDesc; }
             else if (mode === 'tip') { sTip = sTip.slice(0, -1); if (!sTip) { sTip = "0"; } memoriaTipPct = sTip; document.getElementById('lblTip').innerText = sTip; }
             calc();
@@ -343,11 +355,10 @@
                 preciosGuardados.push({ precio: val, descuento: rebaja, ivuCalculado: ivuIndividual, total: totalArticulo });
                 cuentaAcumulada += val; sSub = "0"; document.getElementById('lblSub').innerText = "0";
                 const con = document.getElementById('listaPrecios');
-                
-                con.innerHTML = preciosGuardados.map((item, i) => '<div>• Artículo #' + (i+1) + ': $' + item.total.toFixed(2) + ' (Neto: $' + item.precio.toFixed(2) + ')</div>').join('');
+                con.innerHTML = preciosGuardados.map((item, i) => '<div>• Artículo #' + (i+1) + ': ' + item.total.toFixed(2) + ' (Neto: ' + item.precio.toFixed(2) + ')</div>').join('');
                 if(preciosGuardados.length > 0) {
                     let totalConTaxAcumulado = preciosGuardados.reduce((sum, item) => sum + item.total, 0);
-                    con.innerHTML += '<div style="border-top:1px dashed rgba(0,0,0,0.3); font-weight:900; margin-top:2px;">Base Acum. (w/IVU): $' + totalConTaxAcumulado.toFixed(2) + '</div>';
+                    con.innerHTML += '<div style="border-top:1px dashed rgba(0,0,0,0.3); font-weight:900; margin-top:2px;">Base Acum. (w/IVU): \$' + totalConTaxAcumulado.toFixed(2) + '</div>';
                 }
                 const f = document.getElementById('flechaGuia'); if (con.scrollHeight > con.clientHeight) f.style.display = "block";
                 con.scrollTop = con.scrollHeight; calc();
@@ -367,35 +378,29 @@
         function calc() {
             let numPplRaw = parseInt(sPpl);
             let nSerrucho = (modoSerruchoActivo && !isNaN(numPplRaw) && numPplRaw > 1) ? numPplRaw : 1;
-
             let dPct = modoDescuentoActivo ? (parseInt(memoriaDescuentoPct) || 0) : 0;
             let tPct = incluirPropina ? (parseInt(memoriaTipPct) || 0) : 0;
             let nSub = cuentaAcumulada + (parseFloat(sSub) || 0);
-            
-            let rebajaTotal = nSub * (dPct / 100);
-            let subtotalDescontado = nSub - rebajaTotal;
-            let impuestoTotal = subtotalDescontado * (ivu / 100);
-            let propinaTotal = subtotalDescontado * (tPct / 100);
-            let totalNetoGlobal = subtotalDescontado + impuestoTotal + propinaTotal;
+            let rebajaTotal = nSub * (dPct / 100), subtotalDescontado = nSub - rebajaTotal, impuestoTotal = subtotalDescontado * (ivu / 100), propinaTotal = subtotalDescontado * (tPct / 100), totalNetoGlobal = subtotalDescontado + impuestoTotal + propinaTotal;
             let porSerrucho = totalNetoGlobal / nSerrucho;
             
-            document.getElementById('outDesc').innerText = '-$' + rebajaTotal.toFixed(2); 
-            document.getElementById('outTip').innerText = '$' + propinaTotal.toFixed(2);
-            document.getElementById('outIvu').innerText = '$' + impuestoTotal.toFixed(2); 
+            document.getElementById('outDesc').innerText = '-\$' + rebajaTotal.toFixed(2); 
+            document.getElementById('outTip').innerText = '\$' + propinaTotal.toFixed(2);
+            document.getElementById('outIvu').innerText = '\$' + impuestoTotal.toFixed(2); 
             document.getElementById('outPer').innerText = totalNetoGlobal.toFixed(2);
+            document.getElementById('outDescPctText').innerText = modoDescuentoActivo ? memoriaDescuentoPct : "0";
             
-            // FIJADO: Las opacidades visuales ahora responden al 100% (brillo nítido) según el estado activo del botón
             document.getElementById('rowDesc').style.opacity = modoDescuentoActivo ? "1" : "0.3";
             document.getElementById('rowTip').style.opacity = incluirPropina ? "1" : "0.3";
 
             if (modoSerruchoActivo) {
                 document.getElementById('txtSerruchoLabelType').innerText = `SERRUCHO (C/U): `;
                 document.getElementById('outPerPersonaLine').innerText = '$' + porSerrucho.toFixed(2);
-                document.getElementById('rowPersonaCuota').style.opacity = "1"; // Sube a brillo completo si está activo
+                document.getElementById('rowPersonaCuota').style.opacity = "1";
             } else {
                 document.getElementById('txtSerruchoLabelType').innerText = `SERRUCHO (C/U): N/A`;
                 document.getElementById('outPerPersonaLine').innerText = ``;
-                document.getElementById('rowPersonaCuota').style.opacity = "0.3"; // Opaco si está desactivado
+                document.getElementById('rowPersonaCuota').style.opacity = "0.3";
             }
             
             document.getElementById('lblTip').innerText = incluirPropina ? memoriaTipPct : "0"; 
@@ -410,7 +415,7 @@
             reproducirSonido('menu'); document.body.classList.remove(themes[temaActualIdx]);
             temaActualIdx = (temaActualIdx + 1) % themes.length; document.body.classList.add(themes[temaActualIdx]); calc();
         }
-        function exportarRecibo() {
+        function abrirHologramaRecibo() {
             reproducirSonido('add');
             let numPplRaw = parseInt(sPpl); 
             let nPpl = (modoSerruchoActivo && !isNaN(numPplRaw) && numPplRaw > 1) ? numPplRaw : 1;
@@ -419,22 +424,53 @@
             let nSub = cuentaAcumulada + (parseFloat(sSub) || 0);
             let rebajaTotal = nSub * (dPct / 100), subtotalDescontado = nSub - rebajaTotal, impuestoTotal = subtotalDescontado * (ivu / 100), propinaTotal = subtotalDescontado * (tPct / 100), totalNetoGlobal = subtotalDescontado + impuestoTotal + propinaTotal;
             
-            // FORMATO CRIOLLO BORICUA TOTALMENTE ADAPTADO AL SERRUCHO
-            let txt = `=== Calculadora de ResiDeus ===\nFecha: ${new Date().toLocaleString()}\nIVU Config: ${ivu.toFixed(1)}%\n-----------------------\n`;
-            if(preciosGuardados.length > 0) { txt += `Historial Guardado:\n`; preciosGuardados.forEach((a, i) => { txt += `  Artículo #${i+1}: $${a.total.toFixed(2)} -> Neto: $${a.precio.toFixed(2)}\n`; }); txt += `-----------------------\n`; }
-            txt += `Desglose de Totales:\n Importe Base: $${nSub.toFixed(2)}\n`;
-            if(dPct > 0) txt += ` Descuento (-${dPct}%): -$${rebajaTotal.toFixed(2)}\n`;
-            if(tPct > 0) txt += ` Propina (${tPct}%): $${propinaTotal.toFixed(2)}\n`;
-            txt += ` IVU Calculado: $${impuestoTotal.toFixed(2)}\n Total Neto: $${totalNetoGlobal.toFixed(2)}\n`;
-            if(modoSerruchoActivo && nPpl > 1) txt += `-----------------------\n SERRUCHO COMPARTIDO: ${nPpl} personas\n CUOTA INDIVIDUAL (TOTAL C/U): $${(totalNetoGlobal / nPpl).toFixed(2)}\n`;
-            txt += `=======================\n¡Gracias por usar la Calculadora de ResiDeus!`;
+            let txt = `===============================\n   CALCULADORA DE RESIDEUS\n===============================\n`;
+            txt += `Fecha: ${new Date().toLocaleDateString()} | Hora: ${new Date().toLocaleTimeString()}\n`;
+            txt += `Configuración IVU: ${ivu.toFixed(1)}%\n-------------------------------\n`;
             
-            navigator.clipboard.writeText(txt).then(() => {
-                alert("¡Recibo copiado al portapapeles con éxito!\n\n" + txt);
+            if(preciosGuardados.length > 0) {
+                txt += `Artículos Guardados:\n`;
+                preciosGuardados.forEach((a, i) => {
+                    txt += ` #${i+1}: $${a.total.toFixed(2)}  (Neto: $${a.precio.toFixed(2)})\n`;
+                });
+                txt += `-------------------------------\n`;
+            }
+            
+            txt += `Importe Base:      $${nSub.toFixed(2)}\n`;
+            if(dPct > 0) txt += `Descuento (-${dPct}%):  -$${rebajaTotal.toFixed(2)}\n`;
+            if(tPct > 0) txt += `Propina (${tPct}%):     $${propinaTotal.toFixed(2)}\n`;
+            txt += `IVU Facturado:     $${impuestoTotal.toFixed(2)}\n`;
+            txt += `===============================\n`;
+            txt += `TOTAL NETO:        $${totalNetoGlobal.toFixed(2)}\n`;
+            txt += `===============================\n`;
+            
+            if(modoSerruchoActivo && nPpl > 1) {
+                txt += `SERRUCHO COMPARTIDO: ${nPpl} partes\n`;
+                txt += `CUOTA INDIVIDUAL:  $${(totalNetoGlobal / nPpl).toFixed(2)}\n`;
+                txt += `===============================\n`;
+            }
+            txt += ` ¡Gracias por usar la app!`;
+            
+            textoReciboGlobal = txt;
+            document.getElementById('textoContenidoHolo').innerText = txt;
+            document.getElementById('btnCopiarHolo').innerText = "Copiar";
+            document.getElementById('visorHolograma').classList.add('activo');
+        }
+
+        function cerrarHologramaRecibo() {
+            reproducirSonido('menu');
+            document.getElementById('visorHolograma').classList.remove('activo');
+        }
+
+        function copiarTextoHolograma() {
+            reproducirSonido('add');
+            navigator.clipboard.writeText(textoReciboGlobal).then(() => {
+                document.getElementById('btnCopiarHolo').innerText = "¡Copiado!";
             }).catch(() => {
-                alert(txt);
+                alert("Error al copiar, usa captura de pantalla.");
             });
         }
+
         actualizarHeaderIndicadores(); calc();
     </script>
 </body>
