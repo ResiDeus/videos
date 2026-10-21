@@ -127,15 +127,6 @@
         body.theme-matrix .on-anim { animation: glowMatrix 1.2s infinite ease-in-out; }
         body.theme-sunset .on-anim { animation: glowSunset 1.2s infinite ease-in-out; }
         .on-anim { animation: glow 1.2s infinite ease-in-out; }
-        
-        @keyframes glowGold { 0%, 100% { box-shadow: 0 0 8px #d97706; } 50% { box-shadow: 0 0 12px #d97706; } }
-        @keyframes glowMatrix { 0%, 100% { box-shadow: 0 0 8px #10b981; } 50% { box-shadow: 0 0 12px #10b981; } }
-        @keyframes glowSunset { 0%, 100% { box-shadow: 0 0 8px #f97316; } 50% { box-shadow: 0 0 12px #f97316; } }
-    </style>
-</head>
-<body class="theme-cyberpunk">
-    <div class="sky"></div>
-    <div class="grid3d"></div>
     <div class="chasis">
         <!-- PANTALLA LCD -->
         <div class="lcd">
@@ -206,8 +197,6 @@
         let preciosGuardados = [], cuentaAcumulada = 0;
         let themes = ['theme-cyberpunk', 'theme-retro-gold', 'theme-matrix', 'theme-sunset'];
         let temaActualIdx = 0;
-        
-        // NUEVA VARIABLE DE CONTROL: Detecta si es la primera pulsación al entrar al menú de propinas
         let recienEntradoAPropina = false;
 
         function reproducirSonido(tipo) {
@@ -239,6 +228,7 @@
             document.getElementById('txtHeaderIndicadores').innerText = texto;
         }
 
+        /* SOLUCIÓN AL APAGADO ACCIDENTAL: Nueva validación de estados de navegación */
         function seleccionarMenu(f) {
             reproducirSonido('menu');
             const btnReset = document.getElementById('btnResetGlobal');
@@ -251,13 +241,15 @@
             const numTip = document.getElementById('lblTip');
 
             if (f === 'tip') {
-                incluirPropina = !incluirPropina;
-                if (!incluirPropina) {
+                // REGLA: Si ya estás dentro del menú tip, apágala. Si vienes de fuera, enciéndela/mantenla y entra sin apagar
+                if (mode === 'tip') {
+                    incluirPropina = false;
                     mode = 'sub';
                     recienEntradoAPropina = false;
                 } else {
+                    incluirPropina = true;
                     mode = 'tip';
-                    recienEntradoAPropina = true; // Se activa la sobreescritura inmediata
+                    recienEntradoAPropina = true; // Habilita la sobreescritura del "18" al teclear
                 }
             } else {
                 mode = f;
@@ -338,10 +330,9 @@
                 if(valInt > 99) sDesc = "99";
                 document.getElementById('lblDesc').innerText = sDesc;
             } else if (mode === 'tip') {
-                // SOLUCIÓN: Si es el primer número tras activar la propina, sobrescribe el 18
                 if (recienEntradoAPropina || sTip === "0") {
                     sTip = "";
-                    recienEntradoAPropina = false; // Desactiva la sobreescritura para la siguiente cifra
+                    recienEntradoAPropina = false;
                 }
                 if (c === '.') return; 
                 sTip = (sTip + c).substring(0, 2);
@@ -381,9 +372,8 @@
                 sDesc = "0";
                 document.getElementById('lblDesc').innerText = "0";
             } else if (mode === 'tip') {
-                // SOLUCIÓN: Si borras con Clear en propina, vuelve al valor por defecto (18%)
                 sTip = "18";
-                recienEntradoAPropina = true; // Se lista de nuevo para sobreescritura
+                recienEntradoAPropina = true;
                 document.getElementById('lblTip').innerText = "18%";
             }
             actualizarHeaderIndicadores();
