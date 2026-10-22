@@ -17,7 +17,7 @@
         /* ==========================================================================
            🎨 ASIGNACIÓN DE TEMAS DINÁMICOS COMPLETA (HERENCIA TOTAL DE BOTONES)
            ========================================================================== */
-        /* 1️⃣ CYBERPUNK (Verde/Rosa/Cyan) */
+        /* 1️⃣ CYBERPUNK - Mantiene su Azul Eléctrico Digital */
         body.theme-cyberpunk {
             --bg-grad: linear-gradient(180deg, #09011a 0%, #2c044d 100%);
             --neon-primary: #ff007f; --neon-secondary: #00f0ff; --receipt-glow: #00ff66;
@@ -25,29 +25,29 @@
             --num-bg-theme: linear-gradient(180deg, #2d0e54 0%, #11021f 100%);
             --blue-tech: linear-gradient(45deg, #0044cc, #00f0ff, #0044cc);
         }
-        /* 2️⃣ RETRO GOLD (Ámbar/Marrón) */
+        /* 2️⃣ RETRO GOLD - Cambia a un Oro Líquido Profundo */
         body.theme-retro-gold {
             --bg-grad: linear-gradient(180deg, #1c1917 0%, #44403c 100%);
             --neon-primary: #d97706; --neon-secondary: #fbbf24; --receipt-glow: #fbbf24;
             --btn-bg-theme: linear-gradient(135deg, #292524 0%, #44403c 50%, #292524 100%);
             --num-bg-theme: linear-gradient(180deg, #44403c 0%, #1c1917 100%);
-            --blue-tech: linear-gradient(45deg, #78350f, #fbbf24, #78350f);
+            --blue-tech: linear-gradient(45deg, #78350f, #d97706, #78350f);
         }
-        /* 3️⃣ MATRIX (Verde Terminal) */
+        /* 3️⃣ MATRIX - Cambia a un Verde Terminal Intenso */
         body.theme-matrix {
             --bg-grad: linear-gradient(180deg, #022c22 0%, #050505 100%);
             --neon-primary: #10b981; --neon-secondary: #34d399; --receipt-glow: #34d399;
             --btn-bg-theme: linear-gradient(135deg, #022c22 0%, #064e3b 50%, #022c22 100%);
             --num-bg-theme: linear-gradient(180deg, #022c22 0%, #050505 100%);
-            --blue-tech: linear-gradient(45deg, #04583d, #34d399, #04583d);
+            --blue-tech: linear-gradient(45deg, #04583d, #10b981, #04583d);
         }
-        /* 4️⃣ SUNSET (Naranja Fuego) */
+        /* 4️⃣ SUNSET - Cambia a un Naranja Lava Quemada */
         body.theme-sunset {
             --bg-grad: linear-gradient(180deg, #451a03 0%, #78350f 100%);
             --neon-primary: #f97316; --neon-secondary: #fdba74; --receipt-glow: #fdba74;
             --btn-bg-theme: linear-gradient(135deg, #292524 0%, #451a03 50%, #292524 100%);
             --num-bg-theme: linear-gradient(180deg, #78350f 0%, #292524 100%);
-            --blue-tech: linear-gradient(45deg, #9a3412, #fdba74, #9a3412);
+            --blue-tech: linear-gradient(45deg, #9a3412, #f97316, #9a3412);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -134,8 +134,23 @@
         .caja-data { width: 100%; padding: 4px 2px; border-radius: 8px; text-align: center; cursor: pointer; font-size: 9px; transition: all 0.2s ease; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 48px; position: relative; background: var(--btn-bg-theme); background-size: 200% 200%; animation: activeMenuMove 6s infinite ease-in-out; border: 2px solid var(--neon-primary); color: #fff !important; opacity: 0.9; overflow: hidden; }
         .caja-data.btn-on { animation: neonPulse 1.8s infinite ease-in-out, activeMenuMove 3s infinite ease-in-out; background: linear-gradient(45deg, #2a0845, #6441a5, #2a0845); background-size: 200% 200%; color: #fff !important; opacity: 1 !important; border-color: #fff; }
 
-        /* 📟 CONTENEDOR INTEGRADO DE PRECIO CENTRADO + BOTÓN + EXPANDIDO A LA DERECHA */
-        .contenedor-precio-unificado { display: flex; width: 100%; gap: 4px; background: linear-gradient(-45deg, #051a24, #082f44, #03121a, #0c3e54); background-size: 300% 300%; animation: activeMenuMove 6s infinite ease-in-out; border-radius: 10px; border: 2px solid var(--neon-secondary); padding: 4px; min-height: 52px; align-items: center; transition: opacity 0.2s ease, visibility 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease; position: relative; }
+        /* 📟 CONTENEDOR INTEGRADO DE PRECIO ADAPTATIVO AL TEMA */
+        .contenedor-precio-unificado { 
+            display: flex; 
+            width: 100%; 
+            gap: 4px; 
+            background: var(--blue-tech) !important; /* 🎨 Vinculado al tema dinámico */
+            background-size: 300% 300% !important; 
+            animation: activeMenuMove 6s infinite ease-in-out; 
+            border-radius: 10px; 
+            border: 2px solid var(--neon-secondary); 
+            padding: 4px; 
+            min-height: 52px; 
+            align-items: center; 
+            transition: opacity 0.2s ease, visibility 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease; 
+            position: relative; 
+        }
+
         .contenedor-precio-unificado.precio-on { border-color: #fff; box-shadow: 0 0 12px var(--neon-secondary); }
         
         /* 🔵 BOTÓN + MÁS GRANDE AZUL/DINÁMICO SEGÚN TEMA A MANO DERECHA */
