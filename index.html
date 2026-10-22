@@ -18,9 +18,10 @@
         /* ==========================================================================
            🎨 SECCIÓN 1: ESTILOS CSS BASE Y ANIMACIONES RETRO-FUTURISTAS
            ========================================================================== */
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
         html, body { 
-            margin: 0; padding: 0; width: 100vw; height: 100vh; 
+            width: 100vw; height: 100vh; 
             overflow: hidden; position: relative; font-family: monospace; 
             transition: background 0.3s ease; 
         }
@@ -44,7 +45,7 @@
         @keyframes gM { 0% { background-position: 0 0; } 100% { background-position: 0 40px; } }
         
         /* 📟 CHASIS DE LA CALCULADORA CON FILTRO DE ENERGÍA GLOBAL */
-        .chasis { width: 340px; height: auto; min-height: 580px; background: #241434; border: 4px solid #ff007f; box-shadow: 0 0 25px #ff007f80; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; border-radius: 24px; overflow: hidden; display: flex; flex-direction: column; padding: 8px; gap: 6px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .chasis { width: 340px; height: auto; min-height: 580px; background: #241434; border: 4px solid #ff007f; box-shadow: 0 0 25px #ff007f80; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; border-radius: 24px; overflow: hidden; display: flex; flex-direction: column; padding: 12px; gap: 8px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .chasis.global-power-off { filter: brightness(0.2) grayscale(0.5); border-color: #555 !important; box-shadow: none !important; }
         
         body.theme-retro-gold .chasis { background: #292524; border-color: #d97706; box-shadow: 0 0 25px #d9770680; }
@@ -65,14 +66,14 @@
         .lcd-wrapper { position: relative; flex-grow: 1; display: flex; flex-direction: column; margin: 4px 0; max-height: 55px; }
         .lcd-historial { flex-grow: 1; font-size: 11px; overflow-y: auto; text-align: left; padding-right: 4px; }
 
-        /* 🔘 CONFIGURACIÓN DE ELEMENTOS DE MENÚS Y LUCES ACTIVAS */
-        .row-menus { display: grid; gap: 4px; }
+        /* 🔘 CONFIGURACIÓN DE FILAS Y REGLAS GRID DE LOS BOTONES */
+        .row-menus { display: grid; gap: 4px; width: 100%; }
         .caja-data { padding: 4px 2px; border-radius: 10px; text-align: center; cursor: pointer; font-size: 9px; transition: all 0.2s ease; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 52px; position: relative; }
         
-        /* Estado apagado / inactivo: Atenuado de fondo */
+        /* Estado inactivo: atenuado synthwave */
         .btn-off { background: #14051f; border: 2px solid #ff007f33; color: #ff007f88; opacity: 0.5; box-shadow: none !important; }
         
-        /* ✨ LUCES NEÓN PULSANTES PARA EL MENÚ EN EDICIÓN ACTIVA (Hot Pink / Cyan Splash) */
+        /* ✨ LUCES NEÓN PULSANTES PARA EL MENÚ EN EDICIÓN ACTIVA */
         @keyframes neonPulse {
             0%, 100% { box-shadow: 0 0 8px #ff007f, inset 0 0 4px #ff007f; border-color: #fff; filter: brightness(1); }
             50% { box-shadow: 0 0 18px #00f0ff, inset 0 0 8px #00f0ff; border-color: #00f0ff; filter: brightness(1.2); }
@@ -80,8 +81,8 @@
         .caja-data.btn-on { background: #ff007f; color: #000; font-weight: bold; animation: neonPulse 1.8s infinite ease-in-out; opacity: 1 !important; }
         .caja-data.btn-on .lbl-title { color: #fff !important; text-shadow: 0 0 4px #000; }
         .caja-data.btn-on .lbl-val { color: #000 !important; font-weight: 900; }
-
         /* ⌨️ ESTILIZADO DE TECLAS ESPECIALES Y OPERATIVAS POR COLORES SYNTHWAVE */
+        .pad-num { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-bottom: 2px; width: 100%; }
         .btn-key { height: 38px; background: linear-gradient(180deg, #321054 0%, #120321 100%); border: 1px solid #ff007f33; border-radius: 6px; color: #ff007f; font-size: 1.1rem; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; font-family: monospace; transition: all 0.2s ease; }
         
         /* Botones Funcionales Superiores (Clear, Añadir): Azul Cyan Eléctrico */
@@ -94,11 +95,12 @@
         .btn-back { background: linear-gradient(180deg, #44186c 0%, #170529 100%) !important; color: #00f0ff !important; border-color: #00f0ff44 !important; }
 
         /* Botones Inferiores (Tema y Recibo): Unificados en Morado Magenta Láser */
-        .btn-theme, .btn-receipt { border-radius: 10px; font-weight: bold; cursor: pointer; transition: all 0.2s ease; text-transform: uppercase; display: flex; justify-content: center; align-items: center; font-family: monospace; height: 28px; font-size: 8px; background: linear-gradient(180deg, #d946ef 0%, #4a044e 100%) !important; border: 2px solid #f472b6 !important; color: #fff !important; text-shadow: 0 0 5px #d946ef; box-shadow: 0 0 10px rgba(217,70,239,0.3); }
+        .btn-theme, .btn-receipt { border-radius: 10px; font-weight: bold; cursor: pointer; transition: all 0.2s ease; text-transform: uppercase; display: flex; justify-content: center; align-items: center; font-family: monospace; height: 28px; font-size: 8px; background: linear-gradient(180deg, #d946ef 0%, #4a044e 100%) !important; border: 2px solid #f472b6 !important; color: #fff !important; text-shadow: 0 0 5px #d946ef; box-shadow: 0 0 10px rgba(217,70,239,0.3); width: 100%; }
         .btn-theme:active, .btn-receipt:active { filter: brightness(1.3); }
 
         .holograma-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10, 2, 24, 0.85); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 100; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
         .holograma-overlay.activo { opacity: 1; pointer-events: auto; }
+
         .holograma-ticket { width: 320px; max-height: 80vh; background: rgba(25, 10, 50, 0.85); border: 2px solid #00f0ff; box-shadow: 0 0 30px rgba(0, 240, 255, 0.4), inset 0 0 15px rgba(0, 240, 255, 0.2); border-radius: 16px; padding: 16px; position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 12px; transform: scale(0.85); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); color: #00f0ff; text-shadow: 0 0 8px rgba(0, 240, 255, 0.6); font-family: monospace; }
         .holograma-overlay.activo .holograma-ticket { transform: scale(1); }
         
@@ -144,14 +146,13 @@
             </div>
         </div>
 
-        <!-- 🎛️ BOTONERA DE MENÚS (Fila superior: Cuenta de un lado a otro) -->
+        <!-- 🎛️ BOTONERA DE MENÚS (Fila superior: Cuenta cruzando de lado a lado) -->
         <div class="row-menus" style="grid-template-columns: 1fr;">
             <div id="cajaSub" class="caja-data btn-on" onclick="seleccionarMenu('sub')" style="width: 100%;">
                 <span class="lbl-title">Cuenta</span>
                 <span class="lbl-val">$<span id="lblSub" class="blink-num">0</span></span>
             </div>
         </div>
-
         <!-- Segunda fila: Fila unificada de opciones neón (Misma UI e idéntico tamaño) -->
         <div class="row-menus" style="grid-template-columns: repeat(4, 1fr);">
             <div id="cajaPpl" class="caja-data btn-off" onclick="seleccionarMenu('ppl')">
@@ -192,7 +193,7 @@
             <button id="btnTheme" class="btn-theme" onclick="rotarTema()">TEMA</button>
             <button id="btnReceipt" class="btn-receipt" onclick="abrirHologramaRecibo()">RECIBO</button>
         </div>
-    </div>
+    </div> <!-- Cierre de chasis -->
     <!-- 🔮 CAPA DE ACCESO AL RECIBO HOLOGRÁFICO -->
     <div class="holograma-overlay" id="visorHolograma">
         <div class="holograma-ticket">
@@ -245,7 +246,6 @@
                     osc.frequency.exponentialRampToValueAtTime(950, ctx.currentTime + 0.15);
                     gain.gain.setValueAtTime(0.12, ctx.currentTime);
                 } else if (tipo === 'apagar') {
-                    // 🔌 EFECTO DE SONIDO DE BAJÓN DE ENERGÍA ANALÓGICO
                     osc.type = 'sawtooth';
                     osc.frequency.setValueAtTime(300, ctx.currentTime);
                     osc.frequency.exponentialRampToValueAtTime(40, ctx.currentTime + 0.4);
@@ -272,7 +272,6 @@
                 osc.start(); osc.stop(ctx.currentTime + 0.15);
             } catch (e) {}
         }
-
         // 🔌 INTERRUPTOR MAESTRO DE ENERGÍA CON COLAPSO CRT VISUAL Y APAGÓN DE BOTONES
         function togglePower() {
             const lcd = document.getElementById('pantallaVerde');
@@ -281,14 +280,14 @@
             if (sistemaEncendido) {
                 sistemaEncendido = false;
                 reproducirSonido('apagar');
-                lcd.classList.add('power-off-crt'); // Inicia animación CRT vintage
+                lcd.classList.add('power-off-crt'); 
                 setTimeout(() => {
-                    if(!sistemaEncendido) chasis.classList.add('global-power-off'); // Apaga luces de botones
+                    if(!sistemaEncendido) chasis.classList.add('global-power-off'); 
                 }, 400);
                 toggleTeclasBloqueo(true);
             } else {
                 sistemaEncendido = true;
-                chasis.classList.remove('global-power-off'); // Enciende luces de botones
+                chasis.classList.remove('global-power-off'); 
                 lcd.classList.remove('power-off-crt');
                 toggleTeclasBloqueo(false);
                 reproducirSonido('menu');
@@ -306,6 +305,7 @@
                 }
             });
         }
+
         function ejecutarResetTotal() {
             sSub = "0"; cuentaAcumulada = 0; preciosGuardados = [];
             document.getElementById('listaPrecios').innerHTML = '<i class="lcd-tipeo" id="lblArtText">Lista vacía...</i>';
@@ -324,7 +324,6 @@
             if (modoDescuentoActivo) { texto += ` | DTO: -${memoriaDescuentoPct}%`; }
             document.getElementById('txtHeaderIndicadores').innerText = texto;
         }
-
         function seleccionarMenu(f) {
             if (!sistemaEncendido) return;
             reproducirSonido('menu');
