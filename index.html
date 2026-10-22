@@ -451,7 +451,6 @@
                 lcd.classList.remove('power-on-crt');
                 lcd.classList.add('power-off-crt'); 
                 
-                // Limpiamos el Precio de forma inmediata al apagar
                 sSub = "0"; 
                 document.getElementById('lblSub').innerText = "0";
                 
@@ -460,16 +459,20 @@
                 }, 400);
                 toggleTeclasBloqueo(true);
             } else {
-                // ⚡️ ENCIENDE DE GOLPE: Quitamos animaciones CRT lentas y delays de datos en el LCD
+                // ⚡️ ENCENDIDO CON EFECTO CRT SIN RETRASOS DE DATOS
                 chasis.classList.remove('global-power-off');
-                lcd.classList.remove('power-off-crt', 'power-on-crt'); // Limpieza estricta de efectos viejos
+                lcd.classList.remove('power-off-crt');
                 
-                // Energizamos todas las capas físicas visuales al instante
+                // Forzamos el reinicio y activación de la animación inversa (Apertura CRT)
+                lcd.classList.remove('power-on-crt');
+                void lcd.offsetWidth; // Truco de magia en JS para reiniciar la animación CSS al instante
+                lcd.classList.add('power-on-crt');
+                
+                // Energizamos todos los botones al unísono para que no haya delay parpadeando
                 document.querySelectorAll('.btn-theme, .btn-receipt').forEach(b => b.style.opacity = "1");
                 document.querySelectorAll('.pad-num .btn-key').forEach(b => b.style.opacity = "1");
                 document.querySelectorAll('.row-opciones-pasos .caja-data, .btn-step').forEach(b => b.style.opacity = "1");
                 
-                // Activación inmediata del sistema sin esperas intermedias
                 sistemaEncendido = true;
                 toggleTeclasBloqueo(false);
                 reproducirSonido('menu');
