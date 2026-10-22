@@ -264,19 +264,20 @@
         #cajaSub .lbl-title { font-size: 8px; text-transform: uppercase; color: var(--neon-secondary); margin-bottom: 1px; font-weight: bold; text-shadow: 0 0 4px rgba(0,240,255,0.2); }
         #cajaSub .lbl-val { font-size: 18px !important; font-weight: 900; color: #fff !important; }
 
-        /* ⌨️ TECLADO NUMÉRICO AJUSTADO POR VARIABLES CON TEXTURA ANALÓGICA */
+        /* ⌨️ TECLADO NUMÉRICO AJUSTADO POR VARIABLES CON TEXTURA VIOLETA ANALÓGICA */
         @keyframes lineasTecladoMoviéndose {
             0% { background-position: 0 0, 0% 50%; }
             100% { background-position: 0 20px, 100% 50%; }
         }
         .pad-num { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; width: 100%; }
         
-        .btn-key { 
+        /* Se aplica el filtro a .btn-key para que agarre números, punto y a .btn-back para la flecha de borrar */
+        .btn-key, .btn-back { 
             height: 38px; 
-            background: var(--num-bg-theme); 
-            border: 1px solid var(--neon-primary); 
+            background: var(--num-bg-theme) !important; 
+            border: 1px solid var(--neon-primary) !important; 
             border-radius: 6px; 
-            color: #fff; 
+            color: #fff !important; 
             font-size: 1.1rem; 
             font-weight: bold; 
             cursor: pointer; 
@@ -288,25 +289,30 @@
             position: relative;
             overflow: hidden;
             z-index: 10;
-            /* Inyección de malla de líneas en movimiento continuo para el pad de tipeo */
+            
+            /* 🌌 INYECCIÓN DE MALLA DE LÍNEAS HOLOGRÁFICAS EN MÁS VIOLETITA SYNTHWAVE */
             background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.05) 50%, rgba(0, 0, 0, 0.15) 50%),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.02), transparent, rgba(255, 255, 255, 0.02)) !important;
+                linear-gradient(rgba(255, 0, 127, 0.12) 50%, rgba(0, 0, 0, 0.2) 50%),
+                linear-gradient(90deg, rgba(0, 240, 255, 0.03), transparent, rgba(255, 0, 127, 0.03)) !important;
             background-size: 100% 4px, 200% 200% !important;
             animation: lineasTecladoMoviéndose 4s infinite linear !important;
         }
         
-        /* Brillo interno de cúpula exclusivo para el pad numérico */
-        .btn-key::before {
+        /* Brillo interno de cúpula magenta/violeta sutil para todo el pad de tipeo */
+        .btn-key::before, .btn-back::before {
             content: "";
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, rgba(255,255,255,0.06) 0%, transparent 70%);
+            background: radial-gradient(circle at center, rgba(255, 0, 127, 0.15) 0%, transparent 75%) !important;
             pointer-events: none;
             z-index: 1;
         }
 
-        .btn-back { color: #fff !important; background: var(--num-bg-theme) !important; border-color: var(--neon-primary) !important; }
+        /* Reajuste de la flecha para que comparta exactamente la misma jerarquía visual */
+        .btn-back { 
+            opacity: 1 !important;
+            pointer-events: auto !important;
+        }
 
         .btn-theme, .btn-receipt, .btn-power-bottom { border-radius: 10px; font-weight: bold; cursor: pointer; transition: all 0.2s ease; text-transform: uppercase; display: flex; justify-content: center; align-items: center; font-family: monospace; height: 28px; font-size: 8px; background: var(--num-bg-theme) !important; border: 2px solid var(--neon-primary) !important; color: #ccc !important; width: 100%; z-index: 15; }
 
@@ -361,6 +367,7 @@
             </div>
             <button id="btnAnadirGlobal" class="btn-add-embedded" onclick="addProducto()">+</button>
         </div>
+
 
 
         <!-- Fila unificada amarrada en Grid de 4 columnas horizontales estrictas -->
