@@ -141,7 +141,22 @@
             50% { box-shadow: 0 0 16px var(--neon-secondary), inset 0 0 6px var(--neon-secondary); border-color: var(--neon-secondary); }
         }
         .caja-data { width: 100%; padding: 4px 2px; border-radius: 8px; text-align: center; cursor: pointer; font-size: 9px; transition: all 0.2s ease; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 48px; position: relative; background: var(--btn-bg-theme); background-size: 200% 200%; animation: activeMenuMove 6s infinite ease-in-out; border: 2px solid var(--neon-primary); color: #fff !important; opacity: 0.9; overflow: hidden; }
-        .caja-data.btn-on { animation: neonPulse 1.8s infinite ease-in-out, activeMenuMove 3s infinite ease-in-out; background: linear-gradient(45deg, #2a0845, #6441a5, #2a0845); background-size: 200% 200%; color: #fff !important; opacity: 1 !important; border-color: #fff; }
+        
+        /* 🌌 AQUÍ SE QUEDÓ EL CAMBIO: NUEVO FONDO VIOLETA CON DESTELLOS Y ESTRELLAS OCHENTERAS PARPADEANDO */
+        @keyframes estrellasOchenta {
+            0%, 100% { background-position: 0% 50%, 10px 10px; filter: drop-shadow(0 0 2px rgba(255,255,255,0.5)); }
+            50% { background-position: 100% 50%, -10px -10px; filter: drop-shadow(0 0 5px rgba(255,255,255,0.9)); }
+        }
+        .caja-data.btn-on { 
+            background-image: 
+                radial-gradient(circle, #ffffff 12%, transparent 13%), 
+                radial-gradient(circle, #ffffff 8%, transparent 9%),
+                linear-gradient(45deg, #1d0636, #4c1d95, #1d0636) !important;
+            background-size: 24px 24px, 32px 32px, 200% 200% !important;
+            animation: neonPulse 1.8s infinite ease-in-out, estrellasOchenta 2s infinite ease-in-out !important;
+            color: #fff !important; opacity: 1 !important; border-color: #fff !important;
+            box-shadow: 0 0 16px var(--neon-secondary), inset 0 0 6px var(--neon-secondary) !important;
+        }
 
         /* 📟 BACKGROUND SYNTHWAVE TECNOLÓGICO ANIMADO EN EL BOTÓN DE PRECIO */
         @keyframes synthwaveShift {
@@ -172,6 +187,7 @@
             border-color: #fff; 
             box-shadow: 0 0 14px var(--neon-secondary); 
         }
+
 
         /* 🔵 BOTÓN + SÚPER EXPUESTO (DIFERENCIADO Y ADAPTATIVO AL NEÓN DE CADA TEMA) */
         .btn-add-embedded { 
