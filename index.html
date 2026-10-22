@@ -166,8 +166,8 @@
             50% { opacity: 1; }
         }
         
+        /* 🌌 CONFIGURACIÓN CON TEXTO EN NEGRETAS (BOLD) CUANDO EL BOTÓN ESTÁ ENCENDIDO */
         .caja-data.btn-on { 
-            /* 🔮 Se fija el gradiente violeta/púrpura synthwave continuo para todas las paletas */
             background: linear-gradient(45deg, #2a0845, #6441a5, #2a0845) !important;
             background-size: 200% 200% !important;
             animation: neonPulse 1.8s infinite ease-in-out, activeMenuMove 3s infinite ease-in-out !important; 
@@ -176,6 +176,9 @@
             opacity: 1 !important; 
             border-color: #ffffff !important;
             box-shadow: 0 0 16px var(--neon-secondary), inset 0 0 6px var(--neon-secondary) !important;
+            
+            /* 🚨 Fuerza el texto y números del botón activo a negrita con alta visibilidad */
+            font-weight: 900 !important;
         }
 
         /* Capa trasera independiente que dibuja la constelación de micro-píxeles cuadrados */
@@ -187,7 +190,6 @@
             background: #ffffff;
             top: 10px;
             left: 15px;
-            /* Coordenadas de las micro-estrellitas de 1px real */
             box-shadow: 
                 15px 22px 0 #ffffff,   
                 45px 5px 0 #ffffff,    
@@ -195,7 +197,6 @@
                 30px -4px 0 #ffffff,   
                 -5px 14px 0 #ffffff;   
             z-index: 1;
-            /* Latido analógico suave y sutil de 3.5 segundos */
             animation: titileoLentoPixel 3.5s infinite ease-in-out !important;
             pointer-events: none;
         }
@@ -204,10 +205,9 @@
         .caja-data.btn-on * {
             position: relative;
             z-index: 2;
+            /* 🚨 Asegura que los textos y valores anidados hereden el formato bold */
+            font-weight: 900 !important;
         }
-
-
-
 
         /* 📟 BACKGROUND SYNTHWAVE TECNOLÓGICO ANIMADO EN EL BOTÓN DE PRECIO */
         @keyframes synthwaveShift {
@@ -260,6 +260,7 @@
             user-select: none; 
             z-index: 2;
         }
+
 
 
         
