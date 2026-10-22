@@ -19,7 +19,7 @@
            ========================================================================== */
         body.theme-cyberpunk {
             --bg-grad: linear-gradient(180deg, #09011a 0%, #2c044d 100%);
-            --neon-primary: #ff007f; --neon-secondary: #00f0ff; --btn-bg: #210c33; --btn-text: #ff007f;
+            --neon-primary: #ff007f; --neon-secondary: #00f0ff; --btn-bg: #1c062c; --btn-text: #ff007f;
             --num-bg: linear-gradient(180deg, #321054 0%, #120321 100%);
         }
         body.theme-retro-gold {
@@ -34,7 +34,7 @@
         }
         body.theme-sunset {
             --bg-grad: linear-gradient(180deg, #451a03 0%, #78350f 100%);
-            --neon-primary: #f97316; --neon-secondary: #fdba74; --btn-bg: #451a03; --btn-text: #fdba74;
+            --neon-primary: #f97316; --neon-secondary: #fdba74; --btn-bg: #421807; --btn-text: #fdba74;
             --num-bg: linear-gradient(180deg, #78350f 0%, #292524 100%);
         }
 
@@ -52,12 +52,13 @@
         /* 📟 CHASIS FÍSICO CON REGLA ESTRICTA DE ENERGÍA */
         .chasis { width: 340px; height: auto; min-height: 580px; background: #160d21; border: 4px solid var(--neon-primary); box-shadow: 0 0 25px rgba(255, 0, 127, 0.3); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; border-radius: 24px; overflow: hidden; display: flex; flex-direction: column; padding: 12px; gap: 8px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         
-        /* 🔌 APAGÓN TOTAL EXCEPTO EL BOTÓN DE APAGAR */
+        /* 🔌 APAGÓN TOTAL ESTRICTO */
         .chasis.global-power-off { filter: brightness(0.25) grayscale(0.6); box-shadow: none !important; border-color: #444 !important; }
-        .chasis.global-power-off .btn-key:not(.power-btn), 
+        .chasis.global-power-off .btn-key, 
         .chasis.global-power-off .caja-data, 
         .chasis.global-power-off .btn-theme, 
-        .chasis.global-power-off .btn-receipt { box-shadow: none !important; text-shadow: none !important; border-color: #333 !important; animation: none !important; opacity: 0.2 !important; }
+        .chasis.global-power-off .btn-receipt { box-shadow: none !important; text-shadow: none !important; border-color: #333 !important; animation: none !important; opacity: 0.2 !important; pointer-events: none !important; }
+        /* El botón de encendido se reactiva manualmente por código al estar apagado */
 
         /* 🟢 PANTALLA LCD VERDE RETRO CON TOTALES A LA IZQUIERDA */
         .lcd { width: 100%; height: 175px; background: #92b043; border: 2px solid #000; border-radius: 14px; color: #000; box-shadow: inset 0 4px 10px rgba(0,0,0,0.4); font-weight: bold; padding: 8px; display: flex; flex-direction: column; justify-content: space-between; position: relative; transition: all 0.4s ease; transform-origin: center; z-index: 12; }
@@ -71,50 +72,54 @@
         .lcd-body { text-align: left !important; font-size: 10px; line-height: 1.2; }
         .lcd-total { font-size: 24px; font-weight: 900; text-align: left !important; }
 
-        /* 🔘 ESTILOS DE LOS BOTONES DE MENÚ CON COLOR DE FONDO SÓLIDO POR TEMA */
+        /* 🔘 ESTILOS DE LOS BOTONES DE MENÚ CON FONDO SÓLIDO */
         .row-menus { display: grid; gap: 4px; width: 100%; }
         .caja-data { padding: 4px 2px; border-radius: 10px; text-align: center; cursor: pointer; font-size: 9px; transition: all 0.2s ease; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 52px; position: relative; background: var(--btn-bg); border: 2px solid rgba(255, 255, 255, 0.08); color: var(--btn-text); opacity: 0.6; }
         
-        /* Animación neón pulsante sutil aplicada estrictamente al borde del campo activo */
         @keyframes neonPulse {
             0%, 100% { box-shadow: 0 0 8px var(--neon-primary), inset 0 0 3px var(--neon-primary); border-color: #fff; }
             50% { box-shadow: 0 0 16px var(--neon-secondary), inset 0 0 6px var(--neon-secondary); border-color: var(--neon-secondary); }
         }
         .caja-data.btn-on { animation: neonPulse 1.8s infinite ease-in-out; color: #fff !important; opacity: 1 !important; border-color: #fff; }
 
-        /* 📟 Botón de Cuenta Principal (Cyan con fuente de número expandida) */
-        #cajaSub { background: #051a24; border-color: rgba(0, 240, 255, 0.2); color: #00f0ff; opacity: 1; }
-        #cajaSub.btn-on { border-color: #fff; }
+        /* 📟 FONDO TECNOLÓGICO ANIMADO SUTIL PARA EL BOTÓN DE CUENTA */
+        @keyframes techMove {
+            0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; }
+        }
+        #cajaSub { background: linear-gradient(-45deg, #051a24, #082f44, #03121a, #0c3e54); background-size: 300% 300%; animation: techMove 6s infinite ease-in-out; border-color: rgba(0, 240, 255, 0.3); color: #00f0ff; opacity: 1; }
+        #cajaSub.btn-on { border-color: #fff; box-shadow: 0 0 12px rgba(0, 240, 255, 0.4); }
         #cajaSub .lbl-val { font-size: 18px !important; font-weight: 900; }
 
-        /* Números Parpadeantes cuando requieren el Input del usuario */
         @keyframes blinkFast { 0%, 100% { opacity: 1; } 50% { opacity: 0.15; } }
         .blink-num { animation: blinkFast 0.6s infinite steps(2, start); text-shadow: 0 0 8px currentColor; }
-        /* ⌨️ TECLADO NUMÉRICO UNIFICADO DINÁMICAMENTE POR TEMAS */
+        /* ⌨️ TECLADO NUMÉRICO UNIFICADO Y MODALES OCULTADOS */
         .pad-num { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; width: 100%; }
         
+        /* Teclas Numéricas (0-9) y Flecha de Borrar (Misma UI, color y tipografía) */
         .btn-key { height: 38px; background: var(--num-bg); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 6px; color: #fff; font-size: 1.1rem; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; font-family: monospace; transition: all 0.2s ease; }
         .btn-key:active { filter: brightness(1.4); border-color: var(--neon-secondary); }
         .btn-back { color: #fff !important; background: var(--num-bg) !important; border-color: rgba(255, 255, 255, 0.1) !important; }
 
-        /* Botones Operativos Superiores (+Añadir, Clear, Apagar): Acoplados al Tema */
+        /* Botones Operativos Superiores (Clear, Añadir): Rosa Neón Vibrante unificado */
         .btn-key.btn-op-special { background: linear-gradient(180deg, var(--neon-primary) 0%, #11021c 100%) !important; border-color: var(--neon-primary) !important; color: #fff !important; font-size: 9px; text-shadow: 0 0 5px var(--neon-primary); }
-        .btn-key.btn-op-special.power-btn { font-size: 14px; text-shadow: 0 0 8px var(--neon-primary); opacity: 1 !important; z-index: 25; }
         
-        /* Botones de Control Inferiores (Tema y Recibo): Gris Metalizado Robusto */
-        .btn-theme, .btn-receipt { border-radius: 10px; font-weight: bold; cursor: pointer; transition: all 0.2s ease; text-transform: uppercase; display: flex; justify-content: center; align-items: center; font-family: monospace; height: 28px; font-size: 8px; background: linear-gradient(180deg, #2b2930 0%, #1c1a1f 100%) !important; border: 2px solid #555 !important; color: #ccc !important; text-shadow: none; box-shadow: none; width: 100%; z-index: 15; }
-        .btn-theme:active, .btn-receipt:active { border-color: var(--neon-secondary) !important; color: #fff !important; }
+        /* Botones de Control Inferiores (Tema, Recibo, Apagar): Unificados en Gris Oscuro Metalizado */
+        .btn-theme, .btn-receipt, .btn-power-bottom { border-radius: 10px; font-weight: bold; cursor: pointer; transition: all 0.2s ease; text-transform: uppercase; display: flex; justify-content: center; align-items: center; font-family: monospace; height: 28px; font-size: 8px; background: linear-gradient(180deg, #2b2930 0%, #1c1a1f 100%) !important; border: 2px solid #555 !important; color: #ccc !important; text-shadow: none; box-shadow: none; width: 100%; z-index: 15; }
+        .btn-theme:active, .btn-receipt:active, .btn-power-bottom:active { border-color: var(--neon-secondary) !important; color: #fff !important; }
+        .btn-power-bottom.power-active-btn { color: #fee2e2 !important; border-color: #ef4444 !important; text-shadow: 0 0 5px #ef4444; opacity: 1 !important; pointer-events: auto !important; }
 
         .btn-key:disabled { opacity: 0.1 !important; cursor: not-allowed !important; }
-        .row-acciones-inferior { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-top: 2px; width: 100%; }
+        .row-acciones-inferior { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-top: 2px; width: 100%; }
 
-        /* Capas del Recibo Holográfico Reparadas para evitar bloqueos táctiles */
+        /* Ocultamiento estricto de modales por defecto para evitar interferencias en el background */
+        .holograma-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10, 2, 24, 0.85); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 100; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
+        .holograma-overlay.activo { opacity: 1; pointer-events: auto; visibility: visible; }
+
         .holograma-lineas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06)); background-size: 100% 4px, 6px 100%; pointer-events: none; z-index: 5; }
         .holograma-scrollable { flex-grow: 1; overflow-y: auto; font-size: 12px; line-height: 1.4; white-space: pre-wrap; padding-right: 4px; border: 1px solid rgba(0, 240, 255, 0.2); border-radius: 8px; padding: 8px; background: rgba(0, 0, 0, 0.3); }
         .holograma-footer { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
         .btn-holo { padding: 8px; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; border: 1px solid; font-family: monospace; font-size: 11px; text-align: center; background: transparent; color: inherit; text-shadow: inherit; transition: all 0.2s ease; }
         
-        /* Animación unificada de 3 puntos en movimiento (...) */
         @keyframes tipeandoPuntos { 0% { content: "."; } 33% { content: ".."; } 66% { content: "..."; } 100% { content: "."; } }
         .lcd-tipeo::after { content: "."; animation: tipeandoPuntos 1.2s infinite steps(1, start); }
     </style>
@@ -140,13 +145,13 @@
             <div class="lcd-body">
                 <div id="rowDesc" style="opacity: 0.3; transition: opacity 0.15s ease;">DESCUENTO: <span id="outDesc">-$0.00</span></div>
                 <div id="rowTip" style="opacity: 0.2; transition: opacity 0.15s ease;">PROPINA: <span id="outTip">$0.00</span></div>
-                <div>IVU: <span id="outIvu">$0.00</span></div>
+                <div id="rowIvu" style="opacity: 0.3; transition: opacity 0.15s ease;">IVU: <span id="outIvu">$0.00</span></div>
                 <div class="lcd-total" style="margin-bottom: 1px;">TOTAL: $<span id="outPer">0.00</span></div>
                 <div id="rowPersonaCuota" style="opacity: 0.3; font-size: 11px; margin-top: 1px; transition: opacity 0.15s ease;"><span id="txtSerruchoLabelType">SERRUCHO (C/U): N/A</span> <span id="outPerPersonaLine"></span></div>
             </div>
         </div>
 
-        <!-- 🎛️ BOTONERA DE MENÚS (Fila superior: Cuenta cruzando de lado a lado) -->
+        <!-- 🎛---- BOTONERA DE MENÚS (Fila superior: Cuenta con fondo tecnológico sutil) -->
         <div class="row-menus" style="grid-template-columns: 1fr;">
             <div id="cajaSub" class="caja-data btn-on" onclick="seleccionarMenu('sub')" style="width: 100%;">
                 <span class="lbl-title" style="color: #00f0ff;">Cuenta</span>
@@ -154,7 +159,7 @@
             </div>
         </div>
 
-        <!-- Segunda fila: Opciones unificadas que inician APAGADAS (btn-off) por defecto -->
+        <!-- Segunda fila: Opciones unificadas con fondo sólido que inician APAGADAS -->
         <div class="row-menus" style="grid-template-columns: repeat(4, 1fr);">
             <div id="cajaPpl" class="caja-data btn-off" onclick="seleccionarMenu('ppl')">
                 <span class="lbl-title">Serrucho</span>
@@ -174,25 +179,28 @@
             </div>
         </div>
 
-        <!-- ⌨️ TECLADO NUMÉRICO REORDENADO Y REFORMADO -->
+        <!-- ⌨---- TECLADO NUMÉRICO TOTALMENTE REORDENADO Y REFORMADO -->
         <div class="pad-num">
-            <button id="btnTogglePower" class="btn-key btn-op-special power-btn" onclick="togglePower()">⏻</button>
+            <!-- Fila superior: Flecha en esquina izquierda, Clear, y Añadir se mantiene aquí provisionalmente para cuadrar cuadrículas -->
+            <button id="btnBksp" onclick="bksp()" class="btn-key btn-back">←</button>
             <button id="btnCeGlobal" class="btn-key btn-op-special" onclick="ce()">Clear</button>
-            <button id="btnAnadirGlobal" class="btn-key btn-op-special" onclick="addProducto()">+ Añadir</button>
+            <button id="btnAnadirDummyVacio" class="btn-key" style="opacity:0; pointer-events:none;"></button>
             
             <button id="btnN7" onclick="num('7')" class="btn-key">7</button><button id="btnN8" onclick="num('8')" class="btn-key">8</button><button id="btnN9" onclick="num('9')" class="btn-key">9</button>
             <button id="btnN4" onclick="num('4')" class="btn-key">4</button><button id="btnN5" onclick="num('5')" class="btn-key">5</button><button id="btnN6" onclick="num('6')" class="btn-key">6</button>
             <button id="btnN1" onclick="num('1')" class="btn-key">1</button><button id="btnN2" onclick="num('2')" class="btn-key">2</button><button id="btnN3" onclick="num('3')" class="btn-key">3</button>
             
-            <!-- Fila inferior perfectamente cuadrada: 0, punto y borrar alineados -->
-            <button id="btnN0" onclick="num('0')" class="btn-key">0</button>
+            <!-- Fila inferior del pad: Punto, 0, e inyección de Añadir en esquina inferior derecha -->
             <button id="btnPunto" onclick="num('.')" class="btn-key">.</button>
-            <button id="btnBksp" onclick="bksp()" class="btn-key btn-back">←</button>
+            <button id="btnN0" onclick="num('0')" class="btn-key">0</button>
+            <button id="btnAnadirGlobal" class="btn-key btn-op-special" onclick="addProducto()">+ Añadir</button>
         </div>
 
+        <!-- Fila inferior de control unificada de 3 botones de igual UI -->
         <div class="row-acciones-inferior">
             <button id="btnTheme" class="btn-theme" onclick="rotarTema()">TEMA</button>
             <button id="btnReceipt" class="btn-receipt" onclick="abrirHologramaRecibo()">RECIBO</button>
+            <button id="btnTogglePower" class="btn-power-bottom power-active-btn" onclick="solicitarApagado()">⏻</button>
         </div>
     </div> <!-- Cierre de chasis -->
 
@@ -205,6 +213,19 @@
             <div class="holograma-footer">
                 <button class="btn-holo" id="btnCopiarHolo" onclick="copiarTextoHolograma()">Copiar</button>
                 <button class="btn-holo" onclick="cerrarHologramaRecibo()">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🚨 NUEVO VISOR HOLOGRÁFICO DE CONFIRMACIÓN DE APAGADO MAESTRO -->
+    <div class="holograma-overlay" id="visorConfirmarApagado">
+        <div class="holograma-ticket" style="border-color: #ef4444; color: #fca5a5; text-shadow: 0 0 8px rgba(239,68,68,0.6); box-shadow: 0 0 30px rgba(239,68,68,0.4);">
+            <div class="holograma-lineas"></div>
+            <div style="font-weight: 900; text-align: center; letter-spacing: 1px; font-size: 14px; color: #ef4444;">ALERTA DE SISTEMA</div>
+            <div style="font-size: 12px; text-align: center; line-height: 1.5; padding: 10px 0;">¿CONFIRMA APAGADO MAESTRO?<br><br>Se borrarán de forma permanente todos los flujos de memoria de la cuenta y artículos guardados.</div>
+            <div class="holograma-footer">
+                <button class="btn-holo" onclick="confirmarApagadoSi()" style="border-color:#ef4444; color:#ef4444;">[ SÍ ]</button>
+                <button class="btn-holo" onclick="cerrarConfirmarApagado()" style="border-color:#ccc; color:#ccc;">[ NO ]</button>
             </div>
         </div>
     </div>
@@ -273,15 +294,37 @@
                 osc.start(); osc.stop(ctx.currentTime + 0.15);
             } catch (e) {}
         }
-        // 🔌 INTERRUPTOR MAESTRO DE ENERGÍA CON COLAPSO CRT VISUAL Y APAGÓN DE BOTONES
-        function togglePower() {
+        // 🔌 CONTROLES HOLOGRÁFICOS DE APAGADO MAESTRO E INTERRUPTOR CRT VINTAGE
+        function solicitarApagado() {
+            if (!sistemaEncendido) {
+                // Si está apagada, se enciende directamente presionando el botón
+                togglePowerAccion();
+                return;
+            }
+            reproducirSonido('menu');
+            document.getElementById('visorConfirmarApagado').classList.add('activo');
+        }
+
+        function cerrarConfirmarApagado() {
+            reproducirSonido('menu');
+            document.getElementById('visorConfirmarApagado').classList.remove('activo');
+        }
+
+        function confirmarApagadoSi() {
+            document.getElementById('visorConfirmarApagado').classList.remove('activo');
+            togglePowerAccion();
+        }
+
+        function togglePowerAccion() {
             const lcd = document.getElementById('pantallaVerde');
             const chasis = document.getElementById('calcChasis');
+            const btnPower = document.getElementById('btnTogglePower');
             
             if (sistemaEncendido) {
                 sistemaEncendido = false;
                 reproducirSonido('apagar');
                 lcd.classList.add('power-off-crt'); 
+                btnPower.classList.add('power-active-btn'); // Forzar que este botón no se apague
                 setTimeout(() => {
                     if(!sistemaEncendido) chasis.classList.add('global-power-off'); 
                 }, 400);
@@ -297,7 +340,7 @@
         }
 
         function toggleTeclasBloqueo(bloquear) {
-            const botones = document.querySelectorAll('.btn-key, .caja-data, .btn-receipt');
+            const botones = document.querySelectorAll('.btn-key, .caja-data, .btn-receipt, .btn-theme');
             botones.forEach(btn => {
                 if (btn.id !== 'btnTogglePower' && btn.id !== 'btnTheme') {
                     btn.disabled = bloquear;
@@ -360,19 +403,20 @@
                 numDesc.innerText = modoDescuentoActivo ? memoriaDescuentoPct : "0";
                 numTip.innerText = incluirPropina ? memoriaTipPct : "0";
                 numIvu.innerText = modoIvuActivo ? parseFloat(memoriaIvuPct).toFixed(1) : "0.0";
-                btnAnadir.disabled = false; btnPunto.disabled = false; 
+                if(btnAnadir) btnAnadir.disabled = false; 
+                if(btnPunto) btnPunto.disabled = false; 
                 numSub.classList.add('blink-num'); document.getElementById('cajaSub').className = "caja-data btn-on";
             } else if (mode === 'ppl') {
-                numPpl.innerText = sPpl; btnAnadir.disabled = true; btnPunto.disabled = true; 
+                numPpl.innerText = sPpl; if(btnAnadir) btnAnadir.disabled = true; if(btnPunto) btnPunto.disabled = true; 
                 numPpl.classList.add('blink-num'); document.getElementById('cajaPpl').className = "caja-data btn-on";
             } else if (mode === 'desc') {
-                numDesc.innerText = sDesc; btnAnadir.disabled = true; btnPunto.disabled = false;
+                numDesc.innerText = sDesc; if(btnAnadir) btnAnadir.disabled = true; if(btnPunto) btnPunto.disabled = false;
                 numDesc.classList.add('blink-num'); document.getElementById('cajaDesc').className = "caja-data btn-on";
             } else if (mode === 'tip') {
-                numTip.innerText = sTip; btnAnadir.disabled = true; btnPunto.disabled = false;
+                numTip.innerText = sTip; if(btnAnadir) btnAnadir.disabled = true; if(btnPunto) btnPunto.disabled = false;
                 numTip.classList.add('blink-num'); document.getElementById('cajaTip').className = "caja-data btn-on";
             } else if (mode === 'ivu') {
-                numIvu.innerText = sIvuModificado; btnAnadir.disabled = true; btnPunto.disabled = false;
+                numIvu.innerText = sIvuModificado; if(btnAnadir) btnAnadir.disabled = true; if(btnPunto) btnPunto.disabled = false;
                 numIvu.classList.add('blink-num'); document.getElementById('btnToggleIvu').className = "caja-data btn-on";
             }
             actualizarHeaderIndicadores(); calc();
@@ -510,6 +554,9 @@
             
             document.getElementById('rowDesc').style.opacity = modoDescuentoActivo ? "1" : "0.3";
             document.getElementById('rowTip').style.opacity = incluirPropina ? "1" : "0.3";
+            
+            // 🚨 IVU Faded out en la pantalla cuando no está habilitado su botón
+            document.getElementById('rowIvu').style.opacity = modoIvuActivo ? "1" : "0.3";
 
             if (modoSerruchoActivo) {
                 document.getElementById('txtSerruchoLabelType').innerText = `SERRUCHO (C/U): `;
