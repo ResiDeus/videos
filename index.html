@@ -209,7 +209,7 @@
             font-weight: 900 !important;
         }
 
-        /* 📟 BACKGROUND SYNTHWAVE TECNOLÓGICO ANIMADO EN EL BOTÓN DE PRECIO */
+        /* 📟 REJILLA SYNTHWAVE MULTICOLOR ADAPTATIVA PARA EL PANEL DE PRECIO */
         @keyframes synthwaveShift {
             0% { background-position: 0% 0%; }
             100% { background-position: 40px 40px; }
@@ -219,17 +219,22 @@
             width: 100%; 
             gap: 4px; 
             background-color: #0b0214 !important;
+            
+            /* 🎨 CAMBIO MAGISTRAL: Reemplazamos el rosa fijo por la variable de neón de cada tema */
             background-image: 
-                linear-gradient(rgba(255, 0, 127, 0.15) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 0, 127, 0.15) 1px, transparent 1px) !important;
+                linear-gradient(var(--neon-secondary) 1px, transparent 1px),
+                linear-gradient(90deg, var(--neon-secondary) 1px, transparent 1px) !important;
+                
+            /* Ajustamos la opacidad general de la malla para que siga siendo sutil y elegante */
+            opacity: 1;
             background-size: 20px 20px !important;
-            animation: synthwaveShift 2.5s infinite linear !important;
+            animation: synthwaveShift 2.5s infinite linear !important; 
             border-radius: 10px; 
             border: 2px solid var(--neon-secondary); 
             padding: 4px; 
             min-height: 52px; 
             align-items: center; 
-            transition: opacity 0.2s ease, visibility 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease; 
+            transition: all 0.2s ease; 
             position: relative; 
             overflow: hidden;
         }
@@ -237,6 +242,7 @@
             border-color: #fff; 
             box-shadow: 0 0 14px var(--neon-secondary); 
         }
+
 
         /* 🔵 BOTÓN + SÚPER EXPUESTO (DIFERENCIADO Y ADAPTATIVO AL NEÓN DE CADA TEMA) */
         .btn-add-embedded { 
