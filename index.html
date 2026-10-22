@@ -6,7 +6,7 @@
     <title>Calculadora de ResiDeus</title>
 
     <!-- 📱 CONFIGURACIÓN DE PANTALLA DE INICIO IPHONE / PWA -->
-    <meta name="apple-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-touch-fullscreen" content="yes">
     <meta name="apple-mobile-web-app-title" content="ResiDeus">
@@ -82,9 +82,7 @@
         .sky { position: absolute; width: 100%; height: 100%; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent), radial-gradient(1.5px 1px at 75px 120px, #fff9, transparent); background-size: 380px 380px; z-index: 1; animation: twk 4s infinite linear; pointer-events: none; }
         .grid3d { position: absolute; width: 100%; height: 40%; bottom: 0; background-size: 40px 40px; transform: perspective(180px) rotateX(65deg); transform-origin: top center; z-index: 1; animation: gM 2.5s infinite linear; pointer-events: none; }
         .grid3d { background-image: linear-gradient(rgba(255, 0, 127, 0.12) 2px, transparent 2px), linear-gradient(90deg, rgba(255, 0, 127, 0.12) 2px, transparent 2px); }
-        @keyframes twk { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
-        @keyframes gM { 0% { background-position: 0 0; } 100% { background-position: 0 40px; } }
-        
+
         /* 📟 CHASIS FÍSICO CON REGLA ESTRICTA DE ENERGÍA */
         .chasis { width: 340px; height: auto; min-height: 580px; background: #160d21; border: 4px solid var(--neon-primary); box-shadow: 0 0 25px rgba(255, 0, 127, 0.3); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; border-radius: 24px; overflow: hidden; display: flex; flex-direction: column; padding: 12px; gap: 8px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         
@@ -93,7 +91,6 @@
         .chasis.global-power-off .lcd { background: #121805 !important; box-shadow: inset 0 4px 10px rgba(0,0,0,0.9) !important; border-color: #222 !important; }
         .chasis.global-power-off .lcd * { opacity: 0 !important; visibility: hidden !important; text-shadow: none !important; }
         
-        /* Precio invisible en el apagado */
         .chasis.global-power-off .contenedor-precio-unificado { opacity: 0 !important; visibility: hidden !important; box-shadow: none !important; outline: none !important; }
         
         .chasis.global-power-off .btn-key:not(.power-btn), 
@@ -103,7 +100,6 @@
         .chasis.global-power-off .btn-step,
         .chasis.global-power-off .btn-add-embedded { box-shadow: none !important; text-shadow: none !important; border-color: #222 !important; animation: none !important; opacity: 0 !important; pointer-events: none !important; }
         
-        /* Botón de encendido verde activo constante al apagarse */
         .chasis.global-power-off .btn-power-bottom { background: #022c22 !important; border-color: #10b981 !important; color: #34d399 !important; text-shadow: 0 0 8px #10b981 !important; opacity: 1 !important; pointer-events: auto !important; }
 
         /* 🟢 PANTALLA LCD VERDE RETRO */
@@ -130,12 +126,12 @@
         @keyframes blinkScrollHint { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
         .scroll-hint { position: absolute; bottom: 1px; right: 2px; font-size: 8px; color: rgba(0,0,0,0.8); animation: blinkScrollHint 1s infinite ease-in-out; pointer-events: none; display: none; background: rgba(146, 176, 67, 0.9); padding: 0 4px; border-radius: 3px; font-weight: 900; }
 
-         /* ⚡ CONTROLES DEL EFECTO FLASH BLANCO UNIVERSAL AL TOCAR LAS TECLAS */
+        /* ⚡ CONTROLES DEL EFECTO FLASH BLANCO UNIVERSAL AL TOCAR LAS TECLAS */
         .btn-key:active, 
         .caja-data:active, 
-        .btn-theme:active, 
-        .btn-receipt:active, 
-        .btn-step:active, 
+        .btn-theme:active,
+        .btn-receipt:active,
+        .btn-step:active,
         .btn-add-embedded:active,
         .btn-power-bottom:active {
             background: #ffffff !important;
@@ -145,6 +141,7 @@
             text-shadow: none !important;
             transition: none !important;
         }
+
         /* 🎛️ GRID HORIZONTAL EXPANDIDO: 5 Columnas perfectas alineadas simétricamente */
         .row-opciones-pasos { display: grid; grid-template-columns: repeat(5, 1fr) !important; gap: 3px; width: 100%; }
         .wrapper-pasos { display: flex; flex-direction: column; gap: 2px; align-items: center; width: 100%; }
@@ -177,7 +174,8 @@
         }
         .caja-data.btn-on * { position: relative; z-index: 2; font-weight: 900 !important; }
 
-        /* 📟 CONTENEDOR INTEGRADO DE PRECIO ANIMADO */
+        /* 📟 CONTENEDOR INTEGRADO DE PRECIO ANIMADO DE SQUARDS SYNTHWAVE EN BUCLÉ RECONSTRUIDO */
+        @keyframes synthwaveShift { 0% { background-position: 0% 0%; } 100% { background-position: 40px 40px; } }
         .contenedor-precio-unificado { display: flex; width: 100%; gap: 4px; background-color: #0b0214 !important; background-size: 20px 20px !important; animation: synthwaveShift 2.5s infinite linear !important; border-radius: 10px; border: 2px solid var(--neon-secondary); padding: 4px; min-height: 52px; align-items: center; transition: all 0.2s ease; position: relative; overflow: hidden; }
         .contenedor-precio-unificado.precio-on { border-color: #fff; box-shadow: 0 0 14px var(--neon-secondary); }
         
@@ -186,7 +184,7 @@
         #cajaSub .lbl-title { font-size: 8px; text-transform: uppercase; color: var(--neon-secondary); margin-bottom: 1px; font-weight: bold; text-shadow: 0 0 4px rgba(0,240,255,0.2); }
         #cajaSub .lbl-val { font-size: 18px !important; font-weight: 900; color: #fff !important; }
 
-        /* ⌨️ TECLADO NUMÉRICO, PUNTO Y BORRAR: DISEÑO ILUMINADO CYBER-CYAN MÁXIMA PRIORIDAD */
+        /* ⌨️ TECLADO NUMÉRICO, PUNTO Y BORRAR: DISEÑO ILUMINADO CYBER-CYAN */
         @keyframes auraRespiraciónBlancaLofi { 0%, 100% { transform: scale(0.85); opacity: 0.15; filter: blur(4px); } 50% { transform: scale(1.15); opacity: 0.5; filter: blur(6px); } }
         .pad-num { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; width: 100%; }
         .btn-key, .btn-back { height: 38px; background: var(--num-bg-theme) !important; border: 1px solid var(--neon-primary) !important; border-radius: 6px; color: #ffffff !important; font-size: 1.1rem; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; font-family: monospace; transition: all 0.2s ease, border-color 0.3s ease, background 0.3s ease; position: relative; overflow: hidden; z-index: 10; opacity: 1 !important; pointer-events: auto !important; }
@@ -232,11 +230,9 @@
             </div>
             <div class="lcd-wrapper">
                 <div class="listaPrecios-container" style="flex-grow: 1; position: relative; display: flex; flex-direction: column; overflow: hidden;">
-                    <!-- Bloque Vista de Compras -->
                     <div class="lcd-historial" id="listaPrecios">
                         <span id="lblArtText">Lista vacía<span class="lcd-tipeo"></span></span>
                     </div>
-                    <!-- Bloque Vista de Salario (Sub-Pantalla Oculta por defecto) -->
                     <div id="vistaSubPantallaSalario" style="display: none; flex-direction: column; justify-content: center; height: 100%; font-family: monospace; line-height: 1.3;">
                         <div style="font-weight: 900; letter-spacing: 0.5px; border-bottom: 1px dashed rgba(0,240,255,0.4); padding-bottom: 2px; margin-bottom: 3px;">CONSULTA DE SALARIO</div>
                         <div>PAGA POR HORA: <span id="lblSalHoraLcd" style="font-weight: 900; background: rgba(0,0,0,0.2); padding: 0 4px; border-radius: 3px;">$0.00</span></div>
@@ -246,7 +242,6 @@
                 </div>
             </div>
             <div class="lcd-body">
-                <!-- Data Base de Compras -->
                 <div id="wrapperDataComprasLcd">
                     <div id="rowDesc" style="opacity: 0.3; transition: opacity 0.15s ease;">DESCUENTO: <span id="outDesc">-$0.00</span></div>
                     <div id="rowTip" style="opacity: 0.2; transition: opacity 0.15s ease;">PROPINA: <span id="outTip">$0.00</span></div>
@@ -254,7 +249,6 @@
                     <div class="lcd-total" style="margin-bottom: 1px;">TOTAL: $<span id="outPer">0.00</span></div>
                     <div id="rowPersonaCuota" style="opacity: 0.3; font-size: 11px; margin-top: 1px; transition: opacity 0.15s ease;"><span id="txtSerruchoLabelType">SERRUCHO (C/U): N/A</span> <span id="outPerPersonaLine"></span></div>
                 </div>
-                <!-- Data Base de Salario (Sub-Pantalla Oculta) -->
                 <div id="wrapperDataSalarioLcd" style="display: none; border-top: 1px solid rgba(0,240,255,0.2); padding-top: 3px;">
                     <div style="font-size: 11px; font-weight: 900;">CHEQUE SEMANAL: <span id="outSalSemanal" style="font-size: 13px;">$0.00</span></div>
                     <div style="font-size: 11px; font-weight: 900; margin-top: 1px;">TOTAL MENSUAL : <span id="outSalMensual" style="font-size: 13px;">$0.00</span></div>
@@ -272,7 +266,7 @@
             <button id="btnAnadirGlobal" class="btn-add-embedded" onclick="addProducto()">+</button>
         </div>
 
-        <!-- Fila unificada amarrada en Grid Estricto de 5 Columnas Horizontales Simétricas -->
+        <!-- Fila unificada amarrada en Grid de 5 columnas horizontales estrictas -->
         <div class="row-opciones-pasos">
             <!-- 1. Serrucho -->
             <div class="wrapper-pasos">
@@ -304,7 +298,17 @@
                 <button class="btn-step" onmousedown="iniciarAutoIncremento('tip', -1)" ontouchstart="iniciarAutoIncrementoTouch(event, 'tip', -1)" onmouseup="detenerAutoIncremento()" onmouseleave="detenerAutoIncremento()" ontouchend="detenerAutoIncremento()">▼</button>
             </div>
 
-            <!-- 4. IVU -->
+            <!-- 4. 🚨 INTERCAMBIADO: Botón de Salario ahora en la 4ta Columna -->
+            <div class="wrapper-pasos">
+                <button class="btn-step" onmousedown="iniciarAutoIncremento('sal', 0.25)" ontouchstart="iniciarAutoIncrementoTouch(event, 'sal', 0.25)" onmouseup="detenerAutoIncremento()" onmouseleave="detenerAutoIncremento()" ontouchend="detenerAutoIncremento()">▲</button>
+                <div id="btnModoSalario" class="caja-data btn-off" onclick="seleccionarMenu('sal')">
+                    <span class="lbl-title">Salario</span>
+                    <span class="lbl-val">$<span id="lblSalarioBoton">10.25</span></span>
+                </div>
+                <button class="btn-step" onmousedown="iniciarAutoIncremento('sal', -0.25)" ontouchstart="iniciarAutoIncrementoTouch(event, 'sal', -0.25)" onmouseup="detenerAutoIncremento()" onmouseleave="detenerAutoIncremento()" ontouchend="detenerAutoIncremento()">▼</button>
+            </div>
+
+            <!-- 5. 🚨 INTERCAMBIADO: Botón de IVU ahora al final en la 5ta Columna -->
             <div class="wrapper-pasos">
                 <button class="btn-step" onmousedown="iniciarAutoIncremento('ivu', 0.1)" ontouchstart="iniciarAutoIncrementoTouch(event, 'ivu', 0.1)" onmouseup="detenerAutoIncremento()" onmouseleave="detenerAutoIncremento()" ontouchend="detenerAutoIncremento()">▲</button>
                 <div id="btnToggleIvu" class="caja-data btn-off" onclick="seleccionarMenu('ivu')">
@@ -312,16 +316,6 @@
                     <span class="lbl-val"><span id="lblIvuBoton">0.0</span>%</span>
                 </div>
                 <button class="btn-step" onmousedown="iniciarAutoIncremento('ivu', -0.1)" ontouchstart="iniciarAutoIncrementoTouch(event, 'ivu', -0.1)" onmouseup="detenerAutoIncremento()" onmouseleave="detenerAutoIncremento()" ontouchend="detenerAutoIncremento()">▼</button>
-            </div>
-
-            <!-- 5. 🚨 NUEVO BOTÓN: SALARIO CON MENÚ CONMUTADO Y PASOS ▲/▼ -->
-            <div class="wrapper-pasos">
-                <button class="btn-step" onmousedown="iniciarAutoIncremento('sal', 0.25)" ontouchstart="iniciarAutoIncrementoTouch(event, 'sal', 0.25)" onmouseup="detenerAutoIncremento()" onmouseleave="detenerAutoIncremento()" ontouchend="detenerAutoIncremento()">▲</button>
-                <div id="btnModoSalario" class="caja-data btn-off" onclick="seleccionarMenu('sal')">
-                    <span class="lbl-title">Salario</span>
-                    <span class="lbl-val">$<span id="lblSalarioBoton">0.00</span></span>
-                </div>
-                <button class="btn-step" onmousedown="iniciarAutoIncremento('sal', -0.25)" ontouchstart="iniciarAutoIncrementoTouch(event, 'sal', -0.25)" onmouseup="detenerAutoIncremento()" onmouseleave="detenerAutoIncremento()" ontouchend="detenerAutoIncremento()">▼</button>
             </div>
         </div>
 
@@ -336,7 +330,6 @@
             <button id="btnBksp" onclick="bksp()" class="btn-key btn-back">←</button>
         </div>
 
-        <!-- Fila inferior de control unificada -->
         <div class="row-acciones-inferior">
             <button id="btnTheme" class="btn-theme" onclick="rotarTema()">TEMA</button>
             <button id="btnReceipt" class="btn-receipt" onclick="abrirHologramaRecibo()">RECIBO</button>
@@ -344,12 +337,11 @@
         </div>
     </div> <!-- Cierre de chasis -->
 
-    <!-- Visor Holográfico del Ticket -->
     <div class="holograma-overlay" id="visorHolograma">
         <div class="holograma-ticket">
             <div class="holograma-lineas"></div>
             <div style="font-weight: 900; text-align: center; letter-spacing: 1px; font-size: 14px;">RECIBO</div>
-            <div class="holograma-scrollable" id="textoContenidoHolo">Cargando flujos vectoriales...</div>
+            <div class="holograma-scrollable" id="textoContenidoHolo">Cargando flujos...</div>
             <div class="holograma-footer">
                 <button class="btn-holo" id="btnCopiarHolo" onclick="copiarTextoHolograma()">Copiar</button>
                 <button class="btn-holo" onclick="cerrarHologramaRecibo()">Cerrar</button>
@@ -357,12 +349,11 @@
         </div>
     </div>
 
-    <!-- Visor Holográfico de Confirmación de Apagado Maestro -->
     <div class="holograma-overlay" id="visorConfirmarApagado">
         <div class="holograma-ticket" style="border-color: #ef4444; box-shadow: 0 0 30px rgba(239,68,68,0.4);">
             <div class="holograma-lineas"></div>
             <div style="font-weight: 900; text-align: center; letter-spacing: 1px; font-size: 14px; color: #ef4444;">ALERTA DE SISTEMA</div>
-            <div style="font-size: 12px; text-align: center; line-height: 1.5; padding: 10px 0;">¿CONFIRMA APAGADO MAESTRO?<br><br>Se borrarán de forma permanente todos los flujos de memoria de la cuenta y artículos guardados.</div>
+            <div style="font-size: 12px; text-align: center; line-height: 1.5; padding: 10px 0;">¿CONFIRMA APAGADO MAESTRO?<br><br>Se borrarán todos los flujos de memoria de la cuenta.</div>
             <div class="holograma-footer">
                 <button class="btn-holo" onclick="confirmarApagadoSi()" style="border-color:#ef4444; color:#ef4444;">[ SÍ ]</button>
                 <button class="btn-holo" onclick="cerrarConfirmarApagado()" style="border-color:#ccc; color:#ccc;">[ NO ]</button>
@@ -381,12 +372,11 @@
 
         // 📊 VARIABLES DEDICADAS DE LA MEMORIA DE SALARIO
         let modoSalarioActivo = false;
-        let precioHoraTrabajo = 10.25; // Tarifa base inicial por hora para Puerto Rico
+        let precioHoraTrabajo = 10.25; 
 
         let intervaloAutoIncremento = null;
         let timeoutAutoIncremento = null;
 
-        // 🟢 SINTETIZADOR DE AUDIO RETRO
         function dispararEfectoGlitch() {
             if (!sistemaEncendido) return;
             const lcd = document.getElementById('pantallaVerde');
@@ -435,7 +425,6 @@
             } catch (e) {}
         }
 
-        // ⏱️ LÓGICA DE PRESIÓN PROLONGADA SIN DUPLICACIÓN EN IPHONE
         function iniciarAutoIncrementoTouch(e, tipo, delta) {
             if (e && e.cancelable) e.preventDefault(); 
             iniciarAutoIncremento(tipo, delta);
@@ -443,10 +432,7 @@
 
         function iniciarAutoIncremento(tipo, delta) {
             if (!sistemaEncendido) return;
-            
-            // Si el modo salario está prendido, bloqueamos cualquier otra flecha que no sea 'sal'
             if (modoSalarioActivo && tipo !== 'sal') return;
-            // Si el modo salario está apagado, bloqueamos las flechas de 'sal'
             if (!modoSalarioActivo && tipo === 'sal') return;
 
             ejecutarModificacionPaso(tipo, delta);
@@ -470,10 +456,10 @@
             if (tipo === 'sal') {
                 precioHoraTrabajo += delta;
                 if (precioHoraTrabajo < 0) precioHoraTrabajo = 0;
-                if (precioHoraTrabajo > 500) precioHoraTrabajo = 500; // Límite razonable por hora
+                if (precioHoraTrabajo > 500) precioHoraTrabajo = 500;
                 document.getElementById('lblSalarioBoton').innerText = precioHoraTrabajo.toFixed(2);
                 calcularSalarioSubPantalla();
-                return; // Corta la ejecución para que no altere el procesador de compras
+                return;
             }
 
             if (tipo === 'ppl') {
@@ -521,8 +507,6 @@
                 document.getElementById('lblIvuBoton').innerText = modoIvuActivo ? ivu.toFixed(1) : "0.0";
             }
             
-            } // 🚨 Cierre exacto del bloque de la lógica del IVU anterior
-
             document.getElementById('cajaPpl').className = modoSerruchoActivo ? "caja-data btn-on" : "caja-data btn-off";
             document.getElementById('cajaDesc').className = modoDescuentoActivo ? "caja-data btn-on" : "caja-data btn-off";
             document.getElementById('cajaTip').className = incluirPropina ? "caja-data btn-on" : "caja-data btn-off";
@@ -560,26 +544,18 @@
                 reproducirSonido('apagar');
                 lcd.classList.remove('power-on-crt');
                 lcd.classList.add('power-off-crt'); 
-                
                 sSub = "0"; 
                 document.getElementById('lblSub').innerText = "0";
-                
-                setTimeout(() => {
-                    if(!sistemaEncendido) chasis.classList.add('global-power-off'); 
-                }, 400);
+                setTimeout(() => { if(!sistemaEncendido) chasis.classList.add('global-power-off'); }, 400);
                 toggleTeclasBloqueo(true);
             } else {
                 chasis.classList.remove('global-power-off');
-                lcd.classList.remove('power-off-crt');
-                
-                lcd.classList.remove('power-on-crt');
+                lcd.classList.remove('power-off-crt', 'power-on-crt');
                 void lcd.offsetWidth; 
                 lcd.classList.add('power-on-crt');
-                
                 document.querySelectorAll('.btn-theme, .btn-receipt').forEach(b => b.style.opacity = "1");
                 document.querySelectorAll('.pad-num .btn-key').forEach(b => b.style.opacity = "1");
                 document.querySelectorAll('.row-opciones-pasos .caja-data, .btn-step').forEach(b => b.style.opacity = "1");
-                
                 sistemaEncendido = true;
                 toggleTeclasBloqueo(false);
                 reproducirSonido('menu');
@@ -592,8 +568,8 @@
             botones.forEach(btn => {
                 if (btn.id !== 'btnTogglePower' && btn.id !== 'btnTheme') {
                     btn.disabled = bloquear;
-                    if (bloquear) { btn.style.pointerEvents = 'none'; } 
-                    else { btn.style.pointerEvents = 'auto'; }
+                    if (bloquear) btn.style.pointerEvents = 'none';
+                    else btn.style.pointerEvents = 'auto';
                 }
             });
         }
@@ -608,7 +584,6 @@
             document.getElementById('wrapperDataSalarioLcd').style.display = "none";
             precioHoraTrabajo = 10.25;
             document.getElementById('lblSalarioBoton').innerText = "10.25";
-
             document.getElementById('listaPrecios').innerHTML = 'Lista vacía<span class="lcd-tipeo"></span>';
             document.getElementById('flechaGuia').style.display = "none"; sPpl = "0"; modoSerruchoActivo = false; memoriaSerruchoCortes = "2";
             document.getElementById('lblPpl').innerText = "N/A"; sDesc = "0"; memoriaDescuentoPct = "0"; modoDescuentoActivo = false; document.getElementById('lblDesc').innerText = "0";
@@ -625,13 +600,12 @@
                 return;
             }
             let subpartes = [];
-            if (modoIvuActivo) { subpartes.push(`IVU: ${ivu.toFixed(1)}%`); }
-            if (incluirPropina) { subpartes.push(`TIP: ${memoriaTipPct}%`); }
-            if (modoDescuentoActivo) { subpartes.push(`DTO: -${memoriaDescuentoPct}%`); }
+            if (modoIvuActivo) subpartes.push(`IVU: ${ivu.toFixed(1)}%`);
+            if (incluirPropina) subpartes.push(`TIP: ${memoriaTipPct}%`);
+            if (modoDescuentoActivo) subpartes.push(`DTO: -${memoriaDescuentoPct}%`);
             document.getElementById('txtHeaderIndicadores').innerText = subpartes.length > 0 ? subpartes.join(' | ') : "SISTEMA ACTIVO";
         }
 
-        // 🕹️ ENRUTADOR DE MENÚ CONMUTADO MULTI-CAPA FISCAL
         function seleccionarMenu(f) {
             if (!sistemaEncendido) return;
             reproducirSonido('menu');
@@ -642,34 +616,25 @@
             const wrapperCompras = document.getElementById('wrapperDataComprasLcd');
             const wrapperSalario = document.getElementById('wrapperDataSalarioLcd');
 
-            // 🚨 CONMUTACIÓN DE SUB-PANTALLA VIRTUAL DE SALARIO
             if (f === 'sal') {
                 modoSalarioActivo = !modoSalarioActivo;
-                
                 if (modoSalarioActivo) {
                     lcd.classList.add('modo-salario-activo');
                     bloqueListaCompras.style.display = "none";
                     wrapperCompras.style.display = "none";
                     document.getElementById('flechaGuia').style.display = "none";
-                    
                     bloqueSubPantallaSalario.style.display = "flex";
                     wrapperSalario.style.display = "block";
                     document.getElementById('btnModoSalario').className = "caja-data btn-on";
-                    
-                    document.getElementById('lblSalarioBoton').innerText = precioHoraTrabajo.toFixed(2);
                     calcularSalarioSubPantalla();
                 } else {
                     lcd.classList.remove('modo-salario-activo');
                     bloqueSubPantallaSalario.style.display = "none";
                     wrapperSalario.style.display = "none";
-                    
                     bloqueListaCompras.style.display = "block";
                     wrapperCompras.style.display = "block";
                     document.getElementById('btnModoSalario').className = "caja-data btn-off";
-                    
-                    if (preciosGuardados.length >= 3) {
-                        document.getElementById('flechaGuia').style.display = "block";
-                    }
+                    if (preciosGuardados.length >= 3) document.getElementById('flechaGuia').style.display = "block";
                     calc(); 
                 }
                 actualizarHeaderIndicadores();
@@ -702,7 +667,7 @@
                 document.getElementById('lblIvuBoton').innerText = modoIvuActivo ? ivu.toFixed(1) : "0.0"; mode = 'sub';
             } else { mode = f; }
             
-            ['marcadorPrecioUnificado', 'cajaPpl', 'cajaDesc', 'cajaTip', 'btnToggleIvu'].forEach(id => { 
+            ['marcadorPrecioUnificado', 'cajaPpl', 'cajaDesc', 'cajaTip', 'btnToggleIvu', 'btnModoSalario'].forEach(id => { 
                 const el = document.getElementById(id);
                 if (el) {
                     if (id === 'marcadorPrecioUnificado') el.className = 'contenedor-precio-unificado';
@@ -715,6 +680,7 @@
             if (modoSerruchoActivo) document.getElementById('cajaPpl').className = "caja-data btn-on";
             if (incluirPropina) document.getElementById('cajaTip').className = "caja-data btn-on";
             if (modoIvuActivo) document.getElementById('btnToggleIvu').className = "caja-data btn-on";
+            if (modoSalarioActivo) document.getElementById('btnModoSalario').className = "caja-data btn-on";
 
             if (mode === 'sub') {
                 numPpl.innerText = modoSerruchoActivo ? memoriaSerruchoCortes : "N/A";
@@ -727,36 +693,28 @@
             actualizarHeaderIndicadores(); calc();
         }
 
-        // 🧮 PROCESADOR MATEMÁTICO SUELDO LO-FI
         function calcularSalarioSubPantalla() {
             let semanal = precioHoraTrabajo * 40; 
             let mensual = semanal * 4.3333; 
-            
             document.getElementById('lblSalHoraLcd').innerText = "$" + precioHoraTrabajo.toFixed(2);
             document.getElementById('outSalSemanal').innerText = "$" + semanal.toFixed(2);
             document.getElementById('outSalMensual').innerText = "$" + mensual.toFixed(2);
         }
 
-        // ⌨️ INGRESO NUMÉRICO BLOQUEADO RIGUROSAMENTE DURANTE EL MODO SALARIO
         function num(c) {
-            if (!sistemaEncendido) return;
-            if (modoSalarioActivo) return; 
-            
+            if (!sistemaEncendido || modoSalarioActivo) return; 
             if (mode !== 'sub') mode = 'sub';
             reproducirSonido('tecla');
             if (sSub === "0" && c !== '.') sSub = "";
             if (c === '.' && sSub.includes('.')) return;
             sSub += c; 
-            
             if (parseFloat(sSub) > 1000000) sSub = "1000000";
             document.getElementById('lblSub').innerText = sSub;
             calc();
         }
 
         function bksp() {
-            if (!sistemaEncendido) return;
-            if (modoSalarioActivo) return; 
-            
+            if (!sistemaEncendido || modoSalarioActivo) return; 
             if (mode !== 'sub') mode = 'sub';
             reproducirSonido('tecla');
             sSub = sSub.slice(0, -1); 
@@ -766,9 +724,7 @@
         }
 
         function addProducto() {
-            if (!sistemaEncendido) return;
-            if (modoSalarioActivo) return; 
-            
+            if (!sistemaEncendido || modoSalarioActivo) return; 
             let val = parseFloat(sSub) || 0;
             if (val > 0) {
                 reproducirSonido('add');
@@ -777,11 +733,8 @@
                 let ivuIndividual = precioDescontado * (ivu / 100);
                 let totalArticulo = precioDescontado + ivuIndividual;
                 
-                preciosGuardados.push({ 
-                    precio: val, descuento: rebaja, ivuCalculado: ivuIndividual, porcientoIvuUsado: ivu, total: totalArticulo 
-                });
-                
-                cuentaAcumulada += val; sSub = "0"; document.getElementById('lblSub').innerText = "0";
+                preciosGuardados.push({ precio: val, descuento: rebaja, ivuCalculado: ivuIndividual, porcientoIvuUsado: ivu, total: totalArticulo });
+                sSub = "0"; document.getElementById('lblSub').innerText = "0";
                 const con = document.getElementById('listaPrecios');
                 
                 con.innerHTML = preciosGuardados.map((item, i) => '<div>• (' + (i+1) + '): $' + item.total.toFixed(2) + ' <span style="font-size:8px; opacity:0.75;">(DTO:-$' + item.descuento.toFixed(2) + '/IVU:' + item.porcientoIvuUsado.toFixed(1) + '%)</span></div>').join('');
@@ -790,10 +743,9 @@
                     let totalConTaxAcumulado = preciosGuardados.reduce((sum, item) => sum + item.total, 0);
                     con.innerHTML += '<div style="border-top:1px dashed rgba(0,0,0,0.3); font-weight:900; margin-top:2px;">TOTAL: $' + totalConTaxAcumulado.toFixed(2) + '</div>';
                 }
-                
                 const f = document.getElementById('flechaGuia'); 
-                if (preciosGuardados.length >= 3) { f.style.display = "block"; } else { f.style.display = "none"; }
-                
+                if (preciosGuardados.length >= 3) f.style.display = "block";
+                else f.style.display = "none";
                 con.scrollTop = con.scrollHeight; calc();
             }
         }
@@ -804,7 +756,6 @@
             ejecutarResetTotal();
         }
 
-        // 🧮 PROCESADOR MATEMÁTICO EN TIEMPO REAL (COMPRAS)
         function calc() {
             if (!sistemaEncendido || modoSalarioActivo) return;
             let numPplRaw = parseInt(sPpl);
@@ -848,19 +799,10 @@
                 document.getElementById('outPerPersonaLine').innerText = ``;
                 document.getElementById('rowPersonaCuota').style.opacity = "0.3"; 
             }
-            
-            document.getElementById('lblTip').innerText = incluirPropina ? memoriaTipPct : "0"; 
-            document.getElementById('lblDesc').innerText = modoDescuentoActivo ? memoriaDescuentoPct : "0"; 
-            document.getElementById('lblPpl').innerText = modoSerruchoActivo ? memoriaSerruchoCortes : "N/A";
-            
-            const artTxtEl = document.getElementById('lblArtText');
-            if(artTxtEl && preciosGuardados.length > 0) {
-                artTxtEl.innerHTML = `Cuenta (${preciosGuardados.length})`;
-            }
             actualizarHeaderIndicadores();
         }
 
-        // 🌌 CONSTRUCTOR DEL RECIBO HOLOGRÁFICO UNIFICADO Y ORDENADO
+        // 🌌 CONSTRUCTOR DEL RECIBO HOLOGRÁFICO UNIFICADO
         function abrirHologramaRecibo() {
             if (!sistemaEncendido) return;
             reproducirSonido('caja');
@@ -894,7 +836,6 @@
                 preciosGuardados.forEach((a, i) => {
                     let ivuFormateadoStr = a.porcientoIvuUsado.toFixed(2);
                     if(ivuFormateadoStr.length < 5) ivuFormateadoStr = "0" + ivuFormateadoStr;
-
                     txt += ` Art. #${i+1}\n`;
                     txt += `  Precio Base:       $${a.precio.toFixed(2).padStart(8)}\n`;
                     if(a.descuento > 0) txt += `  Descuento:        -$${a.descuento.toFixed(2).padStart(8)}\n`;
@@ -903,7 +844,6 @@
                     txt += ` -----------------------------\n`;
                 });
             }
-            
             txt += `Subtotal:          $${nSub.toFixed(2).padStart(8)}\n`;
             if(rebajaTotal > 0) txt += `Descuento Total:  -$${rebajaTotal.toFixed(2).padStart(8)}\n`;
             if(modoIvuActivo)   txt += `IVU Acumulado:     $${impuestoTotal.toFixed(2).padStart(8)}\n`;
@@ -917,8 +857,6 @@
                 txt += `CUOTA POR CABEZA:   $${(totalNetoGlobal / nPpl).toFixed(2).padStart(8)}\n`;
                 txt += `===============================\n`;
             }
-            
-            // 💰 COMPONENTE DE COHESIÓN: PROYECCIÓN FISCAL DE SALARIO DENTRO DEL TICKET
             if (precioHoraTrabajo > 0) {
                 let sem = precioHoraTrabajo * 40;
                 txt += `\n===============================\n     PROYECCIÓN DE SALARIO\n===============================\n`;
@@ -929,9 +867,7 @@
                 txt += ` ESTIMADO MENSUAL:  $${(sem * 4.3333).toFixed(2).padStart(8)}\n`;
                 txt += `===============================\n`;
             }
-            
             txt += `    ¡Gracias por usar la app!`;
-            
             textoReciboGlobal = txt;
             document.getElementById('textoContenidoHolo').innerText = txt;
             document.getElementById('btnCopiarHolo').innerText = "Copiar";
@@ -948,9 +884,7 @@
             reproducirSonido('caja');
             navigator.clipboard.writeText(textoReciboGlobal).then(() => {
                 document.getElementById('btnCopiarHolo').innerText = "¡Copiado!";
-            }).catch(() => {
-                alert("Error al copiar, usa captura de pantalla.");
-            });
+            }).catch(() => { alert("Error al copiar, usa captura."); });
         }
 
         function rotarTema() {
@@ -964,7 +898,6 @@
                 gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.15);
                 osc.start(); osc.stop(ctx.currentTime + 0.15);
             } catch(e){}
-
             document.body.classList.remove(themes[temaActualIdx]);
             temaActualIdx = (temaActualIdx + 1) % themes.length;
             document.body.classList.add(themes[temaActualIdx]);
