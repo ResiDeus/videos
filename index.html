@@ -160,36 +160,34 @@
         }
         .caja-data { width: 100%; padding: 4px 2px; border-radius: 8px; text-align: center; cursor: pointer; font-size: 9px; transition: all 0.2s ease; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 48px; position: relative; background: var(--btn-bg-theme); background-size: 200% 200%; animation: activeMenuMove 6s infinite ease-in-out; border: 2px solid var(--neon-primary); color: #fff !important; opacity: 0.9; overflow: hidden; }
         
-        /* 🌌 SOLUCIÓN EXCLUSIVA: ESTRELLITAS PÍXEL ADAPTATIVAS AL COLOR DE CADA TEMA */
+        /* 🌌 REVERSIÓN EXCLUSIVA: BASE VIOLETA ANIMADA FIJA CON ESTRELLITAS PÍXEL 8-BITS */
         @keyframes titileoLentoPixel {
-            0%, 100__% { opacity: 0.15; }
+            0%, 100% { opacity: 0.15; }
             50% { opacity: 1; }
         }
         
         .caja-data.btn-on { 
-            animation: neonPulse 1.8s infinite ease-in-out !important; 
+            /* 🔮 Restaurada tu base violeta sólida ochentera fluyendo de fondo de forma continua */
+            background: linear-gradient(45deg, #2a0845, #6441a5, #2a0845) !important;
+            background-size: 200% 200% !important;
+            animation: neonPulse 1.8s infinite ease-in-out, activeMenuMove 3s infinite ease-in-out !important; 
+            
             color: #ffffff !important; 
             opacity: 1 !important; 
             border-color: #ffffff !important;
             box-shadow: 0 0 16px var(--neon-secondary), inset 0 0 6px var(--neon-secondary) !important;
-            
-            /* 🎨 CAMBIO CRUCIAL: El fondo encendido ahora hereda dinámicamente el color del tema activo */
-            background: var(--btn-bg-theme) !important; 
-            background-size: 200% 200% !important;
-            animation: neonPulse 1.8s infinite ease-in-out, activeMenuMove 3s infinite ease-in-out !important;
         }
 
-        /* Capa trasera independiente que dibuja los micro-píxeles utilizando el color neón del tema */
+        /* Capa trasera independiente que dibuja las estrellitas píxel fijas sobre la cúpula espacial */
         .caja-data.btn-on::before {
             content: "";
             position: absolute;
             width: 1px;
             height: 1px;
-            /* El píxel base se acopla al brillo secundario del tema */
             background: #ffffff;
             top: 10px;
             left: 15px;
-            /* Multiplicamos las estrellitas píxel exactas flotando en el fondo */
+            /* Se conservan las micro-estrellitas en coordenadas fijas de 1 píxel real */
             box-shadow: 
                 15px 22px 0 #ffffff,   
                 45px 5px 0 #ffffff,    
@@ -197,16 +195,16 @@
                 30px -4px 0 #ffffff,   
                 -5px 14px 0 #ffffff;   
             z-index: 1;
-            /* Mantiene la respiración lenta ochentera intacta de 3.5 segundos */
             animation: titileoLentoPixel 3.5s infinite ease-in-out !important;
             pointer-events: none;
         }
 
-        /* Fuerza a que el texto flote de show por encima de las estrellitas */
+        /* Garantiza que las letras floten limpiamente por encima del fondo espacial */
         .caja-data.btn-on * {
             position: relative;
             z-index: 2;
         }
+
 
 
         /* 📟 BACKGROUND SYNTHWAVE TECNOLÓGICO ANIMADO EN EL BOTÓN DE PRECIO */
