@@ -15,34 +15,38 @@
 
     <style>
         /* ==========================================================================
-           🎨 VARIABLES DE TEMA ADAPTATIVAS PARA ABSOLUTAMENTE TODO EL UI
+           🎨 ASIGNACIÓN DE TEMAS DINÁMICOS COMPLETA (HERENCIA TOTAL DE BOTONES)
            ========================================================================== */
+        /* 1️⃣ CYBERPUNK (Verde/Rosa/Cyan) */
         body.theme-cyberpunk {
             --bg-grad: linear-gradient(180deg, #09011a 0%, #2c044d 100%);
-            --neon-primary: #ff007f; --neon-secondary: #00f0ff; --btn-bg: #1f0b35; --btn-text: #ff007f;
-            --num-bg: linear-gradient(180deg, #2d0e54 0%, #11021f 100%);
-            --receipt-glow: #00ff66;
+            --neon-primary: #ff007f; --neon-secondary: #00f0ff; --receipt-glow: #00ff66;
+            --btn-bg-theme: linear-gradient(135deg, #150624 0%, #250b3e 50%, #150624 100%);
+            --num-bg-theme: linear-gradient(180deg, #2d0e54 0%, #11021f 100%);
             --blue-tech: linear-gradient(45deg, #0044cc, #00f0ff, #0044cc);
         }
+        /* 2️⃣ RETRO GOLD (Ámbar/Marrón) */
         body.theme-retro-gold {
             --bg-grad: linear-gradient(180deg, #1c1917 0%, #44403c 100%);
-            --neon-primary: #d97706; --neon-secondary: #fbbf24; --btn-bg: #2e2521; --btn-text: #fbbf24;
-            --num-bg: linear-gradient(180deg, #44403c 0%, #1c1917 100%);
-            --receipt-glow: #fbbf24;
+            --neon-primary: #d97706; --neon-secondary: #fbbf24; --receipt-glow: #fbbf24;
+            --btn-bg-theme: linear-gradient(135deg, #292524 0%, #44403c 50%, #292524 100%);
+            --num-bg-theme: linear-gradient(180deg, #44403c 0%, #1c1917 100%);
             --blue-tech: linear-gradient(45deg, #78350f, #fbbf24, #78350f);
         }
+        /* 3️⃣ MATRIX (Verde Terminal) */
         body.theme-matrix {
             --bg-grad: linear-gradient(180deg, #022c22 0%, #050505 100%);
-            --neon-primary: #10b981; --neon-secondary: #34d399; --btn-bg: #073b2e; --btn-text: #34d399;
-            --num-bg: linear-gradient(180deg, #022c22 0%, #050505 100%);
-            --receipt-glow: #34d399;
+            --neon-primary: #10b981; --neon-secondary: #34d399; --receipt-glow: #34d399;
+            --btn-bg-theme: linear-gradient(135deg, #022c22 0%, #064e3b 50%, #022c22 100%);
+            --num-bg-theme: linear-gradient(180deg, #022c22 0%, #050505 100%);
             --blue-tech: linear-gradient(45deg, #04583d, #34d399, #04583d);
         }
+        /* 4️⃣ SUNSET (Naranja Fuego) */
         body.theme-sunset {
             --bg-grad: linear-gradient(180deg, #451a03 0%, #78350f 100%);
-            --neon-primary: #f97316; --neon-secondary: #fdba74; --btn-bg: #3d1505; --btn-text: #fdba74;
-            --num-bg: linear-gradient(180deg, #78350f 0%, #292524 100%);
-            --receipt-glow: #fdba74;
+            --neon-primary: #f97316; --neon-secondary: #fdba74; --receipt-glow: #fdba74;
+            --btn-bg-theme: linear-gradient(135deg, #292524 0%, #451a03 50%, #292524 100%);
+            --num-bg-theme: linear-gradient(180deg, #78350f 0%, #292524 100%);
             --blue-tech: linear-gradient(45deg, #9a3412, #fdba74, #9a3412);
         }
 
@@ -60,12 +64,12 @@
         /* 📟 CHASIS FÍSICO CON REGLA ESTRICTA DE ENERGÍA */
         .chasis { width: 340px; height: auto; min-height: 580px; background: #160d21; border: 4px solid var(--neon-primary); box-shadow: 0 0 25px rgba(255, 0, 127, 0.3); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; border-radius: 24px; overflow: hidden; display: flex; flex-direction: column; padding: 12px; gap: 8px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         
-        /* 🔌 APAGÓN TOTAL ESTRICTO (EXTINGUE PRECIO Y DEJA EL POWER EN VERDE NEÓN) */
+        /* 🔌 APAGÓN TOTAL ESTRICTO DEL PANEL Y DE LOS BOTONES */
         .chasis.global-power-off { filter: grayscale(0.5); box-shadow: none !important; border-color: #333 !important; background: #0b0611; }
         .chasis.global-power-off .lcd { background: #121805 !important; box-shadow: inset 0 4px 10px rgba(0,0,0,0.9) !important; border-color: #222 !important; }
         .chasis.global-power-off .lcd * { opacity: 0 !important; visibility: hidden !important; text-shadow: none !important; }
         
-        /* 🚨 PRECIO TOTALMENTE INVISIBLE EN EL APAGADO */
+        /* Precio invisible en el apagado */
         .chasis.global-power-off .contenedor-precio-unificado { opacity: 0 !important; visibility: hidden !important; box-shadow: none !important; outline: none !important; }
         
         .chasis.global-power-off .btn-key:not(.power-btn), 
@@ -75,13 +79,13 @@
         .chasis.global-power-off .btn-step,
         .chasis.global-power-off .btn-add-embedded { box-shadow: none !important; text-shadow: none !important; border-color: #222 !important; animation: none !important; opacity: 0 !important; pointer-events: none !important; }
         
-        /* 🟢 BOTÓN DE ENCENDIDO VERDE EN APAGADO ACTIVO CONSTANTE */
+        /* Botón de encendido verde activo constante al apagarse */
         .chasis.global-power-off .btn-power-bottom { background: #022c22 !important; border-color: #10b981 !important; color: #34d399 !important; text-shadow: 0 0 8px #10b981 !important; opacity: 1 !important; pointer-events: auto !important; }
 
         /* 🟢 PANTALLA LCD VERDE RETRO */
         .lcd { width: 100%; height: 175px; background: #92b043; border: 2px solid #000; border-radius: 14px; color: #000; box-shadow: inset 0 4px 10px rgba(0,0,0,0.4); font-weight: bold; padding: 8px; display: flex; flex-direction: column; justify-content: space-between; position: relative; transition: all 0.4s ease; transform-origin: center; z-index: 12; }
         
-        /* Animaciones CRT de Televisor Vintage (Cierre y Apertura Inversa) */
+        /* Animaciones CRT de Televisor Vintage */
         @keyframes crtTVClose { 0% { transform: scale(1, 1); filter: brightness(1); opacity: 1; } 40% { transform: scale(1, 0.01); filter: brightness(3); opacity: 1; } 100% { transform: scale(0, 0); filter: brightness(5); opacity: 0; background: #fff; } }
         @keyframes crtTVOpen { 0% { transform: scale(0, 0); filter: brightness(5); opacity: 0; background: #fff; } 40% { transform: scale(1, 0.01); filter: brightness(3); opacity: 1; } 100% { transform: scale(1, 1); filter: brightness(1); opacity: 1; } }
         .lcd.power-off-crt { animation: crtTVClose 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards !important; }
@@ -97,44 +101,46 @@
 
         @keyframes blinkScrollHint { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
         .scroll-hint { position: absolute; bottom: 1px; right: 2px; font-size: 8px; color: rgba(0,0,0,0.8); animation: blinkScrollHint 1s infinite ease-in-out; pointer-events: none; display: none; background: rgba(146, 176, 67, 0.9); padding: 0 4px; border-radius: 3px; font-weight: 900; }
-        /* 🎛️ CORRECCIÓN DE LA FILA UNIFICADA: 4 Columnas perfectas alineadas horizontalmente */
+
+        /* ⚡ EFFECTO FLASH BLANCO UNIVERSAL EN CUALQUIER BOTÓN ACTIVO */
+        .btn-key:active, .caja-data:active, .btn-theme:active, .btn-receipt:active, .btn-step:active, .btn-add-embedded:active {
+            filter: brightness(1.8) contrast(1.2) !important;
+            box-shadow: 0 0 15px #fff !important;
+            transition: none !important;
+        }
+        /* 🎛️ GRID HORIZONTAL REPARADO: 4 Columnas perfectas alineadas simétricamente */
         .row-opciones-pasos { display: grid; grid-template-columns: repeat(4, 1fr) !important; gap: 4px; width: 100%; }
         .wrapper-pasos { display: flex; flex-direction: column; gap: 2px; align-items: center; width: 100%; }
         
-        /* 🕹️ Flechas más grandes, adaptadas dinámicamente al color de cada tema */
-        .btn-step { width: 100%; height: 22px; background: #22123b; border: 1px solid var(--neon-primary); color: #fff; font-size: 10px; cursor: pointer; display: flex; justify-content: center; align-items: center; border-radius: 4px; transition: all 0.1s ease; user-select: none; -webkit-user-select: none; }
-        .btn-step:active { transform: scale(0.92); background: #fff !important; color: #000 !important; box-shadow: 0 0 10px #fff; }
+        /* 🕹️ Flechas acopladas por completo al color del tema activo */
+        .btn-step { width: 100%; height: 22px; background: var(--num-bg-theme); border: 1px solid var(--neon-primary); color: #fff; font-size: 10px; cursor: pointer; display: flex; justify-content: center; align-items: center; border-radius: 4px; transition: all 0.1s ease; user-select: none; -webkit-user-select: none; }
 
-        /* Botones de Opciones con Fondo Sólido Animado Continuo Synthwave */
+        /* Botones de Opciones vinculados al conmutador de temas */
         @keyframes activeMenuMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
         @keyframes neonPulse {
             0%, 100% { box-shadow: 0 0 8px var(--neon-primary), inset 0 0 3px var(--neon-primary); border-color: #fff; }
             50% { box-shadow: 0 0 16px var(--neon-secondary), inset 0 0 6px var(--neon-secondary); border-color: var(--neon-secondary); }
         }
-        .caja-data { width: 100%; padding: 4px 2px; border-radius: 8px; text-align: center; cursor: pointer; font-size: 9px; transition: all 0.2s ease; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 48px; position: relative; background: linear-gradient(135deg, #150624 0%, #250b3e 50%, #150624 100%); background-size: 200% 200%; animation: activeMenuMove 6s infinite ease-in-out; border: 2px solid var(--neon-primary); color: #fff !important; opacity: 0.9; overflow: hidden; }
+        .caja-data { width: 100%; padding: 4px 2px; border-radius: 8px; text-align: center; cursor: pointer; font-size: 9px; transition: all 0.2s ease; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 48px; position: relative; background: var(--btn-bg-theme); background-size: 200% 200%; animation: activeMenuMove 6s infinite ease-in-out; border: 2px solid var(--neon-primary); color: #fff !important; opacity: 0.9; overflow: hidden; }
         .caja-data.btn-on { animation: neonPulse 1.8s infinite ease-in-out, activeMenuMove 3s infinite ease-in-out; background: linear-gradient(45deg, #2a0845, #6441a5, #2a0845); background-size: 200% 200%; color: #fff !important; opacity: 1 !important; border-color: #fff; }
 
-        /* 📟 CONTENEDOR INTEGRADO DE PRECIO (CENTRADO + BOTÓN + MÁS GRANDE A LA DERECHA) */
+        /* 📟 CONTENEDOR INTEGRADO DE PRECIO CENTRADO + BOTÓN + EXPANDIDO A LA DERECHA */
         .contenedor-precio-unificado { display: flex; width: 100%; gap: 4px; background: linear-gradient(-45deg, #051a24, #082f44, #03121a, #0c3e54); background-size: 300% 300%; animation: activeMenuMove 6s infinite ease-in-out; border-radius: 10px; border: 2px solid var(--neon-secondary); padding: 4px; min-height: 52px; align-items: center; transition: opacity 0.2s ease, visibility 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease; position: relative; }
         .contenedor-precio-unificado.precio-on { border-color: #fff; box-shadow: 0 0 12px var(--neon-secondary); }
         
-        /* 🔵 BOTÓN + MÁS GRANDE AZUL TECNOLÓGICO SYNTHWAVE ANIMADO A MANO DERECHA */
+        /* 🔵 BOTÓN + MÁS GRANDE AZUL/DINÁMICO SEGÚN TEMA A MANO DERECHA */
         .btn-add-embedded { width: 55px; height: 100%; min-height: 40px; background: var(--blue-tech); background-size: 200% 200%; animation: activeMenuMove 4s infinite ease-in-out; border: 1px solid var(--neon-secondary); border-radius: 6px; color: #fff; font-size: 22px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 8px rgba(0, 240, 255, 0.3); transition: all 0.1s ease; user-select: none; }
-        .btn-add-embedded:active { transform: scale(0.92); filter: brightness(1.4); }
         
-        /* Centrado absoluto del texto del input de Precio */
         #cajaSub { flex-grow: 1; background: transparent !important; border: none !important; box-shadow: none !important; min-height: auto; align-items: center !important; justify-content: center !important; color: #fff !important; opacity: 1; text-align: center; }
         #cajaSub .lbl-title { font-size: 8px; text-transform: uppercase; color: var(--neon-secondary); margin-bottom: 1px; font-weight: bold; text-shadow: 0 0 4px rgba(0,240,255,0.2); }
         #cajaSub .lbl-val { font-size: 18px !important; font-weight: 900; color: #fff !important; }
 
-        /* ⌨️ TECLADO NUMÉRICO UNIFICADO Y RECIBO */
+        /* ⌨️ TECLADO NUMÉRICO AJUSTADO POR VARIABLES */
         .pad-num { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; width: 100%; }
-        .btn-key { height: 38px; background: var(--num-bg); border: 1px solid var(--neon-primary); border-radius: 6px; color: #fff; font-size: 1.1rem; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; font-family: monospace; transition: all 0.2s ease; }
-        .btn-key:active { filter: brightness(1.4); border-color: var(--neon-secondary); }
-        .btn-back { color: #fff !important; background: var(--num-bg) !important; border-color: var(--neon-primary) !important; }
+        .btn-key { height: 38px; background: var(--num-bg-theme); border: 1px solid var(--neon-primary); border-radius: 6px; color: #fff; font-size: 1.1rem; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; font-family: monospace; transition: all 0.2s ease; }
+        .btn-back { color: #fff !important; background: var(--num-bg-theme) !important; border-color: var(--neon-primary) !important; }
 
-        .btn-theme, .btn-receipt, .btn-power-bottom { border-radius: 10px; font-weight: bold; cursor: pointer; transition: all 0.2s ease; text-transform: uppercase; display: flex; justify-content: center; align-items: center; font-family: monospace; height: 28px; font-size: 8px; background: linear-gradient(180deg, #2b2930 0%, #1c1a1f 100%) !important; border: 2px solid var(--neon-primary) !important; color: #ccc !important; width: 100%; z-index: 15; }
-        .btn-theme:active, .btn-receipt:active, .btn-power-bottom:active { border-color: var(--neon-secondary) !important; color: #fff !important; }
+        .btn-theme, .btn-receipt, .btn-power-bottom { border-radius: 10px; font-weight: bold; cursor: pointer; transition: all 0.2s ease; text-transform: uppercase; display: flex; justify-content: center; align-items: center; font-family: monospace; height: 28px; font-size: 8px; background: var(--num-bg-theme) !important; border: 2px solid var(--neon-primary) !important; color: #ccc !important; width: 100%; z-index: 15; }
 
         .row-acciones-inferior { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-top: 2px; width: 100%; }
         .holograma-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10, 2, 24, 0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 100; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
@@ -156,7 +162,7 @@
     <div class="grid3d"></div>
 
     <div class="chasis" id="calcChasis">
-        <!-- 🟢 PANTALLA LCD VERDE RETRO -->
+        <!-- 🟢 PANTALLA LCD VERDE RETRO CON TOTALES A LA IZQUIERDA -->
         <div class="lcd" id="pantallaVerde">
             <div class="lcd-header">
                 <span id="txtHeaderIndicadores" class="blinking-header-text">SISTEMA ACTIVO</span>
@@ -249,6 +255,32 @@
             <button id="btnTogglePower" class="btn-power-bottom power-active-btn" onclick="solicitarApagado()">⏻</button>
         </div>
     </div> <!-- Cierre de chasis -->
+
+    <!-- Visor Holográfico del Ticket -->
+    <div class="holograma-overlay" id="visorHolograma">
+        <div class="holograma-ticket">
+            <div class="holograma-lineas"></div>
+            <div style="font-weight: 900; text-align: center; letter-spacing: 1px; font-size: 14px;">RECIBO</div>
+            <div class="holograma-scrollable" id="textoContenidoHolo">Cargando flujos vectoriales...</div>
+            <div class="holograma-footer">
+                <button class="btn-holo" id="btnCopiarHolo" onclick="copiarTextoHolograma()">Copiar</button>
+                <button class="btn-holo" onclick="cerrarHologramaRecibo()">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Visor Holográfico de Confirmación de Apagado Maestro -->
+    <div class="holograma-overlay" id="visorConfirmarApagado">
+        <div class="holograma-ticket" style="border-color: #ef4444; box-shadow: 0 0 30px rgba(239,68,68,0.4);">
+            <div class="holograma-lineas"></div>
+            <div style="font-weight: 900; text-align: center; letter-spacing: 1px; font-size: 14px; color: #ef4444;">ALERTA DE SISTEMA</div>
+            <div style="font-size: 12px; text-align: center; line-height: 1.5; padding: 10px 0;">¿CONFIRMA APAGADO MAESTRO?<br><br>Se borrarán de forma permanente todos los flujos de memoria de la cuenta y artículos guardados.</div>
+            <div class="holograma-footer">
+                <button class="btn-holo" onclick="confirmarApagadoSi()" style="border-color:#ef4444; color:#ef4444;">[ SÍ ]</button>
+                <button class="btn-holo" onclick="cerrarConfirmarApagado()" style="border-color:#ccc; color:#ccc;">[ NO ]</button>
+            </div>
+        </div>
+    </div>
     <script>
         // 💾 CONTROL DE ESTADOS, MEMORIAS Y ACUMULADORES FISCALES
         let ivu = 0.0, mode = 'sub', sSub = "0", incluirPropina = false, modoSerruchoActivo = false, modoDescuentoActivo = false, modoIvuActivo = false;
@@ -324,7 +356,7 @@
             timeoutAutoIncremento = setTimeout(() => {
                 intervaloAutoIncremento = setInterval(() => {
                     ejecutarModificacionPaso(tipo, delta);
-                }, 110); // Velocidad de comodidad calibrada a 110ms
+                }, 110); // Ráfaga calibrada
             }, 350);
         }
 
@@ -419,7 +451,7 @@
                 lcd.classList.remove('power-on-crt');
                 lcd.classList.add('power-off-crt'); 
                 
-                // 🚨 Limpiamos el Precio de forma inmediata al apagar
+                // 🚨 Reseteo estricto del Precio al apagar
                 sSub = "0"; 
                 document.getElementById('lblSub').innerText = "0";
                 
@@ -431,7 +463,7 @@
                 // ⚡️ SECUENCIA DE ENERGIZACIÓN ESCALONADA DE ABAJO HACIA ARRIBA
                 chasis.classList.remove('global-power-off');
                 lcd.classList.remove('power-off-crt');
-                toggleTeclasBloqueo(true); // Bloqueo temporal mientras se energiza
+                toggleTeclasBloqueo(true); 
                 
                 // Capa 1: Botones inferiores de control (0ms)
                 document.querySelectorAll('.btn-theme, .btn-receipt').forEach(b => b.style.opacity = "1");
@@ -596,11 +628,11 @@
                 cuentaAcumulada += val; sSub = "0"; document.getElementById('lblSub').innerText = "0";
                 const con = document.getElementById('listaPrecios');
                 
-                con.innerHTML = preciosGuardados.map((item, i) => '<div>• (' + (i+1) + '): $' + item.total.toFixed(2) + ' <span style="font-size:8px; opacity:0.75;">(DTO:-$' + item.descuento.toFixed(2) + '/IVU:' + item.porcientoIvuUsado.toFixed(1) + '%)</span></div>').join('');
+                con.innerHTML = preciosGuardados.map((item, i) => '<div>• (' + (i+1) + '): \$' + item.total.toFixed(2) + ' <span style="font-size:8px; opacity:0.75;">(DTO:-\$' + item.descuento.toFixed(2) + '/IVU:' + item.porcientoIvuUsado.toFixed(1) + '%)</span></div>').join('');
                 
                 if(preciosGuardados.length > 0) {
                     let totalConTaxAcumulado = preciosGuardados.reduce((sum, item) => sum + item.total, 0);
-                    con.innerHTML += '<div style="border-top:1px dashed rgba(0,0,0,0.3); font-weight:900; margin-top:2px;">TOTAL: $' + totalConTaxAcumulado.toFixed(2) + '</div>';
+                    con.innerHTML += '<div style="border-top:1px dashed rgba(0,0,0,0.3); font-weight:900; margin-top:2px;">TOTAL: \$' + totalConTaxAcumulado.toFixed(2) + '</div>';
                 }
                 
                 const f = document.getElementById('flechaGuia'); 
@@ -742,7 +774,6 @@
             reproducirSonido('menu');
             document.getElementById('visorHolograma').classList.remove('activo');
         }
-
         function copiarTextoHolograma() {
             if (!sistemaEncendido) return;
             reproducirSonido('caja');
