@@ -19,29 +19,33 @@
            ========================================================================== */
         body.theme-cyberpunk {
             --bg-grad: linear-gradient(180deg, #09011a 0%, #2c044d 100%);
-            --neon-primary: #ff007f; --neon-secondary: #00f0ff; --btn-bg: #1a0826; --btn-text: #ff007f;
+            --neon-primary: #ff007f; --neon-secondary: #00f0ff; --btn-bg: #210c33; --btn-text: #ff007f;
+            --num-bg: linear-gradient(180deg, #321054 0%, #120321 100%);
         }
         body.theme-retro-gold {
             --bg-grad: linear-gradient(180deg, #1c1917 0%, #44403c 100%);
-            --neon-primary: #d97706; --neon-secondary: #fbbf24; --btn-bg: #1c1917; --btn-text: #fbbf24;
+            --neon-primary: #d97706; --neon-secondary: #fbbf24; --btn-bg: #292524; --btn-text: #fbbf24;
+            --num-bg: linear-gradient(180deg, #44403c 0%, #1c1917 100%);
         }
         body.theme-matrix {
             --bg-grad: linear-gradient(180deg, #022c22 0%, #050505 100%);
-            --neon-primary: #10b981; --neon-secondary: #34d399; --btn-bg: #022c22; --btn-text: #34d399;
+            --neon-primary: #10b981; --neon-secondary: #34d399; --btn-bg: #064e3b; --btn-text: #34d399;
+            --num-bg: linear-gradient(180deg, #022c22 0%, #050505 100%);
         }
         body.theme-sunset {
             --bg-grad: linear-gradient(180deg, #451a03 0%, #78350f 100%);
-            --neon-primary: #f97316; --neon-secondary: #fdba74; --btn-bg: #292524; --btn-text: #fdba74;
+            --neon-primary: #f97316; --neon-secondary: #fdba74; --btn-bg: #451a03; --btn-text: #fdba74;
+            --num-bg: linear-gradient(180deg, #78350f 0%, #292524 100%);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        html, body { width: 100vw; height: 100vh; overflow: hidden; position: relative; font-family: monospace; background: #09011a; transition: background 0.3s ease; }
+        html, body { width: 100vw; height: 100vh; overflow: hidden; position: relative; font-family: monospace; transition: background 0.3s ease; }
+        body { background: var(--bg-grad) !important; }
         
         /* ✨ AMBIENTACIÓN RETRO */
         .sky { position: absolute; width: 100%; height: 100%; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent), radial-gradient(1.5px 1px at 75px 120px, #fff9, transparent); background-size: 380px 380px; z-index: 1; animation: twk 4s infinite linear; pointer-events: none; }
         .grid3d { position: absolute; width: 100%; height: 40%; bottom: 0; background-size: 40px 40px; transform: perspective(180px) rotateX(65deg); transform-origin: top center; z-index: 1; animation: gM 2.5s infinite linear; pointer-events: none; }
-        body { background: var(--bg-grad) !important; }
-        .grid3d { background-image: linear-gradient(rgba(255, 0, 127, 0.15) 2px, transparent 2px), linear-gradient(90deg, rgba(255, 0, 127, 0.15) 2px, transparent 2px); }
+        .grid3d { background-image: linear-gradient(rgba(255, 0, 127, 0.12) 2px, transparent 2px), linear-gradient(90deg, rgba(255, 0, 127, 0.12) 2px, transparent 2px); }
         @keyframes twk { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
         @keyframes gM { 0% { background-position: 0 0; } 100% { background-position: 0 40px; } }
         
@@ -56,7 +60,7 @@
         .chasis.global-power-off .btn-receipt { box-shadow: none !important; text-shadow: none !important; border-color: #333 !important; animation: none !important; opacity: 0.2 !important; }
 
         /* 🟢 PANTALLA LCD VERDE RETRO CON TOTALES A LA IZQUIERDA */
-        .lcd { width: 100%; height: 175px; background: #92b043; border: 2px solid #000; border-radius: 14px; color: #000; box-shadow: inset 0 4px 10px rgba(0,0,0,0.4); font-weight: bold; padding: 8px; display: flex; flex-direction: column; justify-content: space-between; position: relative; transition: all 0.4s ease; transform-origin: center; }
+        .lcd { width: 100%; height: 175px; background: #92b043; border: 2px solid #000; border-radius: 14px; color: #000; box-shadow: inset 0 4px 10px rgba(0,0,0,0.4); font-weight: bold; padding: 8px; display: flex; flex-direction: column; justify-content: space-between; position: relative; transition: all 0.4s ease; transform-origin: center; z-index: 12; }
         @keyframes crtTVClose { 0% { transform: scale(1, 1); filter: brightness(1); opacity: 1; } 40% { transform: scale(1, 0.01); filter: brightness(3); opacity: 1; } 100% { transform: scale(0, 0); filter: brightness(5); opacity: 0; background: #fff; } }
         .lcd.power-off-crt { animation: crtTVClose 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards !important; }
 
@@ -64,55 +68,55 @@
         .lcd-wrapper { position: relative; flex-grow: 1; display: flex; flex-direction: column; margin: 4px 0; max-height: 55px; }
         .lcd-historial { flex-grow: 1; font-size: 11px; overflow-y: auto; text-align: left; padding-right: 4px; }
         
-        /* ⬅️ FORZAMOS LOS NÚMEROS Y TEXTOS A LA IZQUIERDA */
         .lcd-body { text-align: left !important; font-size: 10px; line-height: 1.2; }
         .lcd-total { font-size: 24px; font-weight: 900; text-align: left !important; }
 
-        /* 🔘 ESTILOS DE LOS BOTONES DE MENÚ Y DE CUENTA PRINCIPAL */
+        /* 🔘 ESTILOS DE LOS BOTONES DE MENÚ CON COLOR DE FONDO SÓLIDO POR TEMA */
         .row-menus { display: grid; gap: 4px; width: 100%; }
-        .caja-data { padding: 4px 2px; border-radius: 10px; text-align: center; cursor: pointer; font-size: 9px; transition: all 0.2s ease; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 52px; background: #14051f; border: 2px solid rgba(255, 255, 255, 0.1); color: #888; }
+        .caja-data { padding: 4px 2px; border-radius: 10px; text-align: center; cursor: pointer; font-size: 9px; transition: all 0.2s ease; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 52px; position: relative; background: var(--btn-bg); border: 2px solid rgba(255, 255, 255, 0.08); color: var(--btn-text); opacity: 0.6; }
         
-        /* Efecto Glow en los bordes SÓLO cuando el input está activo */
+        /* Animación neón pulsante sutil aplicada estrictamente al borde del campo activo */
         @keyframes neonPulse {
             0%, 100% { box-shadow: 0 0 8px var(--neon-primary), inset 0 0 3px var(--neon-primary); border-color: #fff; }
             50% { box-shadow: 0 0 16px var(--neon-secondary), inset 0 0 6px var(--neon-secondary); border-color: var(--neon-secondary); }
         }
-        .caja-data.btn-on { animation: neonPulse 1.8s infinite ease-in-out; color: #fff; }
+        .caja-data.btn-on { animation: neonPulse 1.8s infinite ease-in-out; color: #fff !important; opacity: 1 !important; border-color: #fff; }
 
         /* 📟 Botón de Cuenta Principal (Cyan con fuente de número expandida) */
-        #cajaSub { background: #051a24; border-color: rgba(0, 240, 255, 0.2); color: #00f0ff; }
+        #cajaSub { background: #051a24; border-color: rgba(0, 240, 255, 0.2); color: #00f0ff; opacity: 1; }
         #cajaSub.btn-on { border-color: #fff; }
         #cajaSub .lbl-val { font-size: 18px !important; font-weight: 900; }
 
         /* Números Parpadeantes cuando requieren el Input del usuario */
         @keyframes blinkFast { 0%, 100% { opacity: 1; } 50% { opacity: 0.15; } }
         .blink-num { animation: blinkFast 0.6s infinite steps(2, start); text-shadow: 0 0 8px currentColor; }
-        /* ⌨️ TECLADO NUMÉRICO UNIFICADO Y BOTONES DE CONTROL */
+        /* ⌨️ TECLADO NUMÉRICO UNIFICADO DINÁMICAMENTE POR TEMAS */
         .pad-num { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; width: 100%; }
         
-        /* Teclas Numéricas (0-9) y Flecha de Borrar (Misma UI, color y tipografía) */
-        .btn-key { height: 38px; background: linear-gradient(180deg, #321054 0%, #120321 100%); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 6px; color: #fff; font-size: 1.1rem; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; font-family: monospace; transition: all 0.2s ease; }
-        .btn-key:active { background: #321054; border-color: var(--neon-secondary); }
-        .btn-back { color: #fff !important; background: linear-gradient(180deg, #321054 0%, #120321 100%) !important; border-color: rgba(255, 255, 255, 0.1) !important; }
+        .btn-key { height: 38px; background: var(--num-bg); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 6px; color: #fff; font-size: 1.1rem; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; font-family: monospace; transition: all 0.2s ease; }
+        .btn-key:active { filter: brightness(1.4); border-color: var(--neon-secondary); }
+        .btn-back { color: #fff !important; background: var(--num-bg) !important; border-color: rgba(255, 255, 255, 0.1) !important; }
 
-        /* Botones Operativos Superiores (+Añadir, Clear, Apagar): Rosa Neón Vibrante */
-        .btn-key.btn-op-special { background: linear-gradient(180deg, #ff007f 0%, #4a0026 100%) !important; border-color: #ff007f !important; color: #fff !important; font-size: 9px; text-shadow: 0 0 5px #ff007f; }
-        .btn-key.btn-op-special.power-btn { font-size: 14px; text-shadow: 0 0 8px #ff007f; opacity: 1 !important; z-index: 20; }
+        /* Botones Operativos Superiores (+Añadir, Clear, Apagar): Acoplados al Tema */
+        .btn-key.btn-op-special { background: linear-gradient(180deg, var(--neon-primary) 0%, #11021c 100%) !important; border-color: var(--neon-primary) !important; color: #fff !important; font-size: 9px; text-shadow: 0 0 5px var(--neon-primary); }
+        .btn-key.btn-op-special.power-btn { font-size: 14px; text-shadow: 0 0 8px var(--neon-primary); opacity: 1 !important; z-index: 25; }
         
-        /* Botones de Control Inferiores (Tema y Recibo): Gris Oscuro Metalizado */
-        .btn-theme, .btn-receipt { border-radius: 10px; font-weight: bold; cursor: pointer; transition: all 0.2s ease; text-transform: uppercase; display: flex; justify-content: center; align-items: center; font-family: monospace; height: 28px; font-size: 8px; background: linear-gradient(180deg, #2b2930 0%, #1c1a1f 100%) !important; border: 2px solid #555 !important; color: #ccc !important; text-shadow: none; box-shadow: none; width: 100%; }
+        /* Botones de Control Inferiores (Tema y Recibo): Gris Metalizado Robusto */
+        .btn-theme, .btn-receipt { border-radius: 10px; font-weight: bold; cursor: pointer; transition: all 0.2s ease; text-transform: uppercase; display: flex; justify-content: center; align-items: center; font-family: monospace; height: 28px; font-size: 8px; background: linear-gradient(180deg, #2b2930 0%, #1c1a1f 100%) !important; border: 2px solid #555 !important; color: #ccc !important; text-shadow: none; box-shadow: none; width: 100%; z-index: 15; }
         .btn-theme:active, .btn-receipt:active { border-color: var(--neon-secondary) !important; color: #fff !important; }
 
         .btn-key:disabled { opacity: 0.1 !important; cursor: not-allowed !important; }
-
         .row-acciones-inferior { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-top: 2px; width: 100%; }
+
+        /* Capas del Recibo Holográfico Reparadas para evitar bloqueos táctiles */
         .holograma-lineas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06)); background-size: 100% 4px, 6px 100%; pointer-events: none; z-index: 5; }
         .holograma-scrollable { flex-grow: 1; overflow-y: auto; font-size: 12px; line-height: 1.4; white-space: pre-wrap; padding-right: 4px; border: 1px solid rgba(0, 240, 255, 0.2); border-radius: 8px; padding: 8px; background: rgba(0, 0, 0, 0.3); }
         .holograma-footer { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
         .btn-holo { padding: 8px; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; border: 1px solid; font-family: monospace; font-size: 11px; text-align: center; background: transparent; color: inherit; text-shadow: inherit; transition: all 0.2s ease; }
         
+        /* Animación unificada de 3 puntos en movimiento (...) */
         @keyframes tipeandoPuntos { 0% { content: "."; } 33% { content: ".."; } 66% { content: "..."; } 100% { content: "."; } }
-        .lcd-tipeo::after { content: "."; animation: tipeandoPuntos 1.5s infinite steps(1, start); }
+        .lcd-tipeo::after { content: "."; animation: tipeandoPuntos 1.2s infinite steps(1, start); }
     </style>
 </head>
 <body class="theme-cyberpunk">
@@ -120,15 +124,15 @@
     <div class="grid3d"></div>
 
     <div class="chasis" id="calcChasis">
-        <!-- 🟢 PANTALLA LCD VERDE RETRO -->
+        <!-- 🟢 PANTALLA LCD VERDE RETRO CON TOTALES A LA IZQUIERDA -->
         <div class="lcd" id="pantallaVerde">
             <div class="lcd-header">
-                <span id="txtHeaderIndicadores">IVU: 11.5%</span>
+                <span id="txtHeaderIndicadores">IVU: 0.0%</span>
             </div>
             <div class="lcd-wrapper">
                 <div class="listaPrecios-container" style="flex-grow: 1; position: relative; display: flex; flex-direction: column; overflow: hidden;">
                     <div class="lcd-historial" id="listaPrecios">
-                        <i class="lcd-tipeo" id="lblArtText">Añade artículos a la lista</i>
+                        <span id="lblArtText">Lista vacía<span class="lcd-tipeo"></span></span>
                     </div>
                     <div class="scroll-hint" id="flechaGuia">▼ deslizar</div>
                 </div>
@@ -149,7 +153,8 @@
                 <span class="lbl-val">$<span id="lblSub" class="blink-num">0</span></span>
             </div>
         </div>
-        <!-- Segunda fila: Opciones neón unificadas (Misma UI e idéntico tamaño) -->
+
+        <!-- Segunda fila: Opciones unificadas que inician APAGADAS (btn-off) por defecto -->
         <div class="row-menus" style="grid-template-columns: repeat(4, 1fr);">
             <div id="cajaPpl" class="caja-data btn-off" onclick="seleccionarMenu('ppl')">
                 <span class="lbl-title">Serrucho</span>
@@ -165,7 +170,7 @@
             </div>
             <div id="btnToggleIvu" class="caja-data btn-off" onclick="seleccionarMenu('ivu')">
                 <span class="lbl-title">IVU</span>
-                <span class="lbl-val"><span id="lblIvuBoton">11.5</span>%</span>
+                <span class="lbl-val"><span id="lblIvuBoton">0.0</span>%</span>
             </div>
         </div>
 
@@ -205,7 +210,7 @@
     </div>
     <script>
         // 💾 CONTROL DE ESTADOS, MEMORIAS Y ACUMULADORES FISCALES
-        let ivu = 11.5, mode = 'sub', sSub = "0", incluirPropina = false, modoSerruchoActivo = false, modoDescuentoActivo = false, modoIvuActivo = false;
+        let ivu = 0.0, mode = 'sub', sSub = "0", incluirPropina = false, modoSerruchoActivo = false, modoDescuentoActivo = false, modoIvuActivo = false;
         let sDesc = "0", sTip = "15", sPpl = "2", sIvuModificado = "11.5"; 
         let memoriaDescuentoPct = "0", memoriaTipPct = "15", memoriaSerruchoCortes = "2", memoriaIvuPct = "11.5";
         let preciosGuardados = [], cuentaAcumulada = 0, textoReciboGlobal = "";
@@ -304,21 +309,23 @@
 
         function ejecutarResetTotal() {
             sSub = "0"; cuentaAcumulada = 0; preciosGuardados = [];
-            document.getElementById('listaPrecios').innerHTML = '<i class="lcd-tipeo" id="lblArtText">Lista vacía...</i>';
+            document.getElementById('listaPrecios').innerHTML = 'Lista vacía<span class="lcd-tipeo"></span>';
             document.getElementById('flechaGuia').style.display = "none"; sPpl = "0"; modoSerruchoActivo = false; memoriaSerruchoCortes = "2";
             document.getElementById('lblPpl').innerText = "N/A"; sDesc = "0"; memoriaDescuentoPct = "0"; modoDescuentoActivo = false; document.getElementById('lblDesc').innerText = "0";
             sTip = "15"; memoriaTipPct = "15"; incluirPropina = false; recienEntradoAPropina = false;
-            ivu = 11.5; sIvuModificado = "11.5"; memoriaIvuPct = "11.5"; modoIvuActivo = false; recienEntradoAIvu = false;
-            document.getElementById('lblIvuBoton').innerText = "11.5";
+            ivu = 0.0; sIvuModificado = "11.5"; memoriaIvuPct = "11.5"; modoIvuActivo = false; recienEntradoAIvu = false;
+            document.getElementById('lblIvuBoton').innerText = "0.0";
             seleccionarMenu('sub');
         }
 
         function actualizarHeaderIndicadores() {
             if (!sistemaEncendido) return;
-            let texto = `IVU: ${ivu.toFixed(1)}%`;
-            if (incluirPropina) { texto += ` | TIP: ${memoriaTipPct}%`; }
-            if (modoDescuentoActivo) { texto += ` | DTO: -${memoriaDescuentoPct}%`; }
-            document.getElementById('txtHeaderIndicadores').innerText = texto;
+            let subpartes = [];
+            if (modoIvuActivo) { subpartes.push(`IVU: ${ivu.toFixed(1)}%`); }
+            else { subpartes.push(`IVU: 0.0%`); }
+            if (incluirPropina) { subpartes.push(`TIP: ${memoriaTipPct}%`); }
+            if (modoDescuentoActivo) { subpartes.push(`DTO: -${memoriaDescuentoPct}%`); }
+            document.getElementById('txtHeaderIndicadores').innerText = subpartes.join(' | ');
         }
         function seleccionarMenu(f) {
             if (!sistemaEncendido) return;
@@ -336,8 +343,8 @@
                 if (mode === 'desc') { modoDescuentoActivo = false; mode = 'sub'; }
                 else { modoDescuentoActivo = true; mode = 'desc'; sDesc = memoriaDescuentoPct; }
             } else if (f === 'ivu') {
-                if (mode === 'ivu') { modoIvuActivo = false; mode = 'sub'; recienEntradoAIvu = false; }
-                else { modoIvuActivo = true; mode = 'ivu'; sIvuModificado = memoriaIvuPct; recienEntradoAIvu = true; }
+                if (mode === 'ivu') { modoIvuActivo = false; mode = 'sub'; recienEntradoAIvu = false; ivu = 0.0; }
+                else { modoIvuActivo = true; mode = 'ivu'; sIvuModificado = memoriaIvuPct; ivu = parseFloat(memoriaIvuPct) || 11.5; recienEntradoAIvu = true; }
             } else { mode = f; recienEntradoAPropina = false; recienEntradoAIvu = false; }
             
             ['cajaSub', 'cajaPpl', 'cajaDesc', 'cajaTip', 'btnToggleIvu'].forEach(id => { document.getElementById(id).className = 'caja-data btn-off'; });
@@ -352,7 +359,7 @@
                 numPpl.innerText = modoSerruchoActivo ? memoriaSerruchoCortes : "N/A";
                 numDesc.innerText = modoDescuentoActivo ? memoriaDescuentoPct : "0";
                 numTip.innerText = incluirPropina ? memoriaTipPct : "0";
-                numIvu.innerText = parseFloat(memoriaIvuPct).toFixed(1);
+                numIvu.innerText = modoIvuActivo ? parseFloat(memoriaIvuPct).toFixed(1) : "0.0";
                 btnAnadir.disabled = false; btnPunto.disabled = false; 
                 numSub.classList.add('blink-num'); document.getElementById('cajaSub').className = "caja-data btn-on";
             } else if (mode === 'ppl') {
@@ -520,8 +527,7 @@
             
             const artTxtEl = document.getElementById('lblArtText');
             if(artTxtEl && preciosGuardados.length > 0) {
-                artTxtEl.innerText = `Cuenta (${preciosGuardados.length} art.)`;
-                artTxtEl.className = ""; 
+                artTxtEl.innerHTML = `Cuenta (${preciosGuardados.length} art.)`;
             }
             actualizarHeaderIndicadores();
         }
