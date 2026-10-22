@@ -142,19 +142,31 @@
         }
         .caja-data { width: 100%; padding: 4px 2px; border-radius: 8px; text-align: center; cursor: pointer; font-size: 9px; transition: all 0.2s ease; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 48px; position: relative; background: var(--btn-bg-theme); background-size: 200% 200%; animation: activeMenuMove 6s infinite ease-in-out; border: 2px solid var(--neon-primary); color: #fff !important; opacity: 0.9; overflow: hidden; }
         
-        /* 🌌 AQUÍ SE QUEDÓ EL CAMBIO: NUEVO FONDO VIOLETA CON DESTELLOS Y ESTRELLAS OCHENTERAS PARPADEANDO */
-        @keyframes estrellasOchenta {
-            0%, 100% { background-position: 0% 50%, 10px 10px; filter: drop-shadow(0 0 2px rgba(255,255,255,0.5)); }
-            50% { background-position: 100% 50%, -10px -10px; filter: drop-shadow(0 0 5px rgba(255,255,255,0.9)); }
+        /* 📸 NUEVOS DESTELLOS SUTILES TIPO FLASH DE CÁMARA OCHENTERA */
+        @keyframes ráfagaFlashes {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); filter: brightness(1); }
+            50% { opacity: 1; transform: scale(1.1); filter: brightness(1.8); }
         }
         .caja-data.btn-on { 
+            /* Combinación de micro-cruces blancas para simular los destellos de flash */
             background-image: 
-                radial-gradient(circle, #ffffff 12%, transparent 13%), 
-                radial-gradient(circle, #ffffff 8%, transparent 9%),
-                linear-gradient(45deg, #1d0636, #4c1d95, #1d0636) !important;
-            background-size: 24px 24px, 32px 32px, 200% 200% !important;
-            animation: neonPulse 1.8s infinite ease-in-out, estrellasOchenta 2s infinite ease-in-out !important;
-            color: #fff !important; opacity: 1 !important; border-color: #fff !important;
+                linear-gradient(rgba(255,255,255,0.95), rgba(255,255,255,0.95)), 
+                linear-gradient(90deg, rgba(255,255,255,0.95), rgba(255,255,255,0.95)),
+                linear-gradient(45deg, #18042c, #3b116b, #18042c) !important;
+            
+            /* Forzamos un tamaño diminuto para que parezcan destellos sutiles y no círculos gruesos */
+            background-size: 1px 6px, 6px 1px, 200% 200% !important;
+            background-repeat: no-repeat, no-repeat, repeat !important;
+            
+            /* Posiciones aleatorias en el fondo del botón para las estrellitas */
+            background-position: 25% 30%, 25% 32%, center center !important;
+            
+            /* Animación a alta velocidad para dar el look mecánico de destellos de flash */
+            animation: neonPulse 1.8s infinite ease-in-out, ráfagaFlashes 0.4s infinite ease-in-out !important;
+            
+            color: #fff !important; 
+            opacity: 1 !important; 
+            border-color: #fff !important;
             box-shadow: 0 0 16px var(--neon-secondary), inset 0 0 6px var(--neon-secondary) !important;
         }
 
@@ -167,7 +179,6 @@
             display: flex; 
             width: 100%; 
             gap: 4px; 
-            /* 🌌 Fondo tecnológico Synthwave: Malla digital que se desplaza en bucle */
             background-color: #0b0214 !important;
             background-image: 
                 linear-gradient(rgba(255, 0, 127, 0.15) 1px, transparent 1px),
@@ -187,6 +198,7 @@
             border-color: #fff; 
             box-shadow: 0 0 14px var(--neon-secondary); 
         }
+
 
 
         /* 🔵 BOTÓN + SÚPER EXPUESTO (DIFERENCIADO Y ADAPTATIVO AL NEÓN DE CADA TEMA) */
