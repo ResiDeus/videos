@@ -263,21 +263,20 @@
         #cajaSub { flex-grow: 1; background: transparent !important; border: none !important; box-shadow: none !important; min-height: auto; align-items: center !important; justify-content: center !important; color: #fff !important; opacity: 1; text-align: center; }
         #cajaSub .lbl-title { font-size: 8px; text-transform: uppercase; color: var(--neon-secondary); margin-bottom: 1px; font-weight: bold; text-shadow: 0 0 4px rgba(0,240,255,0.2); }
         #cajaSub .lbl-val { font-size: 18px !important; font-weight: 900; color: #fff !important; }
-
-        /* ⌨️ TECLADO NUMÉRICO AJUSTADO POR VARIABLES CON TEXTURA VIOLETA ANALÓGICA */
-        @keyframes lineasTecladoMoviéndose {
-            0% { background-position: 0 0, 0% 50%; }
-            100% { background-position: 0 20px, 100% 50%; }
+        /* ⌨️ TECLADO NUMÉRICO, PUNTO Y BORRAR: PULSO HORIZONTAL AMATISTA SUTIL */
+        @keyframes pulsoHazAmatista {
+            0% { background-position: 50% -200%; }
+            100% { background-position: 50% 200%; }
         }
         .pad-num { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; width: 100%; }
         
-        /* Se aplica el filtro a .btn-key para que agarre números, punto y a .btn-back para la flecha de borrar */
+        /* Unifica estrictamente los números, el punto y la flecha de borrar bajo el mismo efecto amatista */
         .btn-key, .btn-back { 
             height: 38px; 
             background: var(--num-bg-theme) !important; 
-            border: 1px solid var(--neon-primary) !important; 
+            border: 1px solid #5b14c3 !important; /* Borde amatista medio */
             border-radius: 6px; 
-            color: #fff !important; 
+            color: #ffffff !important; 
             font-size: 1.1rem; 
             font-weight: bold; 
             cursor: pointer; 
@@ -289,30 +288,26 @@
             position: relative;
             overflow: hidden;
             z-index: 10;
+            opacity: 1 !important;
+            pointer-events: auto !important;
             
-            /* 🌌 INYECCIÓN DE MALLA DE LÍNEAS HOLOGRÁFICAS EN MÁS VIOLETITA SYNTHWAVE */
+            /* 🌌 HAZ DE LUZ AMATISTA PROFUNDO: Línea horizontal ochentosa que barre el fondo suavemente */
             background-image: 
-                linear-gradient(rgba(255, 0, 127, 0.12) 50%, rgba(0, 0, 0, 0.2) 50%),
-                linear-gradient(90deg, rgba(0, 240, 255, 0.03), transparent, rgba(255, 0, 127, 0.03)) !important;
-            background-size: 100% 4px, 200% 200% !important;
-            animation: lineasTecladoMoviéndose 4s infinite linear !important;
+                linear-gradient(180deg, transparent 40%, rgba(106, 13, 173, 0.45) 50%, transparent 60%) !important;
+            background-size: 100% 200% !important;
+            animation: pulsoHazAmatista 4.5s infinite linear !important; /* Movimiento vertical continuo y lento */
         }
         
-        /* Brillo interno de cúpula magenta/violeta sutil para todo el pad de tipeo */
+        /* Refuerzo de profundidad con una cúpula interna amatista oscura */
         .btn-key::before, .btn-back::before {
             content: "";
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, rgba(255, 0, 127, 0.15) 0%, transparent 75%) !important;
+            background: radial-gradient(circle at center, rgba(106, 13, 173, 0.25) 0%, transparent 80%) !important;
             pointer-events: none;
             z-index: 1;
         }
 
-        /* Reajuste de la flecha para que comparta exactamente la misma jerarquía visual */
-        .btn-back { 
-            opacity: 1 !important;
-            pointer-events: auto !important;
-        }
 
         .btn-theme, .btn-receipt, .btn-power-bottom { border-radius: 10px; font-weight: bold; cursor: pointer; transition: all 0.2s ease; text-transform: uppercase; display: flex; justify-content: center; align-items: center; font-family: monospace; height: 28px; font-size: 8px; background: var(--num-bg-theme) !important; border: 2px solid var(--neon-primary) !important; color: #ccc !important; width: 100%; z-index: 15; }
 
