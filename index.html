@@ -57,8 +57,8 @@
         .chasis.global-power-off .btn-key, 
         .chasis.global-power-off .caja-data, 
         .chasis.global-power-off .btn-theme, 
-        .chasis.global-power-off .btn-receipt { box-shadow: none !important; text-shadow: none !important; border-color: #333 !important; animation: none !important; opacity: 0.2 !important; pointer-events: none !important; }
-        /* El botón de encendido se reactiva manualmente por código al estar apagado */
+        .chasis.global-power-off .btn-receipt,
+        .chasis.global-power-off .btn-step { box-shadow: none !important; text-shadow: none !important; border-color: #333 !important; animation: none !important; opacity: 0.2 !important; pointer-events: none !important; }
 
         /* 🟢 PANTALLA LCD VERDE RETRO CON TOTALES A LA IZQUIERDA */
         .lcd { width: 100%; height: 175px; background: #92b043; border: 2px solid #000; border-radius: 14px; color: #000; box-shadow: inset 0 4px 10px rgba(0,0,0,0.4); font-weight: bold; padding: 8px; display: flex; flex-direction: column; justify-content: space-between; position: relative; transition: all 0.4s ease; transform-origin: center; z-index: 12; }
@@ -68,13 +68,19 @@
         .lcd-header { display: flex; justify-content: space-between; font-size: 11px; border-bottom: 1px solid rgba(0,0,0,0.2); }
         .lcd-wrapper { position: relative; flex-grow: 1; display: flex; flex-direction: column; margin: 4px 0; max-height: 55px; }
         .lcd-historial { flex-grow: 1; font-size: 11px; overflow-y: auto; text-align: left; padding-right: 4px; }
-        
         .lcd-body { text-align: left !important; font-size: 10px; line-height: 1.2; }
         .lcd-total { font-size: 24px; font-weight: 900; text-align: left !important; }
 
-        /* 🔘 ESTILOS DE LOS BOTONES DE MENÚ CON FONDO SÓLIDO */
-        .row-menus { display: grid; gap: 4px; width: 100%; }
-        .caja-data { padding: 4px 2px; border-radius: 10px; text-align: center; cursor: pointer; font-size: 9px; transition: all 0.2s ease; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 52px; position: relative; background: var(--btn-bg); border: 2px solid rgba(255, 255, 255, 0.08); color: var(--btn-text); opacity: 0.6; }
+        /* 🎛️ ESTRUCTURA GRID PARA LOS CONTENEDORES CON FLECHAS INCREMENTALES */
+        .row-opciones-pasos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; width: 100%; }
+        .wrapper-pasos { display: flex; flex-direction: column; gap: 2px; align-items: center; }
+        
+        /* Botones de Flechas (▲ y ▼) Estilizados */
+        .btn-step { width: 100%; height: 16px; background: #22123b; border: 1px solid rgba(255, 255, 255, 0.15); color: #fff; font-size: 8px; cursor: pointer; display: flex; justify-content: center; align-items: center; border-radius: 4px; transition: all 0.15s ease; }
+        .btn-step:active { background: var(--neon-secondary); color: #000; }
+
+        /* Botones de Menú con Texto Blanco Nítido */
+        .caja-data { width: 100%; padding: 4px 2px; border-radius: 8px; text-align: center; cursor: pointer; font-size: 9px; transition: all 0.2s ease; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 48px; background: var(--btn-bg); border: 2px solid rgba(255, 255, 255, 0.08); color: #fff !important; opacity: 0.6; }
         
         @keyframes neonPulse {
             0%, 100% { box-shadow: 0 0 8px var(--neon-primary), inset 0 0 3px var(--neon-primary); border-color: #fff; }
@@ -83,19 +89,17 @@
         .caja-data.btn-on { animation: neonPulse 1.8s infinite ease-in-out; color: #fff !important; opacity: 1 !important; border-color: #fff; }
 
         /* 📟 FONDO TECNOLÓGICO ANIMADO SUTIL PARA EL BOTÓN DE CUENTA */
-        @keyframes techMove {
-            0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; }
-        }
-        #cajaSub { background: linear-gradient(-45deg, #051a24, #082f44, #03121a, #0c3e54); background-size: 300% 300%; animation: techMove 6s infinite ease-in-out; border-color: rgba(0, 240, 255, 0.3); color: #00f0ff; opacity: 1; }
+        @keyframes techMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        #cajaSub { background: linear-gradient(-45deg, #051a24, #082f44, #03121a, #0c3e54); background-size: 300% 300%; animation: techMove 6s infinite ease-in-out; border-color: rgba(0, 240, 255, 0.3); color: #00f0ff !important; opacity: 1; }
         #cajaSub.btn-on { border-color: #fff; box-shadow: 0 0 12px rgba(0, 240, 255, 0.4); }
         #cajaSub .lbl-val { font-size: 18px !important; font-weight: 900; }
 
         @keyframes blinkFast { 0%, 100% { opacity: 1; } 50% { opacity: 0.15; } }
         .blink-num { animation: blinkFast 0.6s infinite steps(2, start); text-shadow: 0 0 8px currentColor; }
-        /* ⌨️ TECLADO NUMÉRICO UNIFICADO Y MODALES OCULTADOS */
+        /* ⌨️ TECLADO NUMÉRICO UNIFICADO Y MODALES SIN BLOQUEOS */
         .pad-num { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; width: 100%; }
         
-        /* Teclas Numéricas (0-9) y Flecha de Borrar (Misma UI, color y tipografía) */
+        /* Teclas Numéricas (0-9) y Botón de Borrar (Misma UI, color y tipografía) */
         .btn-key { height: 38px; background: var(--num-bg); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 6px; color: #fff; font-size: 1.1rem; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; font-family: monospace; transition: all 0.2s ease; }
         .btn-key:active { filter: brightness(1.4); border-color: var(--neon-secondary); }
         .btn-back { color: #fff !important; background: var(--num-bg) !important; border-color: rgba(255, 255, 255, 0.1) !important; }
@@ -111,14 +115,19 @@
         .btn-key:disabled { opacity: 0.1 !important; cursor: not-allowed !important; }
         .row-acciones-inferior { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-top: 2px; width: 100%; }
 
-        /* Ocultamiento estricto de modales por defecto para evitar interferencias en el background */
-        .holograma-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10, 2, 24, 0.85); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 100; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
+        /* 🔮 RECIBO HOLOGRÁFICO NÍTIDO ACUÑADO A LOS COLORES DE CADA TEMA */
+        .holograma-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10, 2, 24, 0.8); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 100; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
         .holograma-overlay.activo { opacity: 1; pointer-events: auto; visibility: visible; }
 
-        .holograma-lineas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06)); background-size: 100% 4px, 6px 100%; pointer-events: none; z-index: 5; }
-        .holograma-scrollable { flex-grow: 1; overflow-y: auto; font-size: 12px; line-height: 1.4; white-space: pre-wrap; padding-right: 4px; border: 1px solid rgba(0, 240, 255, 0.2); border-radius: 8px; padding: 8px; background: rgba(0, 0, 0, 0.3); }
+        /* Fondo de alta legibilidad traslúcido y bordes que se mimetizan con el tema seleccionado */
+        .holograma-ticket { width: 320px; max-height: 80vh; background: rgba(15, 10, 25, 0.95); border: 2px solid var(--neon-primary); box-shadow: 0 0 30px var(--neon-primary), inset 0 0 15px rgba(255,255,255,0.05); border-radius: 16px; padding: 16px; position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 12px; transform: scale(0.85); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); color: #fff; font-family: monospace; }
+        .holograma-overlay.activo .holograma-ticket { transform: scale(1); }
+
+        .holograma-lineas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%); background-size: 100% 4px; pointer-events: none; z-index: 5; }
+        .holograma-scrollable { flex-grow: 1; overflow-y: auto; font-size: 12px; line-height: 1.4; white-space: pre-wrap; padding-right: 4px; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 8px; padding: 8px; background: rgba(0, 0, 0, 0.4); color: var(--neon-secondary); text-shadow: 0 0 3px var(--neon-secondary); }
         .holograma-footer { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .btn-holo { padding: 8px; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; border: 1px solid; font-family: monospace; font-size: 11px; text-align: center; background: transparent; color: inherit; text-shadow: inherit; transition: all 0.2s ease; }
+        .btn-holo { padding: 8px; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; border: 1px solid var(--neon-primary); font-family: monospace; font-size: 11px; text-align: center; background: transparent; color: var(--neon-secondary); transition: all 0.2s ease; }
+        .btn-holo:active { background: rgba(255, 255, 255, 0.1); }
         
         @keyframes tipeandoPuntos { 0% { content: "."; } 33% { content: ".."; } 66% { content: "..."; } 100% { content: "."; } }
         .lcd-tipeo::after { content: "."; animation: tipeandoPuntos 1.2s infinite steps(1, start); }
@@ -151,7 +160,7 @@
             </div>
         </div>
 
-        <!-- 🎛---- BOTONERA DE MENÚS (Fila superior: Cuenta con fondo tecnológico sutil) -->
+        <!-- 🎛️ BOTONERA DE MENÚS (Fila superior: Cuenta con fondo tecnológico sutil animado) -->
         <div class="row-menus" style="grid-template-columns: 1fr;">
             <div id="cajaSub" class="caja-data btn-on" onclick="seleccionarMenu('sub')" style="width: 100%;">
                 <span class="lbl-title" style="color: #00f0ff;">Cuenta</span>
@@ -159,44 +168,67 @@
             </div>
         </div>
 
-        <!-- Segunda fila: Opciones unificadas con fondo sólido que inician APAGADAS -->
-        <div class="row-menus" style="grid-template-columns: repeat(4, 1fr);">
-            <div id="cajaPpl" class="caja-data btn-off" onclick="seleccionarMenu('ppl')">
-                <span class="lbl-title">Serrucho</span>
-                <span class="lbl-val"><span id="lblPpl">N/A</span></span>
+        <!-- Segunda fila: Fila unificada con Flechas de Incremento (▲/▼) integradas verticalmente -->
+        <div class="row-opciones-pasos">
+            <!-- Columna Serrucho -->
+            <div class="wrapper-pasos">
+                <button class="btn-step" onclick="modificarValorPaso('ppl', 1)">▲</button>
+                <div id="cajaPpl" class="caja-data btn-off" onclick="seleccionarMenu('ppl')">
+                    <span class="lbl-title">Serrucho</span>
+                    <span class="lbl-val"><span id="lblPpl">N/A</span></span>
+                </div>
+                <button class="btn-step" onclick="modificarValorPaso('ppl', -1)">▼</button>
             </div>
-            <div id="cajaDesc" class="caja-data btn-off" onclick="seleccionarMenu('desc')">
-                <span class="lbl-title">Descuento</span>
-                <span class="lbl-val">-<span id="lblDesc">0</span>%</span>
+
+            <!-- Columna Descuento -->
+            <div class="wrapper-pasos">
+                <button class="btn-step" onclick="modificarValorPaso('desc', 1)">▲</button>
+                <div id="cajaDesc" class="caja-data btn-off" onclick="seleccionarMenu('desc')">
+                    <span class="lbl-title">Descuento</span>
+                    <span class="lbl-val">-<span id="lblDesc">0</span>%</span>
+                </div>
+                <button class="btn-step" onclick="modificarValorPaso('desc', -1)">▼</button>
             </div>
-            <div id="cajaTip" class="caja-data btn-off" onclick="seleccionarMenu('tip')">
-                <span class="lbl-title">Propina</span>
-                <span class="lbl-val"><span id="lblTip">0</span>%</span>
+
+            <!-- Columna Propina -->
+            <div class="wrapper-pasos">
+                <button class="btn-step" onclick="modificarValorPaso('tip', 1)">▲</button>
+                <div id="cajaTip" class="caja-data btn-off" onclick="seleccionarMenu('tip')">
+                    <span class="lbl-title">Propina</span>
+                    <span class="lbl-val"><span id="lblTip">0</span>%</span>
+                </div>
+                <button class="btn-step" onclick="modificarValorPaso('tip', -1)">▼</button>
             </div>
-            <div id="btnToggleIvu" class="caja-data btn-off" onclick="seleccionarMenu('ivu')">
-                <span class="lbl-title">IVU</span>
-                <span class="lbl-val"><span id="lblIvuBoton">0.0</span>%</span>
+
+            <!-- Columna IVU -->
+            <div class="wrapper-pasos">
+                <button class="btn-step" onclick="modificarValorPaso('ivu', 0.5)">▲</button>
+                <div id="btnToggleIvu" class="caja-data btn-off" onclick="seleccionarMenu('ivu')">
+                    <span class="lbl-title">IVU</span>
+                    <span class="lbl-val"><span id="lblIvuBoton">0.0</span>%</span>
+                </div>
+                <button class="btn-step" onclick="modificarValorPaso('ivu', -0.5)">▼</button>
             </div>
         </div>
 
-        <!-- ⌨---- TECLADO NUMÉRICO TOTALMENTE REORDENADO Y REFORMADO -->
+        <!-- ⌨️ TECLADO NUMÉRICO REORDENADO (Teclas exclusivas para el botón de Cuenta) -->
         <div class="pad-num">
-            <!-- Fila superior: Flecha en esquina izquierda, Clear, y Añadir se mantiene aquí provisionalmente para cuadrar cuadrículas -->
+            <!-- Fila superior: Flecha en esquina izquierda, Clear, y espacio vacío para conservar balance -->
             <button id="btnBksp" onclick="bksp()" class="btn-key btn-back">←</button>
             <button id="btnCeGlobal" class="btn-key btn-op-special" onclick="ce()">Clear</button>
-            <button id="btnAnadirDummyVacio" class="btn-key" style="opacity:0; pointer-events:none;"></button>
+            <button id="btnVacioDummy" class="btn-key" style="opacity:0; pointer-events:none;"></button>
             
             <button id="btnN7" onclick="num('7')" class="btn-key">7</button><button id="btnN8" onclick="num('8')" class="btn-key">8</button><button id="btnN9" onclick="num('9')" class="btn-key">9</button>
             <button id="btnN4" onclick="num('4')" class="btn-key">4</button><button id="btnN5" onclick="num('5')" class="btn-key">5</button><button id="btnN6" onclick="num('6')" class="btn-key">6</button>
             <button id="btnN1" onclick="num('1')" class="btn-key">1</button><button id="btnN2" onclick="num('2')" class="btn-key">2</button><button id="btnN3" onclick="num('3')" class="btn-key">3</button>
             
-            <!-- Fila inferior del pad: Punto, 0, e inyección de Añadir en esquina inferior derecha -->
+            <!-- Fila inferior: Punto, 0, e inyección de Añadir en esquina inferior derecha -->
             <button id="btnPunto" onclick="num('.')" class="btn-key">.</button>
             <button id="btnN0" onclick="num('0')" class="btn-key">0</button>
             <button id="btnAnadirGlobal" class="btn-key btn-op-special" onclick="addProducto()">+ Añadir</button>
         </div>
 
-        <!-- Fila inferior de control unificada de 3 botones de igual UI -->
+        <!-- Fila inferior de control unificada de 3 botones con la misma UI metálica -->
         <div class="row-acciones-inferior">
             <button id="btnTheme" class="btn-theme" onclick="rotarTema()">TEMA</button>
             <button id="btnReceipt" class="btn-receipt" onclick="abrirHologramaRecibo()">RECIBO</button>
@@ -204,7 +236,7 @@
         </div>
     </div> <!-- Cierre de chasis -->
 
-    <!-- Visor Holográfico del Ticket -->
+    <!-- Visor Holográfico del Ticket Nítido -->
     <div class="holograma-overlay" id="visorHolograma">
         <div class="holograma-ticket">
             <div class="holograma-lineas"></div>
@@ -217,9 +249,9 @@
         </div>
     </div>
 
-    <!-- 🚨 NUEVO VISOR HOLOGRÁFICO DE CONFIRMACIÓN DE APAGADO MAESTRO -->
+    <!-- Visor Holográfico de Confirmación de Apagado Maestro -->
     <div class="holograma-overlay" id="visorConfirmarApagado">
-        <div class="holograma-ticket" style="border-color: #ef4444; color: #fca5a5; text-shadow: 0 0 8px rgba(239,68,68,0.6); box-shadow: 0 0 30px rgba(239,68,68,0.4);">
+        <div class="holograma-ticket" style="border-color: #ef4444; box-shadow: 0 0 30px rgba(239,68,68,0.4);">
             <div class="holograma-lineas"></div>
             <div style="font-weight: 900; text-align: center; letter-spacing: 1px; font-size: 14px; color: #ef4444;">ALERTA DE SISTEMA</div>
             <div style="font-size: 12px; text-align: center; line-height: 1.5; padding: 10px 0;">¿CONFIRMA APAGADO MAESTRO?<br><br>Se borrarán de forma permanente todos los flujos de memoria de la cuenta y artículos guardados.</div>
@@ -294,10 +326,76 @@
                 osc.start(); osc.stop(ctx.currentTime + 0.15);
             } catch (e) {}
         }
+
+        // 🎛️ CONTROLADORES EXCLUSIVOS PARA LAS FLECHAS INCREMENTALES ▲/▼
+        function modificarValorPaso(tipo, delta) {
+            if (!sistemaEncendido) return;
+            reproducirSonido('tecla');
+            
+            if (tipo === 'ppl') {
+                modoSerruchoActivo = true;
+                let val = parseInt(memoriaSerruchoCortes) || 2;
+                val += delta;
+                if (val < 2) { val = "2"; modoSerruchoActivo = false; }
+                if (val > 99) val = 99;
+                memoriaSerruchoCortes = val.toString();
+                sPpl = memoriaSerruchoCortes;
+                document.getElementById('lblPpl').innerText = modoSerruchoActivo ? sPpl : "N/A";
+            } 
+            else if (tipo === 'desc') {
+                modoDescuentoActivo = true;
+                let val = parseFloat(memoriaDescuentoPct) || 0;
+                val += delta;
+                if (val <= 0) { val = 0; modoDescuentoActivo = false; }
+                if (val > 100) val = 100;
+                memoriaDescuentoPct = val.toString();
+                sDesc = memoriaDescuentoPct;
+                document.getElementById('lblDesc').innerText = sDesc;
+            } 
+            else if (tipo === 'tip') {
+                incluirPropina = true;
+                let val = parseFloat(memoriaTipPct) || 0;
+                val += delta;
+                if (val <= 0) { val = 0; incluirPropina = false; }
+                if (val > 100) val = 100;
+                memoriaTipPct = val.toString();
+                sTip = memoriaTipPct;
+                document.getElementById('lblTip').innerText = sTip;
+            } 
+            else if (tipo === 'ivu') {
+                // Si estaba apagado e incrementan, salta directamente a la tasa por defecto 11.5%
+                if (!modoIvuActivo && delta > 0) {
+                    modoIvuActivo = true;
+                    memoriaIvuPct = "11.5";
+                } else {
+                    let val = parseFloat(memoriaIvuPct) || 0;
+                    val += delta;
+                    if (val <= 0) { val = 0; modoIvuActivo = false; }
+                    if (val > 100) val = 100;
+                    memoriaIvuPct = val.toString();
+                }
+                ivu = modoIvuActivo ? parseFloat(memoriaIvuPct) : 0.0;
+                document.getElementById('lblIvuBoton').innerText = modoIvuActivo ? ivu.toFixed(1) : "0.0";
+            }
+            
+            // Actualizar clases de encendido visual en las cajas
+            document.getElementById('cajaPpl').className = modoSerruchoActivo ? "caja-data btn-on" : "caja-data btn-off";
+            document.getElementById('cajaDesc').className = modoDescuentoActivo ? "caja-data btn-on" : "caja-data btn-off";
+            document.getElementById('cajaTip').className = incluirPropina ? "caja-data btn-on" : "caja-data btn-off";
+            document.getElementById('btnToggleIvu').className = modoIvuActivo ? "caja-data btn-on" : "caja-data btn-off";
+            
+            // Forzar refresco si el menú activo secundario cambió de estado
+            if(mode !== 'sub' && mode === tipo) {
+                if((tipo==='ppl' && !modoSerruchoActivo) || (tipo==='desc' && !modoDescuentoActivo) || (tipo==='tip' && !incluirPropina) || (tipo==='ivu' && !modoIvuActivo)) {
+                    seleccionarMenu('sub');
+                    return;
+                }
+            }
+            actualizarHeaderIndicadores(); calc();
+        }
         // 🔌 CONTROLES HOLOGRÁFICOS DE APAGADO MAESTRO E INTERRUPTOR CRT VINTAGE
         function solicitarApagado() {
             if (!sistemaEncendido) {
-                // Si está apagada, se enciende directamente presionando el botón
                 togglePowerAccion();
                 return;
             }
@@ -324,7 +422,7 @@
                 sistemaEncendido = false;
                 reproducirSonido('apagar');
                 lcd.classList.add('power-off-crt'); 
-                btnPower.classList.add('power-active-btn'); // Forzar que este botón no se apague
+                btnPower.classList.add('power-active-btn'); 
                 setTimeout(() => {
                     if(!sistemaEncendido) chasis.classList.add('global-power-off'); 
                 }, 400);
@@ -340,7 +438,7 @@
         }
 
         function toggleTeclasBloqueo(bloquear) {
-            const botones = document.querySelectorAll('.btn-key, .caja-data, .btn-receipt, .btn-theme');
+            const botones = document.querySelectorAll('.btn-key, .caja-data, .btn-receipt, .btn-theme, .btn-step');
             botones.forEach(btn => {
                 if (btn.id !== 'btnTogglePower' && btn.id !== 'btnTheme') {
                     btn.disabled = bloquear;
@@ -364,11 +462,11 @@
         function actualizarHeaderIndicadores() {
             if (!sistemaEncendido) return;
             let subpartes = [];
+            // 🚨 OCULTAMIENTO COMPLETO DEL IVU SI NO ESTÁ SELECCIONADO EL BOTÓN
             if (modoIvuActivo) { subpartes.push(`IVU: ${ivu.toFixed(1)}%`); }
-            else { subpartes.push(`IVU: 0.0%`); }
             if (incluirPropina) { subpartes.push(`TIP: ${memoriaTipPct}%`); }
             if (modoDescuentoActivo) { subpartes.push(`DTO: -${memoriaDescuentoPct}%`); }
-            document.getElementById('txtHeaderIndicadores').innerText = subpartes.join(' | ');
+            document.getElementById('txtHeaderIndicadores').innerText = subpartes.length > 0 ? subpartes.join(' | ') : "SISTEMA ACTIVO";
         }
         function seleccionarMenu(f) {
             if (!sistemaEncendido) return;
@@ -377,26 +475,34 @@
             const numSub = document.getElementById('lblSub'), numPpl = document.getElementById('lblPpl'), numDesc = document.getElementById('lblDesc'), numTip = document.getElementById('lblTip'), numIvu = document.getElementById('lblIvuBoton');
 
             if (f === 'ppl') {
-                if (mode === 'ppl') { modoSerruchoActivo = false; mode = 'sub'; }
-                else { modoSerruchoActivo = true; mode = 'ppl'; sPpl = memoriaSerruchoCortes; }
+                modoSerruchoActivo = !modoSerruchoActivo;
+                sPpl = memoriaSerruchoCortes;
+                document.getElementById('lblPpl').innerText = modoSerruchoActivo ? sPpl : "N/A";
+                mode = 'sub'; // Regresa el foco de tipeo a la cuenta
             } else if (f === 'tip') {
-                if (mode === 'tip') { incluirPropina = false; mode = 'sub'; recienEntradoAPropina = false; }
-                else { incluirPropina = true; mode = 'tip'; sTip = memoriaTipPct; recienEntradoAPropina = true; }
+                incluirPropina = !incluirPropina;
+                sTip = memoriaTipPct;
+                document.getElementById('lblTip').innerText = incluirPropina ? sTip : "0";
+                mode = 'sub';
             } else if (f === 'desc') {
-                if (mode === 'desc') { modoDescuentoActivo = false; mode = 'sub'; }
-                else { modoDescuentoActivo = true; mode = 'desc'; sDesc = memoriaDescuentoPct; }
+                modoDescuentoActivo = !modoDescuentoActivo;
+                sDesc = memoriaDescuentoPct;
+                document.getElementById('lblDesc').innerText = modoDescuentoActivo ? sDesc : "0";
+                mode = 'sub';
             } else if (f === 'ivu') {
-                if (mode === 'ivu') { modoIvuActivo = false; mode = 'sub'; recienEntradoAIvu = false; ivu = 0.0; }
-                else { modoIvuActivo = true; mode = 'ivu'; sIvuModificado = memoriaIvuPct; ivu = parseFloat(memoriaIvuPct) || 11.5; recienEntradoAIvu = true; }
-            } else { mode = f; recienEntradoAPropina = false; recienEntradoAIvu = false; }
+                modoIvuActivo = !modoIvuActivo;
+                ivu = modoIvuActivo ? (parseFloat(memoriaIvuPct) || 11.5) : 0.0;
+                document.getElementById('lblIvuBoton').innerText = modoIvuActivo ? ivu.toFixed(1) : "0.0";
+                mode = 'sub';
+            } else { mode = f; }
             
             ['cajaSub', 'cajaPpl', 'cajaDesc', 'cajaTip', 'btnToggleIvu'].forEach(id => { document.getElementById(id).className = 'caja-data btn-off'; });
             [numSub, numPpl, numDesc, numTip, numIvu].forEach(el => { if(el) el.classList.remove('blink-num'); });
 
-            if (modoDescuentoActivo && mode !== 'desc') document.getElementById('cajaDesc').className = "caja-data btn-on";
-            if (modoSerruchoActivo && mode !== 'ppl') document.getElementById('cajaPpl').className = "caja-data btn-on";
-            if (incluirPropina && mode !== 'tip') document.getElementById('cajaTip').className = "caja-data btn-on";
-            if (modoIvuActivo && mode !== 'ivu') document.getElementById('btnToggleIvu').className = "caja-data btn-on";
+            if (modoDescuentoActivo) document.getElementById('cajaDesc').className = "caja-data btn-on";
+            if (modoSerruchoActivo) document.getElementById('cajaPpl').className = "caja-data btn-on";
+            if (incluirPropina) document.getElementById('cajaTip').className = "caja-data btn-on";
+            if (modoIvuActivo) document.getElementById('btnToggleIvu').className = "caja-data btn-on";
 
             if (mode === 'sub') {
                 numPpl.innerText = modoSerruchoActivo ? memoriaSerruchoCortes : "N/A";
@@ -406,86 +512,46 @@
                 if(btnAnadir) btnAnadir.disabled = false; 
                 if(btnPunto) btnPunto.disabled = false; 
                 numSub.classList.add('blink-num'); document.getElementById('cajaSub').className = "caja-data btn-on";
-            } else if (mode === 'ppl') {
-                numPpl.innerText = sPpl; if(btnAnadir) btnAnadir.disabled = true; if(btnPunto) btnPunto.disabled = true; 
-                numPpl.classList.add('blink-num'); document.getElementById('cajaPpl').className = "caja-data btn-on";
-            } else if (mode === 'desc') {
-                numDesc.innerText = sDesc; if(btnAnadir) btnAnadir.disabled = true; if(btnPunto) btnPunto.disabled = false;
-                numDesc.classList.add('blink-num'); document.getElementById('cajaDesc').className = "caja-data btn-on";
-            } else if (mode === 'tip') {
-                numTip.innerText = sTip; if(btnAnadir) btnAnadir.disabled = true; if(btnPunto) btnPunto.disabled = false;
-                numTip.classList.add('blink-num'); document.getElementById('cajaTip').className = "caja-data btn-on";
-            } else if (mode === 'ivu') {
-                numIvu.innerText = sIvuModificado; if(btnAnadir) btnAnadir.disabled = true; if(btnPunto) btnPunto.disabled = false;
-                numIvu.classList.add('blink-num'); document.getElementById('btnToggleIvu').className = "caja-data btn-on";
             }
             actualizarHeaderIndicadores(); calc();
         }
+        // ⌨️ INGRESO NUMÉRICO EXCLUSIVO PARA EL BOTÓN DE CUENTA
         function num(c) {
             if (!sistemaEncendido) return;
+            // Forzar que el teclado solo escriba en la cuenta principal
+            if (mode !== 'sub') mode = 'sub';
+            
             reproducirSonido('tecla');
-            if (mode === 'sub') {
-                if (sSub === "0" && c !== '.') sSub = "";
-                if (c === '.' && sSub.includes('.')) return;
-                sSub += c; if(parseFloat(sSub) > 99999) sSub = "99999";
-                document.getElementById('lblSub').innerText = sSub;
-            } else if (mode === 'ppl') {
-                if (sPpl === "N/A" || sPpl === "0") sPpl = "";
-                sPpl = (sPpl + c).substring(0, 2);
-                memoriaSerruchoCortes = sPpl === "" ? "0" : sPpl;
-                modoSerruchoActivo = true; document.getElementById('lblPpl').innerText = sPpl === "" ? "0" : sPpl;
-            } else if (mode === 'desc') {
-                if (sDesc === "0" && c !== '.') sDesc = "";
-                if (c === '.' && sDesc.includes('.')) return; 
-                sDesc = (sDesc + c).substring(0, 4); 
-                memoriaDescuentoPct = sDesc === "" ? "0" : sDesc;
-                modoDescuentoActivo = true; document.getElementById('lblDesc').innerText = sDesc === "" ? "0" : sDesc;
-            } else if (mode === 'tip') {
-                if (recienEntradoAPropina || sTip === "0") { 
-                    if (c !== '.') { sTip = ""; } 
-                    recienEntradoAPropina = false; 
-                }
-                if (c === '.' && sTip.includes('.')) return; 
-                sTip = (sTip + c).substring(0, 4); 
-                memoriaTipPct = sTip === "" ? "0" : sTip;
-                incluirPropina = true; document.getElementById('lblTip').innerText = sTip === "" ? "0" : sTip;
-            } else if (mode === 'ivu') {
-                if (recienEntradoAIvu || sIvuModificado === "0") {
-                    if (c !== '.') { sIvuModificado = ""; }
-                    recienEntradoAIvu = false;
-                }
-                if (c === '.' && sIvuModificado.includes('.')) return;
-                sIvuModificado = (sIvuModificado + c).substring(0, 4);
-                memoriaIvuPct = sIvuModificado === "" ? "0" : sIvuModificado;
-                ivu = parseFloat(memoriaIvuPct) || 0;
-                modoIvuActivo = true; document.getElementById('lblIvuBoton').innerText = sIvuModificado === "" ? "0" : sIvuModificado;
-            }
+            if (sSub === "0" && c !== '.') sSub = "";
+            if (c === '.' && sSub.includes('.')) return;
+            sSub += c; 
+            if (parseFloat(sSub) > 99999) sSub = "99999";
+            
+            document.getElementById('lblSub').innerText = sSub;
             calc();
         }
 
         function bksp() {
             if (!sistemaEncendido) return;
+            if (mode !== 'sub') mode = 'sub';
+            
             reproducirSonido('tecla');
-            if (mode === 'sub') { sSub = sSub.slice(0, -1); if (!sSub) sSub = "0"; document.getElementById('lblSub').innerText = sSub; }
-            else if (mode === 'ppl') { 
-                sPpl = sPpl.slice(0, -1); if (!sPpl) { sPpl = "0"; }
-                memoriaSerruchoCortes = sPpl; document.getElementById('lblPpl').innerText = sPpl; 
-            }
-            else if (mode === 'desc') { sDesc = sDesc.slice(0, -1); if (!sDesc) { sDesc = "0"; } memoriaDescuentoPct = sDesc; document.getElementById('lblDesc').innerText = sDesc; }
-            else if (mode === 'tip') { sTip = sTip.slice(0, -1); if (!sTip) { sTip = "0"; } memoriaTipPct = sTip; document.getElementById('lblTip').innerText = sTip; }
-            else if (mode === 'ivu') { sIvuModificado = sIvuModificado.slice(0, -1); if (!sIvuModificado) { sIvuModificado = "0"; } memoriaIvuPct = sIvuModificado; ivu = parseFloat(memoriaIvuPct) || 0; document.getElementById('lblIvuBoton').innerText = sIvuModificado; }
+            sSub = sSub.slice(0, -1); 
+            if (!sSub) sSub = "0"; 
+            
+            document.getElementById('lblSub').innerText = sSub;
             calc();
         }
 
         function ce() {
             if (!sistemaEncendido) return;
             reproducirSonido('tecla');
-            if (mode === 'sub') { sSub = "0"; document.getElementById('lblSub').innerText = "0"; }
-            else if (mode === 'ppl') { sPpl = "0"; memoriaSerruchoCortes = "0"; modoSerruchoActivo = true; document.getElementById('lblPpl').innerText = "0"; }
-            else if (mode === 'desc') { sDesc = "0"; memoriaDescuentoPct = "0"; modoDescuentoActivo = true; document.getElementById('lblDesc').innerText = "0"; }
-            else if (mode === 'tip') { sTip = "0"; memoriaTipPct = "0"; recienEntradoAPropina = true; incluirPropina = true; document.getElementById('lblTip').innerText = "0"; }
-            else if (mode === 'ivu') { sIvuModificado = "0"; memoriaIvuPct = "0"; ivu = 0; recienEntradoAIvu = true; modoIvuActivo = true; document.getElementById('lblIvuBoton').innerText = "0"; }
-            actualizarHeaderIndicadores(); calc();
+            sSub = "0"; 
+            document.getElementById('lblSub').innerText = "0";
+            
+            if (mode !== 'sub') mode = 'sub';
+            actualizarHeaderIndicadores(); 
+            calc();
         }
         function addProducto() {
             if (!sistemaEncendido) return;
@@ -554,8 +620,6 @@
             
             document.getElementById('rowDesc').style.opacity = modoDescuentoActivo ? "1" : "0.3";
             document.getElementById('rowTip').style.opacity = incluirPropina ? "1" : "0.3";
-            
-            // 🚨 IVU Faded out en la pantalla cuando no está habilitado su botón
             document.getElementById('rowIvu').style.opacity = modoIvuActivo ? "1" : "0.3";
 
             if (modoSerruchoActivo) {
@@ -570,7 +634,7 @@
             
             document.getElementById('lblTip').innerText = incluirPropina ? memoriaTipPct : "0"; 
             document.getElementById('lblDesc').innerText = modoDescuentoActivo ? memoriaDescuentoPct : "0"; 
-            if (mode !== 'ppl') { document.getElementById('lblPpl').innerText = modoSerruchoActivo ? memoriaSerruchoCortes : "N/A"; }
+            document.getElementById('lblPpl').innerText = modoSerruchoActivo ? memoriaSerruchoCortes : "N/A";
             
             const artTxtEl = document.getElementById('lblArtText');
             if(artTxtEl && preciosGuardados.length > 0) {
@@ -619,7 +683,7 @@
             txt += `Importe Base:      $${nSub.toFixed(2)}\n`;
             if(rebajaTotal > 0) txt += `Descuento:         -$${rebajaTotal.toFixed(2)}\n`;
             if(propinaTotal > 0) txt += `Propina (${tPct}%):     $${propinaTotal.toFixed(2)}\n`;
-            txt += `IVU Acumulado:     $${impuestoTotal.toFixed(2)}\n`;
+            if(modoIvuActivo) txt += `IVU Acumulado:     $${impuestoTotal.toFixed(2)}\n`;
             txt += `===============================\n`;
             txt += `TOTAL NETO:        $${totalNetoGlobal.toFixed(2)}\n`;
             txt += `===============================\n`;
