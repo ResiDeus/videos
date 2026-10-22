@@ -142,38 +142,42 @@
         }
         .caja-data { width: 100%; padding: 4px 2px; border-radius: 8px; text-align: center; cursor: pointer; font-size: 9px; transition: all 0.2s ease; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 48px; position: relative; background: var(--btn-bg-theme); background-size: 200% 200%; animation: activeMenuMove 6s infinite ease-in-out; border: 2px solid var(--neon-primary); color: #fff !important; opacity: 0.9; overflow: hidden; }
         
-        /* 📸 SOLUCIÓN EXCLUSIVA: EFECTO DE MICRO FLASH SUTIL EN EL FONDO */
-        @keyframes destelloFlashCamara {
-            0%, 100% { opacity: 0.15; filter: brightness(1); }
-            50% { opacity: 0.85; filter: brightness(2.5); }
+        /* 🌌 PIXELS SPARKLES: Estrellitas diminutas en píxeles que brillan LENTAMENTE */
+        @keyframes brilloLentoEstrellas {
+            0%, 100% { opacity: 0.1; filter: brightness(0.8); }
+            50% { opacity: 0.9; filter: brightness(1.8); }
         }
         
         .caja-data.btn-on { 
-            animation: neonPulse 1.8s infinite ease-in-out !important; 
+            /* 🔮 Conserva tu violeta animado synthwave fluyendo continuamente */
+            background: linear-gradient(45deg, #2a0845, #6441a5, #2a0845) !important;
+            background-size: 200% 200% !important;
+            animation: neonPulse 1.8s infinite ease-in-out, activeMenuMove 3s infinite ease-in-out !important; 
             color: #fff !important; 
             opacity: 1 !important; 
             border-color: #fff !important;
             box-shadow: 0 0 16px var(--neon-secondary), inset 0 0 6px var(--neon-secondary) !important;
-            background: #18042c !important; /* Fondo violeta sólido estático */
         }
 
-        /* Capa trasera independiente que genera la ráfaga de destellos rápidos */
+        /* Capa flotante con micro-píxeles blancos que respiran con suavidad */
         .caja-data.btn-on::before {
             content: "";
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
+            /* Generamos sparkles ultra pequeños (puntos de luz nítidos de 1.5px fijos) */
             background-image: 
-                radial-gradient(circle, #ffffff 10%, transparent 11%),
-                radial-gradient(circle, #ffffff 15%, transparent 16%);
-            background-size: 14px 14px, 19px 19px;
-            background-position: 15% 25%, 75% 65%;
+                radial-gradient(circle, #ffffff 1px, transparent 1.5px),
+                radial-gradient(circle, #ffffff 1.2px, transparent 1.7px);
+            background-size: 16px 20px, 24px 14px;
+            background-position: 20% 30%, 75% 70%;
             background-repeat: no-repeat;
             z-index: 1;
-            animation: destelloFlashCamara 0.25s infinite linear !important;
+            /* Transición fluida y lenta de 3.5 segundos para simular el espacio ochentero */
+            animation: brilloLentoEstrellas 3.5s infinite ease-in-out !important;
             pointer-events: none;
         }
 
-        /* Fuerza a que las letras queden por encima del flash de fondo */
+        /* Mantiene el texto flotando por encima de los sparkles */
         .caja-data.btn-on * {
             position: relative;
             z-index: 2;
