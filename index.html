@@ -6,7 +6,7 @@
     <title>Calculadora de ResiDeus</title>
 
     <!-- 📱 CONFIGURACIÓN DE PANTALLA DE INICIO IPHONE / PWA -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="ResiDeus">
     
@@ -19,25 +19,25 @@
            ========================================================================== */
         body.theme-cyberpunk {
             --bg-grad: linear-gradient(180deg, #09011a 0%, #2c044d 100%);
-            --neon-primary: #ff007f; --neon-secondary: #00f0ff; --btn-bg: #1c062c; --btn-text: #ff007f;
-            --num-bg: linear-gradient(180deg, #321054 0%, #120321 100%);
-            --receipt-glow: #00ff66; /* 🍏 Recibo ahora brilla en Verde para el tema principal */
+            --neon-primary: #ff007f; --neon-secondary: #00f0ff; --btn-bg: #1f0b35; --btn-text: #ff007f;
+            --num-bg: linear-gradient(180deg, #2d0e54 0%, #11021f 100%);
+            --receipt-glow: #00ff66;
         }
         body.theme-retro-gold {
             --bg-grad: linear-gradient(180deg, #1c1917 0%, #44403c 100%);
-            --neon-primary: #d97706; --neon-secondary: #fbbf24; --btn-bg: #292524; --btn-text: #fbbf24;
+            --neon-primary: #d97706; --neon-secondary: #fbbf24; --btn-bg: #2e2521; --btn-text: #fbbf24;
             --num-bg: linear-gradient(180deg, #44403c 0%, #1c1917 100%);
             --receipt-glow: #fbbf24;
         }
         body.theme-matrix {
             --bg-grad: linear-gradient(180deg, #022c22 0%, #050505 100%);
-            --neon-primary: #10b981; --neon-secondary: #34d399; --btn-bg: #064e3b; --btn-text: #34d399;
+            --neon-primary: #10b981; --neon-secondary: #34d399; --btn-bg: #073b2e; --btn-text: #34d399;
             --num-bg: linear-gradient(180deg, #022c22 0%, #050505 100%);
             --receipt-glow: #34d399;
         }
         body.theme-sunset {
             --bg-grad: linear-gradient(180deg, #451a03 0%, #78350f 100%);
-            --neon-primary: #f97316; --neon-secondary: #fdba74; --btn-bg: #421807; --btn-text: #fdba74;
+            --neon-primary: #f97316; --neon-secondary: #fdba74; --btn-bg: #3d1505; --btn-text: #fdba74;
             --num-bg: linear-gradient(180deg, #78350f 0%, #292524 100%);
             --receipt-glow: #fdba74;
         }
@@ -56,88 +56,91 @@
         /* 📟 CHASIS FÍSICO CON REGLA ESTRICTA DE ENERGÍA */
         .chasis { width: 340px; height: auto; min-height: 580px; background: #160d21; border: 4px solid var(--neon-primary); box-shadow: 0 0 25px rgba(255, 0, 127, 0.3); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; border-radius: 24px; overflow: hidden; display: flex; flex-direction: column; padding: 12px; gap: 8px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         
-        /* 🔌 APAGÓN TOTAL ESTRICTO */
+        /* 🔌 APAGÓN TOTAL ESTRICTO DEL PANEL Y DE LOS BOTONES EXCEPTO EL CONTROL DE ENERGÍA */
         .chasis.global-power-off { filter: brightness(0.25) grayscale(0.6); box-shadow: none !important; border-color: #444 !important; }
-        .chasis.global-power-off .btn-key, 
+        .chasis.global-power-off .lcd { background: #151d07 !important; box-shadow: inset 0 4px 10px rgba(0,0,0,0.9) !important; }
+        .chasis.global-power-off .lcd * { opacity: 0 !important; visibility: hidden !important; text-shadow: none !important; }
+        .chasis.global-power-off .btn-key:not(.power-btn), 
         .chasis.global-power-off .caja-data, 
         .chasis.global-power-off .btn-theme, 
         .chasis.global-power-off .btn-receipt,
-        .chasis.global-power-off .btn-step { box-shadow: none !important; text-shadow: none !important; border-color: #333 !important; animation: none !important; opacity: 0.2 !important; pointer-events: none !important; }
+        .chasis.global-power-off .btn-step,
+        .chasis.global-power-off .btn-add-embedded { box-shadow: none !important; text-shadow: none !important; border-color: #333 !important; animation: none !important; opacity: 0.1 !important; pointer-events: none !important; }
 
-        /* 🟢 PANTALLA LCD VERDE RETRO CON TOTALES A LA IZQUIERDA */
+        /* 🟢 PANTALLA LCD VERDE RETRO */
         .lcd { width: 100%; height: 175px; background: #92b043; border: 2px solid #000; border-radius: 14px; color: #000; box-shadow: inset 0 4px 10px rgba(0,0,0,0.4); font-weight: bold; padding: 8px; display: flex; flex-direction: column; justify-content: space-between; position: relative; transition: all 0.4s ease; transform-origin: center; z-index: 12; }
+        
+        /* Animaciones CRT de Televisor Vintage (Cierre y Apertura Inversa) */
         @keyframes crtTVClose { 0% { transform: scale(1, 1); filter: brightness(1); opacity: 1; } 40% { transform: scale(1, 0.01); filter: brightness(3); opacity: 1; } 100% { transform: scale(0, 0); filter: brightness(5); opacity: 0; background: #fff; } }
+        @keyframes crtTVOpen { 0% { transform: scale(0, 0); filter: brightness(5); opacity: 0; background: #fff; } 40% { transform: scale(1, 0.01); filter: brightness(3); opacity: 1; } 100% { transform: scale(1, 1); filter: brightness(1); opacity: 1; } }
         .lcd.power-off-crt { animation: crtTVClose 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards !important; }
+        .lcd.power-on-crt { animation: crtTVOpen 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards !important; }
 
         .lcd-header { display: flex; justify-content: space-between; font-size: 11px; border-bottom: 1px solid rgba(0,0,0,0.2); }
+        
+        /* 🚨 EFECTO BLINKING PARA EL TEXTO DEL TOP DE LA BARRA */
+        @keyframes headerBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.15; } }
+        .blinking-header-text { animation: headerBlink 1.4s infinite steps(2, start); }
+
         .lcd-wrapper { position: relative; flex-grow: 1; display: flex; flex-direction: column; margin: 4px 0; max-height: 55px; }
         .lcd-historial { flex-grow: 1; font-size: 10px; overflow-y: auto; text-align: left; padding-right: 4px; line-height: 1.3; }
         .lcd-body { text-align: left !important; font-size: 10px; line-height: 1.2; }
         .lcd-total { font-size: 24px; font-weight: 900; text-align: left !important; }
 
-        /* ✨ TEXTO Y FLECHA "DESLIZAR" PARPADEANTE */
         @keyframes blinkScrollHint { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
         .scroll-hint { position: absolute; bottom: 1px; right: 2px; font-size: 8px; color: rgba(0,0,0,0.8); animation: blinkScrollHint 1s infinite ease-in-out; pointer-events: none; display: none; background: rgba(146, 176, 67, 0.9); padding: 0 4px; border-radius: 3px; font-weight: 900; }
-
-        /* 🎛️ ESTRUCTURA FLEX DE LAS MINI-COLUMNAS DE OPCIONES */
+        /* 🎛️ ESTRUCTURA FLEX DE LAS MINI-COLUMNAS Y DISEÑO DE FLECHAS MAS GRANDES */
         .row-opciones-pasos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; width: 100%; }
         .wrapper-pasos { display: flex; flex-direction: column; gap: 2px; align-items: center; }
         
-        /* 🕹️ EFECTO TÁCTIL EN FLECHAS AL PRESIONARSE */
-        .btn-step { width: 100%; height: 16px; background: #22123b; border: 1px solid rgba(255, 255, 255, 0.15); color: #fff; font-size: 8px; cursor: pointer; display: flex; justify-content: center; align-items: center; border-radius: 4px; transition: all 0.1s ease; user-select: none; -webkit-user-select: none; }
-        .btn-step:active { transform: scale(0.9); background: #fff !important; color: #000 !important; box-shadow: 0 0 8px #fff; }
+        /* 🕹️ Flechas más grandes y con respuesta háptica visual */
+        .btn-step { width: 100%; height: 22px; background: #22123b; border: 1px solid rgba(255, 255, 255, 0.2); color: #fff; font-size: 10px; cursor: pointer; display: flex; justify-content: center; align-items: center; border-radius: 4px; transition: all 0.1s ease; user-select: none; -webkit-user-select: none; }
+        .btn-step:active { transform: scale(0.92); background: #fff !important; color: #000 !important; box-shadow: 0 0 10px #fff; }
 
-        /* Botones de Menú con Fondo Sólido */
-        .caja-data { width: 100%; padding: 4px 2px; border-radius: 8px; text-align: center; cursor: pointer; font-size: 9px; transition: all 0.2s ease; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 48px; position: relative; background: var(--btn-bg); border: 2px solid rgba(255, 255, 255, 0.08); color: #fff !important; opacity: 0.6; overflow: hidden; }
-        
-        /* 🌌 GRADIENTE NEÓN EN MOVIMIENTO SUTIL PARA MENÚS CUANDO ESTÁN ACTIVOS */
+        /* Botones de Opciones con Fondo Sólido Animado Continuo Synthwave */
         @keyframes activeMenuMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
         @keyframes neonPulse {
             0%, 100% { box-shadow: 0 0 8px var(--neon-primary), inset 0 0 3px var(--neon-primary); border-color: #fff; }
             50% { box-shadow: 0 0 16px var(--neon-secondary), inset 0 0 6px var(--neon-secondary); border-color: var(--neon-secondary); }
         }
-        .caja-data.btn-on { animation: neonPulse 1.8s infinite ease-in-out; background: linear-gradient(45deg, var(--btn-bg), #2e0854, var(--btn-bg)); background-size: 200% 200%; animation: neonPulse 1.8s infinite ease-in-out, activeMenuMove 4s infinite ease-in-out; color: #fff !important; opacity: 1 !important; border-color: #fff; }
+        .caja-data { width: 100%; padding: 4px 2px; border-radius: 8px; text-align: center; cursor: pointer; font-size: 9px; transition: all 0.2s ease; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 48px; position: relative; background: linear-gradient(135deg, #150624 0%, #250b3e 50%, #150624 100%); background-size: 200% 200%; animation: activeMenuMove 6s infinite ease-in-out; border: 2px solid rgba(255, 255, 255, 0.15); color: #fff !important; opacity: 0.85; overflow: hidden; }
+        .caja-data.btn-on { animation: neonPulse 1.8s infinite ease-in-out, activeMenuMove 3s infinite ease-in-out; background: linear-gradient(45deg, #2a0845, #6441a5, #2a0845); background-size: 200% 200%; color: #fff !important; opacity: 1 !important; border-color: #fff; }
 
-        @keyframes techMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        #cajaSub { background: linear-gradient(-45deg, #051a24, #082f44, #03121a, #0c3e54); background-size: 300% 300%; animation: techMove 6s infinite ease-in-out; border-color: rgba(0, 240, 255, 0.3); color: #00f0ff !important; opacity: 1; }
-        #cajaSub.btn-on { border-color: #fff; box-shadow: 0 0 12px rgba(0, 240, 255, 0.4); }
+        /* 📟 CONTENEDOR INTEGRADO DE PRECIO (+ INCRUSTACIÓN DE AÑADIR A LA IZQUIERDA) */
+        .contenedor-precio-unificado { display: flex; width: 100%; gap: 4px; background: linear-gradient(-45deg, #051a24, #082f44, #03121a, #0c3e54); background-size: 300% 300%; animation: activeMenuMove 6s infinite ease-in-out; border-radius: 10px; border: 2px solid rgba(0, 240, 255, 0.3); padding: 4px; min-height: 52px; align-items: center; transition: all 0.2s ease; }
+        .contenedor-precio-unificado.precio-on { border-color: #fff; box-shadow: 0 0 12px rgba(0, 240, 255, 0.4); }
+        
+        .btn-add-embedded { width: 42px; height: 100%; min-height: 40px; background: linear-gradient(180deg, #ff007f 0%, #4a0026 100%); border: 1px solid #ff007f; border-radius: 6px; color: #fff; font-size: 16px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; text-shadow: 0 0 5px #ff007f; transition: all 0.1s ease; }
+        .btn-add-embedded:active { transform: scale(0.95); filter: brightness(1.3); }
+        
+        #cajaSub { flex-grow: 1; background: transparent !important; border: none !important; box-shadow: none !important; min-height: auto; align-items: flex-end; padding-right: 8px; color: #00f0ff !important; opacity: 1; }
+        #cajaSub .lbl-title { font-size: 8px; text-transform: uppercase; color: rgba(0, 240, 255, 0.6); margin-bottom: 1px; }
         #cajaSub .lbl-val { font-size: 18px !important; font-weight: 900; }
 
-        @keyframes blinkFast { 0%, 100% { opacity: 1; } 50% { opacity: 0.15; } }
-        .blink-num { animation: blinkFast 0.6s infinite steps(2, start); text-shadow: 0 0 8px currentColor; }
-        /* ⌨️ TECLADO NUMÉRICO UNIFICADO Y MODALES SIN BLOQUEOS */
+        /* ⌨️ TECLADO NUMÉRICO UNIFICADO Y RECIBO */
         .pad-num { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; width: 100%; }
-        
         .btn-key { height: 38px; background: var(--num-bg); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 6px; color: #fff; font-size: 1.1rem; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; font-family: monospace; transition: all 0.2s ease; }
         .btn-key:active { filter: brightness(1.4); border-color: var(--neon-secondary); }
         .btn-back { color: #fff !important; background: var(--num-bg) !important; border-color: rgba(255, 255, 255, 0.1) !important; }
 
-        /* Botones Operativos Superiores (Clear, Añadir): Rosa Neón Vibrante unificado */
-        .btn-key.btn-op-special { background: linear-gradient(180deg, var(--neon-primary) 0%, #11021c 100%) !important; border-color: var(--neon-primary) !important; color: #fff !important; font-size: 9px; text-shadow: 0 0 5px var(--neon-primary); }
-        
-        /* Botones de Control Inferiores (Tema, Recibo, Apagar): Unificados en Gris Oscuro Metalizado */
-        .btn-theme, .btn-receipt, .btn-power-bottom { border-radius: 10px; font-weight: bold; cursor: pointer; transition: all 0.2s ease; text-transform: uppercase; display: flex; justify-content: center; align-items: center; font-family: monospace; height: 28px; font-size: 8px; background: linear-gradient(180deg, #2b2930 0%, #1c1a1f 100%) !important; border: 2px solid #555 !important; color: #ccc !important; text-shadow: none; box-shadow: none; width: 100%; z-index: 15; }
+        .btn-theme, .btn-receipt, .btn-power-bottom { border-radius: 10px; font-weight: bold; cursor: pointer; transition: all 0.2s ease; text-transform: uppercase; display: flex; justify-content: center; align-items: center; font-family: monospace; height: 28px; font-size: 8px; background: linear-gradient(180deg, #2b2930 0%, #1c1a1f 100%) !important; border: 2px solid #555 !important; color: #ccc !important; width: 100%; z-index: 15; }
         .btn-theme:active, .btn-receipt:active, .btn-power-bottom:active { border-color: var(--neon-secondary) !important; color: #fff !important; }
         .btn-power-bottom.power-active-btn { color: #fee2e2 !important; border-color: #ef4444 !important; text-shadow: 0 0 5px #ef4444; opacity: 1 !important; pointer-events: auto !important; }
 
-        .btn-key:disabled { opacity: 0.1 !important; cursor: not-allowed !important; }
         .row-acciones-inferior { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-top: 2px; width: 100%; }
-
-        /* 🔮 RECIBO HOLOGRÁFICO DINÁMICO (Verde Matrix en Cyberpunk / Combinado en otros) */
         .holograma-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10, 2, 24, 0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 100; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
         .holograma-overlay.activo { opacity: 1; pointer-events: auto; visibility: visible; }
 
         .holograma-ticket { width: 320px; max-height: 80vh; background: rgba(15, 10, 25, 0.95); border: 2px solid var(--receipt-glow); box-shadow: 0 0 30px var(--receipt-glow), inset 0 0 15px rgba(255,255,255,0.05); border-radius: 16px; padding: 16px; position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 12px; transform: scale(0.85); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); color: #fff; font-family: monospace; }
         .holograma-overlay.activo .holograma-ticket { transform: scale(1); }
-
         .holograma-lineas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%); background-size: 100% 4px; pointer-events: none; z-index: 5; }
-        .holograma-scrollable { flex-grow: 1; overflow-y: auto; font-size: 12px; line-height: 1.4; white-space: pre-wrap; padding-right: 4px; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 8px; padding: 8px; background: rgba(0, 0, 0, 0.4); color: var(--receipt-glow); text-shadow: 0 0 3px var(--receipt-glow); }
+        .holograma-scrollable { flex-grow: 1; overflow-y: auto; font-size: 11px; line-height: 1.4; white-space: pre-wrap; padding-right: 4px; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 8px; padding: 8px; background: rgba(0, 0, 0, 0.5); color: var(--receipt-glow); text-shadow: 0 0 3px var(--receipt-glow); }
         .holograma-footer { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
         .btn-holo { padding: 8px; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; border: 1px solid var(--receipt-glow); font-family: monospace; font-size: 11px; text-align: center; background: transparent; color: var(--receipt-glow); transition: all 0.2s ease; }
-        .btn-holo:active { background: rgba(255, 255, 255, 0.1); }
         
-        @keyframes tipeandoPuntos { 0% { content: "."; } 33% { content: ".."; } 66% { content: "..."; } 100% { content: "."; } }
-        .lcd-tipeo::after { content: "."; animation: tipeandoPuntos 1.2s infinite steps(1, start); }
+        @keyframes blinkFast { 0%, 100% { opacity: 1; } 50% { opacity: 0.15; } }
+        .blink-num { animation: blinkFast 0.6s infinite steps(2, start); text-shadow: 0 0 8px currentColor; }
+        .lcd-tipeo::after { content: "."; animation: blinkFast 1.2s infinite steps(1, start); }
     </style>
 </head>
 <body class="theme-cyberpunk">
@@ -148,7 +151,7 @@
         <!-- 🟢 PANTALLA LCD VERDE RETRO CON TOTALES A LA IZQUIERDA -->
         <div class="lcd" id="pantallaVerde">
             <div class="lcd-header">
-                <span id="txtHeaderIndicadores">IVU: 0.0%</span>
+                <span id="txtHeaderIndicadores" class="blinking-header-text">SISTEMA ACTIVO</span>
             </div>
             <div class="lcd-wrapper">
                 <div class="listaPrecios-container" style="flex-grow: 1; position: relative; display: flex; flex-direction: column; overflow: hidden;">
@@ -162,20 +165,21 @@
                 <div id="rowDesc" style="opacity: 0.3; transition: opacity 0.15s ease;">DESCUENTO: <span id="outDesc">-$0.00</span></div>
                 <div id="rowTip" style="opacity: 0.2; transition: opacity 0.15s ease;">PROPINA: <span id="outTip">$0.00</span></div>
                 <div id="rowIvu" style="opacity: 0.3; transition: opacity 0.15s ease;">IVU: <span id="outIvu">$0.00</span></div>
-                <div class="lcd-total" style="margin-bottom: 1px;">TOTAL: $<span id="outPer">0.00</span></div>
+                <div class="lcd-total" style="margin-bottom: 1px;">TOTAL (w/ IVU, TIP, DTO): $<span id="outPer">0.00</span></div>
                 <div id="rowPersonaCuota" style="opacity: 0.3; font-size: 11px; margin-top: 1px; transition: opacity 0.15s ease;"><span id="txtSerruchoLabelType">SERRUCHO (C/U): N/A</span> <span id="outPerPersonaLine"></span></div>
             </div>
         </div>
 
-        <!-- 🎛️ BOTONERA DE MENÚS (Fila superior: Cuenta con fondo tecnológico sutil animado) -->
-        <div class="row-menus" style="grid-template-columns: 1fr;">
-            <div id="cajaSub" class="caja-data btn-on" onclick="seleccionarMenu('sub')" style="width: 100%;">
-                <span class="lbl-title" style="color: #00f0ff;">Cuenta</span>
+        <!-- 🎛️ CONTENEDOR UNIFICADO DE PRECIO (+ CRUZ DE AÑADIR INTEGRADA) -->
+        <div class="contenedor-precio-unificado precio-on" id="marcadorPrecioUnificado">
+            <button id="btnAnadirGlobal" class="btn-add-embedded" onclick="addProducto()">+</button>
+            <div id="cajaSub" class="caja-data" onclick="seleccionarMenu('sub')">
+                <span class="lbl-title">Precio</span>
                 <span class="lbl-val">$<span id="lblSub" class="blink-num">0</span></span>
             </div>
         </div>
 
-        <!-- Segunda fila: Fila unificada con Flechas de Incremento Continuo Integradas -->
+        <!-- Fila unificada con Flechas de Incremento de Paso Controlado -->
         <div class="row-opciones-pasos">
             <!-- Columna Serrucho -->
             <div class="wrapper-pasos">
@@ -207,7 +211,7 @@
                 <button class="btn-step" onmousedown="iniciarAutoIncremento('tip', -1)" ontouchstart="iniciarAutoIncremento('tip', -1)" onmouseup="detenerAutoIncremento()" onmouseleave="detenerAutoIncremento()" ontouchend="detenerAutoIncremento()">▼</button>
             </div>
 
-            <!-- Columna IVU (Paso de 0.1% para permitir valores impares como 11.6%) -->
+            <!-- Columna IVU (Paso fino de 0.1% para agarrar impares fluidamente) -->
             <div class="wrapper-pasos">
                 <button class="btn-step" onmousedown="iniciarAutoIncremento('ivu', 0.1)" ontouchstart="iniciarAutoIncremento('ivu', 0.1)" onmouseup="detenerAutoIncremento()" onmouseleave="detenerAutoIncremento()" ontouchend="detenerAutoIncremento()">▲</button>
                 <div id="btnToggleIvu" class="caja-data btn-off" onclick="seleccionarMenu('ivu')">
@@ -218,19 +222,16 @@
             </div>
         </div>
 
-        <!-- ⌨️ TECLADO NUMÉRICO REORDENADO (Teclas exclusivas para el botón de Cuenta) -->
+        <!-- ⌨️ TECLADO NUMÉRICO REORDENADO (Teclas exclusivas para canalizar el Precio) -->
         <div class="pad-num">
-            <button id="btnBksp" onclick="bksp()" class="btn-key btn-back">←</button>
-            <button id="btnCeGlobal" class="btn-key btn-op-special" onclick="ce()">Clear</button>
-            <button id="btnVacioDummy" class="btn-key" style="opacity:0; pointer-events:none;"></button>
-            
             <button id="btnN7" onclick="num('7')" class="btn-key">7</button><button id="btnN8" onclick="num('8')" class="btn-key">8</button><button id="btnN9" onclick="num('9')" class="btn-key">9</button>
             <button id="btnN4" onclick="num('4')" class="btn-key">4</button><button id="btnN5" onclick="num('5')" class="btn-key">5</button><button id="btnN6" onclick="num('6')" class="btn-key">6</button>
             <button id="btnN1" onclick="num('1')" class="btn-key">1</button><button id="btnN2" onclick="num('2')" class="btn-key">2</button><button id="btnN3" onclick="num('3')" class="btn-key">3</button>
             
-            <button id="btnPunto" onclick="num('.')" class="btn-key">.</button>
+            <!-- Base numérica: Punto, 0, y Flecha de Borrar en la esquina inferior derecha -->
             <button id="btnN0" onclick="num('0')" class="btn-key">0</button>
-            <button id="btnAnadirGlobal" class="btn-key btn-op-special" onclick="addProducto()">+ Añadir</button>
+            <button id="btnPunto" onclick="num('.')" class="btn-key">.</button>
+            <button id="btnBksp" onclick="bksp()" class="btn-key btn-back">←</button>
         </div>
 
         <!-- Fila inferior de control unificada de 3 botones con la misma UI metálica -->
@@ -241,7 +242,7 @@
         </div>
     </div> <!-- Cierre de chasis -->
 
-    <!-- Visor Holográfico del Ticket Nítido -->
+    <!-- Visor Holográfico del Ticket Verde Nítido -->
     <div class="holograma-overlay" id="visorHolograma">
         <div class="holograma-ticket">
             <div class="holograma-lineas"></div>
@@ -275,11 +276,11 @@
         let themes = ['theme-cyberpunk', 'theme-retro-gold', 'theme-matrix', 'theme-sunset'], temaActualIdx = 0;
         let sistemaEncendido = true; 
 
-        // Variables para control de presión prolongada en las flechas ▲/▼
+        // Temporizadores calibrados para la ráfaga controlada por presión prolongada
         let intervaloAutoIncremento = null;
         let timeoutAutoIncremento = null;
 
-        // 🟢 SINTETIZADOR DE AUDIO RETRO CONTRASTADO
+        // 🟢 SINTETIZADOR DE AUDIO RETRO
         function dispararEfectoGlitch() {
             if (!sistemaEncendido) return;
             const lcd = document.getElementById('pantallaVerde');
@@ -305,8 +306,8 @@
                     osc.type = 'triangle'; osc.frequency.setValueAtTime(350, ctx.currentTime);
                     gain.gain.setValueAtTime(0.15, ctx.currentTime);
                 } else if (tipo === 'paso') {
-                    // 🕹️ firma de audio exclusiva para las flechas (potenciómetro digital rápido)
-                    osc.type = 'square'; osc.frequency.setValueAtTime(900, ctx.currentTime);
+                    // Audio exclusivo de potenciómetro digital mecánico para flechas
+                    osc.type = 'square'; osc.frequency.setValueAtTime(950, ctx.currentTime);
                     gain.gain.setValueAtTime(0.04, ctx.currentTime);
                     gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.04);
                     osc.start(); osc.stop(ctx.currentTime + 0.04);
@@ -343,16 +344,15 @@
             } catch (e) {}
         }
 
-        // ⏱️ LÓGICA DE PRESIÓN PROLONGADA PARA CONTROL VELOZ DE LAS FLECHAS
+        // ⏱️ LÓGICA DE PRESIÓN PROLONGADA CALIBRADA A VELOCIDAD DE COMODIDAD (110ms)
         function iniciarAutoIncremento(tipo, delta) {
             if (!sistemaEncendido) return;
             ejecutarModificacionPaso(tipo, delta);
             
-            // Si se deja presionado por más de 350ms, arranca la ráfaga rápida
             timeoutAutoIncremento = setTimeout(() => {
                 intervaloAutoIncremento = setInterval(() => {
                     ejecutarModificacionPaso(tipo, delta);
-                }, 40); // 40ms por ciclo = incremento ultra veloz
+                }, 110); // Calibrado a 110ms por ciclo para control perfecto sin saltos locos
             }, 350);
         }
 
@@ -362,7 +362,7 @@
         }
         function ejecutarModificacionPaso(tipo, delta) {
             if (!sistemaEncendido) return;
-            reproducirSonido('paso'); // Audio de potenciómetro mecánico exclusivo
+            reproducirSonido('paso');
             
             if (tipo === 'ppl') {
                 modoSerruchoActivo = true;
@@ -395,7 +395,6 @@
                 document.getElementById('lblTip').innerText = sTip;
             } 
             else if (tipo === 'ivu') {
-                // Paso de precisión de 0.1% libre de saltos impares
                 if (!modoIvuActivo && delta > 0) {
                     modoIvuActivo = true;
                     memoriaIvuPct = "11.5";
@@ -410,7 +409,6 @@
                 document.getElementById('lblIvuBoton').innerText = modoIvuActivo ? ivu.toFixed(1) : "0.0";
             }
             
-            // Sincronizar encendido de las luces de chasis
             document.getElementById('cajaPpl').className = modoSerruchoActivo ? "caja-data btn-on" : "caja-data btn-off";
             document.getElementById('cajaDesc').className = modoDescuentoActivo ? "caja-data btn-on" : "caja-data btn-off";
             document.getElementById('cajaTip').className = incluirPropina ? "caja-data btn-on" : "caja-data btn-off";
@@ -447,6 +445,7 @@
             if (sistemaEncendido) {
                 sistemaEncendido = false;
                 reproducirSonido('apagar');
+                lcd.classList.remove('power-on-crt');
                 lcd.classList.add('power-off-crt'); 
                 btnPower.classList.add('power-active-btn'); 
                 setTimeout(() => {
@@ -457,14 +456,17 @@
                 sistemaEncendido = true;
                 chasis.classList.remove('global-power-off'); 
                 lcd.classList.remove('power-off-crt');
+                // 💥 EFECTO CRT INVERSO AL ENCENDER
+                lcd.classList.add('power-on-crt');
                 toggleTeclasBloqueo(false);
                 reproducirSonido('menu');
                 ejecutarResetTotal();
+                setTimeout(() => { lcd.classList.remove('power-on-crt'); }, 410);
             }
         }
 
         function toggleTeclasBloqueo(bloquear) {
-            const botones = document.querySelectorAll('.btn-key, .caja-data, .btn-receipt, .btn-theme, .btn-step');
+            const botones = document.querySelectorAll('.btn-key, .caja-data, .btn-receipt, .btn-theme, .btn-step, .btn-add-embedded');
             botones.forEach(btn => {
                 if (btn.id !== 'btnTogglePower' && btn.id !== 'btnTheme') {
                     btn.disabled = bloquear;
@@ -496,7 +498,6 @@
         function seleccionarMenu(f) {
             if (!sistemaEncendido) return;
             reproducirSonido('menu');
-            const btnAnadir = document.getElementById('btnAnadirGlobal'), btnPunto = document.getElementById('btnPunto');
             const numSub = document.getElementById('lblSub'), numPpl = document.getElementById('lblPpl'), numDesc = document.getElementById('lblDesc'), numTip = document.getElementById('lblTip'), numIvu = document.getElementById('lblIvuBoton');
 
             if (f === 'ppl') {
@@ -521,7 +522,13 @@
                 mode = 'sub';
             } else { mode = f; }
             
-            ['cajaSub', 'cajaPpl', 'cajaDesc', 'cajaTip', 'btnToggleIvu'].forEach(id => { document.getElementById(id).className = 'caja-data btn-off'; });
+            ['marcadorPrecioUnificado', 'cajaPpl', 'cajaDesc', 'cajaTip', 'btnToggleIvu'].forEach(id => { 
+                const el = document.getElementById(id);
+                if (el) {
+                    if (id === 'marcadorPrecioUnificado') el.className = 'contenedor-precio-unificado';
+                    else el.className = 'caja-data btn-off';
+                }
+            });
             [numSub, numPpl, numDesc, numTip, numIvu].forEach(el => { if(el) el.classList.remove('blink-num'); });
 
             if (modoDescuentoActivo) document.getElementById('cajaDesc').className = "caja-data btn-on";
@@ -534,13 +541,12 @@
                 numDesc.innerText = modoDescuentoActivo ? memoriaDescuentoPct : "0";
                 numTip.innerText = incluirPropina ? memoriaTipPct : "0";
                 numIvu.innerText = modoIvuActivo ? parseFloat(memoriaIvuPct).toFixed(1) : "0.0";
-                if(btnAnadir) btnAnadir.disabled = false; 
-                if(btnPunto) btnPunto.disabled = false; 
-                numSub.classList.add('blink-num'); document.getElementById('cajaSub').className = "caja-data btn-on";
+                numSub.classList.add('blink-num'); 
+                document.getElementById('marcadorPrecioUnificado').className = "contenedor-precio-unificado precio-on";
             }
             actualizarHeaderIndicadores(); calc();
         }
-        // ⌨️ INGRESO NUMÉRICO RESTRINGIDO EXCLUSIVAMENTE AL BOTÓN DE CUENTA
+        // ⌨️ INGRESO NUMÉRICO EXCLUSIVO Y EXPANDIDO PARA EL CANAL DE PRECIO
         function num(c) {
             if (!sistemaEncendido) return;
             if (mode !== 'sub') mode = 'sub';
@@ -549,7 +555,9 @@
             if (sSub === "0" && c !== '.') sSub = "";
             if (c === '.' && sSub.includes('.')) return;
             sSub += c; 
-            if (parseFloat(sSub) > 99999) sSub = "99999";
+            
+            // 💰 Capacidad expandida hasta un millón ($1,000,000)
+            if (parseFloat(sSub) > 1000000) sSub = "1000000";
             
             document.getElementById('lblSub').innerText = sSub;
             calc();
@@ -587,7 +595,6 @@
                 let ivuIndividual = precioDescontado * (ivu / 100);
                 let totalArticulo = precioDescontado + ivuIndividual;
                 
-                // Guardamos el desglose exacto con descuento incluido por artículo
                 preciosGuardados.push({ 
                     precio: val, descuento: rebaja, ivuCalculado: ivuIndividual, porcientoIvuUsado: ivu, total: totalArticulo 
                 });
@@ -595,12 +602,12 @@
                 cuentaAcumulada += val; sSub = "0"; document.getElementById('lblSub').innerText = "0";
                 const con = document.getElementById('listaPrecios');
                 
-                // Renderizado detallado en la pantalla verde mostrando descuento e IVU
+                // Renderizado en pantalla limpia con desgloses compactos de DTO e IVU
                 con.innerHTML = preciosGuardados.map((item, i) => '<div>• (' + (i+1) + '): $' + item.total.toFixed(2) + ' <span style="font-size:8px; opacity:0.75;">(DTO:-$' + item.descuento.toFixed(2) + '/IVU:' + item.porcientoIvuUsado.toFixed(1) + '%)</span></div>').join('');
                 
                 if(preciosGuardados.length > 0) {
                     let totalConTaxAcumulado = preciosGuardados.reduce((sum, item) => sum + item.total, 0);
-                    con.innerHTML += '<div style="border-top:1px dashed rgba(0,0,0,0.3); font-weight:900; margin-top:2px;">Base Acum. (w/IVU): $' + totalConTaxAcumulado.toFixed(2) + '</div>';
+                    con.innerHTML += '<div style="border-top:1px dashed rgba(0,0,0,0.3); font-weight:900; margin-top:2px;">TOTAL (w/ IVU, TIP, DTO): $' + totalConTaxAcumulado.toFixed(2) + '</div>';
                 }
                 
                 // 🚨 CONTROL INTELIGENTE DE LA GUÍA: Solo aparece con 3 artículos o más
@@ -668,13 +675,13 @@
             
             const artTxtEl = document.getElementById('lblArtText');
             if(artTxtEl && preciosGuardados.length > 0) {
-                // Quitamos el texto fija "art." y dejamos solo el número limpio
+                // Contador limpio sin la palabra "art."
                 artTxtEl.innerHTML = `Cuenta (${preciosGuardados.length})`;
             }
             actualizarHeaderIndicadores();
         }
 
-        // 🌌 CONSTRUCTOR DEL RECIBO HOLOGRÁFICO
+        // 🌌 CONSTRUCTOR DEL RECIBO HOLOGRÁFICO TIDY Y BORICUA
         function abrirHologramaRecibo() {
             if (!sistemaEncendido) return;
             reproducirSonido('caja');
@@ -699,35 +706,37 @@
             let propinaTotal = subtotalDescontado * (tPct / 100);
             let totalNetoGlobal = subtotalDescontado + impuestoTotal + propinaTotal;
             
-            let txt = `===============================\n   CALCULADORA DE RESIDEUS\n===============================\n`;
+            // 📝 Maquetación Tidy en Arte ASCII con Jerga de Puerto Rico
+            let txt = `===============================\n     DETALLE DE LA CUENTA\n===============================\n`;
             txt += `Fecha: ${new Date().toLocaleDateString()} | Hora: ${new Date().toLocaleTimeString()}\n`;
             txt += `-------------------------------\n`;
             
             if(preciosGuardados.length > 0) {
                 txt += `Artículos Guardados:\n`;
                 preciosGuardados.forEach((a, i) => {
-                    // Reflejamos los detalles de DTO e IVU por separado por línea en el ticket
-                    txt += ` #|${i+1}| Total: $${a.total.toFixed(2)}\n`;
-                    txt += `    Base: $${a.precio.toFixed(2)} | DTO: -$${a.descuento.toFixed(2)}\n`;
-                    txt += `    Tax (${a.porcientoIvuUsado.toFixed(1)}%): +$${a.ivuCalculado.toFixed(2)}\n`;
+                    txt += ` Art. #${i+1}\n`;
+                    txt += `  Precio Base:       $${a.precio.toFixed(2)}\n`;
+                    if(a.descuento > 0) txt += `  Rebaja (Desc.):   -$${a.descuento.toFixed(2)}\n`;
+                    txt += `  IVU (${a.porcientoIvuUsado.toFixed(1)}%):        +$${a.ivuCalculado.toFixed(2)}\n`;
+                    txt += `  Total Artículo:    $${a.total.toFixed(2)}\n`;
                     txt += ` -----------------------------\n`;
                 });
             }
             
-            txt += `Importe Base:      $${nSub.toFixed(2)}\n`;
-            if(rebajaTotal > 0) txt += `Descuento Total:   -$${rebajaTotal.toFixed(2)}\n`;
+            txt += `Subtotal:          $${nSub.toFixed(2)}\n`;
+            if(rebajaTotal > 0) txt += `Descuento Total:  -$${rebajaTotal.toFixed(2)}\n`;
+            if(modoIvuActivo)   txt += `IVU Acumulado:     $${impuestoTotal.toFixed(2)}\n`;
             if(propinaTotal > 0) txt += `Propina (${tPct}%):     $${propinaTotal.toFixed(2)}\n`;
-            if(modoIvuActivo) txt += `IVU Acumulado:     $${impuestoTotal.toFixed(2)}\n`;
             txt += `===============================\n`;
-            txt += `TOTAL NETO:        $${totalNetoGlobal.toFixed(2)}\n`;
+            txt += `TOTAL DE LA CUENTA: $${totalNetoGlobal.toFixed(2)}\n`;
             txt += `===============================\n`;
 
             if(modoSerruchoActivo && numPplRaw > 1) {
-                txt += `SERRUCHO COMPARTIDO: ${numPplRaw} partes\n`;
-                txt += `CUOTA INDIVIDUAL:  $${(totalNetoGlobal / nPpl).toFixed(2)}\n`;
+                txt += `SERRUCHO COMPARTI'O: ${numPplRaw} panas\n`;
+                txt += `CUOTA POR CABEZA:   $${(totalNetoGlobal / nPpl).toFixed(2)}\n`;
                 txt += `===============================\n`;
             }
-            txt += ` ¡Gracias por usar la app!`;
+            txt += `    ¡Gracias por usar la app!`;
             
             textoReciboGlobal = txt;
             document.getElementById('textoContenidoHolo').innerText = txt;
