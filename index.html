@@ -263,18 +263,19 @@
         #cajaSub { flex-grow: 1; background: transparent !important; border: none !important; box-shadow: none !important; min-height: auto; align-items: center !important; justify-content: center !important; color: #fff !important; opacity: 1; text-align: center; }
         #cajaSub .lbl-title { font-size: 8px; text-transform: uppercase; color: var(--neon-secondary); margin-bottom: 1px; font-weight: bold; text-shadow: 0 0 4px rgba(0,240,255,0.2); }
         #cajaSub .lbl-val { font-size: 18px !important; font-weight: 900; color: #fff !important; }
-        /* ⌨️ TECLADO NUMÉRICO, PUNTO Y BORRAR: PULSO HORIZONTAL AMATISTA SUTIL */
-        @keyframes pulsoHazAmatista {
-            0% { background-position: 50% -200%; }
-            100% { background-position: 50% 200%; }
+        
+        /* ⌨️ TECLADO NUMÉRICO, PUNTO Y BORRAR: REJILLA TRIDIMENSIONAL CHROME-LASER DE LOS 80 */
+        @keyframes rejillaHorizonte80s {
+            0% { background-position: 0 0, 0 0; }
+            100% { background-position: 0 32px, 0 0; }
         }
         .pad-num { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; width: 100%; }
         
-        /* Unifica estrictamente los números, el punto y la flecha de borrar bajo el mismo efecto amatista */
+        /* Unifica números, punto y la flecha de borrar con la rejilla ochentera */
         .btn-key, .btn-back { 
             height: 38px; 
             background: var(--num-bg-theme) !important; 
-            border: 1px solid #5b14c3 !important; /* Borde amatista medio */
+            border: 1px solid #6a0dad !important; /* Borde amatista ochentero */
             border-radius: 6px; 
             color: #ffffff !important; 
             font-size: 1.1rem; 
@@ -291,22 +292,27 @@
             opacity: 1 !important;
             pointer-events: auto !important;
             
-            /* 🌌 HAZ DE LUZ AMATISTA PROFUNDO: Línea horizontal ochentosa que barre el fondo suavemente */
+            /* 🌌 EFECTO 80s: Malla en perspectiva lineal amatista desplazándose hacia adelante */
             background-image: 
-                linear-gradient(180deg, transparent 40%, rgba(106, 13, 173, 0.45) 50%, transparent 60%) !important;
-            background-size: 100% 200% !important;
-            animation: pulsoHazAmatista 4.5s infinite linear !important; /* Movimiento vertical continuo y lento */
+                /* Capa 1: Líneas horizontales de la cuadrícula en movimiento */
+                linear-gradient(rgba(106, 13, 173, 0.25) 1px, transparent 1px),
+                /* Capa 2: Líneas verticales estáticas que crean la perspectiva */
+                linear-gradient(90deg, rgba(106, 13, 173, 0.25) 1px, transparent 1px) !important;
+            
+            background-size: 100% 8px, 8px 100% !important;
+            animation: rejillaHorizonte80s 2.5s infinite linear !important; /* Desplazamiento fluido */
         }
         
-        /* Refuerzo de profundidad con una cúpula interna amatista oscura */
+        /* Efecto de destello de neón amatista central en cada tecla */
         .btn-key::before, .btn-back::before {
             content: "";
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, rgba(106, 13, 173, 0.25) 0%, transparent 80%) !important;
+            background: radial-gradient(circle at center, rgba(106, 13, 173, 0.35) 0%, transparent 75%) !important;
             pointer-events: none;
             z-index: 1;
         }
+
 
 
         .btn-theme, .btn-receipt, .btn-power-bottom { border-radius: 10px; font-weight: bold; cursor: pointer; transition: all 0.2s ease; text-transform: uppercase; display: flex; justify-content: center; align-items: center; font-family: monospace; height: 28px; font-size: 8px; background: var(--num-bg-theme) !important; border: 2px solid var(--neon-primary) !important; color: #ccc !important; width: 100%; z-index: 15; }
