@@ -142,14 +142,14 @@
         }
         .caja-data { width: 100%; padding: 4px 2px; border-radius: 8px; text-align: center; cursor: pointer; font-size: 9px; transition: all 0.2s ease; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 48px; position: relative; background: var(--btn-bg-theme); background-size: 200% 200%; animation: activeMenuMove 6s infinite ease-in-out; border: 2px solid var(--neon-primary); color: #fff !important; opacity: 0.9; overflow: hidden; }
         
-        /* 🌌 PIXELS SPARKLES: Estrellitas diminutas en píxeles que brillan LENTAMENTE */
-        @keyframes brilloLentoEstrellas {
-            0%, 100% { opacity: 0.1; filter: brightness(0.8); }
-            50% { opacity: 0.9; filter: brightness(1.8); }
+        /* 🌌 TITILEO SUAVE ESTILO CÚPULA ESPACIAL DE 8-BITS */
+        @keyframes titileoLentoPixel {
+            0%, 100% { opacity: 0.15; }
+            50% { opacity: 1; }
         }
         
         .caja-data.btn-on { 
-            /* 🔮 Conserva tu violeta animado synthwave fluyendo continuamente */
+            /* 🔮 Tu hermoso gradiente violeta sigue fluyendo de fondo de forma continua */
             background: linear-gradient(45deg, #2a0845, #6441a5, #2a0845) !important;
             background-size: 200% 200% !important;
             animation: neonPulse 1.8s infinite ease-in-out, activeMenuMove 3s infinite ease-in-out !important; 
@@ -159,25 +159,30 @@
             box-shadow: 0 0 16px var(--neon-secondary), inset 0 0 6px var(--neon-secondary) !important;
         }
 
-        /* Capa flotante con micro-píxeles blancos que respiran con suavidad */
+        /* 👾 INYECCIÓN DE AUTÉNTICAS ESTRELLAS EN PÍXELES CUADRADOS DE 8-BITS (1px) */
         .caja-data.btn-on::before {
             content: "";
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            /* Generamos sparkles ultra pequeños (puntos de luz nítidos de 1.5px fijos) */
-            background-image: 
-                radial-gradient(circle, #ffffff 1px, transparent 1.5px),
-                radial-gradient(circle, #ffffff 1.2px, transparent 1.7px);
-            background-size: 16px 20px, 24px 14px;
-            background-position: 20% 30%, 75% 70%;
-            background-repeat: no-repeat;
+            /* Creamos un micro-espejo de 1 píxel cuadrado real */
+            width: 1px;
+            height: 1px;
+            background: #ffffff;
+            top: 10px;
+            left: 15px;
+            /* Multiplicamos ese píxel en coordenadas aleatorias por todo el fondo */
+            box-shadow: 
+                15px 22px 0 #ffffff,   /* Estrella pixel 2 */
+                45px 5px 0 #ffffff,    /* Estrella pixel 3 */
+                55px 28px 0 #ffffff,   /* Estrella pixel 4 */
+                30px -4px 0 #ffffff,   /* Estrella pixel 5 */
+                -5px 14px 0 #ffffff;   /* Estrella pixel 6 */
             z-index: 1;
-            /* Transición fluida y lenta de 3.5 segundos para simular el espacio ochentero */
-            animation: brilloLentoEstrellas 3.5s infinite ease-in-out !important;
+            /* Respiración y brillo lento analógico de 3.5 segundos */
+            animation: titileoLentoPixel 3.5s infinite ease-in-out !important;
             pointer-events: none;
         }
 
-        /* Mantiene el texto flotando por encima de los sparkles */
+        /* Mantiene el texto flotando intacto por encima de las estrellas píxel */
         .caja-data.btn-on * {
             position: relative;
             z-index: 2;
@@ -234,6 +239,7 @@
             user-select: none; 
             z-index: 2;
         }
+
 
         
         #cajaSub { flex-grow: 1; background: transparent !important; border: none !important; box-shadow: none !important; min-height: auto; align-items: center !important; justify-content: center !important; color: #fff !important; opacity: 1; text-align: center; }
