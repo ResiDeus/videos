@@ -160,6 +160,7 @@
     <div class="grid3d"></div>
 
     <div class="chasis" id="calcChasis">
+        <!-- 🟢 PANTALLA LCD VERDE RETRO -->
         <div class="lcd" id="pantallaVerde">
             <div class="lcd-header">
                 <span id="txtHeaderIndicadores">IVU: 11.5%</span>
@@ -181,12 +182,17 @@
             </div>
         </div>
 
-        <!-- 🎛️ BOTONERA REESTRUCTURADA: BOTÓN DE CUENTA MÁS GRANDE (SPAN 2) -->
-        <div class="row-menus" style="grid-template-columns: repeat(5, 1fr);">
-            <div id="cajaSub" class="caja-data btn-on on-anim" onclick="seleccionarMenu('sub')" style="grid-column: span 2;">
+        <!-- 🎛️ NUEVA INTERFAZ DE MENÚS SINTETIZADA -->
+        <div class="row-menus" style="grid-template-columns: 1fr;">
+            <!-- Fila superior: Cuenta cruzando de lado a lado -->
+            <div id="cajaSub" class="caja-data btn-on on-anim" onclick="seleccionarMenu('sub')" style="width: 100%;">
                 <span class="lbl-title">Cuenta</span>
                 <span class="lbl-val">$<span id="lblSub" class="blink-num">0</span></span>
             </div>
+        </div>
+
+        <!-- Segunda fila: Fila unificada de opciones neón (Misma UI e idéntico tamaño) -->
+        <div class="row-menus" style="grid-template-columns: repeat(4, 1fr);">
             <div id="cajaPpl" class="caja-data btn-off" onclick="seleccionarMenu('ppl')">
                 <span class="lbl-title">Serrucho</span>
                 <span class="lbl-val"><span id="lblPpl">N/A</span></span>
@@ -199,10 +205,14 @@
                 <span class="lbl-title">Propina</span>
                 <span class="lbl-val"><span id="lblTip">0</span>%</span>
             </div>
+            <div id="btnToggleIvu" class="caja-data btn-on" onclick="conmutarIvu()">
+                <span class="lbl-title">IVU</span>
+                <span class="lbl-val"><span id="lblIvuBoton">11.5</span>%</span>
+            </div>
         </div>
 
+        <!-- ⌨️ TECLADO NUMÉRICO REORDENADO Y REFORMADO -->
         <div class="pad-num">
-            <!-- ⚡ BOTONES CONFIGURADOS CON NUEVO ESTILO Y COMPORTAMIENTO DE ENCENDIDO/APAGADO -->
             <button id="btnTogglePower" class="btn-key btn-op-special power-btn" onclick="togglePower()">⏻</button>
             <button id="btnCeGlobal" class="btn-key btn-op-special" onclick="ce()">Clear</button>
             <button id="btnAnadirGlobal" class="btn-key btn-op-special" onclick="addProducto()">+ Añadir</button>
@@ -211,18 +221,18 @@
             <button id="btnN4" onclick="num('4')" class="btn-key">4</button><button id="btnN5" onclick="num('5')" class="btn-key">5</button><button id="btnN6" onclick="num('6')" class="btn-key">6</button>
             <button id="btnN1" onclick="num('1')" class="btn-key">1</button><button id="btnN2" onclick="num('2')" class="btn-key">2</button><button id="btnN3" onclick="num('3')" class="btn-key">3</button>
             
-            <!-- 🚨 INTERRUPTOR DEL IVU: Moviéndose al pad numérico como botón modificador dinámico -->
-            <button id="btnToggleIvu" class="btn-key btn-op-special" onclick="conmutarIvu()" style="font-size: 11px;">IVU: 11.5%</button>
+            <!-- Fila inferior del pad: 0, punto y borrar alineados perfectamente -->
             <button id="btnN0" onclick="num('0')" class="btn-key">0</button>
             <button id="btnPunto" onclick="num('.')" class="btn-key">.</button>
+            <button id="btnBksp" onclick="bksp()" class="btn-key btn-back">←</button>
         </div>
 
         <div class="row-acciones-inferior">
-            <button id="btnBksp" onclick="bksp()" class="btn-key btn-back" style="height: 28px; font-size: 14px;">←</button>
             <button id="btnTheme" class="btn-theme" onclick="rotarTema()">TEMA</button>
             <button id="btnReceipt" class="btn-receipt" onclick="abrirHologramaRecibo()">RECIBO</button>
         </div>
     </div>
+    <!-- 🔮 CAPA DE ACCESO AL RECIBO HOLOGRÁFICO -->
     <div class="holograma-overlay" id="visorHolograma">
         <div class="holograma-ticket">
             <div class="holograma-lineas"></div>
@@ -242,7 +252,7 @@
         let memoriaDescuentoPct = "0", memoriaTipPct = "15", memoriaSerruchoCortes = "2";
         let preciosGuardados = [], cuentaAcumulada = 0, textoReciboGlobal = "";
         let themes = ['theme-cyberpunk', 'theme-retro-gold', 'theme-matrix', 'theme-sunset'], temaActualIdx = 0, recienEntradoAPropina = false;
-        let sistemaEncendido = true; // Control de encendido/apagado
+        let sistemaEncendido = true; // El sistema ahora inicia encendido por defecto
 
         // 🟢 SINTETIZADOR DE AUDIO RETRO
         function dispararEfectoGlitch() {
@@ -292,21 +302,18 @@
             } catch (e) {}
         }
 
-        // 🔌 INTERRUPTOR MAESTRO DE ENERGÍA (Resetea todo al apagar/encender)
+        // 🔌 INTERRUPTOR MAESTRO DE ENERGÍA (On/Off)
         function togglePower() {
             sistemaEncendido = !sistemaEncendido;
             const lcd = document.getElementById('pantallaVerde');
             const btnPower = document.getElementById('btnTogglePower');
             
             if (!sistemaEncendido) {
-                // Modo apagado visual
                 lcd.classList.add('power-off');
                 btnPower.style.boxShadow = "none";
                 btnPower.style.opacity = "0.6";
-                // Deshabilitar todos los botones menos el de power y el de tema
                 toggleTeclasBloqueo(true);
             } else {
-                // Modo encendido: Restaurar valores default de fábrica
                 lcd.classList.remove('power-off');
                 btnPower.style.boxShadow = "";
                 btnPower.style.opacity = "";
@@ -326,7 +333,6 @@
                 }
             });
         }
-
         function ejecutarResetTotal() {
             sSub = "0"; cuentaAcumulada = 0; preciosGuardados = [];
             document.getElementById('listaPrecios').innerHTML = '<i class="lcd-tipeo" id="lblArtText">Lista vacía...</i>';
@@ -334,7 +340,8 @@
             document.getElementById('lblPpl').innerText = "N/A"; sDesc = "0"; memoriaDescuentoPct = "0"; modoDescuentoActivo = false; document.getElementById('lblDesc').innerText = "0";
             sTip = "15"; memoriaTipPct = "15"; incluirPropina = false; recienEntradoAPropina = false;
             ivu = 11.5;
-            document.getElementById('btnToggleIvu').innerText = `IVU: 11.5%`;
+            document.getElementById('lblIvuBoton').innerText = "11.5";
+            document.getElementById('btnToggleIvu').className = "caja-data btn-on";
             seleccionarMenu('sub');
         }
 
@@ -368,6 +375,7 @@
 
             if (modoDescuentoActivo && mode !== 'desc') document.getElementById('cajaDesc').className = "caja-data btn-on";
             if (modoSerruchoActivo && mode !== 'ppl') document.getElementById('cajaPpl').className = "caja-data btn-on";
+            if (incluirPropina && mode !== 'tip') document.getElementById('cajaTip').className = "caja-data btn-on";
 
             if (mode === 'sub') {
                 numPpl.innerText = modoSerruchoActivo ? memoriaSerruchoCortes : "N/A";
@@ -385,14 +393,10 @@
                 numTip.innerText = sTip; btnAnadir.disabled = true; btnPunto.disabled = false;
                 numTip.classList.add('blink-num'); document.getElementById('cajaTip').className = "caja-data btn-on on-anim";
             }
-            if (incluirPropina && mode !== 'tip') document.getElementById('cajaTip').className = "caja-data btn-on";
-            
-            // El ajuste de Cuenta más grande obliga a recalcular su estilo span individual
-            document.getElementById('cajaSub').style.gridColumn = "span 2";
             actualizarHeaderIndicadores(); calc();
         }
 
-        // 🎛️ INPUT DE IVU INTERACTIVO MEDIANTE PROMPT
+        // 🎛️ MODIFICADOR DE TASA DE IVU PERSONALIZADO POR PROMPT
         function conmutarIvu() {
             if (!sistemaEncendido) return;
             reproducirSonido('menu');
@@ -401,14 +405,18 @@
                 let parsedValue = parseFloat(nuevaTasa);
                 if (!isNaN(parsedValue) && parsedValue >= 0 && parsedValue <= 100) {
                     ivu = parsedValue;
+                    document.getElementById('lblIvuBoton').innerText = ivu.toFixed(1);
+                    if (ivu === 0) {
+                        document.getElementById('btnToggleIvu').className = "caja-data btn-off";
+                    } else {
+                        document.getElementById('btnToggleIvu').className = "caja-data btn-on";
+                    }
                 } else {
                     alert("Por favor ingresa un porcentaje válido entre 0 y 100.");
                 }
             }
-            document.getElementById('btnToggleIvu').innerText = `IVU: ${ivu.toFixed(1)}%`;
             actualizarHeaderIndicadores(); calc();
         }
-
         function num(c) {
             if (!sistemaEncendido) return;
             reproducirSonido('tecla');
@@ -579,7 +587,60 @@
             let subtotalDescontado = nSub - rebajaTotal;
             let propinaTotal = subtotalDescontado * (tPct / 100);
             let totalNetoGlobal = subtotalDescontado + impuestoTotal + propinaTotal;
+            let porSerrucho = totalNetoGlobal / nSerrucho;
             
+            document.getElementById('outDesc').innerText = '-\$' + rebajaTotal.toFixed(2); 
+            document.getElementById('outTip').innerText = '\$' + propinaTotal.toFixed(2);
+            document.getElementById('outIvu').innerText = '\$' + impuestoTotal.toFixed(2); 
+            document.getElementById('outPer').innerText = totalNetoGlobal.toFixed(2);
+            
+            document.getElementById('rowDesc').style.opacity = modoDescuentoActivo ? "1" : "0.3";
+            document.getElementById('rowTip').style.opacity = incluirPropina ? "1" : "0.3";
+            if (modoSerruchoActivo) {
+                document.getElementById('txtSerruchoLabelType').innerText = `SERRUCHO (C/U): `;
+                document.getElementById('outPerPersonaLine').innerText = '$' + porSerrucho.toFixed(2);
+                document.getElementById('rowPersonaCuota').style.opacity = "1"; 
+            } else {
+                document.getElementById('txtSerruchoLabelType').innerText = `SERRUCHO (C/U): N/A`;
+                document.getElementById('outPerPersonaLine').innerText = ``;
+                document.getElementById('rowPersonaCuota').style.opacity = "0.3"; 
+            }
+            
+            document.getElementById('lblTip').innerText = incluirPropina ? memoriaTipPct : "0"; 
+            document.getElementById('lblDesc').innerText = modoDescuentoActivo ? memoriaDescuentoPct : "0"; 
+            if (mode !== 'ppl') { document.getElementById('lblPpl').innerText = modoSerruchoActivo ? memoriaSerruchoCortes : "N/A"; }
+            
+            const artTxtEl = document.getElementById('lblArtText');
+            if(artTxtEl && preciosGuardados.length > 0) {
+                artTxtEl.innerText = `Cuenta (${preciosGuardados.length} art.)`;
+                artTxtEl.className = ""; 
+            }
+            actualizarHeaderIndicadores();
+        }
+        // 🌌 CONSTRUCTOR DEL RECIBO HOLOGRÁFICO
+        function abrirHologramaRecibo() {
+            if (!sistemaEncendido) return;
+            reproducirSonido('caja');
+            let numPplRaw = parseInt(sPpl); 
+            let nPpl = (modoSerruchoActivo && !isNaN(numPplRaw) && numPplRaw > 1) ? numPplRaw : 1;
+            let dPct = modoDescuentoActivo ? (parseFloat(memoriaDescuentoPct) || 0) : 0;
+            let tPct = incluirPropina ? (parseFloat(memoriaTipPct) || 0) : 0;
+            
+            let sumaPreciosGuardados = preciosGuardados.reduce((sum, item) => sum + item.precio, 0);
+            let sumaDescuentosGuardados = preciosGuardados.reduce((sum, item) => sum + item.descuento, 0);
+            let impuestoTotalAcumulado = preciosGuardados.reduce((sum, item) => sum + item.ivuCalculado, 0);
+            
+            let precioEnTeclado = parseFloat(sSub) || 0;
+            let descuentoEnTeclado = precioEnTeclado * (dPct / 100);
+            let precioDescontadoTeclado = precioEnTeclado - descuentoEnTeclado;
+            let impuestoEnTeclado = precioDescontadoTeclado * (ivu / 100);
+            
+            let nSub = sumaPreciosGuardados + precioEnTeclado;
+            let rebajaTotal = sumaDescuentosGuardados + descuentoEnTeclado;
+            let impuestoTotal = impuestoTotalAcumulado + impuestoEnTeclado;
+            let subtotalDescontado = nSub - rebajaTotal;
+            let propinaTotal = subtotalDescontado * (tPct / 100);
+            let totalNetoGlobal = subtotalDescontado + impuestoTotal + propinaTotal;
             let txt = `===============================\n   CALCULADORA DE RESIDEUS\n===============================\n`;
             txt += `Fecha: ${new Date().toLocaleDateString()} | Hora: ${new Date().toLocaleTimeString()}\n`;
             txt += `-------------------------------\n`;
@@ -612,3 +673,41 @@
             document.getElementById('btnCopiarHolo').innerText = "Copiar";
             document.getElementById('visorHolograma').classList.add('activo');
         }
+        function cerrarHologramaRecibo() {
+            reproducirSonido('menu');
+            document.getElementById('visorHolograma').classList.remove('activo');
+        }
+
+        function copiarTextoHolograma() {
+            if (!sistemaEncendido) return;
+            reproducirSonido('caja');
+            navigator.clipboard.writeText(textoReciboGlobal).then(() => {
+                document.getElementById('btnCopiarHolo').innerText = "¡Copiado!";
+            }).catch(() => {
+                alert("Error al copiar, usa captura de pantalla.");
+            });
+        }
+
+        function rotarTema() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator(), gain = ctx.createGain();
+                osc.connect(gain); gain.connect(ctx.destination);
+                osc.type = 'sine'; osc.frequency.setValueAtTime(800, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(400, ctx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.1, ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.15);
+                osc.start(); osc.stop(ctx.currentTime + 0.15);
+            } catch(e){}
+
+            document.body.classList.remove(themes[temaActualIdx]);
+            temaActualIdx = (temaActualIdx + 1) % themes.length;
+            document.body.classList.add(themes[temaActualIdx]);
+        }
+
+        // Sincronización inicial al cargar la página
+        actualizarHeaderIndicadores(); 
+        calc();
+    </script>
+</body>
+</html>
