@@ -102,12 +102,22 @@
         @keyframes blinkScrollHint { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
         .scroll-hint { position: absolute; bottom: 1px; right: 2px; font-size: 8px; color: rgba(0,0,0,0.8); animation: blinkScrollHint 1s infinite ease-in-out; pointer-events: none; display: none; background: rgba(146, 176, 67, 0.9); padding: 0 4px; border-radius: 3px; font-weight: 900; }
 
-        /* ⚡ EFFECTO FLASH BLANCO UNIVERSAL EN CUALQUIER BOTÓN ACTIVO */
-        .btn-key:active, .caja-data:active, .btn-theme:active, .btn-receipt:active, .btn-step:active, .btn-add-embedded:active {
-            filter: brightness(1.8) contrast(1.2) !important;
-            box-shadow: 0 0 15px #fff !important;
+         /* ⚡ CONTROLES DEL EFECTO FLASH BLANCO UNIVERSAL AL TOCAR LAS TECLAS */
+        .btn-key:active, 
+        .caja-data:active, 
+        .btn-theme:active, 
+        .btn-receipt:active, 
+        .btn-step:active, 
+        .btn-add-embedded:active,
+        .btn-power-bottom:active {
+            background: #ffffff !important;
+            color: #000000 !important;
+            filter: brightness(2) contrast(1.5) !important;
+            box-shadow: 0 0 20px #ffffff, inset 0 0 10px #ffffff !important;
+            text-shadow: none !important;
             transition: none !important;
         }
+
         /* 🎛️ GRID HORIZONTAL REPARADO: 4 Columnas perfectas alineadas simétricamente */
         .row-opciones-pasos { display: grid; grid-template-columns: repeat(4, 1fr) !important; gap: 4px; width: 100%; }
         .wrapper-pasos { display: flex; flex-direction: column; gap: 2px; align-items: center; width: 100%; }
