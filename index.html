@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Calculadora de ResiDeus</title>
 
-    <!-- 📱 CONFIGURACIÓN DE LA PANTALLA DE INICIO IPHONE / PWA -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- 📱 CONFIGURACIÓN DE PANTALLA DE INICIO IPHONE / PWA -->
+    <meta name="apple-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-touch-fullscreen" content="yes">
     <meta name="apple-mobile-web-app-title" content="ResiDeus">
     
     <link rel="icon" type="image/jpeg" href="./icon.jpg?v=200">
@@ -17,25 +18,19 @@
         /* ==========================================================================
            🎨 ASIGNACIÓN DE TEMAS DINÁMICOS COMPLETA (CON REJILLAS DE PRECIO INTEGRADAS)
            ========================================================================== */
-        /* 1️⃣ CYBERPUNK (Botonera numérica forzada a Verde Amatista/Fósforo radical) */
+        /* 1️⃣ CYBERPUNK (Rejilla Cyan Neón) */
         body.theme-cyberpunk {
             --bg-grad: linear-gradient(180deg, #09011a 0%, #2c044d 100%);
             --neon-primary: #ff007f; --neon-secondary: #00f0ff; --receipt-glow: #00ff66;
             --btn-bg-theme: linear-gradient(135deg, #150624 0%, #250b3e 50%, #150624 100%);
             --num-bg-theme: linear-gradient(180deg, #2d0e54 0%, #11021f 100%);
             --blue-tech: linear-gradient(45deg, #0066ff, #00f0ff, #0066ff);
-            
-            /* 🚨 ASIGNACIÓN VERDE EXCLUSIVA PARA EL FONDO Y AURA EN MODO FÁBRICA */
-            --teclado-bg-forced: #00ff66;
-            --teclado-aura-color: #ffffff;
         }
         body.theme-cyberpunk #marcadorPrecioUnificado {
             background-image: 
                 linear-gradient(rgba(0, 240, 255, 0.25) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(0, 240, 255, 0.25) 1px, transparent 1px) !important;
         }
-
-
 
         /* 2️⃣ RETRO GOLD (Rejilla Oro Ámbar) */
         body.theme-retro-gold {
@@ -82,7 +77,6 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         html, body { width: 100vw; height: 100vh; overflow: hidden; position: relative; font-family: monospace; transition: background 0.3s ease; }
         body { background: var(--bg-grad) !important; }
-
         
         /* ✨ AMBIENTACIÓN RETRO */
         .sky { position: absolute; width: 100%; height: 100%; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent), radial-gradient(1.5px 1px at 75px 120px, #fff9, transparent); background-size: 380px 380px; z-index: 1; animation: twk 4s infinite linear; pointer-events: none; }
@@ -112,26 +106,12 @@
         /* Botón de encendido verde activo constante al apagarse */
         .chasis.global-power-off .btn-power-bottom { background: #022c22 !important; border-color: #10b981 !important; color: #34d399 !important; text-shadow: 0 0 8px #10b981 !important; opacity: 1 !important; pointer-events: auto !important; }
 
-        /* 🟢 PANTALLA LCD VERDE RETRO COMPLETAMENTE LIMPIA Y PLANA */
-        .lcd { 
-            width: 100%; 
-            height: 175px; 
-            background: #92b043; 
-            border: 2px solid #000; 
-            border-radius: 14px; 
-            color: #000; 
-            box-shadow: inset 0 2px 6px rgba(0,0,0,0.3); /* Sombra interna mínima limpia sin manchas oscuras */
-            font-weight: bold; 
-            padding: 8px; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: space-between; 
-            position: relative; 
-            transition: all 0.4s ease; 
-            transform-origin: center; 
-            z-index: 12; 
-            overflow: hidden;
-        }
+        /* 🟢 PANTALLA LCD VERDE RETRO */
+        .lcd { width: 100%; height: 175px; background: #92b043; border: 2px solid #000; border-radius: 14px; color: #000; box-shadow: inset 0 2px 6px rgba(0,0,0,0.3); font-weight: bold; padding: 8px; display: flex; flex-direction: column; justify-content: space-between; position: relative; transition: all 0.4s ease; transform-origin: center; z-index: 12; overflow: hidden; }
+        
+        /* 🔵 MUTACIÓN A SUB-PANTALLA AZUL CIBERNÉTICO DE SALARIO */
+        .lcd.modo-salario-activo { background: #051e36 !important; color: #00f0ff !important; box-shadow: inset 0 2px 8px rgba(0,0,0,0.6), 0 0 10px rgba(0,240,255,0.2) !important; }
+        .lcd.modo-salario-activo .lcd-header { border-bottom: 1px solid rgba(0, 240, 255, 0.3) !important; }
 
         /* Animaciones CRT de Televisor Vintage */
         @keyframes crtTVClose { 0% { transform: scale(1, 1); filter: brightness(1); opacity: 1; } 40% { transform: scale(1, 0.01); filter: brightness(3); opacity: 1; } 100% { transform: scale(0, 0); filter: brightness(5); opacity: 0; background: #fff; } }
@@ -150,7 +130,7 @@
         @keyframes blinkScrollHint { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
         .scroll-hint { position: absolute; bottom: 1px; right: 2px; font-size: 8px; color: rgba(0,0,0,0.8); animation: blinkScrollHint 1s infinite ease-in-out; pointer-events: none; display: none; background: rgba(146, 176, 67, 0.9); padding: 0 4px; border-radius: 3px; font-weight: 900; }
 
-        /* ⚡ CONTROLES DEL EFECTO FLASH BLANCO UNIVERSAL AL TOCAR LAS TECLAS */
+         /* ⚡ CONTROLES DEL EFECTO FLASH BLANCO UNIVERSAL AL TOCAR LAS TECLAS */
         .btn-key:active, 
         .caja-data:active, 
         .btn-theme:active, 
@@ -165,9 +145,8 @@
             text-shadow: none !important;
             transition: none !important;
         }
-
-        /* 🎛️ GRID HORIZONTAL SIMÉTRICO EN UNA SOLA FILA */
-        .row-opciones-pasos { display: grid; grid-template-columns: repeat(4, 1fr) !important; gap: 4px; width: 100%; }
+        /* 🎛️ GRID HORIZONTAL EXPANDIDO: 5 Columnas perfectas alineadas simétricamente */
+        .row-opciones-pasos { display: grid; grid-template-columns: repeat(5, 1fr) !important; gap: 3px; width: 100%; }
         .wrapper-pasos { display: flex; flex-direction: column; gap: 2px; align-items: center; width: 100%; }
         
         /* 🕹️ Flechas acopladas por completo al color del tema activo */
@@ -179,221 +158,64 @@
             0%, 100% { box-shadow: 0 0 8px var(--neon-primary), inset 0 0 3px var(--neon-primary); border-color: #fff; }
             50% { box-shadow: 0 0 16px var(--neon-secondary), inset 0 0 6px var(--neon-secondary); border-color: var(--neon-secondary); }
         }
-        .caja-data { width: 100%; padding: 4px 2px; border-radius: 8px; text-align: center; cursor: pointer; font-size: 9px; transition: all 0.2s ease; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 48px; position: relative; background: var(--btn-bg-theme); background-size: 200% 200%; animation: activeMenuMove 6s infinite ease-in-out; border: 2px solid var(--neon-primary); color: #fff !important; opacity: 0.9; overflow: hidden; }
+        .caja-data { width: 100%; padding: 4px 2px; border-radius: 8px; text-align: center; cursor: pointer; font-size: 8px; transition: all 0.2s ease; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 48px; position: relative; background: var(--btn-bg-theme); background-size: 200% 200%; animation: activeMenuMove 6s infinite ease-in-out; border: 2px solid var(--neon-primary); color: #fff !important; opacity: 0.9; overflow: hidden; }
         
-        /* 🌌 CONFIGURACIÓN REVERTIDA: BASE VIOLETA ANIMADA FIJA CON ESTRELLITAS PÍXEL PARA TODOS LOS TEMAS */
-        @keyframes titileoLentoPixel {
-            0%, 100% { opacity: 0.15; }
-            50% { opacity: 1; }
-        }
-        
-        /* 🌌 CONFIGURACIÓN CON TEXTO EN NEGRETAS (BOLD) CUANDO EL BOTÓN ESTÁ ENCENDIDO */
+        /* 🌌 CONFIGURACIÓN CON TEXTO EN NEGRETAS (BOLD) FIJA CON ESTRELLITAS PÍXEL 8-BITS */
+        @keyframes titileoLentoPixel { 0%, 100% { opacity: 0.15; } 50% { opacity: 1; } }
         .caja-data.btn-on { 
             background: linear-gradient(45deg, #2a0845, #6441a5, #2a0845) !important;
             background-size: 200% 200% !important;
             animation: neonPulse 1.8s infinite ease-in-out, activeMenuMove 3s infinite ease-in-out !important; 
-            
-            color: #ffffff !important; 
-            opacity: 1 !important; 
-            border-color: #ffffff !important;
+            color: #ffffff !important; opacity: 1 !important; border-color: #ffffff !important;
             box-shadow: 0 0 16px var(--neon-secondary), inset 0 0 6px var(--neon-secondary) !important;
-            
-            /* 🚨 Fuerza el texto y números del botón activo a negrita con alta visibilidad */
             font-weight: 900 !important;
         }
-
-        /* Capa trasera independiente que dibuja la constelación de micro-píxeles cuadrados */
         .caja-data.btn-on::before {
-            content: "";
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            background: #ffffff;
-            top: 10px;
-            left: 15px;
-            box-shadow: 
-                15px 22px 0 #ffffff,   
-                45px 5px 0 #ffffff,    
-                55px 28px 0 #ffffff,   
-                30px -4px 0 #ffffff,   
-                -5px 14px 0 #ffffff;   
-            z-index: 1;
-            animation: titileoLentoPixel 3.5s infinite ease-in-out !important;
-            pointer-events: none;
+            content: ""; position: absolute; width: 1px; height: 1px; background: #ffffff; top: 10px; left: 12px;
+            box-shadow: 10px 22px 0 #ffffff, 35px 5px 0 #ffffff, 45px 28px 0 #ffffff, 20px -4px 0 #ffffff;
+            z-index: 1; animation: titileoLentoPixel 3.5s infinite ease-in-out !important; pointer-events: none;
         }
+        .caja-data.btn-on * { position: relative; z-index: 2; font-weight: 900 !important; }
 
-        /* Asegura la lectura limpia de las letras por encima de las estrellas */
-        .caja-data.btn-on * {
-            position: relative;
-            z-index: 2;
-            /* 🚨 Asegura que los textos y valores anidados hereden el formato bold */
-            font-weight: 900 !important;
-        }
-
-        /* 📟 BASE GENERAL DE LA ANIMACIÓN DE LA REJILLA */
-        @keyframes synthwaveShift {
-            0% { background-position: 0% 0%; }
-            100% { background-position: 40px 40px; }
-        }
-        .contenedor-precio-unificado { 
-            display: flex; 
-            width: 100%; 
-            gap: 4px; 
-            background-color: #0b0214 !important;
-            background-size: 20px 20px !important;
-            animation: synthwaveShift 2.5s infinite linear !important; 
-            border-radius: 10px; 
-            border: 2px solid var(--neon-secondary); 
-            padding: 4px; 
-            min-height: 52px; 
-            align-items: center; 
-            transition: all 0.2s ease; 
-            position: relative; 
-            overflow: hidden;
-        }
-        .contenedor-precio-unificado.precio-on { 
-            border-color: #fff; 
-            box-shadow: 0 0 14px var(--neon-secondary); 
-        }
-
-        /* 🎨 REGLAS ESPECÍFICAS POR TEMA PARA EL TRATAMIENTO DE LOS CUADRADOS ANIMADOS */
-        body.theme-cyberpunk .contenedor-precio-unificado {
-            background-image: 
-                linear-gradient(rgba(0, 240, 255, 0.25) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 240, 255, 0.25) 1px, transparent 1px) !important;
-        }
-        body.theme-retro-gold .contenedor-precio-unificado {
-            background-image: 
-                linear-gradient(rgba(251, 191, 36, 0.25) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(251, 191, 36, 0.25) 1px, transparent 1px) !important;
-        }
-        body.theme-matrix .contenedor-precio-unificado {
-            background-image: 
-                linear-gradient(rgba(52, 211, 153, 0.25) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(52, 211, 153, 0.25) 1px, transparent 1px) !important;
-        }
-        body.theme-sunset .contenedor-precio-unificado {
-            background-image: 
-                linear-gradient(rgba(253, 186, 116, 0.25) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(253, 186, 116, 0.25) 1px, transparent 1px) !important;
-        }
-
-
-
-        /* 🔵 BOTÓN + SÚPER EXPUESTO (DIFERENCIADO Y ADAPTATIVO AL NEÓN DE CADA TEMA) */
-        .btn-add-embedded { 
-            width: 55px; 
-            height: 100%; 
-            min-height: 40px; 
-            background: var(--blue-tech) !important; 
-            background-size: 200% 200% !important; 
-            animation: activeMenuMove 4s infinite ease-in-out; 
-            border: 2px solid #fff; 
-            border-radius: 6px; 
-            color: #ffffff !important; 
-            font-size: 24px; 
-            font-weight: bold; 
-            cursor: pointer; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            box-shadow: 0 0 10px var(--neon-secondary); 
-            transition: all 0.1s ease; 
-            user-select: none; 
-            z-index: 2;
-        }
-
-
-
+        /* 📟 CONTENEDOR INTEGRADO DE PRECIO ANIMADO */
+        .contenedor-precio-unificado { display: flex; width: 100%; gap: 4px; background-color: #0b0214 !important; background-size: 20px 20px !important; animation: synthwaveShift 2.5s infinite linear !important; border-radius: 10px; border: 2px solid var(--neon-secondary); padding: 4px; min-height: 52px; align-items: center; transition: all 0.2s ease; position: relative; overflow: hidden; }
+        .contenedor-precio-unificado.precio-on { border-color: #fff; box-shadow: 0 0 14px var(--neon-secondary); }
         
+        .btn-add-embedded { width: 55px; height: 100%; min-height: 40px; background: var(--blue-tech) !important; background-size: 200% 200% !important; animation: activeMenuMove 4s infinite ease-in-out; border: 2px solid #fff; border-radius: 6px; color: #ffffff !important; font-size: 24px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 10px var(--neon-secondary); transition: all 0.1s ease; user-select: none; z-index: 2; }
         #cajaSub { flex-grow: 1; background: transparent !important; border: none !important; box-shadow: none !important; min-height: auto; align-items: center !important; justify-content: center !important; color: #fff !important; opacity: 1; text-align: center; }
         #cajaSub .lbl-title { font-size: 8px; text-transform: uppercase; color: var(--neon-secondary); margin-bottom: 1px; font-weight: bold; text-shadow: 0 0 4px rgba(0,240,255,0.2); }
         #cajaSub .lbl-val { font-size: 18px !important; font-weight: 900; color: #fff !important; }
-        
-         /* ⌨️ TECLADO NUMÉRICO, PUNTO Y BORRAR: DISEÑO ILUMINADO CYBER-CYAN CON BORDE DE NEÓN */
-        @keyframes auraRespiraciónBlancaLofi {
-            0%, 100% { transform: scale(0.85); opacity: 0.15; filter: blur(4px); }
-            50% { transform: scale(1.15); opacity: 0.5; filter: blur(6px); }
-        }
-        
-        .pad-num { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; width: 100%; }
-        
-        /* 📟 Regla general limpia para todos los temas secundarios */
-        .btn-key, .btn-back { 
-            height: 38px; 
-            background: var(--num-bg-theme) !important; 
-            border: 1px solid var(--neon-primary) !important; 
-            border-radius: 6px; 
-            color: #ffffff !important; 
-            font-size: 1.1rem; 
-            font-weight: bold; 
-            cursor: pointer; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            font-family: monospace; 
-            transition: all 0.2s ease, border-color 0.3s ease, background 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            z-index: 10;
-            opacity: 1 !important;
-            pointer-events: auto !important;
-        }
 
-        /* 🚨 EXCLUSIVO TEMA PRINCIPAL (CYBERPUNK): CYAN CLARO CON BORDE DE NEÓN ACTIVO */
+        /* ⌨️ TECLADO NUMÉRICO, PUNTO Y BORRAR: DISEÑO ILUMINADO CYBER-CYAN MÁXIMA PRIORIDAD */
+        @keyframes auraRespiraciónBlancaLofi { 0%, 100% { transform: scale(0.85); opacity: 0.15; filter: blur(4px); } 50% { transform: scale(1.15); opacity: 0.5; filter: blur(6px); } }
+        .pad-num { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; width: 100%; }
+        .btn-key, .btn-back { height: 38px; background: var(--num-bg-theme) !important; border: 1px solid var(--neon-primary) !important; border-radius: 6px; color: #ffffff !important; font-size: 1.1rem; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; font-family: monospace; transition: all 0.2s ease, border-color 0.3s ease, background 0.3s ease; position: relative; overflow: hidden; z-index: 10; opacity: 1 !important; pointer-events: auto !important; }
+
         body.theme-cyberpunk #btnN0, body.theme-cyberpunk #btnPunto, body.theme-cyberpunk #btnBksp,
         body.theme-cyberpunk #btnN1, body.theme-cyberpunk #btnN2, body.theme-cyberpunk #btnN3,
         body.theme-cyberpunk #btnN4, body.theme-cyberpunk #btnN5, body.theme-cyberpunk #btnN6,
         body.theme-cyberpunk #btnN7, body.theme-cyberpunk #btnN8, body.theme-cyberpunk #btnN9 {
-            background: linear-gradient(180deg, #163e54 0%, #0d283d 100%) !important; /* 🌌 Fondo Azul Celeste Cyberpunk más iluminado */
-            color: #ffffff !important;        /* Números blancos nítidos e imponentes */
-            border: 2px solid #00f0ff !important; /* ⚡️ BORDE CON COLOR: Cyan Neón Brillante bien marcado */
-            box-shadow: 0 0 8px rgba(0, 240, 255, 0.4), inset 0 1px 3px rgba(255, 255, 255, 0.1) !important;
-            text-shadow: 0 0 4px rgba(255, 255, 255, 0.6) !important;
+            background: linear-gradient(180deg, #163e54 0%, #0d283d 100%) !important; color: #ffffff !important; border: 2px solid #00f0ff !important; box-shadow: 0 0 8px rgba(0, 240, 255, 0.4), inset 0 1px 3px rgba(255, 255, 255, 0.1) !important; text-shadow: 0 0 4px rgba(255, 255, 255, 0.6) !important;
         }
-
-        /* 🌌 EFECTO LO-FI: Aura blanca sutil que respira lento por debajo de los números dando claridad */
         body.theme-cyberpunk #btnN0::before, body.theme-cyberpunk #btnPunto::before, body.theme-cyberpunk #btnBksp::before,
         body.theme-cyberpunk #btnN1::before, body.theme-cyberpunk #btnN2::before, body.theme-cyberpunk #btnN3::before,
         body.theme-cyberpunk #btnN4::before, body.theme-cyberpunk #btnN5::before, body.theme-cyberpunk #btnN6::before,
         body.theme-cyberpunk #btnN7::before, body.theme-cyberpunk #btnN8::before, body.theme-cyberpunk #btnN9::before {
-            content: "" !important;
-            display: block !important;
-            position: absolute !important;
-            top: 10% !important; left: 10% !important; width: 80% !important; height: 80% !important;
-            background: radial-gradient(circle, #ffffff 0%, transparent 65%) !important; /* Brillo blanco difuminado */
-            border-radius: 50% !important;
-            z-index: 1 !important;
-            animation: auraRespiraciónBlancaLofi 4.5s infinite ease-in-out !important; /* Latido suave */
-            pointer-events: none !important;
+            content: "" !important; display: block !important; position: absolute !important; top: 10% !important; left: 10% !important; width: 80% !important; height: 80% !important; background: radial-gradient(circle, #ffffff 0%, transparent 65%) !important; border-radius: 50% !important; z-index: 1 !important; animation: auraRespiraciónBlancaLofi 4.5s infinite ease-in-out !important; pointer-events: none !important;
         }
-
-        /* Limpieza de capas remanentes */
-        body.theme-cyberpunk .btn-key::after, body.theme-cyberpunk .btn-back::after {
-            display: none !important;
-            content: none !important;
-        }
-
-
-        
-
-
-
-        
+        body.theme-cyberpunk .btn-key::after, body.theme-cyberpunk .btn-back::after { display: none !important; content: none !important; }
 
         .btn-theme, .btn-receipt, .btn-power-bottom { border-radius: 10px; font-weight: bold; cursor: pointer; transition: all 0.2s ease; text-transform: uppercase; display: flex; justify-content: center; align-items: center; font-family: monospace; height: 28px; font-size: 8px; background: var(--num-bg-theme) !important; border: 2px solid var(--neon-primary) !important; color: #ccc !important; width: 100%; z-index: 15; }
-
         .row-acciones-inferior { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-top: 2px; width: 100%; }
+        
         .holograma-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10, 2, 24, 0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 100; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
         .holograma-overlay.activo { opacity: 1; pointer-events: auto; visibility: visible; }
-
         .holograma-ticket { width: 320px; max-height: 80vh; background: rgba(15, 10, 25, 0.95); border: 2px solid var(--receipt-glow); box-shadow: 0 0 30px var(--receipt-glow), inset 0 0 15px rgba(255,255,255,0.05); border-radius: 16px; padding: 16px; position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 12px; transform: scale(0.85); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); color: #fff; font-family: monospace; }
         .holograma-overlay.activo .holograma-ticket { transform: scale(1); }
         .holograma-lineas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%); background-size: 100% 4px; pointer-events: none; z-index: 5; }
         .holograma-scrollable { flex-grow: 1; overflow-y: auto; font-size: 11px; line-height: 1.4; white-space: pre-wrap; padding-right: 4px; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 8px; padding: 8px; background: rgba(0, 0, 0, 0.5); color: var(--receipt-glow); text-shadow: 0 0 3px var(--receipt-glow); }
         .holograma-footer { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
         .btn-holo { padding: 8px; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; border: 1px solid var(--receipt-glow); font-family: monospace; font-size: 11px; text-align: center; background: transparent; color: var(--receipt-glow); transition: all 0.2s ease; }
-        
         @keyframes deTresPuntos { 0% { content: "."; } 33% { content: ".."; } 66% { content: "..."; } 100% { content: "."; } }
         .lcd-tipeo::after { content: "."; animation: deTresPuntos 1.2s infinite steps(1, start) !important; }
     </style>
@@ -403,31 +225,46 @@
     <div class="grid3d"></div>
 
     <div class="chasis" id="calcChasis">
-        <!-- 🟢 PANTALLA LCD VERDE RETRO CON TOTALES A LA IZQUIERDA -->
+        <!-- 🟢 PANTALLA LCD MULTI-MODAL -->
         <div class="lcd" id="pantallaVerde">
             <div class="lcd-header">
                 <span id="txtHeaderIndicadores" class="blinking-header-text">SISTEMA ACTIVO</span>
             </div>
             <div class="lcd-wrapper">
                 <div class="listaPrecios-container" style="flex-grow: 1; position: relative; display: flex; flex-direction: column; overflow: hidden;">
+                    <!-- Bloque Vista de Compras -->
                     <div class="lcd-historial" id="listaPrecios">
                         <span id="lblArtText">Lista vacía<span class="lcd-tipeo"></span></span>
+                    </div>
+                    <!-- Bloque Vista de Salario (Sub-Pantalla Oculta por defecto) -->
+                    <div id="vistaSubPantallaSalario" style="display: none; flex-direction: column; justify-content: center; height: 100%; font-family: monospace; line-height: 1.3;">
+                        <div style="font-weight: 900; letter-spacing: 0.5px; border-bottom: 1px dashed rgba(0,240,255,0.4); padding-bottom: 2px; margin-bottom: 3px;">CONSULTA DE SALARIO</div>
+                        <div>PAGA POR HORA: <span id="lblSalHoraLcd" style="font-weight: 900; background: rgba(0,0,0,0.2); padding: 0 4px; border-radius: 3px;">$0.00</span></div>
+                        <div>HORAS SEMANA : <span style="font-weight: 900;">40 hrs</span></div>
                     </div>
                     <div class="scroll-hint" id="flechaGuia">▼ deslizar</div>
                 </div>
             </div>
             <div class="lcd-body">
-                <div id="rowDesc" style="opacity: 0.3; transition: opacity 0.15s ease;">DESCUENTO: <span id="outDesc">-$0.00</span></div>
-                <div id="rowTip" style="opacity: 0.2; transition: opacity 0.15s ease;">PROPINA: <span id="outTip">$0.00</span></div>
-                <div id="rowIvu" style="opacity: 0.3; transition: opacity 0.15s ease;">IVU: <span id="outIvu">$0.00</span></div>
-                <div class="lcd-total" style="margin-bottom: 1px;">TOTAL: $<span id="outPer">0.00</span></div>
-                <div id="rowPersonaCuota" style="opacity: 0.3; font-size: 11px; margin-top: 1px; transition: opacity 0.15s ease;"><span id="txtSerruchoLabelType">SERRUCHO (C/U): N/A</span> <span id="outPerPersonaLine"></span></div>
+                <!-- Data Base de Compras -->
+                <div id="wrapperDataComprasLcd">
+                    <div id="rowDesc" style="opacity: 0.3; transition: opacity 0.15s ease;">DESCUENTO: <span id="outDesc">-$0.00</span></div>
+                    <div id="rowTip" style="opacity: 0.2; transition: opacity 0.15s ease;">PROPINA: <span id="outTip">$0.00</span></div>
+                    <div id="rowIvu" style="opacity: 0.3; transition: opacity 0.15s ease;">IVU: <span id="outIvu">$0.00</span></div>
+                    <div class="lcd-total" style="margin-bottom: 1px;">TOTAL: $<span id="outPer">0.00</span></div>
+                    <div id="rowPersonaCuota" style="opacity: 0.3; font-size: 11px; margin-top: 1px; transition: opacity 0.15s ease;"><span id="txtSerruchoLabelType">SERRUCHO (C/U): N/A</span> <span id="outPerPersonaLine"></span></div>
+                </div>
+                <!-- Data Base de Salario (Sub-Pantalla Oculta) -->
+                <div id="wrapperDataSalarioLcd" style="display: none; border-top: 1px solid rgba(0,240,255,0.2); padding-top: 3px;">
+                    <div style="font-size: 11px; font-weight: 900;">CHEQUE SEMANAL: <span id="outSalSemanal" style="font-size: 13px;">$0.00</span></div>
+                    <div style="font-size: 11px; font-weight: 900; margin-top: 1px;">TOTAL MENSUAL : <span id="outSalMensual" style="font-size: 13px;">$0.00</span></div>
+                </div>
             </div>
         </div>
 
         <!-- 🎛️ CONTENEDOR UNIFICADO DE PRECIO CENTRADO + ADICIÓN GRANDE A LA DERECHA -->
         <div class="contenedor-precio-unificado precio-on" id="marcadorPrecioUnificado">
-            <div style="width:55px; opacity:0; pointer-events:none;"></div> <!-- Contrapeso exacto para centrar el Precio en el medio -->
+            <div style="width:55px; opacity:0; pointer-events:none;"></div>
             <div id="cajaSub" class="caja-data" onclick="seleccionarMenu('sub')">
                 <span class="lbl-title">Precio</span>
                 <span class="lbl-val">$<span id="lblSub" class="blink-num">0</span></span>
@@ -435,12 +272,9 @@
             <button id="btnAnadirGlobal" class="btn-add-embedded" onclick="addProducto()">+</button>
         </div>
 
-
-
-
-        <!-- Fila unificada amarrada en Grid de 4 columnas horizontales estrictas -->
+        <!-- Fila unificada amarrada en Grid Estricto de 5 Columnas Horizontales Simétricas -->
         <div class="row-opciones-pasos">
-            <!-- Columna Serrucho -->
+            <!-- 1. Serrucho -->
             <div class="wrapper-pasos">
                 <button class="btn-step" onmousedown="iniciarAutoIncremento('ppl', 1)" ontouchstart="iniciarAutoIncrementoTouch(event, 'ppl', 1)" onmouseup="detenerAutoIncremento()" onmouseleave="detenerAutoIncremento()" ontouchend="detenerAutoIncremento()">▲</button>
                 <div id="cajaPpl" class="caja-data btn-off" onclick="seleccionarMenu('ppl')">
@@ -450,7 +284,7 @@
                 <button class="btn-step" onmousedown="iniciarAutoIncremento('ppl', -1)" ontouchstart="iniciarAutoIncrementoTouch(event, 'ppl', -1)" onmouseup="detenerAutoIncremento()" onmouseleave="detenerAutoIncremento()" ontouchend="detenerAutoIncremento()">▼</button>
             </div>
 
-            <!-- Columna Descuento -->
+            <!-- 2. Descuento -->
             <div class="wrapper-pasos">
                 <button class="btn-step" onmousedown="iniciarAutoIncremento('desc', 1)" ontouchstart="iniciarAutoIncrementoTouch(event, 'desc', 1)" onmouseup="detenerAutoIncremento()" onmouseleave="detenerAutoIncremento()" ontouchend="detenerAutoIncremento()">▲</button>
                 <div id="cajaDesc" class="caja-data btn-off" onclick="seleccionarMenu('desc')">
@@ -460,7 +294,7 @@
                 <button class="btn-step" onmousedown="iniciarAutoIncremento('desc', -1)" ontouchstart="iniciarAutoIncrementoTouch(event, 'desc', -1)" onmouseup="detenerAutoIncremento()" onmouseleave="detenerAutoIncremento()" ontouchend="detenerAutoIncremento()">▼</button>
             </div>
 
-            <!-- Columna Propina -->
+            <!-- 3. Propina -->
             <div class="wrapper-pasos">
                 <button class="btn-step" onmousedown="iniciarAutoIncremento('tip', 1)" ontouchstart="iniciarAutoIncrementoTouch(event, 'tip', 1)" onmouseup="detenerAutoIncremento()" onmouseleave="detenerAutoIncremento()" ontouchend="detenerAutoIncremento()">▲</button>
                 <div id="cajaTip" class="caja-data btn-off" onclick="seleccionarMenu('tip')">
@@ -470,7 +304,7 @@
                 <button class="btn-step" onmousedown="iniciarAutoIncremento('tip', -1)" ontouchstart="iniciarAutoIncrementoTouch(event, 'tip', -1)" onmouseup="detenerAutoIncremento()" onmouseleave="detenerAutoIncremento()" ontouchend="detenerAutoIncremento()">▼</button>
             </div>
 
-            <!-- Columna IVU -->
+            <!-- 4. IVU -->
             <div class="wrapper-pasos">
                 <button class="btn-step" onmousedown="iniciarAutoIncremento('ivu', 0.1)" ontouchstart="iniciarAutoIncrementoTouch(event, 'ivu', 0.1)" onmouseup="detenerAutoIncremento()" onmouseleave="detenerAutoIncremento()" ontouchend="detenerAutoIncremento()">▲</button>
                 <div id="btnToggleIvu" class="caja-data btn-off" onclick="seleccionarMenu('ivu')">
@@ -478,6 +312,16 @@
                     <span class="lbl-val"><span id="lblIvuBoton">0.0</span>%</span>
                 </div>
                 <button class="btn-step" onmousedown="iniciarAutoIncremento('ivu', -0.1)" ontouchstart="iniciarAutoIncrementoTouch(event, 'ivu', -0.1)" onmouseup="detenerAutoIncremento()" onmouseleave="detenerAutoIncremento()" ontouchend="detenerAutoIncremento()">▼</button>
+            </div>
+
+            <!-- 5. 🚨 NUEVO BOTÓN: SALARIO CON MENÚ CONMUTADO Y PASOS ▲/▼ -->
+            <div class="wrapper-pasos">
+                <button class="btn-step" onmousedown="iniciarAutoIncremento('sal', 0.25)" ontouchstart="iniciarAutoIncrementoTouch(event, 'sal', 0.25)" onmouseup="detenerAutoIncremento()" onmouseleave="detenerAutoIncremento()" ontouchend="detenerAutoIncremento()">▲</button>
+                <div id="btnModoSalario" class="caja-data btn-off" onclick="seleccionarMenu('sal')">
+                    <span class="lbl-title">Salario</span>
+                    <span class="lbl-val">$<span id="lblSalarioBoton">0.00</span></span>
+                </div>
+                <button class="btn-step" onmousedown="iniciarAutoIncremento('sal', -0.25)" ontouchstart="iniciarAutoIncrementoTouch(event, 'sal', -0.25)" onmouseup="detenerAutoIncremento()" onmouseleave="detenerAutoIncremento()" ontouchend="detenerAutoIncremento()">▼</button>
             </div>
         </div>
 
@@ -492,7 +336,7 @@
             <button id="btnBksp" onclick="bksp()" class="btn-key btn-back">←</button>
         </div>
 
-        <!-- Fila inferior de control unificada con la misma UI variable -->
+        <!-- Fila inferior de control unificada -->
         <div class="row-acciones-inferior">
             <button id="btnTheme" class="btn-theme" onclick="rotarTema()">TEMA</button>
             <button id="btnReceipt" class="btn-receipt" onclick="abrirHologramaRecibo()">RECIBO</button>
@@ -525,6 +369,7 @@
             </div>
         </div>
     </div>
+
     <script>
         // 💾 CONTROL DE ESTADOS, MEMORIAS Y ACUMULADORES FISCALES
         let ivu = 0.0, mode = 'sub', sSub = "0", incluirPropina = false, modoSerruchoActivo = false, modoDescuentoActivo = false, modoIvuActivo = false;
@@ -534,7 +379,10 @@
         let themes = ['theme-cyberpunk', 'theme-retro-gold', 'theme-matrix', 'theme-sunset'], temaActualIdx = 0;
         let sistemaEncendido = true; 
 
-        // Temporizadores calibrados para la ráfaga de presión prolongada
+        // 📊 VARIABLES DEDICADAS DE LA MEMORIA DE SALARIO
+        let modoSalarioActivo = false;
+        let precioHoraTrabajo = 10.25; // Tarifa base inicial por hora para Puerto Rico
+
         let intervaloAutoIncremento = null;
         let timeoutAutoIncremento = null;
 
@@ -589,18 +437,24 @@
 
         // ⏱️ LÓGICA DE PRESIÓN PROLONGADA SIN DUPLICACIÓN EN IPHONE
         function iniciarAutoIncrementoTouch(e, tipo, delta) {
-            if (e && e.cancelable) e.preventDefault(); // 📱 MATA EL REBOTE TÁCTIL EN IOS
+            if (e && e.cancelable) e.preventDefault(); 
             iniciarAutoIncremento(tipo, delta);
         }
 
         function iniciarAutoIncremento(tipo, delta) {
             if (!sistemaEncendido) return;
+            
+            // Si el modo salario está prendido, bloqueamos cualquier otra flecha que no sea 'sal'
+            if (modoSalarioActivo && tipo !== 'sal') return;
+            // Si el modo salario está apagado, bloqueamos las flechas de 'sal'
+            if (!modoSalarioActivo && tipo === 'sal') return;
+
             ejecutarModificacionPaso(tipo, delta);
             
             timeoutAutoIncremento = setTimeout(() => {
                 intervaloAutoIncremento = setInterval(() => {
                     ejecutarModificacionPaso(tipo, delta);
-                }, 110); // Ráfaga calibrada
+                }, 110); 
             }, 350);
         }
 
@@ -608,10 +462,20 @@
             clearTimeout(timeoutAutoIncremento);
             clearInterval(intervaloAutoIncremento);
         }
+
         function ejecutarModificacionPaso(tipo, delta) {
             if (!sistemaEncendido) return;
             reproducirSonido('paso');
             
+            if (tipo === 'sal') {
+                precioHoraTrabajo += delta;
+                if (precioHoraTrabajo < 0) precioHoraTrabajo = 0;
+                if (precioHoraTrabajo > 500) precioHoraTrabajo = 500; // Límite razonable por hora
+                document.getElementById('lblSalarioBoton').innerText = precioHoraTrabajo.toFixed(2);
+                calcularSalarioSubPantalla();
+                return; // Corta la ejecución para que no altere el procesador de compras
+            }
+
             if (tipo === 'ppl') {
                 modoSerruchoActivo = true;
                 let val = parseInt(memoriaSerruchoCortes) || 2;
@@ -657,6 +521,8 @@
                 document.getElementById('lblIvuBoton').innerText = modoIvuActivo ? ivu.toFixed(1) : "0.0";
             }
             
+            } // 🚨 Cierre exacto del bloque de la lógica del IVU anterior
+
             document.getElementById('cajaPpl').className = modoSerruchoActivo ? "caja-data btn-on" : "caja-data btn-off";
             document.getElementById('cajaDesc').className = modoDescuentoActivo ? "caja-data btn-on" : "caja-data btn-off";
             document.getElementById('cajaTip').className = incluirPropina ? "caja-data btn-on" : "caja-data btn-off";
@@ -665,7 +531,7 @@
             actualizarHeaderIndicadores(); calc();
         }
 
-        // 🔌 CONTROLES HOLOGRÁFICOS DE APAGADO MAESTRO CON ENERGIZACIÓN ESCALONADA
+        // 🔌 CONTROL DE APAGADO MAESTRO E INTERRUPTOR CRT
         function solicitarApagado() {
             if (!sistemaEncendido) {
                 togglePowerAccion();
@@ -703,16 +569,13 @@
                 }, 400);
                 toggleTeclasBloqueo(true);
             } else {
-                // ⚡️ ENCENDIDO CON EFECTO CRT SIN RETRASOS DE DATOS
                 chasis.classList.remove('global-power-off');
                 lcd.classList.remove('power-off-crt');
                 
-                // Forzamos el reinicio y activación de la animación inversa (Apertura CRT)
                 lcd.classList.remove('power-on-crt');
-                void lcd.offsetWidth; // Truco de magia en JS para reiniciar la animación CSS al instante
+                void lcd.offsetWidth; 
                 lcd.classList.add('power-on-crt');
                 
-                // Energizamos todos los botones al unísono para que no haya delay parpadeando
                 document.querySelectorAll('.btn-theme, .btn-receipt').forEach(b => b.style.opacity = "1");
                 document.querySelectorAll('.pad-num .btn-key').forEach(b => b.style.opacity = "1");
                 document.querySelectorAll('.row-opciones-pasos .caja-data, .btn-step').forEach(b => b.style.opacity = "1");
@@ -723,7 +586,6 @@
                 ejecutarResetTotal();
             }
         }
-
 
         function toggleTeclasBloqueo(bloquear) {
             const botones = document.querySelectorAll('.btn-key, .caja-data, .btn-receipt, .btn-theme, .btn-step, .btn-add-embedded');
@@ -737,7 +599,16 @@
         }
 
         function ejecutarResetTotal() {
-            sSub = "0"; cuentaAcumulada = 0; preciosGuardados = [];
+            sSub = "0"; cuentaAcumulada = 0; preciosGuardados = []; modoSalarioActivo = false;
+            document.getElementById('btnModoSalario').className = "caja-data btn-off";
+            document.getElementById('pantallaVerde').classList.remove('modo-salario-activo');
+            document.getElementById('listaPrecios').style.display = "block";
+            document.getElementById('vistaSubPantallaSalario').style.display = "none";
+            document.getElementById('wrapperDataComprasLcd').style.display = "block";
+            document.getElementById('wrapperDataSalarioLcd').style.display = "none";
+            precioHoraTrabajo = 10.25;
+            document.getElementById('lblSalarioBoton').innerText = "10.25";
+
             document.getElementById('listaPrecios').innerHTML = 'Lista vacía<span class="lcd-tipeo"></span>';
             document.getElementById('flechaGuia').style.display = "none"; sPpl = "0"; modoSerruchoActivo = false; memoriaSerruchoCortes = "2";
             document.getElementById('lblPpl').innerText = "N/A"; sDesc = "0"; memoriaDescuentoPct = "0"; modoDescuentoActivo = false; document.getElementById('lblDesc').innerText = "0";
@@ -749,37 +620,86 @@
 
         function actualizarHeaderIndicadores() {
             if (!sistemaEncendido) return;
+            if (modoSalarioActivo) {
+                document.getElementById('txtHeaderIndicadores').innerText = "MODO: CONSULTA SUELDO";
+                return;
+            }
             let subpartes = [];
             if (modoIvuActivo) { subpartes.push(`IVU: ${ivu.toFixed(1)}%`); }
             if (incluirPropina) { subpartes.push(`TIP: ${memoriaTipPct}%`); }
             if (modoDescuentoActivo) { subpartes.push(`DTO: -${memoriaDescuentoPct}%`); }
             document.getElementById('txtHeaderIndicadores').innerText = subpartes.length > 0 ? subpartes.join(' | ') : "SISTEMA ACTIVO";
         }
+
+        // 🕹️ ENRUTADOR DE MENÚ CONMUTADO MULTI-CAPA FISCAL
         function seleccionarMenu(f) {
             if (!sistemaEncendido) return;
             reproducirSonido('menu');
+            
+            const lcd = document.getElementById('pantallaVerde');
+            const bloqueListaCompras = document.getElementById('listaPrecios');
+            const bloqueSubPantallaSalario = document.getElementById('vistaSubPantallaSalario');
+            const wrapperCompras = document.getElementById('wrapperDataComprasLcd');
+            const wrapperSalario = document.getElementById('wrapperDataSalarioLcd');
+
+            // 🚨 CONMUTACIÓN DE SUB-PANTALLA VIRTUAL DE SALARIO
+            if (f === 'sal') {
+                modoSalarioActivo = !modoSalarioActivo;
+                
+                if (modoSalarioActivo) {
+                    lcd.classList.add('modo-salario-activo');
+                    bloqueListaCompras.style.display = "none";
+                    wrapperCompras.style.display = "none";
+                    document.getElementById('flechaGuia').style.display = "none";
+                    
+                    bloqueSubPantallaSalario.style.display = "flex";
+                    wrapperSalario.style.display = "block";
+                    document.getElementById('btnModoSalario').className = "caja-data btn-on";
+                    
+                    document.getElementById('lblSalarioBoton').innerText = precioHoraTrabajo.toFixed(2);
+                    calcularSalarioSubPantalla();
+                } else {
+                    lcd.classList.remove('modo-salario-activo');
+                    bloqueSubPantallaSalario.style.display = "none";
+                    wrapperSalario.style.display = "none";
+                    
+                    bloqueListaCompras.style.display = "block";
+                    wrapperCompras.style.display = "block";
+                    document.getElementById('btnModoSalario').className = "caja-data btn-off";
+                    
+                    if (preciosGuardados.length >= 3) {
+                        document.getElementById('flechaGuia').style.display = "block";
+                    }
+                    calc(); 
+                }
+                actualizarHeaderIndicadores();
+                return;
+            }
+
+            if (modoSalarioActivo && f !== 'sal') {
+                modoSalarioActivo = false;
+                lcd.classList.remove('modo-salario-activo');
+                bloqueSubPantallaSalario.style.display = "none";
+                wrapperSalario.style.display = "none";
+                bloqueListaCompras.style.display = "block";
+                wrapperCompras.style.display = "block";
+                document.getElementById('btnModoSalario').className = "caja-data btn-off";
+            }
+
             const numSub = document.getElementById('lblSub'), numPpl = document.getElementById('lblPpl'), numDesc = document.getElementById('lblDesc'), numTip = document.getElementById('lblTip'), numIvu = document.getElementById('lblIvuBoton');
 
             if (f === 'ppl') {
-                modoSerruchoActivo = !modoSerruchoActivo;
-                sPpl = memoriaSerruchoCortes;
-                document.getElementById('lblPpl').innerText = modoSerruchoActivo ? sPpl : "N/A";
-                mode = 'sub'; 
+                modoSerruchoActivo = !modoSerruchoActivo; sPpl = memoriaSerruchoCortes;
+                document.getElementById('lblPpl').innerText = modoSerruchoActivo ? sPpl : "N/A"; mode = 'sub'; 
             } else if (f === 'tip') {
-                incluirPropina = !incluirPropina;
-                sTip = memoriaTipPct;
-                document.getElementById('lblTip').innerText = incluirPropina ? sTip : "0";
-                mode = 'sub';
+                incluirPropina = !incluirPropina; sTip = memoriaTipPct;
+                document.getElementById('lblTip').innerText = incluirPropina ? sTip : "0"; mode = 'sub';
             } else if (f === 'desc') {
-                modoDescuentoActivo = !modoDescuentoActivo;
-                sDesc = memoriaDescuentoPct;
-                document.getElementById('lblDesc').innerText = modoDescuentoActivo ? sDesc : "0";
-                mode = 'sub';
+                modoDescuentoActivo = !modoDescuentoActivo; sDesc = memoriaDescuentoPct;
+                document.getElementById('lblDesc').innerText = modoDescuentoActivo ? sDesc : "0"; mode = 'sub';
             } else if (f === 'ivu') {
-                modoIvuActivo = !modoIvuActivo;
-                ivu = modoIvuActivo ? (parseFloat(memoriaIvuPct) || 11.5) : 0.0;
-                document.getElementById('lblIvuBoton').innerText = modoIvuActivo ? ivu.toFixed(1) : "0.0";
-                mode = 'sub';
+                modoIvuActivo = !modoIvuActivo; ivu = modoIvuActivo ? (parseFloat(memoriaIvuPct) || 11.5) : 0.0;
+                document.getElementById('lblIvuBoton').innerText = modoIvuActivo ? ivu.toFixed(1) : "0.0"; mode = 'sub';
             } else { mode = f; }
             
             ['marcadorPrecioUnificado', 'cajaPpl', 'cajaDesc', 'cajaTip', 'btnToggleIvu'].forEach(id => { 
@@ -806,47 +726,49 @@
             }
             actualizarHeaderIndicadores(); calc();
         }
-        // ⌨️ INGRESO NUMÉRICO EXCLUSIVO Y EXPANDIDO PARA EL CANAL DE PRECIO
+
+        // 🧮 PROCESADOR MATEMÁTICO SUELDO LO-FI
+        function calcularSalarioSubPantalla() {
+            let semanal = precioHoraTrabajo * 40; 
+            let mensual = semanal * 4.3333; 
+            
+            document.getElementById('lblSalHoraLcd').innerText = "$" + precioHoraTrabajo.toFixed(2);
+            document.getElementById('outSalSemanal').innerText = "$" + semanal.toFixed(2);
+            document.getElementById('outSalMensual').innerText = "$" + mensual.toFixed(2);
+        }
+
+        // ⌨️ INGRESO NUMÉRICO BLOQUEADO RIGUROSAMENTE DURANTE EL MODO SALARIO
         function num(c) {
             if (!sistemaEncendido) return;
-            if (mode !== 'sub') mode = 'sub';
+            if (modoSalarioActivo) return; 
             
+            if (mode !== 'sub') mode = 'sub';
             reproducirSonido('tecla');
             if (sSub === "0" && c !== '.') sSub = "";
             if (c === '.' && sSub.includes('.')) return;
             sSub += c; 
             
-            // 💰 Capacidad expandida hasta un millón ($1,000,000)
             if (parseFloat(sSub) > 1000000) sSub = "1000000";
-            
             document.getElementById('lblSub').innerText = sSub;
             calc();
         }
 
         function bksp() {
             if (!sistemaEncendido) return;
-            if (mode !== 'sub') mode = 'sub';
+            if (modoSalarioActivo) return; 
             
+            if (mode !== 'sub') mode = 'sub';
             reproducirSonido('tecla');
             sSub = sSub.slice(0, -1); 
             if (!sSub) sSub = "0"; 
-            
             document.getElementById('lblSub').innerText = sSub;
             calc();
         }
 
-        function ce() {
-            if (!sistemaEncendido) return;
-            reproducirSonido('tecla');
-            sSub = "0"; 
-            document.getElementById('lblSub').innerText = "0";
-            
-            if (mode !== 'sub') mode = 'sub';
-            actualizarHeaderIndicadores(); 
-            calc();
-        }
         function addProducto() {
             if (!sistemaEncendido) return;
+            if (modoSalarioActivo) return; 
+            
             let val = parseFloat(sSub) || 0;
             if (val > 0) {
                 reproducirSonido('add');
@@ -862,11 +784,11 @@
                 cuentaAcumulada += val; sSub = "0"; document.getElementById('lblSub').innerText = "0";
                 const con = document.getElementById('listaPrecios');
                 
-                con.innerHTML = preciosGuardados.map((item, i) => '<div>• (' + (i+1) + '): \$' + item.total.toFixed(2) + ' <span style="font-size:8px; opacity:0.75;">(DTO:-\$' + item.descuento.toFixed(2) + '/IVU:' + item.porcientoIvuUsado.toFixed(1) + '%)</span></div>').join('');
+                con.innerHTML = preciosGuardados.map((item, i) => '<div>• (' + (i+1) + '): $' + item.total.toFixed(2) + ' <span style="font-size:8px; opacity:0.75;">(DTO:-$' + item.descuento.toFixed(2) + '/IVU:' + item.porcientoIvuUsado.toFixed(1) + '%)</span></div>').join('');
                 
                 if(preciosGuardados.length > 0) {
                     let totalConTaxAcumulado = preciosGuardados.reduce((sum, item) => sum + item.total, 0);
-                    con.innerHTML += '<div style="border-top:1px dashed rgba(0,0,0,0.3); font-weight:900; margin-top:2px;">TOTAL: \$' + totalConTaxAcumulado.toFixed(2) + '</div>';
+                    con.innerHTML += '<div style="border-top:1px dashed rgba(0,0,0,0.3); font-weight:900; margin-top:2px;">TOTAL: $' + totalConTaxAcumulado.toFixed(2) + '</div>';
                 }
                 
                 const f = document.getElementById('flechaGuia'); 
@@ -882,9 +804,9 @@
             ejecutarResetTotal();
         }
 
-        // 🧮 PROCESADOR MATEMÁTICO EN TIEMPO REAL
+        // 🧮 PROCESADOR MATEMÁTICO EN TIEMPO REAL (COMPRAS)
         function calc() {
-            if (!sistemaEncendido) return;
+            if (!sistemaEncendido || modoSalarioActivo) return;
             let numPplRaw = parseInt(sPpl);
             let nSerrucho = (modoSerruchoActivo && !isNaN(numPplRaw) && numPplRaw > 1) ? numPplRaw : 1;
             let dPct = modoDescuentoActivo ? (parseFloat(memoriaDescuentoPct) || 0) : 0;
@@ -938,7 +860,7 @@
             actualizarHeaderIndicadores();
         }
 
-        // 🌌 CONSTRUCTOR DEL RECIBO HOLOGRÁFICO TIDY BORICUA FLUIDO Y SIN DESALINEACIONES
+        // 🌌 CONSTRUCTOR DEL RECIBO HOLOGRÁFICO UNIFICADO Y ORDENADO
         function abrirHologramaRecibo() {
             if (!sistemaEncendido) return;
             reproducirSonido('caja');
@@ -970,7 +892,6 @@
             if(preciosGuardados.length > 0) {
                 txt += `Artículos Guardados:\n`;
                 preciosGuardados.forEach((a, i) => {
-                    // Padding estricto para fijar el IVU a dos decimales y evitar desalineaciones
                     let ivuFormateadoStr = a.porcientoIvuUsado.toFixed(2);
                     if(ivuFormateadoStr.length < 5) ivuFormateadoStr = "0" + ivuFormateadoStr;
 
@@ -996,6 +917,19 @@
                 txt += `CUOTA POR CABEZA:   $${(totalNetoGlobal / nPpl).toFixed(2).padStart(8)}\n`;
                 txt += `===============================\n`;
             }
+            
+            // 💰 COMPONENTE DE COHESIÓN: PROYECCIÓN FISCAL DE SALARIO DENTRO DEL TICKET
+            if (precioHoraTrabajo > 0) {
+                let sem = precioHoraTrabajo * 40;
+                txt += `\n===============================\n     PROYECCIÓN DE SALARIO\n===============================\n`;
+                txt += ` Paga por Hora:     $${precioHoraTrabajo.toFixed(2).padStart(8)}\n`;
+                txt += ` Horas Semana :          40 hrs\n`;
+                txt += ` -----------------------------\n`;
+                txt += ` CHEQUE SEMANAL:    $${sem.toFixed(2).padStart(8)}\n`;
+                txt += ` ESTIMADO MENSUAL:  $${(sem * 4.3333).toFixed(2).padStart(8)}\n`;
+                txt += `===============================\n`;
+            }
+            
             txt += `    ¡Gracias por usar la app!`;
             
             textoReciboGlobal = txt;
@@ -1008,6 +942,7 @@
             reproducirSonido('menu');
             document.getElementById('visorHolograma').classList.remove('activo');
         }
+
         function copiarTextoHolograma() {
             if (!sistemaEncendido) return;
             reproducirSonido('caja');
@@ -1035,7 +970,6 @@
             document.body.classList.add(themes[temaActualIdx]);
         }
 
-        // Sincronización inicial al cargar la página
         actualizarHeaderIndicadores(); 
         calc();
     </script>
