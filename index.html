@@ -17,19 +17,23 @@
         /* ==========================================================================
            🎨 ASIGNACIÓN DE TEMAS DINÁMICOS COMPLETA (CON REJILLAS DE PRECIO INTEGRADAS)
            ========================================================================== */
-        /* 1️⃣ CYBERPUNK (Rejilla Cyan Neón) */
+        /* 1️⃣ CYBERPUNK (Se inyecta el Aura Verde exclusivo para las teclas de tipeo) */
         body.theme-cyberpunk {
             --bg-grad: linear-gradient(180deg, #09011a 0%, #2c044d 100%);
             --neon-primary: #ff007f; --neon-secondary: #00f0ff; --receipt-glow: #00ff66;
             --btn-bg-theme: linear-gradient(135deg, #150624 0%, #250b3e 50%, #150624 100%);
             --num-bg-theme: linear-gradient(180deg, #2d0e54 0%, #11021f 100%);
             --blue-tech: linear-gradient(45deg, #0066ff, #00f0ff, #0066ff);
+            
+            /* 🚨 FORZADO DE COLOR: Modifica el latido Lo-Fi de los números a verde neón radical */
+            --teclado-aura-color: #00ff66; 
         }
         body.theme-cyberpunk #marcadorPrecioUnificado {
             background-image: 
                 linear-gradient(rgba(0, 240, 255, 0.25) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(0, 240, 255, 0.25) 1px, transparent 1px) !important;
         }
+
 
         /* 2️⃣ RETRO GOLD (Rejilla Oro Ámbar) */
         body.theme-retro-gold {
@@ -304,7 +308,7 @@
         #cajaSub .lbl-title { font-size: 8px; text-transform: uppercase; color: var(--neon-secondary); margin-bottom: 1px; font-weight: bold; text-shadow: 0 0 4px rgba(0,240,255,0.2); }
         #cajaSub .lbl-val { font-size: 18px !important; font-weight: 900; color: #fff !important; }
         
-        /* ⌨️ PAD NUMÉRICO, PUNTO Y BORRAR: RESPLANDOR AMBIENTAL LO-FI NEÓN (SIN LÍNEAS) */
+          /* ⌨️ PAD NUMÉRICO, PUNTO Y BORRAR: RESPLANDOR AMBIENTAL LO-FI NEÓN (SIN LÍNEAS) */
         @keyframes auraRespiraciónLofi {
             0%, 100% { 
                 transform: scale(0.85); 
@@ -341,7 +345,7 @@
             pointer-events: auto !important;
         }
         
-        /* 🌌 EFECTO LO-FI: Capa trasera con una neblina esférica que respira lentamente desde el centro */
+        /* 🌌 EFECTO LO-FI CON CAPA DE RESPALDO INTELIGENTE (HEREDA VERDE EN CYBERPUNK) */
         .btn-key::before, .btn-back::before {
             content: "";
             position: absolute;
@@ -349,14 +353,15 @@
             left: 10%;
             width: 80%;
             height: 80%;
-            /* Nace del color principal neón de cada tema y se difumina en la nada */
-            background: radial-gradient(circle, var(--neon-primary) 0%, transparent 70%) !important;
+            /* 🚨 INTELIGENTE: Lee el color verde en Cyberpunk o usa el del tema activo por defecto */
+            background: radial-gradient(circle, var(--teclado-aura-color, var(--neon-primary)) 0%, transparent 70%) !important;
             border-radius: 50%;
             z-index: 1;
             /* Latido analógico muy lento de 4.5 segundos estilo cassette */
             animation: auraRespiraciónLofi 4.5s infinite ease-in-out !important;
             pointer-events: none;
         }
+
         
         /* Asegura que los caracteres del texto queden completamente al frente, nítidos y sin obstrucciones */
         .btn-key *, .btn-back * {
