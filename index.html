@@ -17,7 +17,7 @@
         /* ==========================================================================
            🎨 ASIGNACIÓN DE TEMAS DINÁMICOS COMPLETA (CON REJILLAS DE PRECIO INTEGRADAS)
            ========================================================================== */
-        /* 1️⃣ CYBERPUNK (Se inyecta el Aura Verde exclusivo para las teclas de tipeo) */
+        /* 1️⃣ CYBERPUNK (Botonera numérica forzada a Verde Amatista/Fósforo radical) */
         body.theme-cyberpunk {
             --bg-grad: linear-gradient(180deg, #09011a 0%, #2c044d 100%);
             --neon-primary: #ff007f; --neon-secondary: #00f0ff; --receipt-glow: #00ff66;
@@ -25,14 +25,16 @@
             --num-bg-theme: linear-gradient(180deg, #2d0e54 0%, #11021f 100%);
             --blue-tech: linear-gradient(45deg, #0066ff, #00f0ff, #0066ff);
             
-            /* 🚨 FORZADO DE COLOR: Modifica el latido Lo-Fi de los números a verde neón radical */
-            --teclado-aura-color: #00ff66; 
+            /* 🚨 ASIGNACIÓN VERDE EXCLUSIVA PARA EL FONDO Y AURA EN MODO FÁBRICA */
+            --teclado-bg-forced: #00ff66;
+            --teclado-aura-color: #ffffff;
         }
         body.theme-cyberpunk #marcadorPrecioUnificado {
             background-image: 
                 linear-gradient(rgba(0, 240, 255, 0.25) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(0, 240, 255, 0.25) 1px, transparent 1px) !important;
         }
+
 
 
         /* 2️⃣ RETRO GOLD (Rejilla Oro Ámbar) */
@@ -308,17 +310,17 @@
         #cajaSub .lbl-title { font-size: 8px; text-transform: uppercase; color: var(--neon-secondary); margin-bottom: 1px; font-weight: bold; text-shadow: 0 0 4px rgba(0,240,255,0.2); }
         #cajaSub .lbl-val { font-size: 18px !important; font-weight: 900; color: #fff !important; }
         
-          /* ⌨️ PAD NUMÉRICO, PUNTO Y BORRAR: RESPLANDOR AMBIENTAL LO-FI NEÓN (SIN LÍNEAS) */
+        /* ⌨️ PAD NUMÉRICO, PUNTO Y BORRAR: RESPLANDOR AMBIENTAL LO-FI NEÓN (SIN LÍNEAS) */
         @keyframes auraRespiraciónLofi {
             0%, 100% { 
                 transform: scale(0.85); 
-                opacity: 0.15; 
+                opacity: 0.2; 
                 filter: blur(4px); 
             }
             50% { 
                 transform: scale(1.15); 
-                opacity: 0.55; 
-                filter: blur(8px); /* Se expande y se difumina suavemente */
+                opacity: 0.6; 
+                filter: blur(6px); 
             }
         }
         .pad-num { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; width: 100%; }
@@ -326,7 +328,6 @@
         /* Unifica números, punto y flecha de borrar bajo el mismo aura adaptativo */
         .btn-key, .btn-back { 
             height: 38px; 
-            background: var(--num-bg-theme) !important; 
             border: 1px solid var(--neon-primary) !important; 
             border-radius: 6px; 
             color: #ffffff !important; 
@@ -337,15 +338,18 @@
             justify-content: center; 
             align-items: center; 
             font-family: monospace; 
-            transition: all 0.2s ease, border-color 0.3s ease;
+            transition: all 0.2s ease, border-color 0.3s ease, background 0.3s ease;
             position: relative;
             overflow: hidden;
             z-index: 10;
             opacity: 1 !important;
             pointer-events: auto !important;
+
+            /* 🎨 BACKGROUND DINÁMICO: Cambia a verde en Cyberpunk o usa el color de fondo oscuro en los otros temas */
+            background: var(--teclado-bg-forced, var(--num-bg-theme)) !important;
         }
         
-        /* 🌌 EFECTO LO-FI CON CAPA DE RESPALDO INTELIGENTE (HEREDA VERDE EN CYBERPUNK) */
+        /* 🌌 EFECTO LO-FI: Neblina que respira en contraste por encima del fondo */
         .btn-key::before, .btn-back::before {
             content: "";
             position: absolute;
@@ -353,26 +357,21 @@
             left: 10%;
             width: 80%;
             height: 80%;
-            /* 🚨 INTELIGENTE: Lee el color verde en Cyberpunk o usa el del tema activo por defecto */
+            /* Utiliza blanco para resaltar el brillo sobre el fondo verde de Cyberpunk */
             background: radial-gradient(circle, var(--teclado-aura-color, var(--neon-primary)) 0%, transparent 70%) !important;
             border-radius: 50%;
             z-index: 1;
-            /* Latido analógico muy lento de 4.5 segundos estilo cassette */
             animation: auraRespiraciónLofi 4.5s infinite ease-in-out !important;
             pointer-events: none;
         }
 
-        
-        /* Asegura que los caracteres del texto queden completamente al frente, nítidos y sin obstrucciones */
-        .btn-key *, .btn-back * {
-            position: relative;
-            z-index: 5;
+        /* Fuerza a que los números se vean negros si el fondo es verde brillante para que se puedan leer bien */
+        body.theme-cyberpunk .btn-key, 
+        body.theme-cyberpunk .btn-back {
+            color: #000000 !important;
+            border-color: #00ff66 !important;
         }
-        
-        /* Eliminamos el pseudo-elemento ::after viejo que cargaba la rejilla */
-        .btn-key::after, .btn-back::after {
-            display: none !important;
-        }
+
 
 
 
