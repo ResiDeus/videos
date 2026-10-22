@@ -5,118 +5,114 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Calculadora de ResiDeus</title>
 
-    <!-- 📱 APP WEB PROGRESIVA (PWA) / CONFIGURACIÓN DE PANTALLA DE INICIO IPHONE -->
+    <!-- 📱 CONFIGURACIÓN DE PANTALLA DE INICIO IPHONE / PWA -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="ResiDeus">
     
-    <!-- 🖼️ ICONOS DE LA APLICACIÓN -->
     <link rel="icon" type="image/jpeg" href="./icon.jpg?v=200">
     <link rel="apple-touch-icon" type="image/jpeg" href="./icon.jpg?v=200">
 
     <style>
         /* ==========================================================================
-           🎨 SECCIÓN 1: ESTILOS CSS BASE Y ANIMACIONES RETRO-FUTURISTAS
+           🎨 VARIABLES DE TEMA PARA SINCRONIZAR COLORES EN BOTONES Y TEXTOS
            ========================================================================== */
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        
-        html, body { 
-            width: 100vw; height: 100vh; 
-            overflow: hidden; position: relative; font-family: monospace; 
-            transition: background 0.3s ease; 
+        body.theme-cyberpunk {
+            --bg-grad: linear-gradient(180deg, #09011a 0%, #2c044d 100%);
+            --neon-primary: #ff007f; --neon-secondary: #00f0ff; --btn-bg: #1a0826; --btn-text: #ff007f;
         }
-        
-        /* 🌈 GRADIENTES DE FONDO (TEMAS SYNTHWAVE) */
-        body.theme-cyberpunk { background: linear-gradient(180deg, #09011a 0%, #2c044d 100%) !important; }
-        body.theme-retro-gold { background: linear-gradient(180deg, #1c1917 0%, #44403c 100%) !important; }
-        body.theme-matrix { background: linear-gradient(180deg, #022c22 0%, #050505 100%) !important; }
-        body.theme-sunset { background: linear-gradient(180deg, #451a03 0%, #78350f 100%) !important; }
+        body.theme-retro-gold {
+            --bg-grad: linear-gradient(180deg, #1c1917 0%, #44403c 100%);
+            --neon-primary: #d97706; --neon-secondary: #fbbf24; --btn-bg: #1c1917; --btn-text: #fbbf24;
+        }
+        body.theme-matrix {
+            --bg-grad: linear-gradient(180deg, #022c22 0%, #050505 100%);
+            --neon-primary: #10b981; --neon-secondary: #34d399; --btn-bg: #022c22; --btn-text: #34d399;
+        }
+        body.theme-sunset {
+            --bg-grad: linear-gradient(180deg, #451a03 0%, #78350f 100%);
+            --neon-primary: #f97316; --neon-secondary: #fdba74; --btn-bg: #292524; --btn-text: #fdba74;
+        }
 
-        /* ✨ AMBIENTACIÓN REGLA RETRO (Estrellas y Malla 3D) */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body { width: 100vw; height: 100vh; overflow: hidden; position: relative; font-family: monospace; background: #09011a; transition: background 0.3s ease; }
+        
+        /* ✨ AMBIENTACIÓN RETRO */
         .sky { position: absolute; width: 100%; height: 100%; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent), radial-gradient(1.5px 1px at 75px 120px, #fff9, transparent); background-size: 380px 380px; z-index: 1; animation: twk 4s infinite linear; pointer-events: none; }
         .grid3d { position: absolute; width: 100%; height: 40%; bottom: 0; background-size: 40px 40px; transform: perspective(180px) rotateX(65deg); transform-origin: top center; z-index: 1; animation: gM 2.5s infinite linear; pointer-events: none; }
-        
-        body.theme-cyberpunk .grid3d { background-image: linear-gradient(rgba(255, 0, 127, 0.2) 2px, transparent 2px), linear-gradient(90deg, rgba(255, 0, 127, 0.2) 2px, transparent 2px); }
-        body.theme-retro-gold .grid3d { background-image: linear-gradient(rgba(217, 119, 6, 0.2) 2px, transparent 2px), linear-gradient(90deg, rgba(217, 119, 6, 0.2) 2px, transparent 2px); }
-        body.theme-matrix .grid3d { background-image: linear-gradient(rgba(16, 185, 129, 0.2) 2px, transparent 2px), linear-gradient(90deg, rgba(16, 185, 129, 0.2) 2px, transparent 2px); }
-        body.theme-sunset .grid3d { background-image: linear-gradient(rgba(239, 68, 68, 0.2) 2px, transparent 2px), linear-gradient(90deg, rgba(239, 68, 68, 0.2) 2px, transparent 2px); }
-
+        body { background: var(--bg-grad) !important; }
+        .grid3d { background-image: linear-gradient(rgba(255, 0, 127, 0.15) 2px, transparent 2px), linear-gradient(90deg, rgba(255, 0, 127, 0.15) 2px, transparent 2px); }
         @keyframes twk { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
         @keyframes gM { 0% { background-position: 0 0; } 100% { background-position: 0 40px; } }
         
-        /* 📟 CHASIS DE LA CALCULADORA CON FILTRO DE ENERGÍA GLOBAL */
-        .chasis { width: 340px; height: auto; min-height: 580px; background: #241434; border: 4px solid #ff007f; box-shadow: 0 0 25px #ff007f80; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; border-radius: 24px; overflow: hidden; display: flex; flex-direction: column; padding: 12px; gap: 8px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .chasis.global-power-off { filter: brightness(0.2) grayscale(0.5); border-color: #555 !important; box-shadow: none !important; }
+        /* 📟 CHASIS FÍSICO CON REGLA ESTRICTA DE ENERGÍA */
+        .chasis { width: 340px; height: auto; min-height: 580px; background: #160d21; border: 4px solid var(--neon-primary); box-shadow: 0 0 25px rgba(255, 0, 127, 0.3); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; border-radius: 24px; overflow: hidden; display: flex; flex-direction: column; padding: 12px; gap: 8px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         
-        body.theme-retro-gold .chasis { background: #292524; border-color: #d97706; box-shadow: 0 0 25px #d9770680; }
-        body.theme-matrix .chasis { background: #0a0a0a; border-color: #10b981; box-shadow: 0 0 25px #10b98180; }
-        body.theme-sunset .chasis { background: #451a03; border-color: #f97316; box-shadow: 0 0 25px #f9731680; }
-        /* 🟢 PANTALLA LCD CON EFECTO CRT TELEVISOR DE TUBOS */
+        /* 🔌 APAGÓN TOTAL EXCEPTO EL BOTÓN DE APAGAR */
+        .chasis.global-power-off { filter: brightness(0.25) grayscale(0.6); box-shadow: none !important; border-color: #444 !important; }
+        .chasis.global-power-off .btn-key:not(.power-btn), 
+        .chasis.global-power-off .caja-data, 
+        .chasis.global-power-off .btn-theme, 
+        .chasis.global-power-off .btn-receipt { box-shadow: none !important; text-shadow: none !important; border-color: #333 !important; animation: none !important; opacity: 0.2 !important; }
+
+        /* 🟢 PANTALLA LCD VERDE RETRO CON TOTALES A LA IZQUIERDA */
         .lcd { width: 100%; height: 175px; background: #92b043; border: 2px solid #000; border-radius: 14px; color: #000; box-shadow: inset 0 4px 10px rgba(0,0,0,0.4); font-weight: bold; padding: 8px; display: flex; flex-direction: column; justify-content: space-between; position: relative; transition: all 0.4s ease; transform-origin: center; }
-        
-        /* Animación de colapso de haz de electrones CRT */
-        @keyframes crtTVClose {
-            0% { transform: scale(1, 1); filter: brightness(1); opacity: 1; }
-            40% { transform: scale(1, 0.01); filter: brightness(3); opacity: 1; }
-            100% { transform: scale(0, 0); filter: brightness(5); opacity: 0; background: #fff; }
-        }
+        @keyframes crtTVClose { 0% { transform: scale(1, 1); filter: brightness(1); opacity: 1; } 40% { transform: scale(1, 0.01); filter: brightness(3); opacity: 1; } 100% { transform: scale(0, 0); filter: brightness(5); opacity: 0; background: #fff; } }
         .lcd.power-off-crt { animation: crtTVClose 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards !important; }
 
         .lcd-header { display: flex; justify-content: space-between; font-size: 11px; border-bottom: 1px solid rgba(0,0,0,0.2); }
         .lcd-wrapper { position: relative; flex-grow: 1; display: flex; flex-direction: column; margin: 4px 0; max-height: 55px; }
         .lcd-historial { flex-grow: 1; font-size: 11px; overflow-y: auto; text-align: left; padding-right: 4px; }
+        
+        /* ⬅️ FORZAMOS LOS NÚMEROS Y TEXTOS A LA IZQUIERDA */
+        .lcd-body { text-align: left !important; font-size: 10px; line-height: 1.2; }
+        .lcd-total { font-size: 24px; font-weight: 900; text-align: left !important; }
 
-        /* 🔘 CONFIGURACIÓN DE FILAS Y REGLAS GRID DE LOS BOTONES */
+        /* 🔘 ESTILOS DE LOS BOTONES DE MENÚ Y DE CUENTA PRINCIPAL */
         .row-menus { display: grid; gap: 4px; width: 100%; }
-        .caja-data { padding: 4px 2px; border-radius: 10px; text-align: center; cursor: pointer; font-size: 9px; transition: all 0.2s ease; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 52px; position: relative; }
+        .caja-data { padding: 4px 2px; border-radius: 10px; text-align: center; cursor: pointer; font-size: 9px; transition: all 0.2s ease; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 52px; background: #14051f; border: 2px solid rgba(255, 255, 255, 0.1); color: #888; }
         
-        /* Estado inactivo: atenuado synthwave */
-        .btn-off { background: #14051f; border: 2px solid #ff007f33; color: #ff007f88; opacity: 0.5; box-shadow: none !important; }
-        
-        /* ✨ LUCES NEÓN PULSANTES PARA EL MENÚ EN EDICIÓN ACTIVA */
+        /* Efecto Glow en los bordes SÓLO cuando el input está activo */
         @keyframes neonPulse {
-            0%, 100% { box-shadow: 0 0 8px #ff007f, inset 0 0 4px #ff007f; border-color: #fff; filter: brightness(1); }
-            50% { box-shadow: 0 0 18px #00f0ff, inset 0 0 8px #00f0ff; border-color: #00f0ff; filter: brightness(1.2); }
+            0%, 100% { box-shadow: 0 0 8px var(--neon-primary), inset 0 0 3px var(--neon-primary); border-color: #fff; }
+            50% { box-shadow: 0 0 16px var(--neon-secondary), inset 0 0 6px var(--neon-secondary); border-color: var(--neon-secondary); }
         }
-        .caja-data.btn-on { background: #ff007f; color: #000; font-weight: bold; animation: neonPulse 1.8s infinite ease-in-out; opacity: 1 !important; }
-        .caja-data.btn-on .lbl-title { color: #fff !important; text-shadow: 0 0 4px #000; }
-        .caja-data.btn-on .lbl-val { color: #000 !important; font-weight: 900; }
-        /* ⌨️ ESTILIZADO DE TECLAS ESPECIALES Y OPERATIVAS POR COLORES SYNTHWAVE */
-        .pad-num { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-bottom: 2px; width: 100%; }
-        .btn-key { height: 38px; background: linear-gradient(180deg, #321054 0%, #120321 100%); border: 1px solid #ff007f33; border-radius: 6px; color: #ff007f; font-size: 1.1rem; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; font-family: monospace; transition: all 0.2s ease; }
-        
-        /* Botones Funcionales Superiores (Clear, Añadir): Azul Cyan Eléctrico */
-        .btn-key.btn-op-special { background: linear-gradient(180deg, #06b6d4 0%, #083344 100%) !important; border-color: #22d3ee !important; color: #e0f7fa !important; font-size: 9px; text-shadow: 0 0 6px #22d3ee; }
-        
-        /* Botón de Apagar Especial: Rojo Cyber-Láser */
-        .btn-key.btn-op-special.power-btn { background: linear-gradient(180deg, #ef4444 0%, #450a0a 100%) !important; border-color: #f87171 !important; color: #fee2e2 !important; font-size: 14px; text-shadow: 0 0 8px #ef4444; }
-        
-        /* Botón Backspace Numérico: Color estándar */
-        .btn-back { background: linear-gradient(180deg, #44186c 0%, #170529 100%) !important; color: #00f0ff !important; border-color: #00f0ff44 !important; }
+        .caja-data.btn-on { animation: neonPulse 1.8s infinite ease-in-out; color: #fff; }
 
-        /* Botones Inferiores (Tema y Recibo): Unificados en Morado Magenta Láser */
-        .btn-theme, .btn-receipt { border-radius: 10px; font-weight: bold; cursor: pointer; transition: all 0.2s ease; text-transform: uppercase; display: flex; justify-content: center; align-items: center; font-family: monospace; height: 28px; font-size: 8px; background: linear-gradient(180deg, #d946ef 0%, #4a044e 100%) !important; border: 2px solid #f472b6 !important; color: #fff !important; text-shadow: 0 0 5px #d946ef; box-shadow: 0 0 10px rgba(217,70,239,0.3); width: 100%; }
-        .btn-theme:active, .btn-receipt:active { filter: brightness(1.3); }
+        /* 📟 Botón de Cuenta Principal (Cyan con fuente de número expandida) */
+        #cajaSub { background: #051a24; border-color: rgba(0, 240, 255, 0.2); color: #00f0ff; }
+        #cajaSub.btn-on { border-color: #fff; }
+        #cajaSub .lbl-val { font-size: 18px !important; font-weight: 900; }
 
-        .holograma-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10, 2, 24, 0.85); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 100; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
-        .holograma-overlay.activo { opacity: 1; pointer-events: auto; }
-
-        .holograma-ticket { width: 320px; max-height: 80vh; background: rgba(25, 10, 50, 0.85); border: 2px solid #00f0ff; box-shadow: 0 0 30px rgba(0, 240, 255, 0.4), inset 0 0 15px rgba(0, 240, 255, 0.2); border-radius: 16px; padding: 16px; position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 12px; transform: scale(0.85); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); color: #00f0ff; text-shadow: 0 0 8px rgba(0, 240, 255, 0.6); font-family: monospace; }
-        .holograma-overlay.activo .holograma-ticket { transform: scale(1); }
+        /* Números Parpadeantes cuando requieren el Input del usuario */
+        @keyframes blinkFast { 0%, 100% { opacity: 1; } 50% { opacity: 0.15; } }
+        .blink-num { animation: blinkFast 0.6s infinite steps(2, start); text-shadow: 0 0 8px currentColor; }
+        /* ⌨️ TECLADO NUMÉRICO UNIFICADO Y BOTONES DE CONTROL */
+        .pad-num { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; width: 100%; }
         
-        body.theme-retro-gold .holograma-ticket { border-color: #fbbf24; color: #fbbf24; text-shadow: 0 0 8px rgba(251, 191, 36, 0.6); background: rgba(41, 37, 36, 0.9); box-shadow: 0 0 30px rgba(251, 191, 36, 0.4); }
-        body.theme-matrix .holograma-ticket { border-color: #10b981; color: #10b981; text-shadow: 0 0 8px rgba(16, 185, 129, 0.6); background: rgba(10, 10, 10, 0.9); box-shadow: 0 0 30px rgba(16, 185, 129, 0.4); }
-        body.theme-sunset .holograma-ticket { border-color: #f97316; color: #f97316; text-shadow: 0 0 8px rgba(249, 115, 22, 0.6); background: rgba(69, 26, 3, 0.9); box-shadow: 0 0 30px rgba(249, 115, 22, 0.4); }
+        /* Teclas Numéricas (0-9) y Flecha de Borrar (Misma UI, color y tipografía) */
+        .btn-key { height: 38px; background: linear-gradient(180deg, #321054 0%, #120321 100%); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 6px; color: #fff; font-size: 1.1rem; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; font-family: monospace; transition: all 0.2s ease; }
+        .btn-key:active { background: #321054; border-color: var(--neon-secondary); }
+        .btn-back { color: #fff !important; background: linear-gradient(180deg, #321054 0%, #120321 100%) !important; border-color: rgba(255, 255, 255, 0.1) !important; }
 
+        /* Botones Operativos Superiores (+Añadir, Clear, Apagar): Rosa Neón Vibrante */
+        .btn-key.btn-op-special { background: linear-gradient(180deg, #ff007f 0%, #4a0026 100%) !important; border-color: #ff007f !important; color: #fff !important; font-size: 9px; text-shadow: 0 0 5px #ff007f; }
+        .btn-key.btn-op-special.power-btn { font-size: 14px; text-shadow: 0 0 8px #ff007f; opacity: 1 !important; z-index: 20; }
+        
+        /* Botones de Control Inferiores (Tema y Recibo): Gris Oscuro Metalizado */
+        .btn-theme, .btn-receipt { border-radius: 10px; font-weight: bold; cursor: pointer; transition: all 0.2s ease; text-transform: uppercase; display: flex; justify-content: center; align-items: center; font-family: monospace; height: 28px; font-size: 8px; background: linear-gradient(180deg, #2b2930 0%, #1c1a1f 100%) !important; border: 2px solid #555 !important; color: #ccc !important; text-shadow: none; box-shadow: none; width: 100%; }
+        .btn-theme:active, .btn-receipt:active { border-color: var(--neon-secondary) !important; color: #fff !important; }
+
+        .btn-key:disabled { opacity: 0.1 !important; cursor: not-allowed !important; }
+
+        .row-acciones-inferior { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-top: 2px; width: 100%; }
         .holograma-lineas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06)); background-size: 100% 4px, 6px 100%; pointer-events: none; z-index: 5; }
         .holograma-scrollable { flex-grow: 1; overflow-y: auto; font-size: 12px; line-height: 1.4; white-space: pre-wrap; padding-right: 4px; border: 1px solid rgba(0, 240, 255, 0.2); border-radius: 8px; padding: 8px; background: rgba(0, 0, 0, 0.3); }
         .holograma-footer { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .btn-holo { padding: 8px; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; border: 1px solid; font-family: monospace; font-size: 11px; text-align: center; background: transparent; color:inherit; text-shadow: inherit; transition: all 0.2s ease; }
-        .btn-holo:active { background: rgba(255, 255, 255, 0.1); }
+        .btn-holo { padding: 8px; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; border: 1px solid; font-family: monospace; font-size: 11px; text-align: center; background: transparent; color: inherit; text-shadow: inherit; transition: all 0.2s ease; }
         
         @keyframes tipeandoPuntos { 0% { content: "."; } 33% { content: ".."; } 66% { content: "..."; } 100% { content: "."; } }
         .lcd-tipeo::after { content: "."; animation: tipeandoPuntos 1.5s infinite steps(1, start); }
-        .on-anim { animation: glow 1.2s infinite ease-in-out; }
     </style>
 </head>
 <body class="theme-cyberpunk">
@@ -149,11 +145,11 @@
         <!-- 🎛️ BOTONERA DE MENÚS (Fila superior: Cuenta cruzando de lado a lado) -->
         <div class="row-menus" style="grid-template-columns: 1fr;">
             <div id="cajaSub" class="caja-data btn-on" onclick="seleccionarMenu('sub')" style="width: 100%;">
-                <span class="lbl-title">Cuenta</span>
+                <span class="lbl-title" style="color: #00f0ff;">Cuenta</span>
                 <span class="lbl-val">$<span id="lblSub" class="blink-num">0</span></span>
             </div>
         </div>
-        <!-- Segunda fila: Fila unificada de opciones neón (Misma UI e idéntico tamaño) -->
+        <!-- Segunda fila: Opciones neón unificadas (Misma UI e idéntico tamaño) -->
         <div class="row-menus" style="grid-template-columns: repeat(4, 1fr);">
             <div id="cajaPpl" class="caja-data btn-off" onclick="seleccionarMenu('ppl')">
                 <span class="lbl-title">Serrucho</span>
@@ -194,7 +190,8 @@
             <button id="btnReceipt" class="btn-receipt" onclick="abrirHologramaRecibo()">RECIBO</button>
         </div>
     </div> <!-- Cierre de chasis -->
-    <!-- 🔮 CAPA DE ACCESO AL RECIBO HOLOGRÁFICO -->
+
+    <!-- Visor Holográfico del Ticket -->
     <div class="holograma-overlay" id="visorHolograma">
         <div class="holograma-ticket">
             <div class="holograma-lineas"></div>
@@ -206,7 +203,6 @@
             </div>
         </div>
     </div>
-
     <script>
         // 💾 CONTROL DE ESTADOS, MEMORIAS Y ACUMULADORES FISCALES
         let ivu = 11.5, mode = 'sub', sSub = "0", incluirPropina = false, modoSerruchoActivo = false, modoDescuentoActivo = false, modoIvuActivo = false;
