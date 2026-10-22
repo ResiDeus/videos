@@ -310,25 +310,25 @@
         #cajaSub .lbl-title { font-size: 8px; text-transform: uppercase; color: var(--neon-secondary); margin-bottom: 1px; font-weight: bold; text-shadow: 0 0 4px rgba(0,240,255,0.2); }
         #cajaSub .lbl-val { font-size: 18px !important; font-weight: 900; color: #fff !important; }
         
-        /* ⌨️ PAD NUMÉRICO, PUNTO Y BORRAR: RESPLANDOR AMBIENTAL LO-FI NEÓN (SIN LÍNEAS) */
-        @keyframes auraRespiraciónLofi {
+        /* ⌨️ PAD NUMÉRICO, PUNTO Y BORRAR: VERDE SYNTHWAVE OSCURO ANALÓGICO CON AURA LO-FI */
+        @keyframes auraRespiraciónVerdeLofi {
             0%, 100% { 
                 transform: scale(0.85); 
-                opacity: 0.2; 
+                opacity: 0.1; 
                 filter: blur(4px); 
             }
             50% { 
                 transform: scale(1.15); 
-                opacity: 0.6; 
-                filter: blur(6px); 
+                opacity: 0.45; 
+                filter: blur(8px); 
             }
         }
         .pad-num { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; width: 100%; }
         
-        /* Regla base general para todos los temas secundarios (Fondo oscuro por defecto) */
+        /* Regla base general para todos los temas secundarios (Mantiene sus fondos originales) */
         .btn-key, .btn-back { 
             height: 38px; 
-            background: var(--num-bg-theme) !important; /* Mantiene el color oscuro en Retro Gold, Matrix y Sunset */
+            background: var(--num-bg-theme) !important; 
             border: 1px solid var(--neon-primary) !important; 
             border-radius: 6px; 
             color: #ffffff !important; 
@@ -347,32 +347,35 @@
             pointer-events: auto !important;
         }
         
-        /* 🌌 EFECTO LO-FI GENERAL: Neblina que respira en el fondo */
+        /* Neblina Lo-Fi general que respira en los temas secundarios */
         .btn-key::before, .btn-back::before {
             content: "";
             position: absolute;
             top: 10%; left: 10%; width: 80%; height: 80%;
-            background: radial-gradient(circle, var(--teclado-aura-color, var(--neon-primary)) 0%, transparent 70%) !important;
+            background: radial-gradient(circle, var(--neon-primary) 0%, transparent 70%) !important;
             border-radius: 50%;
             z-index: 1;
-            animation: auraRespiraciónLofi 4.5s infinite ease-in-out !important;
+            animation: auraRespiraciónVerdeLofi 4.5s infinite ease-in-out !important;
             pointer-events: none;
         }
 
-        /* 🚨 BLINDAJE PARA EL TEMA PRINCIPAL (CYBERPUNK): FORZADO DE FONDO VERDE ABSOLUTO */
+        /* 🚨 EXCLUSIVO TEMA PRINCIPAL (CYBERPUNK): FONDO VERDE SYNTHWAVE OSCURO OCHENTOSO */
         body.theme-cyberpunk .btn-key, 
         body.theme-cyberpunk .btn-back {
-            background: #00ff66 !important; /* 🟢 Destruye el púrpura y fuerza el fondo verde sólido en Cyberpunk */
-            color: #000000 !important;      /* Pone los números en negro sólido para que contrasten perfectamente */
-            border-color: #00ff66 !important;
-            box-shadow: 0 0 10px rgba(0, 255, 102, 0.2) !important;
+            background: linear-gradient(180deg, #071f13 0%, #0d3520 100%) !important; /* 🟢 Verde digital oscuro místico */
+            color: #ffffff !important; /* Texto blanco puro nítido */
+            border-color: #0f4d2c !important; /* Borde verde pino ochentoso sutil */
+            box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.4) !important;
+            text-shadow: 0 0 4px rgba(0, 255, 102, 0.4) !important; /* Micro brillo verde en los números */
         }
 
-        /* Ajuste del aura Lo-Fi para que brille en blanco sobre el fondo verde brillante de Cyberpunk */
+        /* Ajuste del Aura que respira lento en color verde fósforo analógico de fondo */
         body.theme-cyberpunk .btn-key::before,
         body.theme-cyberpunk .btn-back::before {
-            background: radial-gradient(circle, #ffffff 0%, transparent 70%) !important;
+            background: radial-gradient(circle, #00ff66 0%, transparent 70%) !important;
+            animation: auraRespiraciónVerdeLofi 5s infinite ease-in-out !important; /* Latido muy lento Lo-Fi */
         }
+
 
 
 
