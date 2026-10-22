@@ -209,7 +209,7 @@
             font-weight: 900 !important;
         }
 
-        /* 📟 REJILLA SYNTHWAVE MULTICOLOR ADAPTATIVA PARA EL PANEL DE PRECIO */
+        /* 📟 BASE GENERAL DE LA ANIMACIÓN DE LA REJILLA */
         @keyframes synthwaveShift {
             0% { background-position: 0% 0%; }
             100% { background-position: 40px 40px; }
@@ -219,14 +219,6 @@
             width: 100%; 
             gap: 4px; 
             background-color: #0b0214 !important;
-            
-            /* 🎨 CAMBIO MAGISTRAL: Reemplazamos el rosa fijo por la variable de neón de cada tema */
-            background-image: 
-                linear-gradient(var(--neon-secondary) 1px, transparent 1px),
-                linear-gradient(90deg, var(--neon-secondary) 1px, transparent 1px) !important;
-                
-            /* Ajustamos la opacidad general de la malla para que siga siendo sutil y elegante */
-            opacity: 1;
             background-size: 20px 20px !important;
             animation: synthwaveShift 2.5s infinite linear !important; 
             border-radius: 10px; 
@@ -242,6 +234,29 @@
             border-color: #fff; 
             box-shadow: 0 0 14px var(--neon-secondary); 
         }
+
+        /* 🎨 REGLAS ESPECÍFICAS POR TEMA PARA EL TRATAMIENTO DE LOS CUADRADOS ANIMADOS */
+        body.theme-cyberpunk .contenedor-precio-unificado {
+            background-image: 
+                linear-gradient(rgba(0, 240, 255, 0.25) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 240, 255, 0.25) 1px, transparent 1px) !important;
+        }
+        body.theme-retro-gold .contenedor-precio-unificado {
+            background-image: 
+                linear-gradient(rgba(251, 191, 36, 0.25) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(251, 191, 36, 0.25) 1px, transparent 1px) !important;
+        }
+        body.theme-matrix .contenedor-precio-unificado {
+            background-image: 
+                linear-gradient(rgba(52, 211, 153, 0.25) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(52, 211, 153, 0.25) 1px, transparent 1px) !important;
+        }
+        body.theme-sunset .contenedor-precio-unificado {
+            background-image: 
+                linear-gradient(rgba(253, 186, 116, 0.25) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(253, 186, 116, 0.25) 1px, transparent 1px) !important;
+        }
+
 
 
         /* 🔵 BOTÓN + SÚPER EXPUESTO (DIFERENCIADO Y ADAPTATIVO AL NEÓN DE CADA TEMA) */
