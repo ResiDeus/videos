@@ -264,18 +264,18 @@
         #cajaSub .lbl-title { font-size: 8px; text-transform: uppercase; color: var(--neon-secondary); margin-bottom: 1px; font-weight: bold; text-shadow: 0 0 4px rgba(0,240,255,0.2); }
         #cajaSub .lbl-val { font-size: 18px !important; font-weight: 900; color: #fff !important; }
         
-        /* ⌨️ TECLADO NUMÉRICO, PUNTO Y BORRAR: REJILLA TRIDIMENSIONAL CHROME-LASER DE LOS 80 */
-        @keyframes rejillaHorizonte80s {
-            0% { background-position: 0 0, 0 0; }
-            100% { background-position: 0 32px, 0 0; }
+        /* ⌨️ TECLADO NUMÉRICO, PUNTO Y BORRAR: REJILLA SYNTHWAVE ADAPTATIVA Y ANIMADA */
+        @keyframes rejillaRespiración80s {
+            0%, 100% { opacity: 0.35; filter: brightness(1); }
+            50% { opacity: 0.9; filter: brightness(1.6); }
         }
         .pad-num { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; width: 100%; }
         
-        /* Unifica números, punto y la flecha de borrar con la rejilla ochentera */
+        /* Vincula números, punto y flecha de borrar para que muten de color con cada TEMA */
         .btn-key, .btn-back { 
             height: 38px; 
             background: var(--num-bg-theme) !important; 
-            border: 1px solid #6a0dad !important; /* Borde amatista ochentero */
+            border: 1px solid var(--neon-primary) !important; /* El borde ahora cambia con el tema */
             border-radius: 6px; 
             color: #ffffff !important; 
             font-size: 1.1rem; 
@@ -285,33 +285,41 @@
             justify-content: center; 
             align-items: center; 
             font-family: monospace; 
-            transition: all 0.2s ease;
+            transition: all 0.2s ease, border-color 0.3s ease;
             position: relative;
             overflow: hidden;
             z-index: 10;
             opacity: 1 !important;
             pointer-events: auto !important;
-            
-            /* 🌌 EFECTO 80s: Malla en perspectiva lineal amatista desplazándose hacia adelante */
-            background-image: 
-                /* Capa 1: Líneas horizontales de la cuadrícula en movimiento */
-                linear-gradient(rgba(106, 13, 173, 0.25) 1px, transparent 1px),
-                /* Capa 2: Líneas verticales estáticas que crean la perspectiva */
-                linear-gradient(90deg, rgba(106, 13, 173, 0.25) 1px, transparent 1px) !important;
-            
-            background-size: 100% 8px, 8px 100% !important;
-            animation: rejillaHorizonte80s 2.5s infinite linear !important; /* Desplazamiento fluido */
         }
         
-        /* Efecto de destello de neón amatista central en cada tecla */
+        /* 🌌 CAPA TRASERA INDEPENDIENTE CON LA REJILLA LÁSER QUE CAMBIA DE COLOR Y TITILA */
+        .btn-key::after, .btn-back::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            /* La cuadrícula ahora absorbe dinámicamente el color neón del tema activo */
+            background-image: 
+                linear-gradient(var(--neon-primary) 1px, transparent 1px),
+                linear-gradient(90deg, var(--neon-primary) 1px, transparent 1px) !important;
+            background-size: 8px 8px !important;
+            z-index: 1;
+            /* Animación de respiración ochentosa sutil y fluida aprobada para iPhone */
+            animation: rejillaRespiración80s 2s infinite ease-in-out !important;
+            pointer-events: none;
+        }
+        
+        /* Destello interno central que cambia de color según el tema aplicado */
         .btn-key::before, .btn-back::before {
             content: "";
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, rgba(106, 13, 173, 0.35) 0%, transparent 75%) !important;
+            background: radial-gradient(circle at center, var(--neon-primary) 0%, transparent 75%) !important;
+            opacity: 0.25;
             pointer-events: none;
-            z-index: 1;
+            z-index: 2;
         }
+
 
 
 
