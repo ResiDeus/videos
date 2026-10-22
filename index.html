@@ -160,14 +160,14 @@
         }
         .caja-data { width: 100%; padding: 4px 2px; border-radius: 8px; text-align: center; cursor: pointer; font-size: 9px; transition: all 0.2s ease; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 48px; position: relative; background: var(--btn-bg-theme); background-size: 200% 200%; animation: activeMenuMove 6s infinite ease-in-out; border: 2px solid var(--neon-primary); color: #fff !important; opacity: 0.9; overflow: hidden; }
         
-        /* 🌌 REVERSIÓN EXCLUSIVA: BASE VIOLETA ANIMADA FIJA CON ESTRELLITAS PÍXEL 8-BITS */
+        /* 🌌 CONFIGURACIÓN REVERTIDA: BASE VIOLETA ANIMADA FIJA CON ESTRELLITAS PÍXEL PARA TODOS LOS TEMAS */
         @keyframes titileoLentoPixel {
             0%, 100% { opacity: 0.15; }
             50% { opacity: 1; }
         }
         
         .caja-data.btn-on { 
-            /* 🔮 Restaurada tu base violeta sólida ochentera fluyendo de fondo de forma continua */
+            /* 🔮 Se fija el gradiente violeta/púrpura synthwave continuo para todas las paletas */
             background: linear-gradient(45deg, #2a0845, #6441a5, #2a0845) !important;
             background-size: 200% 200% !important;
             animation: neonPulse 1.8s infinite ease-in-out, activeMenuMove 3s infinite ease-in-out !important; 
@@ -178,7 +178,7 @@
             box-shadow: 0 0 16px var(--neon-secondary), inset 0 0 6px var(--neon-secondary) !important;
         }
 
-        /* Capa trasera independiente que dibuja las estrellitas píxel fijas sobre la cúpula espacial */
+        /* Capa trasera independiente que dibuja la constelación de micro-píxeles cuadrados */
         .caja-data.btn-on::before {
             content: "";
             position: absolute;
@@ -187,7 +187,7 @@
             background: #ffffff;
             top: 10px;
             left: 15px;
-            /* Se conservan las micro-estrellitas en coordenadas fijas de 1 píxel real */
+            /* Coordenadas de las micro-estrellitas de 1px real */
             box-shadow: 
                 15px 22px 0 #ffffff,   
                 45px 5px 0 #ffffff,    
@@ -195,15 +195,17 @@
                 30px -4px 0 #ffffff,   
                 -5px 14px 0 #ffffff;   
             z-index: 1;
+            /* Latido analógico suave y sutil de 3.5 segundos */
             animation: titileoLentoPixel 3.5s infinite ease-in-out !important;
             pointer-events: none;
         }
 
-        /* Garantiza que las letras floten limpiamente por encima del fondo espacial */
+        /* Asegura la lectura limpia de las letras por encima de las estrellas */
         .caja-data.btn-on * {
             position: relative;
             z-index: 2;
         }
+
 
 
 
