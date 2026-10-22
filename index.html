@@ -17,30 +17,39 @@
         /* ==========================================================================
            🎨 ASIGNACIÓN DE TEMAS DINÁMICOS COMPLETA (HERENCIA TOTAL DE BOTONES)
            ========================================================================== */
-        /* 1️⃣ CYBERPUNK - Mantiene su Azul Eléctrico Digital */
+        /* 1️⃣ CYBERPUNK - Botón + Cyan Neón Líquido */
         body.theme-cyberpunk {
             --bg-grad: linear-gradient(180deg, #09011a 0%, #2c044d 100%);
             --neon-primary: #ff007f; --neon-secondary: #00f0ff; --receipt-glow: #00ff66;
             --btn-bg-theme: linear-gradient(135deg, #150624 0%, #250b3e 50%, #150624 100%);
             --num-bg-theme: linear-gradient(180deg, #2d0e54 0%, #11021f 100%);
-            --blue-tech: linear-gradient(45deg, #0044cc, #00f0ff, #0044cc);
+            --blue-tech: linear-gradient(45deg, #0066ff, #00f0ff, #0066ff);
         }
-        /* 2️⃣ RETRO GOLD - Cambia a un Oro Líquido Profundo */
+        /* 2️⃣ RETRO GOLD - Botón + Ámbar Brillante */
         body.theme-retro-gold {
             --bg-grad: linear-gradient(180deg, #1c1917 0%, #44403c 100%);
             --neon-primary: #d97706; --neon-secondary: #fbbf24; --receipt-glow: #fbbf24;
             --btn-bg-theme: linear-gradient(135deg, #292524 0%, #44403c 50%, #292524 100%);
             --num-bg-theme: linear-gradient(180deg, #44403c 0%, #1c1917 100%);
-            --blue-tech: linear-gradient(45deg, #78350f, #d97706, #78350f);
+            --blue-tech: linear-gradient(45deg, #b45309, #fbbf24, #b45309);
         }
-        /* 3️⃣ MATRIX - Cambia a un Verde Terminal Intenso */
+        /* 3️⃣ MATRIX - Botón + Verde Fósforo Fuerte */
         body.theme-matrix {
             --bg-grad: linear-gradient(180deg, #022c22 0%, #050505 100%);
             --neon-primary: #10b981; --neon-secondary: #34d399; --receipt-glow: #34d399;
             --btn-bg-theme: linear-gradient(135deg, #022c22 0%, #064e3b 50%, #022c22 100%);
             --num-bg-theme: linear-gradient(180deg, #022c22 0%, #050505 100%);
-            --blue-tech: linear-gradient(45deg, #04583d, #10b981, #04583d);
+            --blue-tech: linear-gradient(45deg, #047857, #34d399, #047857);
         }
+        /* 4️⃣ SUNSET - Botón + Lava Radiante */
+        body.theme-sunset {
+            --bg-grad: linear-gradient(180deg, #451a03 0%, #78350f 100%);
+            --neon-primary: #f97316; --neon-secondary: #fdba74; --receipt-glow: #fdba74;
+            --btn-bg-theme: linear-gradient(135deg, #292524 0%, #451a03 50%, #292524 100%);
+            --num-bg-theme: linear-gradient(180deg, #78350f 0%, #292524 100%);
+            --blue-tech: linear-gradient(45deg, #c2410c, #fdba74, #c2410c);
+        }
+
         /* 4️⃣ SUNSET - Cambia a un Naranja Lava Quemada */
         body.theme-sunset {
             --bg-grad: linear-gradient(180deg, #451a03 0%, #78350f 100%);
@@ -134,14 +143,22 @@
         .caja-data { width: 100%; padding: 4px 2px; border-radius: 8px; text-align: center; cursor: pointer; font-size: 9px; transition: all 0.2s ease; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 48px; position: relative; background: var(--btn-bg-theme); background-size: 200% 200%; animation: activeMenuMove 6s infinite ease-in-out; border: 2px solid var(--neon-primary); color: #fff !important; opacity: 0.9; overflow: hidden; }
         .caja-data.btn-on { animation: neonPulse 1.8s infinite ease-in-out, activeMenuMove 3s infinite ease-in-out; background: linear-gradient(45deg, #2a0845, #6441a5, #2a0845); background-size: 200% 200%; color: #fff !important; opacity: 1 !important; border-color: #fff; }
 
-        /* 📟 CONTENEDOR INTEGRADO DE PRECIO ADAPTATIVO AL TEMA */
+        /* 📟 BACKGROUND SYNTHWAVE TECNOLÓGICO ANIMADO EN EL BOTÓN DE PRECIO */
+        @keyframes synthwaveShift {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 40px 40px; }
+        }
         .contenedor-precio-unificado { 
             display: flex; 
             width: 100%; 
             gap: 4px; 
-            background: var(--blue-tech) !important; /* 🎨 Vinculado al tema dinámico */
-            background-size: 300% 300% !important; 
-            animation: activeMenuMove 6s infinite ease-in-out; 
+            /* 🌌 Fondo tecnológico Synthwave: Malla digital que se desplaza en bucle */
+            background-color: #0b0214 !important;
+            background-image: 
+                linear-gradient(rgba(255, 0, 127, 0.15) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 0, 127, 0.15) 1px, transparent 1px) !important;
+            background-size: 20px 20px !important;
+            animation: synthwaveShift 2.5s infinite linear !important;
             border-radius: 10px; 
             border: 2px solid var(--neon-secondary); 
             padding: 4px; 
@@ -149,12 +166,37 @@
             align-items: center; 
             transition: opacity 0.2s ease, visibility 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease; 
             position: relative; 
+            overflow: hidden;
+        }
+        .contenedor-precio-unificado.precio-on { 
+            border-color: #fff; 
+            box-shadow: 0 0 14px var(--neon-secondary); 
         }
 
-        .contenedor-precio-unificado.precio-on { border-color: #fff; box-shadow: 0 0 12px var(--neon-secondary); }
-        
-        /* 🔵 BOTÓN + MÁS GRANDE AZUL/DINÁMICO SEGÚN TEMA A MANO DERECHA */
-        .btn-add-embedded { width: 55px; height: 100%; min-height: 40px; background: var(--blue-tech); background-size: 200% 200%; animation: activeMenuMove 4s infinite ease-in-out; border: 1px solid var(--neon-secondary); border-radius: 6px; color: #fff; font-size: 22px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 8px rgba(0, 240, 255, 0.3); transition: all 0.1s ease; user-select: none; }
+        /* 🔵 BOTÓN + SÚPER EXPUESTO (DIFERENCIADO Y ADAPTATIVO AL NEÓN DE CADA TEMA) */
+        .btn-add-embedded { 
+            width: 55px; 
+            height: 100%; 
+            min-height: 40px; 
+            /* Usa el gradiente nativo de cada tema para romper el color con el fondo Synthwave */
+            background: var(--blue-tech) !important; 
+            background-size: 200% 200% !important; 
+            animation: activeMenuMove 4s infinite ease-in-out; 
+            border: 2px solid #fff; 
+            border-radius: 6px; 
+            color: #ffffff !important; 
+            font-size: 24px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            box-shadow: 0 0 10px var(--neon-secondary); 
+            transition: all 0.1s ease; 
+            user-select: none; 
+            z-index: 2;
+        }
+
         
         #cajaSub { flex-grow: 1; background: transparent !important; border: none !important; box-shadow: none !important; min-height: auto; align-items: center !important; justify-content: center !important; color: #fff !important; opacity: 1; text-align: center; }
         #cajaSub .lbl-title { font-size: 8px; text-transform: uppercase; color: var(--neon-secondary); margin-bottom: 1px; font-weight: bold; text-shadow: 0 0 4px rgba(0,240,255,0.2); }
