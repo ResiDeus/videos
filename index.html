@@ -21,21 +21,25 @@
             --bg-grad: linear-gradient(180deg, #09011a 0%, #2c044d 100%);
             --neon-primary: #ff007f; --neon-secondary: #00f0ff; --btn-bg: #1c062c; --btn-text: #ff007f;
             --num-bg: linear-gradient(180deg, #321054 0%, #120321 100%);
+            --receipt-glow: #00ff66; /* 🍏 Recibo ahora brilla en Verde para el tema principal */
         }
         body.theme-retro-gold {
             --bg-grad: linear-gradient(180deg, #1c1917 0%, #44403c 100%);
             --neon-primary: #d97706; --neon-secondary: #fbbf24; --btn-bg: #292524; --btn-text: #fbbf24;
             --num-bg: linear-gradient(180deg, #44403c 0%, #1c1917 100%);
+            --receipt-glow: #fbbf24;
         }
         body.theme-matrix {
             --bg-grad: linear-gradient(180deg, #022c22 0%, #050505 100%);
             --neon-primary: #10b981; --neon-secondary: #34d399; --btn-bg: #064e3b; --btn-text: #34d399;
             --num-bg: linear-gradient(180deg, #022c22 0%, #050505 100%);
+            --receipt-glow: #34d399;
         }
         body.theme-sunset {
             --bg-grad: linear-gradient(180deg, #451a03 0%, #78350f 100%);
             --neon-primary: #f97316; --neon-secondary: #fdba74; --btn-bg: #421807; --btn-text: #fdba74;
             --num-bg: linear-gradient(180deg, #78350f 0%, #292524 100%);
+            --receipt-glow: #fdba74;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -67,28 +71,33 @@
 
         .lcd-header { display: flex; justify-content: space-between; font-size: 11px; border-bottom: 1px solid rgba(0,0,0,0.2); }
         .lcd-wrapper { position: relative; flex-grow: 1; display: flex; flex-direction: column; margin: 4px 0; max-height: 55px; }
-        .lcd-historial { flex-grow: 1; font-size: 11px; overflow-y: auto; text-align: left; padding-right: 4px; }
+        .lcd-historial { flex-grow: 1; font-size: 10px; overflow-y: auto; text-align: left; padding-right: 4px; line-height: 1.3; }
         .lcd-body { text-align: left !important; font-size: 10px; line-height: 1.2; }
         .lcd-total { font-size: 24px; font-weight: 900; text-align: left !important; }
 
-        /* 🎛️ ESTRUCTURA GRID PARA LOS CONTENEDORES CON FLECHAS INCREMENTALES */
+        /* ✨ TEXTO Y FLECHA "DESLIZAR" PARPADEANTE */
+        @keyframes blinkScrollHint { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+        .scroll-hint { position: absolute; bottom: 1px; right: 2px; font-size: 8px; color: rgba(0,0,0,0.8); animation: blinkScrollHint 1s infinite ease-in-out; pointer-events: none; display: none; background: rgba(146, 176, 67, 0.9); padding: 0 4px; border-radius: 3px; font-weight: 900; }
+
+        /* 🎛️ ESTRUCTURA FLEX DE LAS MINI-COLUMNAS DE OPCIONES */
         .row-opciones-pasos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; width: 100%; }
         .wrapper-pasos { display: flex; flex-direction: column; gap: 2px; align-items: center; }
         
-        /* Botones de Flechas (▲ y ▼) Estilizados */
-        .btn-step { width: 100%; height: 16px; background: #22123b; border: 1px solid rgba(255, 255, 255, 0.15); color: #fff; font-size: 8px; cursor: pointer; display: flex; justify-content: center; align-items: center; border-radius: 4px; transition: all 0.15s ease; }
-        .btn-step:active { background: var(--neon-secondary); color: #000; }
+        /* 🕹️ EFECTO TÁCTIL EN FLECHAS AL PRESIONARSE */
+        .btn-step { width: 100%; height: 16px; background: #22123b; border: 1px solid rgba(255, 255, 255, 0.15); color: #fff; font-size: 8px; cursor: pointer; display: flex; justify-content: center; align-items: center; border-radius: 4px; transition: all 0.1s ease; user-select: none; -webkit-user-select: none; }
+        .btn-step:active { transform: scale(0.9); background: #fff !important; color: #000 !important; box-shadow: 0 0 8px #fff; }
 
-        /* Botones de Menú con Texto Blanco Nítido */
-        .caja-data { width: 100%; padding: 4px 2px; border-radius: 8px; text-align: center; cursor: pointer; font-size: 9px; transition: all 0.2s ease; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 48px; background: var(--btn-bg); border: 2px solid rgba(255, 255, 255, 0.08); color: #fff !important; opacity: 0.6; }
+        /* Botones de Menú con Fondo Sólido */
+        .caja-data { width: 100%; padding: 4px 2px; border-radius: 8px; text-align: center; cursor: pointer; font-size: 9px; transition: all 0.2s ease; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 48px; position: relative; background: var(--btn-bg); border: 2px solid rgba(255, 255, 255, 0.08); color: #fff !important; opacity: 0.6; overflow: hidden; }
         
+        /* 🌌 GRADIENTE NEÓN EN MOVIMIENTO SUTIL PARA MENÚS CUANDO ESTÁN ACTIVOS */
+        @keyframes activeMenuMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
         @keyframes neonPulse {
             0%, 100% { box-shadow: 0 0 8px var(--neon-primary), inset 0 0 3px var(--neon-primary); border-color: #fff; }
             50% { box-shadow: 0 0 16px var(--neon-secondary), inset 0 0 6px var(--neon-secondary); border-color: var(--neon-secondary); }
         }
-        .caja-data.btn-on { animation: neonPulse 1.8s infinite ease-in-out; color: #fff !important; opacity: 1 !important; border-color: #fff; }
+        .caja-data.btn-on { animation: neonPulse 1.8s infinite ease-in-out; background: linear-gradient(45deg, var(--btn-bg), #2e0854, var(--btn-bg)); background-size: 200% 200%; animation: neonPulse 1.8s infinite ease-in-out, activeMenuMove 4s infinite ease-in-out; color: #fff !important; opacity: 1 !important; border-color: #fff; }
 
-        /* 📟 FONDO TECNOLÓGICO ANIMADO SUTIL PARA EL BOTÓN DE CUENTA */
         @keyframes techMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
         #cajaSub { background: linear-gradient(-45deg, #051a24, #082f44, #03121a, #0c3e54); background-size: 300% 300%; animation: techMove 6s infinite ease-in-out; border-color: rgba(0, 240, 255, 0.3); color: #00f0ff !important; opacity: 1; }
         #cajaSub.btn-on { border-color: #fff; box-shadow: 0 0 12px rgba(0, 240, 255, 0.4); }
@@ -99,7 +108,6 @@
         /* ⌨️ TECLADO NUMÉRICO UNIFICADO Y MODALES SIN BLOQUEOS */
         .pad-num { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; width: 100%; }
         
-        /* Teclas Numéricas (0-9) y Botón de Borrar (Misma UI, color y tipografía) */
         .btn-key { height: 38px; background: var(--num-bg); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 6px; color: #fff; font-size: 1.1rem; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; font-family: monospace; transition: all 0.2s ease; }
         .btn-key:active { filter: brightness(1.4); border-color: var(--neon-secondary); }
         .btn-back { color: #fff !important; background: var(--num-bg) !important; border-color: rgba(255, 255, 255, 0.1) !important; }
@@ -115,18 +123,17 @@
         .btn-key:disabled { opacity: 0.1 !important; cursor: not-allowed !important; }
         .row-acciones-inferior { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-top: 2px; width: 100%; }
 
-        /* 🔮 RECIBO HOLOGRÁFICO NÍTIDO ACUÑADO A LOS COLORES DE CADA TEMA */
-        .holograma-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10, 2, 24, 0.8); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 100; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
+        /* 🔮 RECIBO HOLOGRÁFICO DINÁMICO (Verde Matrix en Cyberpunk / Combinado en otros) */
+        .holograma-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10, 2, 24, 0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 100; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
         .holograma-overlay.activo { opacity: 1; pointer-events: auto; visibility: visible; }
 
-        /* Fondo de alta legibilidad traslúcido y bordes que se mimetizan con el tema seleccionado */
-        .holograma-ticket { width: 320px; max-height: 80vh; background: rgba(15, 10, 25, 0.95); border: 2px solid var(--neon-primary); box-shadow: 0 0 30px var(--neon-primary), inset 0 0 15px rgba(255,255,255,0.05); border-radius: 16px; padding: 16px; position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 12px; transform: scale(0.85); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); color: #fff; font-family: monospace; }
+        .holograma-ticket { width: 320px; max-height: 80vh; background: rgba(15, 10, 25, 0.95); border: 2px solid var(--receipt-glow); box-shadow: 0 0 30px var(--receipt-glow), inset 0 0 15px rgba(255,255,255,0.05); border-radius: 16px; padding: 16px; position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 12px; transform: scale(0.85); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); color: #fff; font-family: monospace; }
         .holograma-overlay.activo .holograma-ticket { transform: scale(1); }
 
         .holograma-lineas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%); background-size: 100% 4px; pointer-events: none; z-index: 5; }
-        .holograma-scrollable { flex-grow: 1; overflow-y: auto; font-size: 12px; line-height: 1.4; white-space: pre-wrap; padding-right: 4px; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 8px; padding: 8px; background: rgba(0, 0, 0, 0.4); color: var(--neon-secondary); text-shadow: 0 0 3px var(--neon-secondary); }
+        .holograma-scrollable { flex-grow: 1; overflow-y: auto; font-size: 12px; line-height: 1.4; white-space: pre-wrap; padding-right: 4px; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 8px; padding: 8px; background: rgba(0, 0, 0, 0.4); color: var(--receipt-glow); text-shadow: 0 0 3px var(--receipt-glow); }
         .holograma-footer { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .btn-holo { padding: 8px; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; border: 1px solid var(--neon-primary); font-family: monospace; font-size: 11px; text-align: center; background: transparent; color: var(--neon-secondary); transition: all 0.2s ease; }
+        .btn-holo { padding: 8px; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; border: 1px solid var(--receipt-glow); font-family: monospace; font-size: 11px; text-align: center; background: transparent; color: var(--receipt-glow); transition: all 0.2s ease; }
         .btn-holo:active { background: rgba(255, 255, 255, 0.1); }
         
         @keyframes tipeandoPuntos { 0% { content: "."; } 33% { content: ".."; } 66% { content: "..."; } 100% { content: "."; } }
@@ -168,52 +175,51 @@
             </div>
         </div>
 
-        <!-- Segunda fila: Fila unificada con Flechas de Incremento (▲/▼) integradas verticalmente -->
+        <!-- Segunda fila: Fila unificada con Flechas de Incremento Continuo Integradas -->
         <div class="row-opciones-pasos">
             <!-- Columna Serrucho -->
             <div class="wrapper-pasos">
-                <button class="btn-step" onclick="modificarValorPaso('ppl', 1)">▲</button>
+                <button class="btn-step" onmousedown="iniciarAutoIncremento('ppl', 1)" ontouchstart="iniciarAutoIncremento('ppl', 1)" onmouseup="detenerAutoIncremento()" onmouseleave="detenerAutoIncremento()" ontouchend="detenerAutoIncremento()">▲</button>
                 <div id="cajaPpl" class="caja-data btn-off" onclick="seleccionarMenu('ppl')">
                     <span class="lbl-title">Serrucho</span>
                     <span class="lbl-val"><span id="lblPpl">N/A</span></span>
                 </div>
-                <button class="btn-step" onclick="modificarValorPaso('ppl', -1)">▼</button>
+                <button class="btn-step" onmousedown="iniciarAutoIncremento('ppl', -1)" ontouchstart="iniciarAutoIncremento('ppl', -1)" onmouseup="detenerAutoIncremento()" onmouseleave="detenerAutoIncremento()" ontouchend="detenerAutoIncremento()">▼</button>
             </div>
 
             <!-- Columna Descuento -->
             <div class="wrapper-pasos">
-                <button class="btn-step" onclick="modificarValorPaso('desc', 1)">▲</button>
+                <button class="btn-step" onmousedown="iniciarAutoIncremento('desc', 1)" ontouchstart="iniciarAutoIncremento('desc', 1)" onmouseup="detenerAutoIncremento()" onmouseleave="detenerAutoIncremento()" ontouchend="detenerAutoIncremento()">▲</button>
                 <div id="cajaDesc" class="caja-data btn-off" onclick="seleccionarMenu('desc')">
                     <span class="lbl-title">Descuento</span>
                     <span class="lbl-val">-<span id="lblDesc">0</span>%</span>
                 </div>
-                <button class="btn-step" onclick="modificarValorPaso('desc', -1)">▼</button>
+                <button class="btn-step" onmousedown="iniciarAutoIncremento('desc', -1)" ontouchstart="iniciarAutoIncremento('desc', -1)" onmouseup="detenerAutoIncremento()" onmouseleave="detenerAutoIncremento()" ontouchend="detenerAutoIncremento()">▼</button>
             </div>
 
             <!-- Columna Propina -->
             <div class="wrapper-pasos">
-                <button class="btn-step" onclick="modificarValorPaso('tip', 1)">▲</button>
+                <button class="btn-step" onmousedown="iniciarAutoIncremento('tip', 1)" ontouchstart="iniciarAutoIncremento('tip', 1)" onmouseup="detenerAutoIncremento()" onmouseleave="detenerAutoIncremento()" ontouchend="detenerAutoIncremento()">▲</button>
                 <div id="cajaTip" class="caja-data btn-off" onclick="seleccionarMenu('tip')">
                     <span class="lbl-title">Propina</span>
                     <span class="lbl-val"><span id="lblTip">0</span>%</span>
                 </div>
-                <button class="btn-step" onclick="modificarValorPaso('tip', -1)">▼</button>
+                <button class="btn-step" onmousedown="iniciarAutoIncremento('tip', -1)" ontouchstart="iniciarAutoIncremento('tip', -1)" onmouseup="detenerAutoIncremento()" onmouseleave="detenerAutoIncremento()" ontouchend="detenerAutoIncremento()">▼</button>
             </div>
 
-            <!-- Columna IVU -->
+            <!-- Columna IVU (Paso de 0.1% para permitir valores impares como 11.6%) -->
             <div class="wrapper-pasos">
-                <button class="btn-step" onclick="modificarValorPaso('ivu', 0.5)">▲</button>
+                <button class="btn-step" onmousedown="iniciarAutoIncremento('ivu', 0.1)" ontouchstart="iniciarAutoIncremento('ivu', 0.1)" onmouseup="detenerAutoIncremento()" onmouseleave="detenerAutoIncremento()" ontouchend="detenerAutoIncremento()">▲</button>
                 <div id="btnToggleIvu" class="caja-data btn-off" onclick="seleccionarMenu('ivu')">
                     <span class="lbl-title">IVU</span>
                     <span class="lbl-val"><span id="lblIvuBoton">0.0</span>%</span>
                 </div>
-                <button class="btn-step" onclick="modificarValorPaso('ivu', -0.5)">▼</button>
+                <button class="btn-step" onmousedown="iniciarAutoIncremento('ivu', -0.1)" ontouchstart="iniciarAutoIncremento('ivu', -0.1)" onmouseup="detenerAutoIncremento()" onmouseleave="detenerAutoIncremento()" ontouchend="detenerAutoIncremento()">▼</button>
             </div>
         </div>
 
         <!-- ⌨️ TECLADO NUMÉRICO REORDENADO (Teclas exclusivas para el botón de Cuenta) -->
         <div class="pad-num">
-            <!-- Fila superior: Flecha en esquina izquierda, Clear, y espacio vacío para conservar balance -->
             <button id="btnBksp" onclick="bksp()" class="btn-key btn-back">←</button>
             <button id="btnCeGlobal" class="btn-key btn-op-special" onclick="ce()">Clear</button>
             <button id="btnVacioDummy" class="btn-key" style="opacity:0; pointer-events:none;"></button>
@@ -222,7 +228,6 @@
             <button id="btnN4" onclick="num('4')" class="btn-key">4</button><button id="btnN5" onclick="num('5')" class="btn-key">5</button><button id="btnN6" onclick="num('6')" class="btn-key">6</button>
             <button id="btnN1" onclick="num('1')" class="btn-key">1</button><button id="btnN2" onclick="num('2')" class="btn-key">2</button><button id="btnN3" onclick="num('3')" class="btn-key">3</button>
             
-            <!-- Fila inferior: Punto, 0, e inyección de Añadir en esquina inferior derecha -->
             <button id="btnPunto" onclick="num('.')" class="btn-key">.</button>
             <button id="btnN0" onclick="num('0')" class="btn-key">0</button>
             <button id="btnAnadirGlobal" class="btn-key btn-op-special" onclick="addProducto()">+ Añadir</button>
@@ -267,10 +272,14 @@
         let sDesc = "0", sTip = "15", sPpl = "2", sIvuModificado = "11.5"; 
         let memoriaDescuentoPct = "0", memoriaTipPct = "15", memoriaSerruchoCortes = "2", memoriaIvuPct = "11.5";
         let preciosGuardados = [], cuentaAcumulada = 0, textoReciboGlobal = "";
-        let themes = ['theme-cyberpunk', 'theme-retro-gold', 'theme-matrix', 'theme-sunset'], temaActualIdx = 0, recienEntradoAPropina = false, recienEntradoAIvu = false;
+        let themes = ['theme-cyberpunk', 'theme-retro-gold', 'theme-matrix', 'theme-sunset'], temaActualIdx = 0;
         let sistemaEncendido = true; 
 
-        // 🟢 SINTETIZADOR DE AUDIO RETRO
+        // Variables para control de presión prolongada en las flechas ▲/▼
+        let intervaloAutoIncremento = null;
+        let timeoutAutoIncremento = null;
+
+        // 🟢 SINTETIZADOR DE AUDIO RETRO CONTRASTADO
         function dispararEfectoGlitch() {
             if (!sistemaEncendido) return;
             const lcd = document.getElementById('pantallaVerde');
@@ -295,6 +304,13 @@
                 } else if (tipo === 'tecla') {
                     osc.type = 'triangle'; osc.frequency.setValueAtTime(350, ctx.currentTime);
                     gain.gain.setValueAtTime(0.15, ctx.currentTime);
+                } else if (tipo === 'paso') {
+                    // 🕹️ firma de audio exclusiva para las flechas (potenciómetro digital rápido)
+                    osc.type = 'square'; osc.frequency.setValueAtTime(900, ctx.currentTime);
+                    gain.gain.setValueAtTime(0.04, ctx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.04);
+                    osc.start(); osc.stop(ctx.currentTime + 0.04);
+                    return;
                 } else if (tipo === 'add') {
                     osc.type = 'sine'; osc.frequency.setValueAtTime(450, ctx.currentTime);
                     osc.frequency.exponentialRampToValueAtTime(950, ctx.currentTime + 0.15);
@@ -327,16 +343,32 @@
             } catch (e) {}
         }
 
-        // 🎛️ CONTROLADORES EXCLUSIVOS PARA LAS FLECHAS INCREMENTALES ▲/▼
-        function modificarValorPaso(tipo, delta) {
+        // ⏱️ LÓGICA DE PRESIÓN PROLONGADA PARA CONTROL VELOZ DE LAS FLECHAS
+        function iniciarAutoIncremento(tipo, delta) {
             if (!sistemaEncendido) return;
-            reproducirSonido('tecla');
+            ejecutarModificacionPaso(tipo, delta);
+            
+            // Si se deja presionado por más de 350ms, arranca la ráfaga rápida
+            timeoutAutoIncremento = setTimeout(() => {
+                intervaloAutoIncremento = setInterval(() => {
+                    ejecutarModificacionPaso(tipo, delta);
+                }, 40); // 40ms por ciclo = incremento ultra veloz
+            }, 350);
+        }
+
+        function detenerAutoIncremento() {
+            clearTimeout(timeoutAutoIncremento);
+            clearInterval(intervaloAutoIncremento);
+        }
+        function ejecutarModificacionPaso(tipo, delta) {
+            if (!sistemaEncendido) return;
+            reproducirSonido('paso'); // Audio de potenciómetro mecánico exclusivo
             
             if (tipo === 'ppl') {
                 modoSerruchoActivo = true;
                 let val = parseInt(memoriaSerruchoCortes) || 2;
                 val += delta;
-                if (val < 2) { val = "2"; modoSerruchoActivo = false; }
+                if (val < 2) { val = 2; modoSerruchoActivo = false; }
                 if (val > 99) val = 99;
                 memoriaSerruchoCortes = val.toString();
                 sPpl = memoriaSerruchoCortes;
@@ -348,7 +380,7 @@
                 val += delta;
                 if (val <= 0) { val = 0; modoDescuentoActivo = false; }
                 if (val > 100) val = 100;
-                memoriaDescuentoPct = val.toString();
+                memoriaDescuentoPct = val.toFixed(1).replace('.0', '');
                 sDesc = memoriaDescuentoPct;
                 document.getElementById('lblDesc').innerText = sDesc;
             } 
@@ -358,12 +390,12 @@
                 val += delta;
                 if (val <= 0) { val = 0; incluirPropina = false; }
                 if (val > 100) val = 100;
-                memoriaTipPct = val.toString();
+                memoriaTipPct = val.toFixed(1).replace('.0', '');
                 sTip = memoriaTipPct;
                 document.getElementById('lblTip').innerText = sTip;
             } 
             else if (tipo === 'ivu') {
-                // Si estaba apagado e incrementan, salta directamente a la tasa por defecto 11.5%
+                // Paso de precisión de 0.1% libre de saltos impares
                 if (!modoIvuActivo && delta > 0) {
                     modoIvuActivo = true;
                     memoriaIvuPct = "11.5";
@@ -372,27 +404,21 @@
                     val += delta;
                     if (val <= 0) { val = 0; modoIvuActivo = false; }
                     if (val > 100) val = 100;
-                    memoriaIvuPct = val.toString();
+                    memoriaIvuPct = val.toFixed(1);
                 }
                 ivu = modoIvuActivo ? parseFloat(memoriaIvuPct) : 0.0;
                 document.getElementById('lblIvuBoton').innerText = modoIvuActivo ? ivu.toFixed(1) : "0.0";
             }
             
-            // Actualizar clases de encendido visual en las cajas
+            // Sincronizar encendido de las luces de chasis
             document.getElementById('cajaPpl').className = modoSerruchoActivo ? "caja-data btn-on" : "caja-data btn-off";
             document.getElementById('cajaDesc').className = modoDescuentoActivo ? "caja-data btn-on" : "caja-data btn-off";
             document.getElementById('cajaTip').className = incluirPropina ? "caja-data btn-on" : "caja-data btn-off";
             document.getElementById('btnToggleIvu').className = modoIvuActivo ? "caja-data btn-on" : "caja-data btn-off";
             
-            // Forzar refresco si el menú activo secundario cambió de estado
-            if(mode !== 'sub' && mode === tipo) {
-                if((tipo==='ppl' && !modoSerruchoActivo) || (tipo==='desc' && !modoDescuentoActivo) || (tipo==='tip' && !incluirPropina) || (tipo==='ivu' && !modoIvuActivo)) {
-                    seleccionarMenu('sub');
-                    return;
-                }
-            }
             actualizarHeaderIndicadores(); calc();
         }
+
         // 🔌 CONTROLES HOLOGRÁFICOS DE APAGADO MAESTRO E INTERRUPTOR CRT VINTAGE
         function solicitarApagado() {
             if (!sistemaEncendido) {
@@ -453,8 +479,8 @@
             document.getElementById('listaPrecios').innerHTML = 'Lista vacía<span class="lcd-tipeo"></span>';
             document.getElementById('flechaGuia').style.display = "none"; sPpl = "0"; modoSerruchoActivo = false; memoriaSerruchoCortes = "2";
             document.getElementById('lblPpl').innerText = "N/A"; sDesc = "0"; memoriaDescuentoPct = "0"; modoDescuentoActivo = false; document.getElementById('lblDesc').innerText = "0";
-            sTip = "15"; memoriaTipPct = "15"; incluirPropina = false; recienEntradoAPropina = false;
-            ivu = 0.0; sIvuModificado = "11.5"; memoriaIvuPct = "11.5"; modoIvuActivo = false; recienEntradoAIvu = false;
+            sTip = "15"; memoriaTipPct = "15"; incluirPropina = false;
+            ivu = 0.0; sIvuModificado = "11.5"; memoriaIvuPct = "11.5"; modoIvuActivo = false;
             document.getElementById('lblIvuBoton').innerText = "0.0";
             seleccionarMenu('sub');
         }
@@ -462,280 +488,8 @@
         function actualizarHeaderIndicadores() {
             if (!sistemaEncendido) return;
             let subpartes = [];
-            // 🚨 OCULTAMIENTO COMPLETO DEL IVU SI NO ESTÁ SELECCIONADO EL BOTÓN
             if (modoIvuActivo) { subpartes.push(`IVU: ${ivu.toFixed(1)}%`); }
             if (incluirPropina) { subpartes.push(`TIP: ${memoriaTipPct}%`); }
             if (modoDescuentoActivo) { subpartes.push(`DTO: -${memoriaDescuentoPct}%`); }
             document.getElementById('txtHeaderIndicadores').innerText = subpartes.length > 0 ? subpartes.join(' | ') : "SISTEMA ACTIVO";
         }
-        function seleccionarMenu(f) {
-            if (!sistemaEncendido) return;
-            reproducirSonido('menu');
-            const btnAnadir = document.getElementById('btnAnadirGlobal'), btnPunto = document.getElementById('btnPunto');
-            const numSub = document.getElementById('lblSub'), numPpl = document.getElementById('lblPpl'), numDesc = document.getElementById('lblDesc'), numTip = document.getElementById('lblTip'), numIvu = document.getElementById('lblIvuBoton');
-
-            if (f === 'ppl') {
-                modoSerruchoActivo = !modoSerruchoActivo;
-                sPpl = memoriaSerruchoCortes;
-                document.getElementById('lblPpl').innerText = modoSerruchoActivo ? sPpl : "N/A";
-                mode = 'sub'; // Regresa el foco de tipeo a la cuenta
-            } else if (f === 'tip') {
-                incluirPropina = !incluirPropina;
-                sTip = memoriaTipPct;
-                document.getElementById('lblTip').innerText = incluirPropina ? sTip : "0";
-                mode = 'sub';
-            } else if (f === 'desc') {
-                modoDescuentoActivo = !modoDescuentoActivo;
-                sDesc = memoriaDescuentoPct;
-                document.getElementById('lblDesc').innerText = modoDescuentoActivo ? sDesc : "0";
-                mode = 'sub';
-            } else if (f === 'ivu') {
-                modoIvuActivo = !modoIvuActivo;
-                ivu = modoIvuActivo ? (parseFloat(memoriaIvuPct) || 11.5) : 0.0;
-                document.getElementById('lblIvuBoton').innerText = modoIvuActivo ? ivu.toFixed(1) : "0.0";
-                mode = 'sub';
-            } else { mode = f; }
-            
-            ['cajaSub', 'cajaPpl', 'cajaDesc', 'cajaTip', 'btnToggleIvu'].forEach(id => { document.getElementById(id).className = 'caja-data btn-off'; });
-            [numSub, numPpl, numDesc, numTip, numIvu].forEach(el => { if(el) el.classList.remove('blink-num'); });
-
-            if (modoDescuentoActivo) document.getElementById('cajaDesc').className = "caja-data btn-on";
-            if (modoSerruchoActivo) document.getElementById('cajaPpl').className = "caja-data btn-on";
-            if (incluirPropina) document.getElementById('cajaTip').className = "caja-data btn-on";
-            if (modoIvuActivo) document.getElementById('btnToggleIvu').className = "caja-data btn-on";
-
-            if (mode === 'sub') {
-                numPpl.innerText = modoSerruchoActivo ? memoriaSerruchoCortes : "N/A";
-                numDesc.innerText = modoDescuentoActivo ? memoriaDescuentoPct : "0";
-                numTip.innerText = incluirPropina ? memoriaTipPct : "0";
-                numIvu.innerText = modoIvuActivo ? parseFloat(memoriaIvuPct).toFixed(1) : "0.0";
-                if(btnAnadir) btnAnadir.disabled = false; 
-                if(btnPunto) btnPunto.disabled = false; 
-                numSub.classList.add('blink-num'); document.getElementById('cajaSub').className = "caja-data btn-on";
-            }
-            actualizarHeaderIndicadores(); calc();
-        }
-        // ⌨️ INGRESO NUMÉRICO EXCLUSIVO PARA EL BOTÓN DE CUENTA
-        function num(c) {
-            if (!sistemaEncendido) return;
-            // Forzar que el teclado solo escriba en la cuenta principal
-            if (mode !== 'sub') mode = 'sub';
-            
-            reproducirSonido('tecla');
-            if (sSub === "0" && c !== '.') sSub = "";
-            if (c === '.' && sSub.includes('.')) return;
-            sSub += c; 
-            if (parseFloat(sSub) > 99999) sSub = "99999";
-            
-            document.getElementById('lblSub').innerText = sSub;
-            calc();
-        }
-
-        function bksp() {
-            if (!sistemaEncendido) return;
-            if (mode !== 'sub') mode = 'sub';
-            
-            reproducirSonido('tecla');
-            sSub = sSub.slice(0, -1); 
-            if (!sSub) sSub = "0"; 
-            
-            document.getElementById('lblSub').innerText = sSub;
-            calc();
-        }
-
-        function ce() {
-            if (!sistemaEncendido) return;
-            reproducirSonido('tecla');
-            sSub = "0"; 
-            document.getElementById('lblSub').innerText = "0";
-            
-            if (mode !== 'sub') mode = 'sub';
-            actualizarHeaderIndicadores(); 
-            calc();
-        }
-        function addProducto() {
-            if (!sistemaEncendido) return;
-            let val = parseFloat(sSub) || 0;
-            if (val > 0) {
-                reproducirSonido('add');
-                let dPct = modoDescuentoActivo ? (parseFloat(memoriaDescuentoPct) || 0) : 0;
-                let rebaja = val * (dPct / 100), precioDescontado = val - rebaja;
-                let ivuIndividual = precioDescontado * (ivu / 100);
-                let totalArticulo = precioDescontado + ivuIndividual;
-                
-                preciosGuardados.push({ 
-                    precio: val, descuento: rebaja, ivuCalculado: ivuIndividual, porcientoIvuUsado: ivu, total: totalArticulo 
-                });
-                
-                cuentaAcumulada += val; sSub = "0"; document.getElementById('lblSub').innerText = "0";
-                const con = document.getElementById('listaPrecios');
-                
-                con.innerHTML = preciosGuardados.map((item, i) => '<div>• Art. #' + (i+1) + ': $' + item.total.toFixed(2) + ' (IVU: ' + item.porcientoIvuUsado.toFixed(1) + '%)</div>').join('');
-                if(preciosGuardados.length > 0) {
-                    let totalConTaxAcumulado = preciosGuardados.reduce((sum, item) => sum + item.total, 0);
-                    con.innerHTML += '<div style="border-top:1px dashed rgba(0,0,0,0.3); font-weight:900; margin-top:2px;">Base Acum. (w/IVU): $' + totalConTaxAcumulado.toFixed(2) + '</div>';
-                }
-                const f = document.getElementById('flechaGuia'); 
-                if (con.scrollHeight > con.clientHeight) { f.style.display = "block"; } else { f.style.display = "none"; }
-                con.scrollTop = con.scrollHeight; calc();
-            }
-        }
-
-        function clr() {
-            if (!sistemaEncendido) return;
-            reproducirSonido('tecla');
-            ejecutarResetTotal();
-        }
-
-        // 🧮 PROCESADOR MATEMÁTICO EN TIEMPO REAL
-        function calc() {
-            if (!sistemaEncendido) return;
-            let numPplRaw = parseInt(sPpl);
-            let nSerrucho = (modoSerruchoActivo && !isNaN(numPplRaw) && numPplRaw > 1) ? numPplRaw : 1;
-            let dPct = modoDescuentoActivo ? (parseFloat(memoriaDescuentoPct) || 0) : 0;
-            let tPct = incluirPropina ? (parseFloat(memoriaTipPct) || 0) : 0;
-            
-            let sumaPreciosGuardados = preciosGuardados.reduce((sum, item) => sum + item.precio, 0);
-            let sumaDescuentosGuardados = preciosGuardados.reduce((sum, item) => sum + item.descuento, 0);
-            let impuestoTotalAcumulado = preciosGuardados.reduce((sum, item) => sum + item.ivuCalculado, 0);
-            
-            let precioEnTeclado = parseFloat(sSub) || 0;
-            let descuentoEnTeclado = precioEnTeclado * (dPct / 100);
-            let precioDescontadoTeclado = precioEnTeclado - descuentoEnTeclado;
-            let impuestoEnTeclado = precioDescontadoTeclado * (ivu / 100); 
-            
-            let nSub = sumaPreciosGuardados + precioEnTeclado;
-            let rebajaTotal = sumaDescuentosGuardados + descuentoEnTeclado;
-            let impuestoTotal = impuestoTotalAcumulado + impuestoEnTeclado;
-            
-            let subtotalDescontado = nSub - rebajaTotal;
-            let propinaTotal = subtotalDescontado * (tPct / 100);
-            let totalNetoGlobal = subtotalDescontado + impuestoTotal + propinaTotal;
-            let porSerrucho = totalNetoGlobal / nSerrucho;
-            
-            document.getElementById('outDesc').innerText = '-\$' + rebajaTotal.toFixed(2); 
-            document.getElementById('outTip').innerText = '\$' + propinaTotal.toFixed(2);
-            document.getElementById('outIvu').innerText = '\$' + impuestoTotal.toFixed(2); 
-            document.getElementById('outPer').innerText = totalNetoGlobal.toFixed(2);
-            
-            document.getElementById('rowDesc').style.opacity = modoDescuentoActivo ? "1" : "0.3";
-            document.getElementById('rowTip').style.opacity = incluirPropina ? "1" : "0.3";
-            document.getElementById('rowIvu').style.opacity = modoIvuActivo ? "1" : "0.3";
-
-            if (modoSerruchoActivo) {
-                document.getElementById('txtSerruchoLabelType').innerText = `SERRUCHO (C/U): `;
-                document.getElementById('outPerPersonaLine').innerText = '$' + porSerrucho.toFixed(2);
-                document.getElementById('rowPersonaCuota').style.opacity = "1"; 
-            } else {
-                document.getElementById('txtSerruchoLabelType').innerText = `SERRUCHO (C/U): N/A`;
-                document.getElementById('outPerPersonaLine').innerText = ``;
-                document.getElementById('rowPersonaCuota').style.opacity = "0.3"; 
-            }
-            
-            document.getElementById('lblTip').innerText = incluirPropina ? memoriaTipPct : "0"; 
-            document.getElementById('lblDesc').innerText = modoDescuentoActivo ? memoriaDescuentoPct : "0"; 
-            document.getElementById('lblPpl').innerText = modoSerruchoActivo ? memoriaSerruchoCortes : "N/A";
-            
-            const artTxtEl = document.getElementById('lblArtText');
-            if(artTxtEl && preciosGuardados.length > 0) {
-                artTxtEl.innerHTML = `Cuenta (${preciosGuardados.length} art.)`;
-            }
-            actualizarHeaderIndicadores();
-        }
-
-        // 🌌 CONSTRUCTOR DEL RECIBO HOLOGRÁFICO
-        function abrirHologramaRecibo() {
-            if (!sistemaEncendido) return;
-            reproducirSonido('caja');
-            let numPplRaw = parseInt(sPpl); 
-            let nPpl = (modoSerruchoActivo && !isNaN(numPplRaw) && numPplRaw > 1) ? numPplRaw : 1;
-            let dPct = modoDescuentoActivo ? (parseFloat(memoriaDescuentoPct) || 0) : 0;
-            let tPct = incluirPropina ? (parseFloat(memoriaTipPct) || 0) : 0;
-            
-            let sumaPreciosGuardados = preciosGuardados.reduce((sum, item) => sum + item.precio, 0);
-            let sumaDescuentosGuardados = preciosGuardados.reduce((sum, item) => sum + item.descuento, 0);
-            let impuestoTotalAcumulado = preciosGuardados.reduce((sum, item) => sum + item.ivuCalculado, 0);
-            
-            let precioEnTeclado = parseFloat(sSub) || 0;
-            let descuentoEnTeclado = precioEnTeclado * (dPct / 100);
-            let precioDescontadoTeclado = precioEnTeclado - descuentoEnTeclado;
-            let impuestoEnTeclado = precioDescontadoTeclado * (ivu / 100);
-            
-            let nSub = sumaPreciosGuardados + precioEnTeclado;
-            let rebajaTotal = sumaDescuentosGuardados + descuentoEnTeclado;
-            let impuestoTotal = impuestoTotalAcumulado + impuestoEnTeclado;
-            let subtotalDescontado = nSub - rebajaTotal;
-            let propinaTotal = subtotalDescontado * (tPct / 100);
-            let totalNetoGlobal = subtotalDescontado + impuestoTotal + propinaTotal;
-            
-            let txt = `===============================\n   CALCULADORA DE RESIDEUS\n===============================\n`;
-            txt += `Fecha: ${new Date().toLocaleDateString()} | Hora: ${new Date().toLocaleTimeString()}\n`;
-            txt += `-------------------------------\n`;
-            
-            if(preciosGuardados.length > 0) {
-                txt += `Artículos Guardados:\n`;
-                preciosGuardados.forEach((a, i) => {
-                    txt += ` #${i+1}: $${a.total.toFixed(2)}  (IVU: ${a.porcientoIvuUsado.toFixed(1)}%)\n`;
-                });
-                txt += `-------------------------------\n`;
-            }
-            
-            txt += `Importe Base:      $${nSub.toFixed(2)}\n`;
-            if(rebajaTotal > 0) txt += `Descuento:         -$${rebajaTotal.toFixed(2)}\n`;
-            if(propinaTotal > 0) txt += `Propina (${tPct}%):     $${propinaTotal.toFixed(2)}\n`;
-            if(modoIvuActivo) txt += `IVU Acumulado:     $${impuestoTotal.toFixed(2)}\n`;
-            txt += `===============================\n`;
-            txt += `TOTAL NETO:        $${totalNetoGlobal.toFixed(2)}\n`;
-            txt += `===============================\n`;
-
-            if(modoSerruchoActivo && numPplRaw > 1) {
-                txt += `SERRUCHO COMPARTIDO: ${numPplRaw} partes\n`;
-                txt += `CUOTA INDIVIDUAL:  $${(totalNetoGlobal / nPpl).toFixed(2)}\n`;
-                txt += `===============================\n`;
-            }
-            txt += ` ¡Gracias por usar la app!`;
-            
-            textoReciboGlobal = txt;
-            document.getElementById('textoContenidoHolo').innerText = txt;
-            document.getElementById('btnCopiarHolo').innerText = "Copiar";
-            document.getElementById('visorHolograma').classList.add('activo');
-        }
-
-        function cerrarHologramaRecibo() {
-            reproducirSonido('menu');
-            document.getElementById('visorHolograma').classList.remove('activo');
-        }
-
-        function copiarTextoHolograma() {
-            if (!sistemaEncendido) return;
-            reproducirSonido('caja');
-            navigator.clipboard.writeText(textoReciboGlobal).then(() => {
-                document.getElementById('btnCopiarHolo').innerText = "¡Copiado!";
-            }).catch(() => {
-                alert("Error al copiar, usa captura de pantalla.");
-            });
-        }
-
-        function rotarTema() {
-            try {
-                const ctx = new (window.AudioContext || window.webkitAudioContext)();
-                const osc = ctx.createOscillator(), gain = ctx.createGain();
-                osc.connect(gain); gain.connect(ctx.destination);
-                osc.type = 'sine'; osc.frequency.setValueAtTime(800, ctx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(400, ctx.currentTime + 0.1);
-                gain.gain.setValueAtTime(0.1, ctx.currentTime);
-                gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.15);
-                osc.start(); osc.stop(ctx.currentTime + 0.15);
-            } catch(e){}
-
-            document.body.classList.remove(themes[temaActualIdx]);
-            temaActualIdx = (temaActualIdx + 1) % themes.length;
-            document.body.classList.add(themes[temaActualIdx]);
-        }
-
-        // Sincronización inicial al cargar la página
-        actualizarHeaderIndicadores(); 
-        calc();
-    </script>
-</body>
-</html>
