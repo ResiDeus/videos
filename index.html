@@ -451,7 +451,7 @@
                 lcd.classList.remove('power-on-crt');
                 lcd.classList.add('power-off-crt'); 
                 
-                // 🚨 Reseteo estricto del Precio al apagar
+                // Limpiamos el Precio de forma inmediata al apagar
                 sSub = "0"; 
                 document.getElementById('lblSub').innerText = "0";
                 
@@ -460,36 +460,23 @@
                 }, 400);
                 toggleTeclasBloqueo(true);
             } else {
-                // ⚡️ SECUENCIA DE ENERGIZACIÓN ESCALONADA DE ABAJO HACIA ARRIBA
+                // ⚡️ ENCIENDE DE GOLPE: Quitamos animaciones CRT lentas y delays de datos en el LCD
                 chasis.classList.remove('global-power-off');
-                lcd.classList.remove('power-off-crt');
-                toggleTeclasBloqueo(true); 
+                lcd.classList.remove('power-off-crt', 'power-on-crt'); // Limpieza estricta de efectos viejos
                 
-                // Capa 1: Botones inferiores de control (0ms)
+                // Energizamos todas las capas físicas visuales al instante
                 document.querySelectorAll('.btn-theme, .btn-receipt').forEach(b => b.style.opacity = "1");
+                document.querySelectorAll('.pad-num .btn-key').forEach(b => b.style.opacity = "1");
+                document.querySelectorAll('.row-opciones-pasos .caja-data, .btn-step').forEach(b => b.style.opacity = "1");
                 
-                // Capa 2: Pad numérico ascendente (100ms)
-                setTimeout(() => {
-                    document.querySelectorAll('.pad-num .btn-key').forEach(b => b.style.opacity = "1");
-                }, 100);
-                
-                // Capa 3: Botones de opciones y sus flechas (200ms)
-                setTimeout(() => {
-                    document.querySelectorAll('.row-opciones-pasos .caja-data, .btn-step').forEach(b => b.style.opacity = "1");
-                }, 200);
-                
-                // Capa 4: Panel de precio unificado y apertura CRT de la pantalla LCD (300ms)
-                setTimeout(() => {
-                    sistemaEncendido = true;
-                    lcd.classList.add('power-on-crt');
-                    toggleTeclasBloqueo(false);
-                    reproducirSonido('menu');
-                    ejecutarResetTotal();
-                }, 300);
-                
-                setTimeout(() => { lcd.classList.remove('power-on-crt'); }, 710);
+                // Activación inmediata del sistema sin esperas intermedias
+                sistemaEncendido = true;
+                toggleTeclasBloqueo(false);
+                reproducirSonido('menu');
+                ejecutarResetTotal();
             }
         }
+
 
         function toggleTeclasBloqueo(bloquear) {
             const botones = document.querySelectorAll('.btn-key, .caja-data, .btn-receipt, .btn-theme, .btn-step, .btn-add-embedded');
