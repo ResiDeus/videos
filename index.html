@@ -207,15 +207,14 @@
         #cajaSub .lbl-val { font-size: 18px !important; font-weight: 900; color: #fff !important; }
 
         /* ==========================================================================
-           🌴 TECLADO SYNTHWAVE PRO: OLEADE DEGRADADO RETRO CON PALMAS FLOTANTES
+           🌴 TECLADO SYNTHWAVE: LÍNEAS DE ESCANEO OCHENTOSAS Y PALMAS RETRO
            ========================================================================== */
         .pad-num { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; width: 100%; }
 
-        /* 🌊 Animación del Fondo Retro que fluye de un lado a otro */
-        @keyframes oleajeRetroFondo {
-            0% { background-position: 0% 50%, center right; }
-            50% { background-position: 100% 50%, center right; }
-            100% { background-position: 0% 50%, center right; }
+        /* 📺 Animación sutil ochentosa de líneas que suben en segundo plano */
+        @keyframes lineasEscanerSynthwave {
+            0% { background-position: 0 0, center right; }
+            100% { background-position: 0 -20px, center right; }
         }
 
         /* Estructura Base de los Botones del Teclado */
@@ -234,19 +233,20 @@
             z-index: 10; 
             opacity: 1 !important; 
             pointer-events: auto !important;
-            /* Dos capas: El degradado animado de fondo (capa 1) y el SVG de palmas fijo (capa 2) */
-            background-repeat: no-repeat, no-repeat !important;
-            background-size: 400% 400%, contain !important;
-            animation: oleajeRetroFondo 5s infinite ease-in-out;
+            /* Capa 1: Rejilla de líneas horizontales sutiles | Capa 2: SVG de Palmas Fijo */
+            background-repeat: repeat, no-repeat !important;
+            background-size: 100% 4px, contain !important; /* Líneas finas fijas de 4px */
+            animation: lineasEscanerSynthwave 4s infinite linear;
             transition: border-color 0.2s, box-shadow 0.2s;
             user-select: none;
             -webkit-user-select: none;
         }
 
-        /* 🚨 REGLA MAESTRA DE PRESIÓN: Torna en Blanco Flash Absoluto con Texto Negro denso */
+        /* 🚨 RESTAURACIÓN CRÍTICA: Flash Blanco Puro y Sólido al Mantener Presionado (Cero fondos) */
         .btn-key:active, .btn-back:active {
-            background: #ffffff !important;
+            background-color: #ffffff !important;
             background-image: none !important;
+            background: #ffffff !important;
             animation: none !important;
             color: #000000 !important;
             box-shadow: 0 0 25px #ffffff, inset 0 0 8px rgba(0,0,0,0.4) !important;
@@ -255,47 +255,51 @@
         }
 
         /* ==========================================================================
-           🎨 CAPAS DE NEONES ANIMADOS Y PALMAS POR CADA TEMA
+           🎨 CAPAS DE REJILLAS OCHENTOSAS Y VECTOR DE PALMAS POR TEMA
            ========================================================================== */
 
-        /* 🔵 TEMA 1: CYBERPUNK (Fondo animado de Violeta a Azul Eléctrico y Palmas Cyan/Magenta) */
+        /* 🔵 TEMA 1: CYBERPUNK (Fondo Violeta, Líneas Cyan y Palmas Neón) */
         body.theme-cyberpunk .btn-key, body.theme-cyberpunk .btn-back {
             background: 
-                linear-gradient(135deg, #120324 0%, #1e093d 25%, #2c044d 50%, #1a4f6e 75%, #120324 100%),
+                linear-gradient(rgba(0, 240, 255, 0.1) 1px, transparent 1px),
                 url("data:image/svg+xml;utf8,<svg xmlns='http://w3.org' viewBox='0 0 100 100'><path d='M100,100 Q80,70 50,70 Q75,55 100,45 Q70,40 55,20 Q80,25 100,5 Q60,15 45,5 Q65,0 80,-15 Q50,-5 35,-15 Q40,-35 45,-55 Q20,-30 0,-40 C30,10 60,40 100,100 Z' fill='%2300f0ff' opacity='0.25'/><path d='M100,100 Q85,75 60,80 Q78,65 100,60 Q75,50 65,35 Q82,35 100,20 Q65,25 55,15 Z' fill='%23ff007f' opacity='0.2'/></svg>") !important;
+            background-color: #120324 !important;
             color: #ffffff !important;
             border: 2px solid #00f0ff !important;
             box-shadow: 0 0 8px rgba(0, 240, 255, 0.3) !important;
             text-shadow: 0 0 4px rgba(255, 255, 255, 0.6) !important;
         }
 
-        /* 🟡 TEMA 2: RETRO GOLD (Fondo animado de Ocre a Tabaco denso y Palmas Ámbar/Oro) */
+        /* 🟡 TEMA 2: RETRO GOLD (Fondo Tabaco, Líneas Ámbar y Palmas Oro) */
         body.theme-retro-gold .btn-key, body.theme-retro-gold .btn-back {
             background: 
-                linear-gradient(135deg, #241c10 0%, #3a2a18 25%, #4f391f 50%, #543d12 75%, #241c10 100%),
+                linear-gradient(rgba(251, 191, 36, 0.1) 1px, transparent 1px),
                 url("data:image/svg+xml;utf8,<svg xmlns='http://w3.org' viewBox='0 0 100 100'><path d='M100,100 Q80,70 50,70 Q75,55 100,45 Q70,40 55,20 Q80,25 100,5 Q60,15 45,5 Q65,0 80,-15 Q50,-5 35,-15 Q40,-35 45,-55 Q20,-30 0,-40 C30,10 60,40 100,100 Z' fill='%23fbbf24' opacity='0.22'/><path d='M100,100 Q85,75 60,80 Q78,65 100,60 Q75,50 65,35 Q82,35 100,20 Q65,25 55,15 Z' fill='%23b45309' opacity='0.2'/></svg>") !important;
+            background-color: #241c10 !important;
             color: #ffffff !important;
             border: 1px solid #fbbf24 !important;
             box-shadow: 0 0 8px rgba(251, 191, 36, 0.25) !important;
             text-shadow: 0 0 4px rgba(251, 191, 36, 0.5) !important;
         }
 
-        /* 🟢 TEMA 3: MATRIX (Fondo animado de Jade a Carbono oscuro y Palmas Fósforo/Esmeralda) */
+        /* 🟢 TEMA 3: MATRIX (Fondo Carbón, Líneas Fósforo y Palmas Esmeralda) */
         body.theme-matrix .btn-key, body.theme-matrix .btn-back {
             background: 
-                linear-gradient(135deg, #03140b 0%, #062417 25%, #0a3d24 50%, #044e32 75%, #03140b 100%),
+                linear-gradient(rgba(52, 211, 153, 0.1) 1px, transparent 1px),
                 url("data:image/svg+xml;utf8,<svg xmlns='http://w3.org' viewBox='0 0 100 100'><path d='M100,100 Q80,70 50,70 Q75,55 100,45 Q70,40 55,20 Q80,25 100,5 Q60,15 45,5 Q65,0 80,-15 Q50,-5 35,-15 Q40,-35 45,-55 Q20,-30 0,-40 C30,10 60,40 100,100 Z' fill='%2334d399' opacity='0.22'/><path d='M100,100 Q85,75 60,80 Q78,65 100,60 Q75,50 65,35 Q82,35 100,20 Q65,25 55,15 Z' fill='%23047857' opacity='0.2'/></svg>") !important;
+            background-color: #03140b !important;
             color: #ffffff !important;
             border: 1px solid #10b981 !important;
             box-shadow: 0 0 8px rgba(16, 185, 129, 0.25) !important;
             text-shadow: 0 0 4px rgba(52, 211, 153, 0.5) !important;
         }
 
-        /* 🟠 TEMA 4: SUNSET (Fondo animado de Terracota a Rubí Sangre y Palmas Magma/Fuego) */
+        /* 🟠 TEMA 4: SUNSET (Fondo Óxido, Líneas Magma y Palmas Rubí) */
         body.theme-sunset .btn-key, body.theme-sunset .btn-back {
             background: 
-                linear-gradient(135deg, #301002 0%, #471907 25%, #5e220c 50%, #5c2006 75%, #301002 100%),
+                linear-gradient(rgba(249, 115, 22, 0.1) 1px, transparent 1px),
                 url("data:image/svg+xml;utf8,<svg xmlns='http://w3.org' viewBox='0 0 100 100'><path d='M100,100 Q80,70 50,70 Q75,55 100,45 Q70,40 55,20 Q80,25 100,5 Q60,15 45,5 Q65,0 80,-15 Q50,-5 35,-15 Q40,-35 45,-55 Q20,-30 0,-40 C30,10 60,40 100,100 Z' fill='%23f97316' opacity='0.25'/><path d='M100,100 Q85,75 60,80 Q78,65 100,60 Q75,50 65,35 Q82,35 100,20 Q65,25 55,15 Z' fill='%2378350f' opacity='0.2'/></svg>") !important;
+            background-color: #301002 !important;
             color: #ffffff !important;
             border: 1px solid #f97316 !important;
             box-shadow: 0 0 8px rgba(249, 115, 22, 0.25) !important;
