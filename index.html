@@ -207,9 +207,16 @@
         #cajaSub .lbl-val { font-size: 18px !important; font-weight: 900; color: #fff !important; }
 
         /* ==========================================================================
-           🌴 TECLADO NUMÉRICO TROPICAL SYNTHWAVE: SILUETAS DE PALMAS VECTORIALES
+           🌴 TECLADO SYNTHWAVE PRO: OLEADE DEGRADADO RETRO CON PALMAS FLOTANTES
            ========================================================================== */
         .pad-num { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; width: 100%; }
+
+        /* 🌊 Animación del Fondo Retro que fluye de un lado a otro */
+        @keyframes oleajeRetroFondo {
+            0% { background-position: 0% 50%, center right; }
+            50% { background-position: 100% 50%, center right; }
+            100% { background-position: 0% 50%, center right; }
+        }
 
         /* Estructura Base de los Botones del Teclado */
         .btn-key, .btn-back { 
@@ -227,10 +234,11 @@
             z-index: 10; 
             opacity: 1 !important; 
             pointer-events: auto !important;
-            background-repeat: no-repeat !important;
-            background-position: center right !important; /* Alinea las hojas al borde para que no tapen el número */
-            background-size: contain !important;
-            transition: border-color 0.2s, box-shadow 0.2s, background 0.15s;
+            /* Dos capas: El degradado animado de fondo (capa 1) y el SVG de palmas fijo (capa 2) */
+            background-repeat: no-repeat, no-repeat !important;
+            background-size: 400% 400%, contain !important;
+            animation: oleajeRetroFondo 5s infinite ease-in-out;
+            transition: border-color 0.2s, box-shadow 0.2s;
             user-select: none;
             -webkit-user-select: none;
         }
@@ -239,6 +247,7 @@
         .btn-key:active, .btn-back:active {
             background: #ffffff !important;
             background-image: none !important;
+            animation: none !important;
             color: #000000 !important;
             box-shadow: 0 0 25px #ffffff, inset 0 0 8px rgba(0,0,0,0.4) !important;
             text-shadow: none !important;
@@ -246,49 +255,53 @@
         }
 
         /* ==========================================================================
-           🎨 SILUETAS DE PALMAS SYNTHWAVE PERSONALIZADAS POR TEMA
+           🎨 CAPAS DE NEONES ANIMADOS Y PALMAS POR CADA TEMA
            ========================================================================== */
 
-        /* 🔵 TEMA 1: CYBERPUNK (Fondo Violeta profundo, Palmas Neón Cyan y Magenta) */
+        /* 🔵 TEMA 1: CYBERPUNK (Fondo animado de Violeta a Azul Eléctrico y Palmas Cyan/Magenta) */
         body.theme-cyberpunk .btn-key, body.theme-cyberpunk .btn-back {
-            background-color: #120324;
-            /* Inyección Vectorial de Hojas de Palma en Neón */
-            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://w3.org' viewBox='0 0 100 100'><path d='M100,100 Q80,70 50,70 Q75,55 100,45 Q70,40 55,20 Q80,25 100,5 Q60,15 45,5 Q65,0 80,-15 Q50,-5 35,-15 Q40,-35 45,-55 Q20,-30 0,-40 C30,10 60,40 100,100 Z' fill='%2300f0ff' opacity='0.25'/><path d='M100,100 Q85,75 60,80 Q78,65 100,60 Q75,50 65,35 Q82,35 100,20 Q65,25 55,15 Z' fill='%23ff007f' opacity='0.2'/></svg>") !important;
-            color: #ffffff;
-            border: 2px solid #00f0ff;
-            box-shadow: 0 0 8px rgba(0, 240, 255, 0.3);
-            text-shadow: 0 0 4px rgba(255, 255, 255, 0.6);
+            background: 
+                linear-gradient(135deg, #120324 0%, #1e093d 25%, #2c044d 50%, #1a4f6e 75%, #120324 100%),
+                url("data:image/svg+xml;utf8,<svg xmlns='http://w3.org' viewBox='0 0 100 100'><path d='M100,100 Q80,70 50,70 Q75,55 100,45 Q70,40 55,20 Q80,25 100,5 Q60,15 45,5 Q65,0 80,-15 Q50,-5 35,-15 Q40,-35 45,-55 Q20,-30 0,-40 C30,10 60,40 100,100 Z' fill='%2300f0ff' opacity='0.25'/><path d='M100,100 Q85,75 60,80 Q78,65 100,60 Q75,50 65,35 Q82,35 100,20 Q65,25 55,15 Z' fill='%23ff007f' opacity='0.2'/></svg>") !important;
+            color: #ffffff !important;
+            border: 2px solid #00f0ff !important;
+            box-shadow: 0 0 8px rgba(0, 240, 255, 0.3) !important;
+            text-shadow: 0 0 4px rgba(255, 255, 255, 0.6) !important;
         }
 
-        /* 🟡 TEMA 2: RETRO GOLD (Fondo Tabaco oscuro, Palmas Ámbar y Oro viejo) */
+        /* 🟡 TEMA 2: RETRO GOLD (Fondo animado de Ocre a Tabaco denso y Palmas Ámbar/Oro) */
         body.theme-retro-gold .btn-key, body.theme-retro-gold .btn-back {
-            background-color: #241c10;
-            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://w3.org' viewBox='0 0 100 100'><path d='M100,100 Q80,70 50,70 Q75,55 100,45 Q70,40 55,20 Q80,25 100,5 Q60,15 45,5 Q65,0 80,-15 Q50,-5 35,-15 Q40,-35 45,-55 Q20,-30 0,-40 C30,10 60,40 100,100 Z' fill='%23fbbf24' opacity='0.22'/><path d='M100,100 Q85,75 60,80 Q78,65 100,60 Q75,50 65,35 Q82,35 100,20 Q65,25 55,15 Z' fill='%23b45309' opacity='0.2'/></svg>") !important;
-            color: #ffffff;
-            border: 1px solid #fbbf24;
-            box-shadow: 0 0 8px rgba(251, 191, 36, 0.25);
-            text-shadow: 0 0 4px rgba(251, 191, 36, 0.5);
+            background: 
+                linear-gradient(135deg, #241c10 0%, #3a2a18 25%, #4f391f 50%, #543d12 75%, #241c10 100%),
+                url("data:image/svg+xml;utf8,<svg xmlns='http://w3.org' viewBox='0 0 100 100'><path d='M100,100 Q80,70 50,70 Q75,55 100,45 Q70,40 55,20 Q80,25 100,5 Q60,15 45,5 Q65,0 80,-15 Q50,-5 35,-15 Q40,-35 45,-55 Q20,-30 0,-40 C30,10 60,40 100,100 Z' fill='%23fbbf24' opacity='0.22'/><path d='M100,100 Q85,75 60,80 Q78,65 100,60 Q75,50 65,35 Q82,35 100,20 Q65,25 55,15 Z' fill='%23b45309' opacity='0.2'/></svg>") !important;
+            color: #ffffff !important;
+            border: 1px solid #fbbf24 !important;
+            box-shadow: 0 0 8px rgba(251, 191, 36, 0.25) !important;
+            text-shadow: 0 0 4px rgba(251, 191, 36, 0.5) !important;
         }
 
-        /* 🟢 TEMA 3: MATRIX (Fondo Obsidiana, Palmas Esmeralda y Verde Fósforo) */
+        /* 🟢 TEMA 3: MATRIX (Fondo animado de Jade a Carbono oscuro y Palmas Fósforo/Esmeralda) */
         body.theme-matrix .btn-key, body.theme-matrix .btn-back {
-            background-color: #03140b;
-            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://w3.org' viewBox='0 0 100 100'><path d='M100,100 Q80,70 50,70 Q75,55 100,45 Q70,40 55,20 Q80,25 100,5 Q60,15 45,5 Q65,0 80,-15 Q50,-5 35,-15 Q40,-35 45,-55 Q20,-30 0,-40 C30,10 60,40 100,100 Z' fill='%2334d399' opacity='0.22'/><path d='M100,100 Q85,75 60,80 Q78,65 100,60 Q75,50 65,35 Q82,35 100,20 Q65,25 55,15 Z' fill='%23047857' opacity='0.2'/></svg>") !important;
-            color: #ffffff;
-            border: 1px solid #10b981;
-            box-shadow: 0 0 8px rgba(16, 185, 129, 0.25);
-            text-shadow: 0 0 4px rgba(52, 211, 153, 0.5);
+            background: 
+                linear-gradient(135deg, #03140b 0%, #062417 25%, #0a3d24 50%, #044e32 75%, #03140b 100%),
+                url("data:image/svg+xml;utf8,<svg xmlns='http://w3.org' viewBox='0 0 100 100'><path d='M100,100 Q80,70 50,70 Q75,55 100,45 Q70,40 55,20 Q80,25 100,5 Q60,15 45,5 Q65,0 80,-15 Q50,-5 35,-15 Q40,-35 45,-55 Q20,-30 0,-40 C30,10 60,40 100,100 Z' fill='%2334d399' opacity='0.22'/><path d='M100,100 Q85,75 60,80 Q78,65 100,60 Q75,50 65,35 Q82,35 100,20 Q65,25 55,15 Z' fill='%23047857' opacity='0.2'/></svg>") !important;
+            color: #ffffff !important;
+            border: 1px solid #10b981 !important;
+            box-shadow: 0 0 8px rgba(16, 185, 129, 0.25) !important;
+            text-shadow: 0 0 4px rgba(52, 211, 153, 0.5) !important;
         }
 
-        /* 🟠 TEMA 4: SUNSET (Fondo Terracota, Palmas Rubí y Naranja Magma) */
+        /* 🟠 TEMA 4: SUNSET (Fondo animado de Terracota a Rubí Sangre y Palmas Magma/Fuego) */
         body.theme-sunset .btn-key, body.theme-sunset .btn-back {
-            background-color: #301002;
-            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://w3.org' viewBox='0 0 100 100'><path d='M100,100 Q80,70 50,70 Q75,55 100,45 Q70,40 55,20 Q80,25 100,5 Q60,15 45,5 Q65,0 80,-15 Q50,-5 35,-15 Q40,-35 45,-55 Q20,-30 0,-40 C30,10 60,40 100,100 Z' fill='%23f97316' opacity='0.25'/><path d='M100,100 Q85,75 60,80 Q78,65 100,60 Q75,50 65,35 Q82,35 100,20 Q65,25 55,15 Z' fill='%2378350f' opacity='0.2'/></svg>") !important;
-            color: #ffffff;
-            border: 1px solid #f97316;
-            box-shadow: 0 0 8px rgba(249, 115, 22, 0.25);
-            text-shadow: 0 0 4px rgba(253, 186, 116, 0.5);
+            background: 
+                linear-gradient(135deg, #301002 0%, #471907 25%, #5e220c 50%, #5c2006 75%, #301002 100%),
+                url("data:image/svg+xml;utf8,<svg xmlns='http://w3.org' viewBox='0 0 100 100'><path d='M100,100 Q80,70 50,70 Q75,55 100,45 Q70,40 55,20 Q80,25 100,5 Q60,15 45,5 Q65,0 80,-15 Q50,-5 35,-15 Q40,-35 45,-55 Q20,-30 0,-40 C30,10 60,40 100,100 Z' fill='%23f97316' opacity='0.25'/><path d='M100,100 Q85,75 60,80 Q78,65 100,60 Q75,50 65,35 Q82,35 100,20 Q65,25 55,15 Z' fill='%2378350f' opacity='0.2'/></svg>") !important;
+            color: #ffffff !important;
+            border: 1px solid #f97316 !important;
+            box-shadow: 0 0 8px rgba(249, 115, 22, 0.25) !important;
+            text-shadow: 0 0 4px rgba(253, 186, 116, 0.5) !important;
         }
+
 
 
 
