@@ -302,7 +302,7 @@
                             
                             <!-- Input manual renombrado a RETENCIÓN MANUAL -->
                             <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; border-top: 1px dotted rgba(0,240,255,0.15); padding-top: 3px;">
-                                <span style="font-size: 7px; opacity: 0.85; font-weight: bold; white-space: nowrap;">RETENCIÓN MANUAL:</span>
+                                <span id="lblTextoManual" style="font-size: 7px; opacity: 0.85; font-weight: bold; white-space: nowrap;">RETENCIÓN MANUAL:</span>
                                 <div style="display: flex; align-items: center; gap: 2px;">
                                     <span id="lblManualPctLcd" style="font-size: 10px; font-weight: 900; color: #fff; margin-right: 3px;">0.0%</span>
                                     <button id="btnManualMas" class="btn-hrs-lcd" onclick="modificarImpuestoManual(0.1)">+</button>
@@ -837,22 +837,33 @@
             actualizarHeaderIndicadores(); calc();
         }
 
-        // 🚨 REEMPLAZO TOTALMENTE INTEGRADO: CONMUTADORES CONTRIBUTIVOS Y BLOQUEO DE FILTRO MANUAL
+        // 🚨 REEMPLAZO TOTALMENTE INTEGRADO: CONMUTADORES CONTRIBUTIVOS CON VARIABLE DE HACIENDA Y VALORES DE ARRANQUE
         function cambiarRegimenContributivo(regimen) {
             if (!sistemaEncendido || !modoSalarioActivo) return;
             reproducirSonido('menu');
             regimenContributivo = regimen;
 
-            // Regla estricta: Si se selecciona Nómina o Freelance, la retención manual se desploma a 0 automáticamente
-            if (regimen === 'W2' || regimen === '1099') {
+            const lblTexto = document.getElementById('lblTextoManual');
+
+            if (regimen === 'W2') {
+                // Modo Nómina: Muta texto a HACIENDA, libera botones y arranca en 0% por defecto
+                lblTexto.innerText = "HACIENDA:";
                 porcientoManualRetencion = 0.0;
-                document.getElementById('lblManualPctLcd').innerText = "0.0%";
-                
-                if (regimen === 'W2') { ssActivo = true; medActivo = true; }
-                if (regimen === '1099') { ssActivo = true; medActivo = true; }
+                ssActivo = true; medActivo = true;
+            } else if (regimen === '1099') {
+                // Modo Freelance: Muta texto a HACIENDA, libera botones y clava base de retención de ley de 10%
+                lblTexto.innerText = "HACIENDA:";
+                porcientoManualRetencion = 10.0;
+                ssActivo = true; medActivo = true;
             } else if (regimen === 'EXENTO') {
+                // Modo N/A: Restablece texto original, libera botones y regresa base a 0%
+                lblTexto.innerText = "RETENCIÓN MANUAL:";
+                porcientoManualRetencion = 0.0;
                 ssActivo = false; medActivo = false;
             }
+
+            // Sincroniza el número impreso en el LCD al instante de cambiar de régimen
+            document.getElementById('lblManualPctLcd').innerText = porcientoManualRetencion.toFixed(1) + "%";
 
             actualizarEstilosPestañasLcd(regimen);
             calcularSalarioSubPantalla();
@@ -866,17 +877,12 @@
             document.getElementById('toggleSS').className = ssActivo ? "toggle-label-lcd on" : "toggle-label-lcd off";
             document.getElementById('toggleMED').className = medActivo ? "toggle-label-lcd on" : "toggle-label-lcd off";
 
-            // Motor de deshabilitación: Apaga visualmente y congela los clics si no está en modo N/A (EXENTO)
+            // 🔓 REGLA DE LIBERACIÓN TOTAL: Habilita los botones de +/- y restablece opacidad en todos los modos
             const bMas = document.getElementById('btnManualMas');
             const bMenos = document.getElementById('btnManualMenos');
             
-            if (regimen === 'EXENTO') {
-                bMas.disabled = false; bMas.style.opacity = "1"; bMas.style.pointerEvents = "auto";
-                bMenos.disabled = false; bMenos.style.opacity = "1"; bMenos.style.pointerEvents = "auto";
-            } else {
-                bMas.disabled = true; bMas.style.opacity = "0.2"; bMas.style.pointerEvents = "none";
-                bMenos.disabled = true; bMenos.style.opacity = "0.2"; bMenos.style.pointerEvents = "none";
-            }
+            bMas.disabled = false; bMas.style.opacity = "1"; bMas.style.pointerEvents = "auto";
+            bMenos.disabled = false; bMenos.style.opacity = "1"; bMenos.style.pointerEvents = "auto";
         }
 
         function toggleImpuestoIndividual(tipo) {
@@ -891,6 +897,7 @@
             
             calcularSalarioSubPantalla();
         }
+
 
 
         // 🚨 REEMPLAZO TOTALMENTE INTEGRADO: FUNCIÓN DE CÁLCULOS NETOS Y CARACTERES NUMÉRICOS
