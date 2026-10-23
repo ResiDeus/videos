@@ -1,68 +1,103 @@
-# 📟 Calculadora de ResiDeus Cyberpunk
+# 📟 ResiDeus Master Ultimate Calculator
 
-¡Saludos, corillo! 🇵🇷 Bienvenidos a la **Calculadora de ResiDeus**, una aplicación web progresiva (PWA) de estilo retro-futurista diseñada específicamente para resolver uno de los dilemas más grandes al salir a comer o janguear en Puerto Rico: **calcular el IVU, la propina y cuadrar el bendito serrucho de la cuenta sin trancarse.**
-
-Desarrollada con un motor analítico optimizado para iOS (Safari/iPhone), esta interfaz combina una estética inspirada en terminales de fósforo verde, luces de neón parpadeantes y efectos de audio sintetizados mediante código nativo.
+Una calculadora multi-modal premium estilo **Synthwave / Cyberpunk Retro** optimizada como **PWA (Progressive Web App)** para un rendimiento inmersivo a pantalla completa nativa en dispositivos iPhone y Android.
 
 ---
 
-## 🚀 Características Clave (El Piquete)
+## 🛠️ Especificaciones Técnicas y de Interfaz
 
-- **📟 Pantalla LCD Dinámica:** Monitorea desgloses de IVU, propina y descuento en tiempo real con opacidades inteligentes de brillo completo (`opacity: 1`) que se iluminan al activar cada función.
-- **🌌 Recibo Holográfico Proyectado:** En lugar de las alertas aburridas del navegador, la app proyecta un modal flotante con estilo CRT de vectores de neón, filtro de interferencia y desenfoque de cristal (`backdrop-filter: blur`) que cambia de color según el tema activo.
-- **🪓 Motor de Serrucho Flexible:** Permite ingresar inputs libres (incluyendo `0` y `1`) con protección matemática contra división por cero tras bastidores.
-- **⌨️ Teclado Numérico Liberado:** Soporte extendido de punto decimal (`.`) de hasta 4 caracteres tanto en **Descuento** como en **Propina** para procesar tasas exactas (ej. `11.5%` o `15.5%`).
-- **💬 Animación Cyberpunk Orgánica:** La pantalla verde cuenta con una animación cíclica basada en CSS puro que simula el tipeado mecánico de tres puntos (`...`) mientras espera datos del usuario.
-- **🎨 Selector de Temas Neón:** Cambia instantáneamente todo el ecosistema visual de la app rotando entre 4 paletas de color con el botón físico `TEMA`:
-  - 🌟 *Cyberpunk* (Rosa Eléctrico & Violeta)
-  - 🏆 *Retro Gold* (Ámbar & Piedra)
-  - 📟 *Matrix* (Verde Fósforo de Terminal)
-  - 🌅 *Sunset* (Naranja Quemado & Óxido)
-- **🔊 Audio Sintetizado Nativo:** Sonidos retro de clics y confirmaciones generados matemáticamente mediante la *Web Audio API* (sin archivos pesados ni consumo de datos offline).
+| Atributo | Detalle |
+| :--- | :--- |
+| **Arquitectura** | HTML5, CSS3 Avanzado y JavaScript Vanilla (No Frameworks) |
+| **Optimización Móvil** | Fullscreen Inmersivo (`viewport-fit=cover` + `manifest.json`) |
+| **Layout del LCD** | Dual-Column Grid con jaula estricta de 4 ítems máximos y scroll inercial |
+| **Control Gestual** | Escudo anti-desplazamiento de un dedo + Pinch-to-Zoom libre (2 dedos) |
+| **Motor Háptico** | Respuesta de ráfaga turbo continua (15ms) en controles de flechas |
 
 ---
 
-## 🛠️ Tecnologías Utilizadas
+## 🎨 Modos de Operación Dinámicos
 
-Para garantizar un rendimiento ultra ligero y capacidad de funcionamiento 100% offline (ideal para cuando no hay señal en el restaurante), el proyecto está construido con:
+La aplicación transmuta su comportamiento físico y matemático mediante interruptores lógicos en tiempo real:
 
-* **HTML5 Nativo:** Estructuración limpia y semántica del chasis físico.
-* **CSS3 Avanzado:** Animaciones de vectores `@keyframes`, mallas 3D en perspectiva, efectos glitch y diseño responsive *Mobile-First*.
-* **JavaScript Puro (Vanilla JS):** Motor analítico de cálculo, persistencia de memorias al conmutar menús y manipulación del DOM en tiempo real.
-* **Web Audio API:** Generación de osciladores de sonido sintético en vivo.
+### 🛍️ Modo Base: Lista de Compras Tradicional
+* **Acumulador Fiscal:** Guarda artículos en memoria calculando descuentos globales, propinas e IVU de forma automatizada.
+* **Fijación de Rejilla:** Historial blindado a un máximo visual de 4 líneas con scroll para evitar desplazamientos accidentales del chasis.
+* **Serrucho Comparti'o:** Divide la cuenta neta global de forma exacta entre el número de panas seleccionados.
 
----
-
-## 📂 Estructura del Archivo Unificado
-
-El proyecto está diseñado bajo la filosofía de "Single-File Architecture". Todo el sistema vive dentro de un único archivo de alto rendimiento:
-
-```text
-├── index.html       # Todo el HTML, CSS, lógicas de cálculo y audio
-└── icon.jpg         # Icono de acceso directo en caché para iOS/iPhone
-```
+### 💼 Modo Avanzado: Consulta de Salario (Pantalla Azul)
+* **Anclaje de Hardware:** Oculta el historial de compras para proyectar un panel limpio de doble columna en el tope del LCD.
+* **Regímenes de Ley (Puerto Rico/EE.UU.):** Conmutadores automáticos para **NÓMINA** (Retenciones oficiales de Seguro Social y Medicare) y **FREELANCE** (Retención base en origen de Hacienda del 10%).
+* **Filtro Mutable:** Permite habilitar una retención manual indexada a pasos de `0.1%` controlada por botones de ráfaga continua.
+* **Outputs Saneados:** Desglosa proyecciones salariales exactas en períodos Semanal, Bisemanal, Mensual y Anual.
 
 ---
 
-## 📱 Instalación en iPhone (PWA/Home Screen)
+## 🌌 Estilos y Temas Ambientales
 
-Para llevar la calculadora en tu celular como si fuera una aplicación nativa de la App Store:
+El teclado numérico cuenta con un diseño de **Hojas de Palmas Synthwave retro** sobre un fondo azul oscuro nocturno de estrellas parpadeantes. Al presionar o mantener apretado cualquier dígito, el botón ejecuta un **Flash Blanco Sólido** con el número en negro de alta densidad para asegurar una lectura indestructible bajo el dedo.
 
-1. Sube el archivo `index.html` y tu `icon.jpg` a tu hosting o servidor.
-2. Abre la ruta en **Safari** desde tu iPhone.
-3. Toca el botón de **Compartir** (el cuadrado con la flecha hacia arriba abajo en la pantalla).
-4. Selecciona la opción **"Agregar a pantalla de inicio"** (Add to Home Screen).
-5. ¡Listo! Ya tienes el acceso directo neón con pantalla completa e integración traslúcida en la barra de estado de iOS.
-
----
-
-## 📝 Notas para Modificaciones Futuras
-
-El código fuente está rigurosamente documentado mediante comentarios estructurados por bloques para facilitar cambios más adelante:
-* **Audio:** Busca la función `reproducirSonido(tipo)` para alterar los tipos de osciladores (`sine`, `triangle`, `sawtooth`) y las frecuencias de hercios.
-* **Colores de Neón:** Busca los selectores `body.theme-` en el CSS para alterar las intensidades de las sombras (`box-shadow`) y gradientes de fondo.
-* **Mensajes:** Modifica la función `abrirHologramaRecibo()` si deseas reestructurar el diseño de impresión del texto del recibo copiado.
+| # | Tema Ambiental | Rejilla del Marcador | Matriz de Color de Teclas |
+| :-: | :--- | :--- | :--- |
+| **1** | `Cyberpunk` | Cyan Neón | Metalizado Azul Eléctrico + Magenta |
+| **2** | `Retro Gold` | Oro Ámbar | Oro Pulido + Cobre / Tabaco |
+| **3** | `Matrix` | Verde Fósforo | Verde Esmeralda + Obsidiana |
+| **4** | `Sunset` | Naranja Fuego | Naranja Magma + Rubí Sangre |
 
 ---
 
- Desarrollado con orgullo y piquete cyberpunk desde Puerto Rico. ¡Disfruta la app y que no te claven con el serrucho! 🇵🇷📟
+## 📲 Guía de Instalación Móvil (Pantalla Completa PWA)
+
+Para desterrar las barras del navegador, ocultar la franja blanca superior y hacer que el chasis flote en el centro exacto de tu celular, sigue estos pasos:
+
+1. Sube los archivos 'index.html', 'manifest.json' y tu ícono 'icon.jpg' a tu servidor.
+2. Abre la URL desde el Safari de tu iPhone o el Chrome de tu Android.
+3. Toca el botón de 'Compartir' o 'Ajustes' en tu navegador.
+4. Selecciona la opción 'Agregar a pantalla de inicio' (Add to Home Screen).
+5. Abre el nuevo ícono de ResiDeus desde tu escritorio móvil.
+
+
+---
+
+## 🧾 Características Adicionales
+* **Recibo Holográfico:** Genera un ticket textual detallado con fecha, hora, desglose pormenorizado de artículos con IVU/Descuentos y copia automática al portapapeles.
+* **Apagado Maestro:** Incluye una simulación CRT de televisor vintage que borra la memoria fiscal de la calculadora de forma segura tras confirmación.
+
+* ***************** *
+
+📟 ResiDeus Master Ultimate – Calculadora Cyberpunk & Salarial
+
+
+¡Lleva el control de tus finanzas y tus salidas con el estilo retro-futurista definitivo!
+
+ResiDeus Master Ultimate no es una calculadora ordinaria. Es una herramienta multi-modal premium con una interfaz inmersiva inspirada en la estética Synthwave, Cyberpunk y Outrun, diseñada específicamente para ofrecerte una experiencia fluida, rápida y sumamente visual directamente en tu iPhone.
+Ya sea que estés dividiendo la cuenta con tus panas en un restaurante o calculando cuánto te va a retener Hacienda de tu próximo cheque en Puerto Rico, ResiDeus lo hace todo en tiempo real con una precisión matemática absoluta y un diseño espectacular.
+
+🛍️ MODO COMPRAS: DI ADIÓS A LOS CÁLCULOS COMPLICADOS
+
+Sal de dudas al instante cuando vayas de tiendas o a cenar. Registra tus artículos en un historial blindado e inmutable y calcula de cantazo:
+• Descuentos Globales: Aplica rebajas porcentuales de forma automática antes de impuestos.
+• IVU e Impuestos: Configura el IVU exacto (como el 11.5% o el 7%) y mira el desglose por cada artículo de la lista.
+• Calculadora de Propina: Añade el porcentaje de propina ideal basado en el subtotal descontado.
+• Serrucho Comparti'o: ¿Saliendo en grupo? Divide la cuenta neta global de forma simétrica entre el número de panas seleccionados para saber cuánto le toca a cada cabeza.
+
+💼 MODO SALARIO: TU CONSULTOR CONTRIBUTIVO PRIVADO
+
+Con solo presionar un botón, el LCD muta a una potente subpantalla azul contable. Proyecta tus ingresos de forma Semanal, Bisemanal, Mensual y Anual bajo los marcos legales oficiales:
+• Modo NÓMINA (W-2): Calcula automáticamente las deducciones por ley federal de Seguro Social (6.2%) y Medicare (1.45%).
+• Modo FREELANCE (1099): Activa las tasas de trabajo por cuenta propia (Seguro Social 12.4% y Medicare 2.9%) e integra la retención oficial en el origen de Hacienda del 10.0%.
+• Retención Manual: Libera el control manual para ajustar décima a décima (0.1%) cualquier porciento contributivo personalizado.
+
+🎨 ATMÓSFERA PREMIUM & DETALLES DE DISEÑO
+
+• Estilo Iridiscente Tropical: Disfruta de un teclado numérico adornado con siluetas de palmas retro sobre un cielo estrellado que parpadea lentamente.
+• Lectura Háptica Indestructible: Al presionar o mantener apretado cualquier botón, este se torna en un Blanco Flash Sólido con el dígito en negro denso. ¡Perfecto para leer el número claramente aunque tu dedo lo esté tapando!
+• 4 Temas Dinámicos: Cambia instantáneamente la personalidad de tu calculadora con sus rejillas de luz neón: Cyberpunk (Cyan/Magenta), Retro Gold (Oro Pulido/Tabaco), Matrix (Verde Fósforo) y Sunset (Naranja Magma).
+• Recibo Holográfico: Genera un ticket de cuenta digital detallado con fecha, hora y desgloses fiscales listo para Copiar al Portapapeles con un solo toque y enviarlo por chat.
+• Apagado CRT Vintage: Experimenta la simulación de apagado de un televisor de tubo clásico que purga y limpia la memoria de la cuenta de forma segura.
+
+📱 OPTIMIZACIÓN EXCLUSIVA PARA TU MÓVIL
+
+• Pantalla Completa Real: Diseñada para aprovechar cada píxel de tu iPhone, fundiéndose de forma transparente debajo del reloj y la batería.
+• Controles de Ráfaga Turbo: Deja el dedo pegado en los botones de + o - del LCD y mira cómo los números vuelan gracias a su motor táctil de ráfaga continua ultra veloz de 15ms.
+• Filtro Inteligente de Gestos: Desliza un solo dedo para navegar por el historial de compras sin que la página se mueva, o usa dos dedos (Pinch-to-zoom) para darle un zoom libre a toda la calculadora.
