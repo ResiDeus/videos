@@ -641,7 +641,7 @@
         let memoriaDescuentoPct = "0", memoriaTipPct = "15", memoriaSerruchoCortes = "2", memoriaIvuPct = "11.5";
         let preciosGuardados = [], cuentaAcumulada = 0, textoReciboGlobal = "";
         let themes = ['theme-cyberpunk', 'theme-retro-gold', 'theme-matrix', 'theme-sunset', 'theme-puertorico'];
-
+        let temaActualIdx = 0;
         let sistemaEncendido = true; 
 
         // 📊 VARIABLES DE LA MEMORIA DE SALARIO AVANZADO ($10.50 DEFAULT)
@@ -1381,8 +1381,14 @@
                 gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.15);
                 osc.start(); osc.stop(ctx.currentTime + 0.15);
             } catch(e){}
-            document.body.classList.remove(themes[temaActualIdx]);
+
+            // 🧼 LIMPIEZA DE CAPAS SEGURA: Remueve de forma estricta cualquier tema previo para evitar colisiones
+            document.body.classList.remove('theme-cyberpunk', 'theme-retro-gold', 'theme-matrix', 'theme-sunset', 'theme-puertorico');
+            
+            // Avanza de forma matemática segura en el carrusel de 5 posiciones
             temaActualIdx = (temaActualIdx + 1) % themes.length;
+            
+            // Inyecta el nuevo tema en el chasis del iPhone
             document.body.classList.add(themes[temaActualIdx]);
         }
 
