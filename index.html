@@ -247,22 +247,22 @@
     <div class="grid3d"></div>
 
     <div class="chasis" id="calcChasis">
-        <!-- 🟢 PANTALLA LCD MULTI-MODAL CON ESPACIOS PURGADOS -->
+        <!-- 🟢 PANTALLA LCD REESTRUCTURADA: CERO BAILES Y FLECHA ALINEADA CON TOTAL -->
         <div class="lcd" id="pantallaVerde">
             <div class="lcd-header">
                 <span id="txtHeaderIndicadores" class="blinking-header-text">SISTEMA ACTIVO</span>
             </div>
+            
             <div class="lcd-wrapper">
-                <div class="listaPrecios-container" style="flex-grow: 1; position: relative; display: flex; flex-direction: column;">
-                    <!-- Bloque Vista de Compras (Jaula Fija con Scroll) -->
-                    <div class="lcd-historial" id="listaPrecios">
+                <div class="listaPrecios-container" style="flex-grow: 1; position: relative; display: flex; flex-direction: column; overflow: visible;">
+                    <!-- Bloque Vista de Compras (Jaula Fija Inmutable) -->
+                    <div class="lcd-historial" id="listaPrecios" style="height: 48px !important; max-height: 48px !important; overflow-y: auto !important; box-sizing: border-box;">
                         <span id="lblArtText">Lista vacía<span class="lcd-tipeo"></span></span>
                     </div>
                     
-                    <!-- 🚨 LA GRAN CAPA DE SALARIO DE ALTA COMODIDAD (Doble Columna) -->
+                    <!-- Capa de Salario Avanzado (Doble Columna) -->
                     <div id="vistaSubPantallaSalario" style="display: none; flex-direction: row; justify-content: space-between; align-items: center; height: 100%; font-family: monospace; line-height: 1.1; font-size: 10px; gap: 6px; padding: 4px 0; overflow: visible;">
-                        
-                        <!-- COLUMNA IZQUIERDA: Tarifas y Horas con separación fija -->
+                        <!-- Columna Izquierda: Horas y Paga -->
                         <div style="display: flex; flex-direction: column; gap: 5px; width: 46%; height: 100%; justify-content: center; overflow: visible;">
                             <div style="display: flex; flex-direction: column; gap: 2px;">
                                 <span style="opacity: 0.85; font-size: 8.5px; font-weight: bold;">PAGA POR HORA:</span>
@@ -279,20 +279,17 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- COLUMNA DERECHA: Modos, Switches Horizontales e Input abajo -->
+                        <!-- Columna Derecha: Nómina/Freelance y Hacienda -->
                         <div style="display: flex; flex-direction: column; gap: 4px; width: 52%; border-left: 1px dotted rgba(0,240,255,0.2); padding-left: 6px; height: 100%; justify-content: center; overflow: visible;">
                             <div style="display: flex; align-items: center; gap: 2px; width: 100%; overflow: visible;">
                                 <button id="tabW2" class="tab-btn-lcd" onclick="cambiarRegimenContributivo('W2')">NOMINA</button>
                                 <button id="tab1099" class="tab-btn-lcd" onclick="cambiarRegimenContributivo('1099')">FREELANCE</button>
                                 <button id="tabExento" class="tab-btn-lcd active" onclick="cambiarRegimenContributivo('EXENTO')">N/A</button>
                             </div>
-                            
                             <div style="display: flex; flex-direction: row; gap: 3px; width: 100%; overflow: visible;">
                                 <button id="toggleSS" class="toggle-label-lcd off" style="width: 50%; padding: 3px 1px; font-size: 7.5px; white-space: nowrap;" onclick="toggleImpuestoIndividual('SS')">S. SOCIAL</button>
                                 <button id="toggleMED" class="toggle-label-lcd off" style="width: 50%; padding: 3px 1px; font-size: 7.5px; white-space: nowrap;" onclick="toggleImpuestoIndividual('MED')">MEDICARE</button>
                             </div>
-                            
                             <div style="display: flex; flex-direction: column; width: 100%; border-top: 1px dotted rgba(0,240,255,0.15); padding-top: 3px; gap: 2px; overflow: visible;">
                                 <span id="lblTextoManual" style="font-size: 9px; opacity: 1; font-weight: 900; color: #fff; white-space: nowrap; text-shadow: 0 0 2px rgba(0,240,255,0.2);">RETENCIÓN MANUAL:</span>
                                 <div style="display: flex; align-items: center; justify-content: flex-start; overflow: visible; position: relative; z-index: 100;">
@@ -304,27 +301,27 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
-                    <div class="scroll-hint" id="flechaGuia" style="bottom: 2px; right: 4px; font-size: 8px; font-weight: 900; background: rgba(146, 176, 67, 0.95); padding: 1px 4px; border-radius: 2px;">▼ deslizar</div>
+                    <!-- 🚨 BORRADO AQUÍ EL DUPLICADO VIEJO QUE HACÍA BAILAR LA PANTALLA -->
                 </div>
             </div>
+
             <div class="lcd-body">
                 <!-- Data Base de Compras -->
-                <div id="wrapperDataComprasLcd" style="position: relative; overflow: visible;">
+                <div id="wrapperDataComprasLcd" style="position: relative; overflow: visible; width: 100%;">
                     <div id="rowDesc" style="opacity: 0.3; transition: opacity 0.15s ease;">DESCUENTO: <span id="outDesc">-$0.00</span></div>
                     <div id="rowTip" style="opacity: 0.2; transition: opacity 0.15s ease;">PROPINA: <span id="outTip">$0.00</span></div>
                     <div id="rowIvu" style="opacity: 0.3; transition: opacity 0.15s ease;">IVU: <span id="outIvu">$0.00</span></div>
                     
-                    <!-- Fila horizontal: TOTAL a la izquierda y deslizar congelado a la derecha -->
+                    <!-- Fila horizontal calibrada: TOTAL a la izquierda y deslizar fijo a la derecha -->
                     <div style="display: flex; justify-content: space-between; align-items: baseline; width: 100%; margin-bottom: 1px; overflow: visible; position: relative;">
                         <div class="lcd-total">TOTAL: $<span id="outPer">0.00</span></div>
-                        <div class="scroll-hint" id="flechaGuia" style="font-size: 8px; font-weight: 900; background: rgba(146, 176, 67, 0.95); padding: 1px 4px; border-radius: 2px; position: relative; z-index: 110; display: none; margin-bottom: 2px;">▼ deslizar</div>
+                        <div class="scroll-hint" id="flechaGuia" style="font-size: 8px; font-weight: 900; background: rgba(146, 176, 67, 0.95); padding: 2px 5px; border-radius: 3px; position: relative; z-index: 120; display: none; margin-bottom: 2px; white-space: nowrap;">▼ deslizar</div>
                     </div>
                     
                     <div id="rowPersonaCuota" style="opacity: 0.3; font-size: 11px; margin-top: 1px; transition: opacity 0.15s ease;"><span id="txtSerruchoLabelType">SERRUCHO (C/U): N/A</span> <span id="outPerPersonaLine"></span></div>
                 </div>
-                <!-- Data Base de Salario (Outputs Saneados con Nombres de Total) -->
+                <!-- Data Base de Salario (Outputs de Total) -->
                 <div id="wrapperDataSalarioLcd" style="display: none; border-top: 1px solid rgba(0,240,255,0.2); padding-top: 2px; font-size: 8.5px; line-height: 1.1;">
                     <div style="color: #ff3b30; font-weight: 900; font-size: 8px; text-transform: uppercase;">RETENCIÓN TOTAL: <span id="outSalRetencion">-$0.00 (0%)</span></div>
                     <div>TOTAL SEMANAL  : <span id="outSalSemanal" style="font-weight: 900; font-size: 9.5px;">$0.00</span></div>
@@ -334,6 +331,7 @@
                 </div>
             </div>
         </div>
+
 
         <!-- 🎛️ CONTENEDOR UNIFICADO DE PRECIO CENTRADO -->
         <div class="contenedor-precio-unificado precio-on" id="marcadorPrecioUnificado">
