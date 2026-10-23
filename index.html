@@ -1094,10 +1094,11 @@
             document.getElementById('btnCopiarHolo').innerText = "Copiar";
             document.getElementById('visorHolograma').classList.add('active');
         }
-
+        
+        // HOLOGRAMA DE RECIBO
         function cerrarHologramaRecibo() {
             reproducirSonido('menu');
-            document.getElementById('visorHolograma').classList.remove('active');
+            document.getElementById('visorHolograma').classList.remove('activo');
         }
 
         function copiarTextoHolograma() {
