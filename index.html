@@ -311,11 +311,17 @@
             </div>
             <div class="lcd-body">
                 <!-- Data Base de Compras -->
-                <div id="wrapperDataComprasLcd">
+                <div id="wrapperDataComprasLcd" style="position: relative; overflow: visible;">
                     <div id="rowDesc" style="opacity: 0.3; transition: opacity 0.15s ease;">DESCUENTO: <span id="outDesc">-$0.00</span></div>
                     <div id="rowTip" style="opacity: 0.2; transition: opacity 0.15s ease;">PROPINA: <span id="outTip">$0.00</span></div>
                     <div id="rowIvu" style="opacity: 0.3; transition: opacity 0.15s ease;">IVU: <span id="outIvu">$0.00</span></div>
-                    <div class="lcd-total" style="margin-bottom: 1px;">TOTAL: $<span id="outPer">0.00</span></div>
+                    
+                    <!-- Fila horizontal: TOTAL a la izquierda y deslizar congelado a la derecha -->
+                    <div style="display: flex; justify-content: space-between; align-items: baseline; width: 100%; margin-bottom: 1px; overflow: visible; position: relative;">
+                        <div class="lcd-total">TOTAL: $<span id="outPer">0.00</span></div>
+                        <div class="scroll-hint" id="flechaGuia" style="font-size: 8px; font-weight: 900; background: rgba(146, 176, 67, 0.95); padding: 1px 4px; border-radius: 2px; position: relative; z-index: 110; display: none; margin-bottom: 2px;">▼ deslizar</div>
+                    </div>
+                    
                     <div id="rowPersonaCuota" style="opacity: 0.3; font-size: 11px; margin-top: 1px; transition: opacity 0.15s ease;"><span id="txtSerruchoLabelType">SERRUCHO (C/U): N/A</span> <span id="outPerPersonaLine"></span></div>
                 </div>
                 <!-- Data Base de Salario (Outputs Saneados con Nombres de Total) -->
