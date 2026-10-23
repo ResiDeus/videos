@@ -127,7 +127,18 @@
         .listaPrecios-container { flex-grow: 1; position: relative; display: flex; flex-direction: column; overflow: visible !important; }
 
         /* 🚨 JAULA ESTRICTA DE 4 ÍTEMS MÁXIMOS CON SCROLL INERIAL */
-        .lcd-historial { flex-grow: 1; font-size: 9px; max-height: 48px; overflow-y: auto !important; text-align: left; padding-right: 4px; line-height: 1.2; -webkit-overflow-scrolling: touch; }
+        .lcd-historial { 
+            flex-grow: 1; 
+            font-size: 9px; 
+            height: 48px !important; /* Forzamos altura estricta inmutable */
+            max-height: 48px !important; 
+            overflow-y: auto !important; 
+            text-align: left; 
+            padding-right: 4px; 
+            line-height: 1.2; 
+            -webkit-overflow-scrolling: touch; 
+            box-sizing: border-box;
+        }
         .lcd-body { text-align: left !important; font-size: 9px; line-height: 1.2; }
         .lcd-total { font-size: 22px; font-weight: 900; text-align: left !important; line-height: 1.1; }
 
@@ -295,7 +306,7 @@
                         </div>
 
                     </div>
-                    <div class="scroll-hint" id="flechaGuia">▼ deslizar</div>
+                    <div class="scroll-hint" id="flechaGuia" style="bottom: 2px; right: 4px; font-size: 8px; font-weight: 900; background: rgba(146, 176, 67, 0.95); padding: 1px 4px; border-radius: 2px;">▼ deslizar</div>
                 </div>
             </div>
             <div class="lcd-body">
@@ -325,7 +336,7 @@
                 <span class="lbl-title">Precio</span>
                 <span class="lbl-val">$<span id="lblSub" class="blink-num">0</span></span>
             </div>
-            <button id="btnAnadirGlobal" class="btn-add-embedded" onclick="addProducto()">+</button>
+            <button id="btnAnadirGlobal" class="btn-add-embedded" style="width: auto; padding: 0 12px; font-size: 11px; text-transform: uppercase;" onclick="addProducto()">AÑADIR</button>
         </div>
 
         <!-- 🚨 SECUENCIA FÍSICA EXACTA SOLICITADA EN GRID DE 5 COLUMNAS -->
