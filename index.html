@@ -422,8 +422,17 @@
         .holograma-scrollable { flex-grow: 1; overflow-y: auto; font-size: 11px; line-height: 1.4; white-space: pre-wrap; padding-right: 4px; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 8px; padding: 8px; background: rgba(0, 0, 0, 0.5); color: var(--receipt-glow); text-shadow: 0 0 3px var(--receipt-glow); }
         .holograma-footer { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
         .btn-holo { padding: 8px; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; border: 1px solid var(--receipt-glow); font-family: monospace; font-size: 11px; text-align: center; background: transparent; color: var(--receipt-glow); transition: all 0.2s ease; }
-        @keyframes deTresPuntos { 0% { content: "."; } 33% { content: ".."; } 66% { content: "..."; } 100% { content: "."; } }
-        .lcd-tipeo::after { content: "."; animation: deTresPuntos 1.2s infinite steps(1, start) !important; }
+        @keyframes parpadeoLentoPuntitos {
+            0% { opacity: 0.1; }
+            50% { opacity: 1; }
+            100% { opacity: 0.1; }
+        }
+        .lcd-tipeo {
+            font-weight: 900;
+            display: inline-block;
+            animation: parpadeoLentoPuntitos 1.4s infinite ease-in-out;
+            color: inherit;
+        }
     </style>
 </head>
 <body class="theme-cyberpunk">
@@ -441,7 +450,7 @@
                 <div class="listaPrecios-container" style="flex-grow: 1; position: relative; display: flex; flex-direction: column; overflow: visible;">
                     <!-- Bloque Vista de Compras (Jaula Fija con Scroll) -->
                     <div class="lcd-historial" id="listaPrecios" style="height: 48px !important; max-height: 48px !important; overflow-y: auto !important; box-sizing: border-box;">
-                        <span id="lblArtText">Lista vacía<span class="lcd-tipeo"></span></span>
+                        <span id="lblArtText">Lista vacía<span class="lcd-tipeo">...</span></span>
                     </div>
                     
                     <!-- flecha que sale // Etiqueta Flotante Absoluta: Clavada al final de la jaula, a la derecha, sobre la línea discontinua -->
@@ -946,7 +955,7 @@
             document.getElementById('lblTextoManual').innerText = "RETENCIÓN MANUAL:";
             actualizarEstilosPestañasLcd('EXENTO');
 
-            document.getElementById('listaPrecios').innerHTML = 'Lista vacía<span class="lcd-tipeo"></span>';
+            document.getElementById('listaPrecios').innerHTML = 'Lista vacía<span class="lcd-tipeo">...</span>';
             document.getElementById('flechaGuia').style.display = "none"; sPpl = "0"; modoSerruchoActivo = false; memoriaSerruchoCortes = "2";
             document.getElementById('lblPpl').innerText = "N/A"; sDesc = "0"; memoriaDescuentoPct = "0"; modoDescuentoActivo = false; document.getElementById('lblDesc').innerText = "0";
             sTip = "15"; memoriaTipPct = "15"; incluirPropina = false;
@@ -1024,7 +1033,7 @@
                     
                     // 📑 RESTAURACIÓN RECTIFICADA: Reconstruimos y pintamos tus artículos guardados EXACTAMENTE como estaban
                     if (preciosGuardados.length === 0) {
-                        bloqueListaCompras.innerHTML = 'Lista vacía<span class="lcd-tipeo"></span>';
+                        bloqueListaCompras.innerHTML = 'Lista vacía<span class="lcd-tipeo">...</span>';
                     } else {
                         bloqueListaCompras.innerHTML = preciosGuardados.map((item, i) => '<div>• (' + (i+1) + '): $' + item.total.toFixed(2) + ' <span style="font-size:8px; opacity:0.75;">(DTO:-$' + item.descuento.toFixed(2) + '/IVU:' + item.porcientoIvuUsado.toFixed(1) + '%)</span></div>').join('');
                         let totalConTaxAcumulado = preciosGuardados.reduce((sum, item) => sum + item.total, 0);
@@ -1052,7 +1061,7 @@
                 
                 // Si el usuario toca otra opción del menú por accidente, restauramos el estado correcto de la lista de compras
                 if (preciosGuardados.length === 0) {
-                    bloqueListaCompras.innerHTML = 'Lista vacía<span class="lcd-tipeo"></span>';
+                        bloqueListaCompras.innerHTML = 'Lista vacía<span class="lcd-tipeo">...</span>';
                 } else {
                     bloqueListaCompras.innerHTML = preciosGuardados.map((item, i) => '<div>• (' + (i+1) + '): $' + item.total.toFixed(2) + ' <span style="font-size:8px; opacity:0.75;">(DTO:-$' + item.descuento.toFixed(2) + '/IVU:' + item.porcientoIvuUsado.toFixed(1) + '%)</span></div>').join('');
                     let totalConTaxAcumulado = preciosGuardados.reduce((sum, item) => sum + item.total, 0);
