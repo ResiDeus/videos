@@ -267,17 +267,15 @@
                         <span id="lblArtText">Lista vacía<span class="lcd-tipeo"></span></span>
                     </div>
                     
-                    <!-- 🚨 REEMPLAZO PANTALLA AZUL: BOTONES MÁS GRANDES, TEXTO EXPANDIDO E INPUT MANUAL ABAJO -->
+                    <!-- 🚨 REEMPLAZO MODULAR HTML: ETIQUETAS ACTUALIZADAS Y MODO N/A ASIGNADO -->
                     <div id="vistaSubPantallaSalario" style="display: none; flex-direction: row; justify-content: space-between; align-items: center; height: 100%; font-family: monospace; line-height: 1.1; font-size: 10px; gap: 6px; padding: 2px 0;">
                         
-                        <!-- COLUMNA IZQUIERDA: Tarifas y Tiempos de labor ampliados -->
+                        <!-- COLUMNA IZQUIERDA: Tarifas y Tiempos de labor -->
                         <div style="display: flex; flex-direction: column; gap: 5px; width: 46%; height: 100%; justify-content: center;">
                             <div style="display: flex; flex-direction: column; gap: 2px;">
                                 <span style="opacity: 0.85; font-size: 8.5px; font-weight: bold;">PAGA POR HORA:</span>
                                 <span id="lblSalHoraLcd" style="font-size: 12px; font-weight: 900; background: rgba(0,0,0,0.25); padding: 2px 5px; border-radius: 4px; width: max-content; color: #fff; border: 1px solid rgba(255,255,255,0.1);">$10.50/h</span>
                             </div>
-
-
                             <div style="display: flex; flex-direction: column; gap: 2px;">
                                 <span style="opacity: 0.85; font-size: 8.5px; font-weight: bold;">HORAS POR SEMANA:</span>
                                 <div style="display: flex; align-items: center; gap: 3px;">
@@ -287,22 +285,24 @@
                             </div>
                         </div>
 
-                        <!-- COLUMNA DERECHA: NOMINA/FREELANCE y los nuevos switches grandes de Seguro Social / Medicare -->
+                        <!-- COLUMNA DERECHA: NOMINA/FREELANCE/N/A y controles de ley -->
                         <div style="display: flex; flex-direction: column; gap: 4px; width: 52%; border-left: 1px dotted rgba(0,240,255,0.2); padding-left: 6px; height: 100%; justify-content: center;">
                             <!-- Bloque de Regímenes -->
                             <div style="display: flex; align-items: center; gap: 2px; width: 100%;">
-                                <button id="tabW2" class="tab-btn-lcd active" onclick="cambiarRegimenContributivo('W2')">NOMINA</button>
+                                <button id="tabW2" class="tab-btn-lcd" onclick="cambiarRegimenContributivo('W2')">NOMINA</button>
                                 <button id="tab1099" class="tab-btn-lcd" onclick="cambiarRegimenContributivo('1099')">FREELANCE</button>
-                                <button id="tabExento" class="tab-btn-lcd" onclick="cambiarRegimenContributivo('EXENTO')">0%</button>
+                                <button id="tabExento" class="tab-btn-lcd active" onclick="cambiarRegimenContributivo('EXENTO')">N/A</button>
                             </div>
-                            <!-- Switches renombrados a Seguro Social y Medicare -->
+                            
+                            <!-- Switches en fila horizontal -->
                             <div style="display: flex; flex-direction: row; gap: 3px; width: 100%;">
-                                <button id="toggleSS" class="toggle-label-lcd on" style="width: 50%; padding: 3px 1px; font-size: 7.5px; white-space: nowrap;" onclick="toggleImpuestoIndividual('SS')">S. SOCIAL</button>
-                                <button id="toggleMED" class="toggle-label-lcd on" style="width: 50%; padding: 3px 1px; font-size: 7.5px; white-space: nowrap;" onclick="toggleImpuestoIndividual('MED')">MEDICARE</button>
+                                <button id="toggleSS" class="toggle-label-lcd off" style="width: 50%; padding: 3px 1px; font-size: 7.5px; white-space: nowrap;" onclick="toggleImpuestoIndividual('SS')">S. SOCIAL</button>
+                                <button id="toggleMED" class="toggle-label-lcd off" style="width: 50%; padding: 3px 1px; font-size: 7.5px; white-space: nowrap;" onclick="toggleImpuestoIndividual('MED')">MEDICARE</button>
                             </div>
-                            <!-- Input manual posicionado estratégicamente abajo -->
+                            
+                            <!-- Input manual renombrado a RETENCIÓN MANUAL -->
                             <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; border-top: 1px dotted rgba(0,240,255,0.15); padding-top: 3px;">
-                                <span style="font-size: 8px; opacity: 0.85; font-weight: bold;">MANUAL:</span>
+                                <span style="font-size: 7px; opacity: 0.85; font-weight: bold; white-space: nowrap;">RETENCIÓN MANUAL:</span>
                                 <div style="display: flex; align-items: center; gap: 2px;">
                                     <span id="lblManualPctLcd" style="font-size: 10px; font-weight: 900; color: #fff; margin-right: 3px;">0.0%</span>
                                     <button class="btn-hrs-lcd" onclick="modificarImpuestoManual(0.1)">+</button><button class="btn-hrs-lcd" onclick="modificarImpuestoManual(-0.1)">-</button>
@@ -449,14 +449,15 @@
         let themes = ['theme-cyberpunk', 'theme-retro-gold', 'theme-matrix', 'theme-sunset'], temaActualIdx = 0;
         let sistemaEncendido = true; 
 
-        // 📊 VARIABLES DE LA MEMORIA DE SALARIO AVANZADO ($10.50 DEFAULT)
+        // 🚨 REEMPLAZO MODULAR JS: CONFIGURACIÓN DE ARRANQUE INICIAL AUTOMÁTICO EN MODO N/A (EXENTO)
         let modoSalarioActivo = false;
         let precioHoraTrabajo = 10.50; 
         let horasSemanalesTrabajo = 40; 
-        let regimenContributivo = 'W2'; 
-        let ssActivo = true;
-        let medActivo = true;
+        let regimenContributivo = 'EXENTO'; // El sistema ahora despierta directamente aquí
+        let ssActivo = false;              // Desactivado al inicio por regla exenta
+        let medActivo = false;             // Desactivado al inicio por regla exenta
         let porcientoManualRetencion = 0.0;
+
 
         let intervaloAutoIncremento = null;
         let timeoutAutoIncremento = null;
@@ -749,6 +750,7 @@
             const wrapperCompras = document.getElementById('wrapperDataComprasLcd');
             const wrapperSalario = document.getElementById('wrapperDataSalarioLcd');
 
+            // 🚨 REEMPLAZO MODULAR JS: CONMUTADOR DE PANTALLA CON ACTUALIZACIÓN DE ESTILOS EN MODO N/A
             if (f === 'sal') {
                 modoSalarioActivo = !modoSalarioActivo;
                 if (modoSalarioActivo) {
@@ -761,6 +763,9 @@
                     
                     document.getElementById('btnModoSalario').className = "caja-data btn-on";
                     document.getElementById('lblSalarioBoton').innerText = "$" + precioHoraTrabajo.toFixed(2) + "/h";
+                    
+                    // Asegura que las pestañas visuales reflejen el estado activo de N/A al encender
+                    actualizarEstilosPestañasLcd(regimenContributivo);
                     calcularSalarioSubPantalla();
                 } else {
                     lcd.classList.remove('modo-salario-activo');
