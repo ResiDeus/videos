@@ -447,10 +447,10 @@
                     <!-- flecha que sale // Etiqueta Flotante Absoluta: Clavada al final de la jaula, a la derecha, sobre la línea discontinua -->
                     <div class="scroll-hint" id="flechaGuia" style="position: absolute; bottom: 30px; right: 2px; font-size: 8px; font-weight: 900; background: rgba(146, 176, 67, 0.95); padding: 1px 4px; border-radius: 2px; color: #000; z-index: 130; display: none; white-space: nowrap; line-height: 1;">▼ deslizar</div>
                     
-                    <!-- 🚨 REEMPLAZO MAESTRO: ESPACIADOS AJUSTADOS Y BOTONES FIJOS ANTI-DESPLAZAMIENTO -->
+                    <!-- 🚨 REEMPLAZO MODULAR: ELEVACIÓN DE HACIENDA CONGELANDO LOS BOTONES EN SU SITIO -->
                     <div id="vistaSubPantallaSalario" style="display: none; flex-direction: row; justify-content: space-between; align-items: flex-start; width: 96%; height: 75px !important; max-height: 75px !important; font-family: monospace; line-height: 1.1; font-size: 11px; gap: 8px; padding: 0; overflow: visible; position: absolute !important; top: 10px !important; left: 6px !important; z-index: 95; box-sizing: border-box;">
                         
-                        <!-- COLUMNA IZQUIERDA: Paga y Horas con caja numérica congelada -->
+                        <!-- COLUMNA IZQUIERDA: Paga y Horas Estables -->
                         <div style="display: flex; flex-direction: column; gap: 4px; width: 44%; height: 100%; justify-content: flex-start !important; overflow: visible; margin: 0; padding-left: 8px;">
                             <div style="display: flex; flex-direction: column; gap: 2px;">
                                 <span style="opacity: 0.9; font-size: 9.5px; font-weight: bold; line-height: 1;">PAGA POR HORA:</span>
@@ -459,7 +459,6 @@
                             <div style="display: flex; flex-direction: column; gap: 2px; margin-top: 2px;">
                                 <span style="opacity: 0.9; font-size: 9.5px; font-weight: bold; line-height: 1;">HORAS SEMANA:</span>
                                 <div style="display: flex; align-items: center; justify-content: flex-start; line-height: 1; height: 18px; width: 100%;">
-                                    <!-- 🔒 Caja fija de 26px para congelar las horas en su eje -->
                                     <div style="width: 26px; min-width: 26px; display: inline-block; text-align: left;"><span id="lblHorasSemanaLcd" style="font-size: 12px; font-weight: 900; background: rgba(0,0,0,0.2); padding: 2px 4px; border-radius: 3px;">40</span></div>
                                     <div style="margin-left: 6px; display: flex; gap: 3px; position: relative; z-index: 100;">
                                         <button class="btn-hrs-lcd" style="width: 18px; height: 18px; font-size: 12px;" onmousedown="iniciarAccionLcdControles('horas', -1)" ontouchstart="iniciarAccionLcdControlesTouch(event, 'horas', -1)" onmouseup="detenerAccionLcdControles()" onmouseleave="detenerAccionLcdControles()" ontouchend="detenerAccionLcdControles()">-</button>
@@ -469,7 +468,7 @@
                             </div>
                         </div>
 
-                        <!-- COLUMNA DERECHA: Regímenes, Switches y Hacienda desplazada hacia abajo -->
+                        <!-- COLUMNA DERECHA: Regímenes, Switches y Hacienda elevada -->
                         <div style="display: flex; flex-direction: column; gap: 4px; width: 54%; border-left: 1px dotted rgba(0,240,255,0.25); padding-left: 6px; height: 100%; justify-content: flex-start !important; overflow: visible; margin: 0;">
                             <!-- Bloque de Regímenes -->
                             <div style="display: flex; align-items: center; gap: 2px; width: 100%; overflow: visible; height: 18px; line-height: 1;">
@@ -484,11 +483,10 @@
                                 <button id="toggleMED" class="toggle-label-lcd off" style="width: 50%; padding: 4px 1px; font-size: 8px; white-space: nowrap;" onclick="toggleImpuestoIndividual('MED')">MEDICARE</button>
                             </div>
                             
-                            <!-- 🎛️ Bloque de Hacienda: Desplazado sutilmente hacia abajo con margin-top: 5px -->
-                            <div style="display: flex; flex-direction: column; width: 100%; border-top: 1px dotted rgba(0,240,255,0.15); padding-top: 3px; gap: 2px; overflow: visible; margin-top: 5px !important;">
+                            <!-- 🎛️ Bloque de Hacienda: Retornado a la posición original superior (margin-top: 1px) -->
+                            <div style="display: flex; flex-direction: column; width: 100%; border-top: 1px dotted rgba(0,240,255,0.15); padding-top: 3px; gap: 2px; overflow: visible; margin-top: 1px !important;">
                                 <span id="lblTextoManual" style="font-size: 9.5px; opacity: 1; font-weight: 900; color: #fff; white-space: nowrap; text-shadow: 0 0 2px rgba(0,240,255,0.25); line-height: 1;">RETENCIÓN MANUAL:</span>
                                 <div style="display: flex; align-items: center; justify-content: flex-start; overflow: visible; position: relative; z-index: 100; height: 18px; line-height: 1; width: 100%;">
-                                    <!-- 🔒 Caja de 38px estricta para congelar los porcientos de Hacienda en su eje -->
                                     <div style="width: 38px; min-width: 38px; display: inline-block; text-align: left;"><span id="lblManualPctLcd" style="font-size: 11px; font-weight: 900; color: #fff; background: rgba(0,0,0,0.15); padding: 2px 4px; border-radius: 2px;">0.0%</span></div>
                                     <div style="margin-left: 6px; display: flex; gap: 3px;">
                                         <button id="btnManualMenos" class="btn-hrs-lcd" style="width: 18px; height: 18px; font-size: 12px;" onmousedown="iniciarAccionLcdControles('manual', -0.1)" ontouchstart="iniciarAccionLcdControlesTouch(event, 'manual', -0.1)" onmouseup="detenerAccionLcdControles()" onmouseleave="detenerAccionLcdControles()" ontouchend="detenerAccionLcdControles()">-</button>
@@ -499,6 +497,7 @@
                         </div>
 
                     </div>
+
 
 
 
