@@ -312,7 +312,10 @@
                     <div id="rowDesc" style="opacity: 0.3; transition: opacity 0.15s ease;">DESCUENTO: <span id="outDesc">-$0.00</span></div>
                     <div id="rowTip" style="opacity: 0.2; transition: opacity 0.15s ease;">PROPINA: <span id="outTip">$0.00</span></div>
                     <div id="rowIvu" style="opacity: 0.3; transition: opacity 0.15s ease;">IVU: <span id="outIvu">$0.00</span></div>
-                    
+                    <div class="lcd-total" style="margin-bottom: 1px;">TOTAL: $<span id="outPer">0.00</span></div>
+                    <div id="rowPersonaCuota" style="opacity: 0.3; font-size: 11px; margin-top: 1px; transition: opacity 0.15s ease;"><span id="txtSerruchoLabelType">SERRUCHO (C/U): N/A</span> <span id="outPerPersonaLine"></span></div>
+                </div>
+                
                     <!-- Fila horizontal calibrada: TOTAL a la izquierda y deslizar fijo a la derecha -->
                     <div style="display: flex; justify-content: space-between; align-items: baseline; width: 100%; margin-bottom: 1px; overflow: visible; position: relative;">
                         <div class="lcd-total">TOTAL: $<span id="outPer">0.00</span></div>
@@ -977,7 +980,7 @@
                 reproducirSonido('add');
                 let dPct = modoDescuentoActivo ? (parseFloat(memoriaDescuentoPct) || 0) : 0;
                 let rebaja = val * (dPct / 100), precioDescontado = val - rebaja;
-                                let ivuIndividual = precioDescontado * (ivu / 100);
+                let ivuIndividual = precioDescontado * (ivu / 100);
                 let totalArticulo = precioDescontado + ivuIndividual;
                 
                 preciosGuardados.push({ precio: val, descuento: rebaja, ivuCalculado: ivuIndividual, porcientoIvuUsado: ivu, total: totalArticulo });
@@ -988,11 +991,18 @@
                 
                 if(preciosGuardados.length > 0) {
                     let totalConTaxAcumulado = preciosGuardados.reduce((sum, item) => sum + item.total, 0);
-                    con.innerHTML += '<div style="border-top:1px dashed rgba(0,0,0,0.3); font-weight:900; margin-top:2px;">TOTAL: \$' + totalConTaxAcumulado.toFixed(2) + '</div>';
+                    
+                    // Decisión de ráfaga: ¿Prendemos el indicador en la línea entrecortada si hay 5 o más ítems?
+                    let estiloDeslizarFlotante = (preciosGuardados.length >= 5) ? 'display: inline-block;' : 'display: none;';
+                    
+                    // Inyección quirúrgica de la línea entrecortada con su total a la izquierda y el deslizar a la derecha
+                    con.innerHTML += `
+                        <div style="border-top:1px dashed rgba(0,0,0,0.3); font-weight:900; margin-top:2px; display:flex; justify-content:space-between; align-items:center; width:100%; overflow:visible;">
+                            <div>TOTAL: \$${totalConTaxAcumulado.toFixed(2)}</div>
+                            <div style="font-size: 8px; font-weight: 900; background: rgba(146, 176, 67, 0.95); padding: 1px 4px; border-radius: 2px; color:#000; ${estiloDeslizarFlotante} white-space:nowrap; margin-top:1px; line-height:1;">▼ deslizar</div>
+                        </div>
+                    `;
                 }
-                const f = document.getElementById('flechaGuia'); 
-                if (preciosGuardados.length >= 3) f.style.display = "block";
-                else f.style.display = "none";
                 con.scrollTop = con.scrollHeight; calc();
             }
         }
