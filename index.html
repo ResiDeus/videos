@@ -280,7 +280,7 @@
                                 <span style="opacity: 0.85; font-size: 8.5px; font-weight: bold;">HORAS POR SEMANA:</span>
                                 <div style="display: flex; align-items: center; gap: 3px;">
                                     <span id="lblHorasSemanaLcd" style="font-size: 11px; font-weight: 900; background: rgba(0,0,0,0.2); padding: 2px 5px; border-radius: 3px;">40</span>
-                                    <button class="btn-hrs-lcd" onclick="modificarHorasSemanales(1)">+</button><button class="btn-hrs-lcd" onclick="modificarHorasSemanales(-1)">-</button>
+                                    <button class="btn-hrs-lcd" onclick="modificarHorasSemanales(-1)">-</button><button class="btn-hrs-lcd" onclick="modificarHorasSemanales(1)">+</button>
                                 </div>
                             </div>
                         </div>
@@ -302,11 +302,10 @@
                             
                             <!-- Input manual renombrado a RETENCIÓN MANUAL -->
                             <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; border-top: 1px dotted rgba(0,240,255,0.15); padding-top: 3px;">
-                                <span id="lblTextoManual" style="font-size: 7px; opacity: 0.85; font-weight: bold; white-space: nowrap;">RETENCIÓN MANUAL:</span>
+                                <span id="lblTextoManual" style="font-size: 9px; opacity: 1; font-weight: 900; color: #fff; white-space: nowrap; text-shadow: 0 0 2px rgba(0,240,255,0.2);">RETENCIÓN MANUAL:</span>
                                 <div style="display: flex; align-items: center; gap: 2px;">
                                     <span id="lblManualPctLcd" style="font-size: 10px; font-weight: 900; color: #fff; margin-right: 3px;">0.0%</span>
-                                    <button id="btnManualMas" class="btn-hrs-lcd" onclick="modificarImpuestoManual(0.1)">+</button>
-                                    <button id="btnManualMenos" class="btn-hrs-lcd" onclick="modificarImpuestoManual(-0.1)">-</button>
+                                    <button id="btnManualMenos" class="btn-hrs-lcd" onclick="modificarImpuestoManual(-0.1)">-</button><button id="btnManualMas" class="btn-hrs-lcd" onclick="modificarImpuestoManual(0.1)">+</button>
                                 </div>
                             </div>
                         </div>
