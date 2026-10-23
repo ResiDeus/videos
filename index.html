@@ -374,20 +374,20 @@
                     <!-- flecha que sale // Etiqueta Flotante Absoluta: Clavada al final de la jaula, a la derecha, sobre la línea discontinua -->
                     <div class="scroll-hint" id="flechaGuia" style="position: absolute; bottom: 30px; right: 2px; font-size: 8px; font-weight: 900; background: rgba(146, 176, 67, 0.95); padding: 1px 4px; border-radius: 2px; color: #000; z-index: 130; display: none; white-space: nowrap; line-height: 1;">▼ deslizar</div>
                     
-                    <!-- 🚨 REEMPLAZO INTERNO MAESTRO: CONTROLADORES ALINEADOS ESTRICTAMENTE AL TOPE SUPERIOR -->
-                    <div id="vistaSubPantallaSalario" style="display: none; flex-direction: row; justify-content: space-between; align-items: flex-start; height: 75px !important; font-family: monospace; line-height: 1.1; font-size: 10px; gap: 6px; padding: 2px 0; overflow: visible; position: relative;">
+                    <!-- 🚨 CLAVADO ABSOLUTO E INMUTABLE ARRIBA: SOLUCIÓN FINAL CONTRA EL DESPLAZAMIENTO -->
+                    <div id="vistaSubPantallaSalario" style="display: none; flex-direction: row; justify-content: space-between; align-items: flex-start; width: 95%; height: 70px !important; max-height: 70px !important; font-family: monospace; line-height: 1.1; font-size: 10px; gap: 6px; padding: 0; overflow: visible; position: absolute !important; top: 18px !important; left: 8px !important; z-index: 95; box-sizing: border-box;">
                         
-                        <!-- COLUMNA IZQUIERDA: Paga y Horas pegados arriba de forma estricta -->
-                        <div style="display: flex; flex-direction: column; gap: 5px; width: 46%; height: 100%; justify-content: flex-start !important; overflow: visible;">
+                        <!-- COLUMNA IZQUIERDA: Paga y Horas agrupados al techo -->
+                        <div style="display: flex; flex-direction: column; gap: 4px; width: 45%; height: 100%; justify-content: flex-start !important; overflow: visible; margin: 0;">
                             <div style="display: flex; flex-direction: column; gap: 1px;">
-                                <span style="opacity: 0.85; font-size: 8.5px; font-weight: bold;">PAGA POR HORA:</span>
-                                <span id="lblSalHoraLcd" style="font-size: 12px; font-weight: 900; background: rgba(0,0,0,0.25); padding: 2px 5px; border-radius: 4px; width: max-content; color: #fff; border: 1px solid rgba(255,255,255,0.1);">$10.50/h</span>
+                                <span style="opacity: 0.85; font-size: 8.5px; font-weight: bold; line-height: 1;">PAGA POR HORA:</span>
+                                <span id="lblSalHoraLcd" style="font-size: 11px; font-weight: 900; background: rgba(0,0,0,0.25); padding: 2px 4px; border-radius: 4px; width: max-content; color: #fff; border: 1px solid rgba(255,255,255,0.1); line-height: 1;">$10.50/h</span>
                             </div>
-                            <div style="display: flex; flex-direction: column; gap: 1px;">
-                                <span style="opacity: 0.85; font-size: 8.5px; font-weight: bold;">HORAS POR SEMANA:</span>
-                                <div style="display: flex; align-items: center; justify-content: flex-start;">
-                                    <div style="min-width: 24px;"><span id="lblHorasSemanaLcd" style="font-size: 11px; font-weight: 900; background: rgba(0,0,0,0.2); padding: 2px 4px; border-radius: 3px;">40</span></div>
-                                    <div style="margin-left: 12px; display: flex; gap: 2px; position: relative; z-index: 100;">
+                            <div style="display: flex; flex-direction: column; gap: 1px; margin-top: 1px;">
+                                <span style="opacity: 0.85; font-size: 8.5px; font-weight: bold; line-height: 1;">HORAS POR SEMANA:</span>
+                                <div style="display: flex; align-items: center; justify-content: flex-start; line-height: 1; height: 16px;">
+                                    <div style="min-width: 22px;"><span id="lblHorasSemanaLcd" style="font-size: 11px; font-weight: 900; background: rgba(0,0,0,0.2); padding: 1px 3px; border-radius: 3px;">40</span></div>
+                                    <div style="margin-left: 8px; display: flex; gap: 2px; position: relative; z-index: 100;">
                                         <button class="btn-hrs-lcd" onmousedown="iniciarAccionLcdControles('horas', -1)" ontouchstart="iniciarAccionLcdControlesTouch(event, 'horas', -1)" onmouseup="detenerAccionLcdControles()" onmouseleave="detenerAccionLcdControles()" ontouchend="detenerAccionLcdControles()">-</button>
                                         <button class="btn-hrs-lcd" onmousedown="iniciarAccionLcdControles('horas', 1)" ontouchstart="iniciarAccionLcdControlesTouch(event, 'horas', 1)" onmouseup="detenerAccionLcdControles()" onmouseleave="detenerAccionLcdControles()" ontouchend="detenerAccionLcdControles()">+</button>
                                     </div>
@@ -395,27 +395,27 @@
                             </div>
                         </div>
 
-                        <!-- COLUMNA DERECHA: Pestañas, Switches y Hacienda pegados arriba de forma estricta -->
-                        <div style="display: flex; flex-direction: column; gap: 4px; width: 52%; border-left: 1px dotted rgba(0,240,255,0.2); padding-left: 6px; height: 100%; justify-content: flex-start !important; overflow: visible;">
+                        <!-- COLUMNA DERECHA: Pestañas, Switches y Hacienda agrupados al techo -->
+                        <div style="display: flex; flex-direction: column; gap: 4px; width: 53%; border-left: 1px dotted rgba(0,240,255,0.2); padding-left: 5px; height: 100%; justify-content: flex-start !important; overflow: visible; margin: 0;">
                             <!-- Bloque de Regímenes -->
-                            <div style="display: flex; align-items: center; gap: 2px; width: 100%; overflow: visible;">
+                            <div style="display: flex; align-items: center; gap: 2px; width: 100%; overflow: visible; height: 16px; line-height: 1;">
                                 <button id="tabW2" class="tab-btn-lcd" onclick="cambiarRegimenContributivo('W2')">NOMINA</button>
                                 <button id="tab1099" class="tab-btn-lcd" onclick="cambiarRegimenContributivo('1099')">FREELANCE</button>
                                 <button id="tabExento" class="tab-btn-lcd active" onclick="cambiarRegimenContributivo('EXENTO')">N/A</button>
                             </div>
                             
                             <!-- Switches en fila horizontal -->
-                            <div style="display: flex; flex-direction: row; gap: 3px; width: 100%; overflow: visible;">
-                                <button id="toggleSS" class="toggle-label-lcd off" style="width: 50%; padding: 3px 1px; font-size: 7.5px; white-space: nowrap;" onclick="toggleImpuestoIndividual('SS')">S. SOCIAL</button>
-                                <button id="toggleMED" class="toggle-label-lcd off" style="width: 50%; padding: 3px 1px; font-size: 7.5px; white-space: nowrap;" onclick="toggleImpuestoIndividual('MED')">MEDICARE</button>
+                            <div style="display: flex; flex-direction: row; gap: 3px; width: 100%; overflow: visible; height: 14px; margin-top: 1px; line-height: 1;">
+                                <button id="toggleSS" class="toggle-label-lcd off" style="width: 50%; padding: 2px 1px; font-size: 7.5px; white-space: nowrap;" onclick="toggleImpuestoIndividual('SS')">S. SOCIAL</button>
+                                <button id="toggleMED" class="toggle-label-lcd off" style="width: 50%; padding: 2px 1px; font-size: 7.5px; white-space: nowrap;" onclick="toggleImpuestoIndividual('MED')">MEDICARE</button>
                             </div>
                             
-                            <!-- Área de Retención Manual / Hacienda alineada en el orden correcto -->
-                            <div style="display: flex; flex-direction: column; width: 100%; border-top: 1px dotted rgba(0,240,255,0.15); padding-top: 3px; gap: 2px; overflow: visible;">
-                                <span id="lblTextoManual" style="font-size: 9px; opacity: 1; font-weight: 900; color: #fff; white-space: nowrap; text-shadow: 0 0 2px rgba(0,240,255,0.2);">RETENCIÓN MANUAL:</span>
-                                <div style="display: flex; align-items: center; justify-content: flex-start; overflow: visible; position: relative; z-index: 100;">
-                                    <div style="min-width: 32px;"><span id="lblManualPctLcd" style="font-size: 10px; font-weight: 900; color: #fff; background: rgba(0,0,0,0.15); padding: 1px 4px; border-radius: 2px;">0.0%</span></div>
-                                    <div style="margin-left: 12px; display: flex; gap: 2px;">
+                            <!-- Área de Hacienda / Retención Manual -->
+                            <div style="display: flex; flex-direction: column; width: 100%; border-top: 1px dotted rgba(0,240,255,0.15); padding-top: 2px; gap: 1px; overflow: visible; margin-top: 1px;">
+                                <span id="lblTextoManual" style="font-size: 8.5px; opacity: 1; font-weight: 900; color: #fff; white-space: nowrap; text-shadow: 0 0 2px rgba(0,240,255,0.2); line-height: 1;">RETENCIÓN MANUAL:</span>
+                                <div style="display: flex; align-items: center; justify-content: flex-start; overflow: visible; position: relative; z-index: 100; height: 16px; line-height: 1;">
+                                    <div style="min-width: 30px;"><span id="lblManualPctLcd" style="font-size: 10px; font-weight: 900; color: #fff; background: rgba(0,0,0,0.15); padding: 1px 3px; border-radius: 2px;">0.0%</span></div>
+                                    <div style="margin-left: 6px; display: flex; gap: 2px;">
                                         <button id="btnManualMenos" class="btn-hrs-lcd" onmousedown="iniciarAccionLcdControles('manual', -0.1)" ontouchstart="iniciarAccionLcdControlesTouch(event, 'manual', -0.1)" onmouseup="detenerAccionLcdControles()" onmouseleave="detenerAccionLcdControles()" ontouchend="detenerAccionLcdControles()">-</button>
                                         <button id="btnManualMas" class="btn-hrs-lcd" onmousedown="iniciarAccionLcdControles('manual', 0.1)" ontouchstart="iniciarAccionLcdControlesTouch(event, 'manual', 0.1)" onmouseup="detenerAccionLcdControles()" onmouseleave="detenerAccionLcdControles()" ontouchend="detenerAccionLcdControles()">+</button>
                                     </div>
@@ -424,6 +424,7 @@
                         </div>
 
                     </div>
+
 
                     <div class="scroll-hint" id="flechaGuia" style="bottom: 2px; right: 4px; font-size: 8px; font-weight: 900; background: rgba(146, 176, 67, 0.95); padding: 1px 4px; border-radius: 2px;">▼ deslizar</div>
                 </div>
