@@ -2,8 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#09011a">
     <title>Calculadora de ResiDeus Master Ultimate</title>
 
@@ -1358,56 +1357,6 @@
 
         actualizarHeaderIndicadores(); 
         calc();
-
-        // 🚨 REEMPLAZO MAESTRO INTEGRADO: CONTROLADOR DE PINCH-ZOOM CON DOS DEDOS Y ESCUDO ANTI-DESPLAZAMIENTO
-        (function() {
-            let inicioTouchY = 0;
-
-            document.addEventListener('touchstart', function(e) {
-                if (e.touches.length === 1) {
-                    inicioTouchY = e.touches.item(0).clientY;
-                }
-            }, { passive: false });
-
-            document.addEventListener('touchmove', function(e) {
-                // Regla 1: Si hay 2 o más dedos (Pinch-to-Zoom), permitimos el comportamiento nativo de iOS
-                if (e.touches.length > 1) {
-                    return; 
-                }
-
-                // Regla 2: Filtro de un solo dedo exclusivo para scroll en historial y recibo
-                const rutaTacto = e.composedPath();
-                const esHistorialLcd = rutaTacto.some(el => el.id === 'listaPrecios' || (el.classList && el.classList.contains('holograma-scrollable')));
-
-                if (esHistorialLcd) {
-                    const objetivo = rutaTacto.find(el => el.id === 'listaPrecios' || (el.classList && el.classList.contains('holograma-scrollable')));
-                    const scrollArriba = objetivo.scrollTop;
-                    const maxScroll = objetivo.scrollHeight - objetivo.clientHeight;
-                    const touchActualY = e.touches.item(0).clientY;
-                    const deltaY = inicioTouchY - touchActualY;
-
-                    if ((deltaY > 0 && scrollArriba < maxScroll) || (deltaY < 0 && scrollArriba > 0)) {
-                        inicioTouchY = touchActualY;
-                        return; // Scroll legal interno del LCD fluye sin problemas
-                    }
-                }
-
-                // 🛑 Si es un solo dedo arrastrando el fondo o el chasis, congelamos el movimiento de inmediato
-                if (e.cancelable) e.preventDefault();
-            }, { passive: false });
-
-            // Saneamiento háptico para evitar zoom accidental por doble tap rápido en botones de iOS
-            document.addEventListener('touchend', function(e) {
-                const ahora = (new Date()).getTime();
-                if (ahora - (window.ultimoTapTerminado || 0) < 300) {
-                    if (e.target.tagName === 'BUTTON' || e.target.classList.contains('caja-data')) {
-                        if (e.cancelable) e.preventDefault();
-                    }
-                }
-                window.ultimoTapTerminado = ahora;
-            }, { passive: false });
-        })();
     </script>
 </body>
 </html>
-
