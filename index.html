@@ -122,13 +122,30 @@
         .lcd-header { display: flex; justify-content: space-between; font-size: 10px; border-bottom: 1px solid rgba(0,0,0,0.2); line-height: 1.2; }
         .blinking-header-text { opacity: 1; }
 
-        .lcd-wrapper { position: relative; flex-grow: 1; display: flex; flex-direction: column; margin: 2px 0; max-height: 65px; }
+        /* 🚨 REEMPLAZO PASO 1: EXPANSIÓN TOTAL DE CONTENEDORES PARA CERO BOTONES PICADOS */
+        .lcd-wrapper { 
+            position: relative; 
+            flex-grow: 1; 
+            display: flex; 
+            flex-direction: column; 
+            margin: 0; 
+            max-height: 78px; 
+            overflow: visible !important; 
+        }
+        .listaPrecios-container {
+            flex-grow: 1; 
+            position: relative; 
+            display: flex; 
+            flex-direction: column; 
+            overflow: visible !important; 
+        }
         .lcd-historial { flex-grow: 1; font-size: 9px; overflow-y: auto; text-align: left; padding-right: 4px; line-height: 1.2; }
         .lcd-body { text-align: left !important; font-size: 9px; line-height: 1.2; }
         .lcd-total { font-size: 22px; font-weight: 900; text-align: left !important; line-height: 1.1; }
 
         @keyframes blinkScrollHint { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
         .scroll-hint { position: absolute; bottom: 1px; right: 2px; font-size: 8px; color: rgba(0,0,0,0.8); animation: blinkScrollHint 1s infinite ease-in-out; pointer-events: none; display: none; background: rgba(146, 176, 67, 0.9); padding: 0 4px; border-radius: 3px; font-weight: 900; }
+
 
         /* ⚡ CONTROLES DEL EFECTO FLASH BLANCO UNIVERSAL AL TOCAR LAS TECLAS */
         .btn-key:active, 
@@ -271,11 +288,12 @@
                         <span id="lblArtText">Lista vacía<span class="lcd-tipeo"></span></span>
                     </div>
                     
-                    <!-- 🚨 REEMPLAZO MODULAR HTML: ETIQUETAS ACTUALIZADAS Y MODO N/A ASIGNADO -->
-                    <div id="vistaSubPantallaSalario" style="display: none; flex-direction: row; justify-content: space-between; align-items: center; height: 100%; font-family: monospace; line-height: 1.1; font-size: 10px; gap: 6px; padding: 2px 0;">
+                    <!-- 🚨 REEMPLAZO MODULAR HTML: AJUSTE DE MARGEN INTERNO PARA EVITAR CORTES -->
+                    <!-- 🚨 PASO 2: MAQUETA DEL LCD CON COMPORTAMIENTO VISIBLE Y AJUSTE DE MÁRGENES DE CONTROL -->
+                    <div id="vistaSubPantallaSalario" style="display: none; flex-direction: row; justify-content: space-between; align-items: center; height: 100%; font-family: monospace; line-height: 1.1; font-size: 10px; gap: 6px; padding: 4px 0; overflow: visible;">
                         
-                        <!-- COLUMNA IZQUIERDA: Tarifas y Tiempos de labor -->
-                        <div style="display: flex; flex-direction: column; gap: 5px; width: 46%; height: 100%; justify-content: center;">
+                        <!-- COLUMNA IZQUIERDA: Tarifas y Tiempos de labor ampliados -->
+                        <div style="display: flex; flex-direction: column; gap: 5px; width: 46%; height: 100%; justify-content: center; overflow: visible;">
                             <div style="display: flex; flex-direction: column; gap: 2px;">
                                 <span style="opacity: 0.85; font-size: 8.5px; font-weight: bold;">PAGA POR HORA:</span>
                                 <span id="lblSalHoraLcd" style="font-size: 12px; font-weight: 900; background: rgba(0,0,0,0.25); padding: 2px 5px; border-radius: 4px; width: max-content; color: #fff; border: 1px solid rgba(255,255,255,0.1);">$10.50/h</span>
@@ -289,36 +307,33 @@
                             </div>
                         </div>
 
-                        <!-- COLUMNA DERECHA: NOMINA/FREELANCE/N/A y controles de ley -->
-                        <div style="display: flex; flex-direction: column; gap: 4px; width: 52%; border-left: 1px dotted rgba(0,240,255,0.2); padding-left: 6px; height: 100%; justify-content: center;">
+                        <!-- COLUMNA DERECHA: NOMINA/FREELANCE/N/A y controles de ley en bloque visible -->
+                        <div style="display: flex; flex-direction: column; gap: 4px; width: 52%; border-left: 1px dotted rgba(0,240,255,0.2); padding-left: 6px; height: 100%; justify-content: center; overflow: visible;">
                             <!-- Bloque de Regímenes -->
-                            <div style="display: flex; align-items: center; gap: 2px; width: 100%;">
+                            <div style="display: flex; align-items: center; gap: 2px; width: 100%; overflow: visible;">
                                 <button id="tabW2" class="tab-btn-lcd" onclick="cambiarRegimenContributivo('W2')">NOMINA</button>
                                 <button id="tab1099" class="tab-btn-lcd" onclick="cambiarRegimenContributivo('1099')">FREELANCE</button>
                                 <button id="tabExento" class="tab-btn-lcd active" onclick="cambiarRegimenContributivo('EXENTO')">N/A</button>
                             </div>
                             
-                                                       <!-- Switches en fila horizontal -->
-                            <div style="display: flex; flex-direction: row; gap: 3px; width: 100%;">
+                            <!-- Switches en fila horizontal -->
+                            <div style="display: flex; flex-direction: row; gap: 3px; width: 100%; overflow: visible;">
                                 <button id="toggleSS" class="toggle-label-lcd off" style="width: 50%; padding: 3px 1px; font-size: 7.5px; white-space: nowrap;" onclick="toggleImpuestoIndividual('SS')">S. SOCIAL</button>
                                 <button id="toggleMED" class="toggle-label-lcd off" style="width: 50%; padding: 3px 1px; font-size: 7.5px; white-space: nowrap;" onclick="toggleImpuestoIndividual('MED')">MEDICARE</button>
                             </div>
                             
-                            <!-- 🚨 PASO 2: CONTENEDOR INFERIOR CON REFUERZO DE CAPA HÁPTICA -->
-                            <div style="display: flex; flex-direction: column; width: 100%; border-top: 1px dotted rgba(0,240,255,0.15); padding-top: 3px; gap: 2px;">
-                                <!-- Línea Superior: Etiqueta masiva -->
+                            <!-- Área de Retención Manual reestructurada de forma vertical -->
+                            <div style="display: flex; flex-direction: column; width: 100%; border-top: 1px dotted rgba(0,240,255,0.15); padding-top: 3px; gap: 2px; overflow: visible;">
                                 <span id="lblTextoManual" style="font-size: 9px; opacity: 1; font-weight: 900; color: #fff; white-space: nowrap; text-shadow: 0 0 2px rgba(0,240,255,0.2);">RETENCIÓN MANUAL:</span>
-                                
-                                <!-- Línea Inferior: El porcentaje y sus controles con z-index inyectado -->
-                                <div style="display: flex; align-items: center; justify-content: flex-start; gap: 4px; padding-left: 2px; position: relative; z-index: 100;">
-                                    <span id="lblManualPctLcd" style="font-size: 10px; font-weight: 900; color: #fff; background: rgba(0,0,0,0.15); padding: 1px 4px; border-radius: 2px; position: relative; z-index: 100;">0.0%</span>
-                                    <button id="btnManualMenos" class="btn-hrs-lcd" onclick="modificarImpuestoManual(-0.1)">-</button>
-                                    <button id="btnManualMas" class="btn-hrs-lcd" onclick="modificarImpuestoManual(0.1)">+</button>
+                                <div style="display: flex; align-items: center; justify-content: flex-start; gap: 4px; padding-left: 2px; overflow: visible;">
+                                    <span id="lblManualPctLcd" style="font-size: 10px; font-weight: 900; color: #fff; background: rgba(0,0,0,0.15); padding: 1px 4px; border-radius: 2px;">0.0%</span>
+                                    <button id="btnManualMenos" class="btn-hrs-lcd" onclick="modificarImpuestoManual(-0.1)">-</button><button id="btnManualMas" class="btn-hrs-lcd" onclick="modificarImpuestoManual(0.1)">+</button>
                                 </div>
                             </div>
                         </div>
 
                     </div>
+
 
 
                     <div class="scroll-hint" id="flechaGuia">▼ deslizar</div>
