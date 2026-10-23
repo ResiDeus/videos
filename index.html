@@ -252,12 +252,16 @@
             <div class="lcd-header">
                 <span id="txtHeaderIndicadores" class="blinking-header-text">SISTEMA ACTIVO</span>
             </div>
+                        <!-- 🚨 REEMPLAZO MAESTRO: JAULA REFORZADA CON ETIQUETA FLOTANTE ABSOLUTA ANTI-BAILE -->
             <div class="lcd-wrapper">
-                <div class="listaPrecios-container" style="flex-grow: 1; position: relative; display: flex; flex-direction: column;">
+                <div class="listaPrecios-container" style="flex-grow: 1; position: relative; display: flex; flex-direction: column; overflow: visible;">
                     <!-- Bloque Vista de Compras (Jaula Fija con Scroll) -->
-                    <div class="lcd-historial" id="listaPrecios">
+                    <div class="lcd-historial" id="listaPrecios" style="height: 48px !important; max-height: 48px !important; overflow-y: auto !important; box-sizing: border-box;">
                         <span id="lblArtText">Lista vacía<span class="lcd-tipeo"></span></span>
                     </div>
+                    
+                    <!-- Etiqueta Flotante Absoluta: Clavada al final de la jaula, a la derecha, sobre la línea discontinua -->
+                    <div class="scroll-hint" id="flechaGuia" style="position: absolute; bottom: -1px; right: 2px; font-size: 8px; font-weight: 900; background: rgba(146, 176, 67, 0.95); padding: 1px 4px; border-radius: 2px; color: #000; z-index: 130; display: none; white-space: nowrap; line-height: 1;">▼ deslizar</div>
                     
                     <!-- 🚨 LA GRAN CAPA DE SALARIO DE ALTA COMODIDAD (Doble Columna) -->
                     <div id="vistaSubPantallaSalario" style="display: none; flex-direction: row; justify-content: space-between; align-items: center; height: 100%; font-family: monospace; line-height: 1.1; font-size: 10px; gap: 6px; padding: 4px 0; overflow: visible;">
@@ -268,6 +272,7 @@
                                 <span style="opacity: 0.85; font-size: 8.5px; font-weight: bold;">PAGA POR HORA:</span>
                                 <span id="lblSalHoraLcd" style="font-size: 12px; font-weight: 900; background: rgba(0,0,0,0.25); padding: 2px 5px; border-radius: 4px; width: max-content; color: #fff; border: 1px solid rgba(255,255,255,0.1);">$10.50/h</span>
                             </div>
+
                             <div style="display: flex; flex-direction: column; gap: 2px;">
                                 <span style="opacity: 0.85; font-size: 8.5px; font-weight: bold;">HORAS POR SEMANA:</span>
                                 <div style="display: flex; align-items: center; justify-content: flex-start; overflow: visible;">
@@ -979,7 +984,7 @@
                 reproducirSonido('add');
                 let dPct = modoDescuentoActivo ? (parseFloat(memoriaDescuentoPct) || 0) : 0;
                 let rebaja = val * (dPct / 100), precioDescontado = val - rebaja;
-                                let ivuIndividual = precioDescontado * (ivu / 100);
+                let ivuIndividual = precioDescontado * (ivu / 100);
                 let totalArticulo = precioDescontado + ivuIndividual;
                 
                 preciosGuardados.push({ precio: val, descuento: rebaja, ivuCalculado: ivuIndividual, porcientoIvuUsado: ivu, total: totalArticulo });
@@ -992,9 +997,14 @@
                     let totalConTaxAcumulado = preciosGuardados.reduce((sum, item) => sum + item.total, 0);
                     con.innerHTML += '<div style="border-top:1px dashed rgba(0,0,0,0.3); font-weight:900; margin-top:2px;">TOTAL: \$' + totalConTaxAcumulado.toFixed(2) + '</div>';
                 }
+                
+                // Control del indicador flotante superior basado en la jaula de 4 ítems
                 const f = document.getElementById('flechaGuia'); 
-                if (preciosGuardados.length >= 3) f.style.display = "block";
-                else f.style.display = "none";
+                if (f) {
+                    if (preciosGuardados.length >= 5) f.style.display = "inline-block";
+                    else f.style.display = "none";
+                }
+                
                 con.scrollTop = con.scrollHeight; calc();
             }
         }
