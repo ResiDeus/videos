@@ -541,7 +541,7 @@
                                 <span id="lblTextoManual" style="font-size: 9.5px; opacity: 1; font-weight: 900; color: #fff; white-space: nowrap; text-shadow: 0 0 2px rgba(0,240,255,0.25); line-height: 1;">RETENCIÓN MANUAL:</span>
                                 <div style="display: flex; align-items: center; justify-content: flex-start; overflow: visible; position: relative; z-index: 100; height: 18px; line-height: 1; width: 100%;">
                                     <div style="width: 38px; min-width: 38px; display: inline-block; text-align: left;"><span id="lblManualPctLcd" style="font-size: 11px; font-weight: 900; color: #fff; background: rgba(0,0,0,0.15); padding: 2px 4px; border-radius: 2px;">0.0%</span></div>
-                                    <!-- 🧲 SEPARACIÓN CÓMODA: Se pegan al número pero se distancian entre ellos mismos por un gap de 12px -->
+                                                                      <!-- 🧲 SEPARACIÓN CÓMODA: Se pegan al número pero se distancian entre ellos mismos por un gap de 12px -->
                                     <div style="margin-left: 6px; display: flex; gap: 12px;">
                                         <button id="btnManualMenos" class="btn-hrs-lcd" style="width: 18px; height: 18px; font-size: 12px;" onmousedown="iniciarAccionLcdControles('manual', -0.1)" ontouchstart="iniciarAccionLcdControlesTouch(event, 'manual', -0.1)" onmouseup="detenerAccionLcdControles()" onmouseleave="detenerAccionLcdControles()" ontouchend="detenerAccionLcdControles()">-</button>
                                         <button id="btnManualMas" class="btn-hrs-lcd" style="width: 18px; height: 18px; font-size: 12px;" onmousedown="iniciarAccionLcdControles('manual', 0.1)" ontouchstart="iniciarAccionLcdControlesTouch(event, 'manual', 0.1)" onmouseup="detenerAccionLcdControles()" onmouseleave="detenerAccionLcdControles()" ontouchend="detenerAccionLcdControles()">+</button>
@@ -550,22 +550,24 @@
                             </div>
                         </div>
 
-                    </div>
+                    </div> <!-- Cierre de vistaSubPantallaSalario -->
                 </div>
-            </div>
+            </div> <!-- Cierre de lcd-wrapper -->
 
-        <!-- 🚨 REEMPLAZO MAESTRO INTEGRADO: ELIMINACIÓN DE DUPLICADOS Y VISOR DE PRECIO ORIGINAL CON "$" PARPADEANTE -->
-        <div class="contenedor-precio-unificado precio-on" id="marcadorPrecioUnificado" style="display: flex; width: 100%; gap: 4px; background-color: #0b0214 !important; border-radius: 10px; border: 2px solid var(--neon-secondary); padding: 4px; min-height: 52px; align-items: center; position: relative; overflow: hidden;">
-            <div style="width:55px; opacity:0; pointer-events:none;"></div>
-            <div id="cajaSub" class="caja-data" style="flex-grow: 1; background: transparent !important; border: none !important; box-shadow: none !important; min-height: auto; align-items: center !important; justify-content: center !important; color: #fff !important; opacity: 1; text-align: center;" onclick="seleccionarMenu('sub')">
-                <span class="lbl-title" style="font-size: 8px; text-transform: uppercase; color: var(--neon-secondary); margin-bottom: 1px; font-weight: bold; text-shadow: 0 0 4px rgba(0,240,255,0.2);">Precio</span>
-                <span class="lbl-val" style="font-size: 18px !important; font-weight: 900; color: #fff !important;">$<span id="lblSub" class="blink-num-input-active">0</span></span>
+            <!-- 🚨 LA BARRA DE PRECIO REUBICADA EN SU COORDENADA ORIGINAL DE TODA LA VIDA -->
+            <div class="contenedor-precio-unificado precio-on" id="marcadorPrecioUnificado" style="display: flex; width: 100%; gap: 4px; background-color: #0b0214 !important; border-radius: 10px; border: 2px solid var(--neon-secondary); padding: 4px; min-height: 52px; align-items: center; position: relative; overflow: hidden;">
+                <div style="width:55px; opacity:0; pointer-events:none;"></div>
+                <div id="cajaSub" class="caja-data" style="flex-grow: 1; background: transparent !important; border: none !important; box-shadow: none !important; min-height: auto; align-items: center !important; justify-content: center !important; color: #fff !important; opacity: 1; text-align: center;" onclick="seleccionarMenu('sub')">
+                    <span class="lbl-title" style="font-size: 8px; text-transform: uppercase; color: var(--neon-secondary); margin-bottom: 1px; font-weight: bold; text-shadow: 0 0 4px rgba(0,240,255,0.2);">Precio</span>
+                    <!-- 💵 INYECCIÓN MAESTRA: Símbolo de dinero y clase de parpadeo neón en su visor legítimo -->
+                    <span class="lbl-val" style="font-size: 18px !important; font-weight: 900; color: #fff !important;">$<span id="lblSub" class="blink-num-input-active">0</span></span>
+                </div>
+                <!-- Tu icónico botón original de "+" de toda la vida a la derecha -->
+                <button id="btnAnadirGlobal" class="btn-add-embedded" style="width: 55px; height: 100%; min-height: 40px; background: var(--blue-tech) !important; background-size: 200% 200% !important; border: 2px solid #fff; border-radius: 6px; color: #ffffff !important; font-size: 24px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 10px var(--neon-secondary); transition: all 0.1s ease; user-select: none; z-index: 2;" onclick="addProducto()">+</button>
             </div>
-            <!-- Tu botón original de "+" a la derecha perfectamente restaurado -->
-            <button id="btnAnadirGlobal" class="btn-add-embedded" style="width: 55px; height: 100%; min-height: 40px; background: var(--blue-tech) !important; background-size: 200% 200% !important; border: 2px solid #fff; border-radius: 6px; color: #ffffff !important; font-size: 24px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 10px var(--neon-secondary); transition: all 0.1s ease; user-select: none; z-index: 2;" onclick="addProducto()">+</button>
-        </div>
 
         <div class="lcd-body">
+
 
 
                 <!-- Data Base de Compras -->
