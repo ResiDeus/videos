@@ -1034,6 +1034,7 @@
             actualizarHeaderIndicadores();
         }
 
+        // APERTURA DEL RECIBO HOLOGRÁFICO
         function abrirHologramaRecibo() {
             if (!sistemaEncendido) return;
             reproducirSonido('caja');
@@ -1089,10 +1090,12 @@
                 txt += `===============================\n`;
             }
             txt += `    ¡Gracias por usar la app!`;
+            
+            // 🔓 FIJACIÓN MAESTRA: Se extrajo del viejo bloqueo "if" para que el recibo abra siempre
             textoReciboGlobal = txt;
             document.getElementById('textoContenidoHolo').innerText = txt;
             document.getElementById('btnCopiarHolo').innerText = "Copiar";
-            document.getElementById('visorHolograma').classList.add('active');
+            document.getElementById('visorHolograma').classList.add('activo');
         }
         
         // HOLOGRAMA DE RECIBO
