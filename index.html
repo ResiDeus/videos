@@ -17,9 +17,18 @@
     <link rel="manifest" href="./manifest.json">
     
     <link rel="icon" type="image/jpeg" href="./icon.jpg?v=200">
-    <link rel="apple-touch-icon" type="image/jpeg" href="./icon.jpg?v=200">
+   <link rel="apple-touch-icon" type="image/jpeg" href="./icon.jpg?v=200">
 
     <style>
+        /* 🚨 PASO 1: ANIMACIÓN DE CURSOR PARPADEANTE NEÓN PARA EL INPUT DE PRECIO */
+        @keyframes blinkInputNeon {
+            0%, 100% { opacity: 0.3; text-shadow: 0 0 2px var(--neon-secondary); }
+            50% { opacity: 1; text-shadow: 0 0 12px var(--neon-secondary), 0 0 20px #fff; }
+        }
+        .blink-num-input-active {
+            animation: blinkInputNeon 1.5s infinite ease-in-out !important;
+            font-weight: 900 !important;
+        }
 
         /* ==========================================================================
            🎨 ASIGNACIÓN DE TEMAS DINÁMICOS COMPLETA (CON REJILLAS DE PRECIO INTEGRADAS)
