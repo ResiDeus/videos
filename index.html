@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Calculadora de ResiDeus Master</title>
+    <title>Calculadora de ResiDeus Master Pro</title>
 
     <!-- 📱 CONFIGURACIÓN DE PANTALLA DE INICIO IPHONE / PWA -->
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -106,8 +106,8 @@
         /* Botón de encendido verde activo constante al apagarse */
         .chasis.global-power-off .btn-power-bottom { background: #022c22 !important; border-color: #10b981 !important; color: #34d399 !important; text-shadow: 0 0 8px #10b981 !important; opacity: 1 !important; pointer-events: auto !important; }
 
-        /* 🟢 PANTALLA LCD RETRO ORIGINAL */
-        .lcd { width: 100%; height: 180px; background: #92b043; border: 2px solid #000; border-radius: 14px; color: #000; box-shadow: inset 0 2px 6px rgba(0,0,0,0.3); font-weight: bold; padding: 6px 8px; display: flex; flex-direction: column; justify-content: space-between; position: relative; transition: all 0.4s ease; transform-origin: center; z-index: 12; overflow: hidden; }
+        /* 🟢 PANTALLA LCD OPTIMIZADA CON ALTURA EXTRA CONFORTABLE PARA LAS 10 LÍNEAS */
+        .lcd { width: 100%; height: 185px; background: #92b043; border: 2px solid #000; border-radius: 14px; color: #000; box-shadow: inset 0 2px 6px rgba(0,0,0,0.3); font-weight: bold; padding: 6px 8px; display: flex; flex-direction: column; justify-content: space-between; position: relative; transition: all 0.4s ease; transform-origin: center; z-index: 12; overflow: hidden; }
         
         /* 🔵 MUTACIÓN A SUB-PANTALLA AZUL CIBERNÉTICO CONTRIBUTIVA DE SALARIO */
         .lcd.modo-salario-activo { background: #051e36 !important; color: #00f0ff !important; box-shadow: inset 0 2px 8px rgba(0,0,0,0.6), 0 0 10px rgba(0,240,255,0.2) !important; }
@@ -122,7 +122,7 @@
         .lcd-header { display: flex; justify-content: space-between; font-size: 10px; border-bottom: 1px solid rgba(0,0,0,0.2); line-height: 1.2; }
         .blinking-header-text { opacity: 1; }
 
-        .lcd-wrapper { position: relative; flex-grow: 1; display: flex; flex-direction: column; margin: 2px 0; max-height: 60px; }
+        .lcd-wrapper { position: relative; flex-grow: 1; display: flex; flex-direction: column; margin: 2px 0; max-height: 65px; }
         .lcd-historial { flex-grow: 1; font-size: 9px; overflow-y: auto; text-align: left; padding-right: 4px; line-height: 1.2; }
         .lcd-body { text-align: left !important; font-size: 9px; line-height: 1.2; }
         .lcd-total { font-size: 22px; font-weight: 900; text-align: left !important; line-height: 1.1; }
@@ -189,7 +189,7 @@
         #cajaSub .lbl-title { font-size: 8px; text-transform: uppercase; color: var(--neon-secondary); margin-bottom: 1px; font-weight: bold; text-shadow: 0 0 4px rgba(0,240,255,0.2); }
         #cajaSub .lbl-val { font-size: 18px !important; font-weight: 900; color: #fff !important; }
 
-        /* ⌨️ TECLADO NUMÉRICO, PUNTO Y BORRAR: DISEÑO ILUMINADO CYBER-CYAN */
+        /* ⌨️ TECLADO NUMÉRICO PURGADO DE MÁXIMA PRIORIDAD VISUAL SIN BLOQUEOS ESTÁTICOS */
         .pad-num { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; width: 100%; }
         .btn-key, .btn-back { height: 38px; background: var(--num-bg-theme) !important; border: 1px solid var(--neon-primary) !important; border-radius: 6px; color: #ffffff !important; font-size: 1.1rem; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; font-family: monospace; transition: all 0.2s ease, border-color 0.3s ease, background 0.3s ease; position: relative; overflow: hidden; z-index: 10; opacity: 1 !important; pointer-events: auto !important; }
 
@@ -199,18 +199,13 @@
         body.theme-cyberpunk #btnN7, body.theme-cyberpunk #btnN8, body.theme-cyberpunk #btnN9 {
             background: linear-gradient(180deg, #163e54 0%, #0d283d 100%) !important; color: #ffffff !important; border: 2px solid #00f0ff !important; box-shadow: 0 0 8px rgba(0, 240, 255, 0.4), inset 0 1px 3px rgba(255, 255, 255, 0.1) !important; text-shadow: 0 0 4px rgba(255, 255, 255, 0.6) !important;
         }
-        body.theme-cyberpunk #btnN0::before, body.theme-cyberpunk #btnPunto::before, body.theme-cyberpunk #btnBksp::before,
-        body.theme-cyberpunk #btnN1::before, body.theme-cyberpunk #btnN2::before, body.theme-cyberpunk #btnN3::before,
-        body.theme-cyberpunk #btnN4::before, body.theme-cyberpunk #btnN5::before, body.theme-cyberpunk #btnN6::before,
-        body.theme-cyberpunk #btnN7::before, body.theme-cyberpunk #btnN8::before, body.theme-cyberpunk #btnN9::before {
-            content: "" !important; display: block !important; position: absolute !important; top: 10% !important; left: 10% !important; width: 80% !important; height: 80% !important; background: radial-gradient(circle, #ffffff 0%, transparent 65%) !important; border-radius: 50% !important; z-index: 1 !important; animation: auraRespiraciónBlancaLofi 4.5s infinite ease-in-out !important; pointer-events: none !important;
-        }
+        /* Eliminamos el pseudo-elemento ::before estático que creaba el steady resplandor blanco erróneo */
         body.theme-cyberpunk .btn-key::after, body.theme-cyberpunk .btn-back::after { display: none !important; content: none !important; }
 
         /* ➕ / ➖ MICRO BOTONES Y CONTROLES INTERACTIVOS INTERNOS DEL LCD AZUL */
         .btn-hrs-lcd { background: #00f0ff; border: none; color: #051e36; font-size: 9px; font-weight: 900; width: 13px; height: 13px; border-radius: 3px; display: inline-flex; justify-content: center; align-items: center; cursor: pointer; margin: 0 2px; vertical-align: middle; transition: all 0.1s ease; font-family: monospace; }
         
-        /* Pestañas [W-2] [1099] [0%] */
+        /* Pestañas de modos contributivos [W-2] [1099] [0%] */
         .tab-btn-lcd { background: rgba(0,240,255,0.15); border: 1px solid rgba(0,240,255,0.4); color: rgba(0,240,255,0.7); font-size: 8px; font-weight: 900; padding: 1px 4px; border-radius: 3px; cursor: pointer; font-family: monospace; transition: all 0.15s ease; margin-right: 3px; display: inline-block; }
         .tab-btn-lcd.active { background: #00f0ff !important; color: #051e36 !important; box-shadow: 0 0 6px #00f0ff !important; border-color: #fff !important; }
         
@@ -218,8 +213,13 @@
         .toggle-label-lcd { font-size: 8px; font-weight: 900; background: rgba(0,0,0,0.15); border: 1px solid rgba(0,240,255,0.2); padding: 1px 3px; border-radius: 3px; cursor: pointer; transition: all 0.15s ease; display: inline-block; margin-right: 5px; }
         .toggle-label-lcd.on { color: #00f0ff !important; border-color: #00f0ff !important; text-shadow: 0 0 3px #00f0ff !important; background: rgba(0,240,255,0.1) !important; }
         .toggle-label-lcd.off { color: rgba(255,255,255,0.3) !important; border-color: rgba(255,255,255,0.2) !important; }
+
         .btn-theme, .btn-receipt, .btn-power-bottom { border-radius: 10px; font-weight: bold; cursor: pointer; transition: all 0.2s ease; text-transform: uppercase; display: flex; justify-content: center; align-items: center; font-family: monospace; height: 28px; font-size: 8px; background: var(--num-bg-theme) !important; border: 2px solid var(--neon-primary) !important; color: #ccc !important; width: 100%; z-index: 15; }
         .row-acciones-inferior { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-top: 2px; width: 100%; }
+        
+        /* 🚨 CONTROL ULTRA ESTRICTO: Ocultamiento físico absoluto para evitar congelados visuales de fondo */
+        .holograma-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10, 2, 24, 0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 100; display: none !important; justify-content: center; align-items: center; opacity: 0; }
+        .holograma-overlay.activo { display: flex !important; opacity: 1; }
         .holograma-ticket { width: 320px; max-height: 80vh; background: rgba(15, 10, 25, 0.95); border: 2px solid var(--receipt-glow); box-shadow: 0 0 30px var(--receipt-glow), inset 0 0 15px rgba(255,255,255,0.05); border-radius: 16px; padding: 16px; position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 12px; transform: scale(0.85); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); color: #fff; font-family: monospace; }
         .holograma-overlay.activo .holograma-ticket { transform: scale(1); }
         .holograma-lineas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%); background-size: 100% 4px; pointer-events: none; z-index: 5; }
@@ -235,7 +235,7 @@
     <div class="grid3d"></div>
 
     <div class="chasis" id="calcChasis">
-        <!-- 🟢 PANTALLA LCD MULTI-MODAL DE ALTA DENSIDAD CONTRIBUTIVA -->
+        <!-- 🟢 PANTALLA LCD MULTI-MODAL DE ALTA DENSIDAD -->
         <div class="lcd" id="pantallaVerde">
             <div class="lcd-header">
                 <span id="txtHeaderIndicadores" class="blinking-header-text">SISTEMA ACTIVO</span>
@@ -246,20 +246,43 @@
                     <div class="lcd-historial" id="listaPrecios">
                         <span id="lblArtText">Lista vacía<span class="lcd-tipeo"></span></span>
                     </div>
-                    <!-- Bloque Vista de Salario Avanzado (Inputs Táctiles Incrustados) -->
-                    <div id="vistaSubPantallaSalario" style="display: none; flex-direction: column; gap: 1px; justify-content: center; height: 100%; font-family: monospace; line-height: 1.1; font-size: 8.5px;">
-                        <div>PAGA POR HORA: <span id="lblSalHoraLcd" style="font-weight: 900; background: rgba(0,0,0,0.2); padding: 0 2px; border-radius: 2px;">$10.50/h</span></div>
-                        <div>HORAS SEMANA : <span id="lblHorasSemanaLcd" style="font-weight: 900;">40</span> hrs
-                            <button class="btn-hrs-lcd" onclick="modificarHorasSemanales(1)">+</button><button class="btn-hrs-lcd" onclick="modificarHorasSemanales(-1)">-</button>
+                    
+                    <!-- 🚨 REDISEÑO ESPACIAL DE SALARIO AUTOMATIZADO (2 Columnas Limpias) -->
+                    <div id="vistaSubPantallaSalario" style="display: none; display: flex; flex-direction: column; gap: 2px; justify-content: center; height: 100%; font-family: monospace; line-height: 1.2; font-size: 9px;">
+                        <!-- Fila 1: Paga por Hora -->
+                        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                            <span>PAGA POR HORA:</span>
+                            <span id="lblSalHoraLcd" style="font-weight: 900; background: rgba(0,0,0,0.25); padding: 0 4px; border-radius: 3px;">$10.50/h</span>
                         </div>
-                        <div style="margin-top: 1px;">MODO: 
-                            <button id="tabW2" class="tab-btn-lcd active" onclick="cambiarRegimenContributivo('W2')">W-2</button><button id="tab1099" class="tab-btn-lcd" onclick="cambiarRegVIS('1099')">1099</button><button id="tabExento" class="tab-btn-lcd" onclick="cambiarRegVIS('EXENTO')">0%</button>
+                        <!-- Fila 2: Horas por Semana -->
+                        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                            <span>HORAS POR SEMANA:</span>
+                            <div style="display: flex; align-items: center; gap: 2px;">
+                                <span id="lblHorasSemanaLcd" style="font-weight: 900;">40</span> <span style="font-size: 8px; opacity:0.8;">hrs</span>
+                                <button class="btn-hrs-lcd" onclick="modificarHorasSemanales(1)" style="margin-left: 4px;">+</button><button class="btn-hrs-lcd" onclick="modificarHorasSemanales(-1)">-</button>
+                            </div>
                         </div>
-                        <div style="margin-top: 1px;">SWITCH: 
-                            <button id="toggleSS" class="toggle-label-lcd on" onclick="toggleImpuestoIndividual('SS')">SS</button><button id="toggleMED" class="toggle-label-lcd on" onclick="toggleImpuestoIndividual('MED')">MED</button>
+                        <!-- Fila 3: Régimen Contributivo (Botones W-2, 1099, 0%) -->
+                        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 1px;">
+                            <span>RÉGIMEN CONTRIB:</span>
+                            <div style="display: flex; align-items: center;">
+                                <button id="tabW2" class="tab-btn-lcd active" onclick="cambiarRegimenContributivo('W2')">W-2</button><button id="tab1099" class="tab-btn-lcd" onclick="cambiarRegimenContributivo('1099')">1099</button><button id="tabExento" class="tab-btn-lcd" onclick="cambiarRegimenContributivo('EXENTO')">0%</button>
+                            </div>
                         </div>
-                        <div style="margin-top: 1px;">MANUAL: <span id="lblManualPctLcd" style="font-weight: 900;">0.0%</span>
-                            <button class="btn-hrs-lcd" onclick="modificarImpuestoManual(0.1)">+</button><button class="btn-hrs-lcd" onclick="modificarImpuestoManual(-0.1)">-</button>
+                        <!-- Fila 4: Switches de Seguro Social y Medicare -->
+                        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 1px;">
+                            <span>RETENCIONES DE LEY:</span>
+                            <div style="display: flex; align-items: center;">
+                                <button id="toggleSS" class="toggle-label-lcd on" onclick="toggleImpuestoIndividual('SS')">SS</button><button id="toggleMED" class="toggle-label-lcd on" onclick="toggleImpuestoIndividual('MED')">MED</button>
+                            </div>
+                        </div>
+                        <!-- Fila 5: Retención Manual por Botón -->
+                        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 1px; border-top: 1px dotted rgba(0,240,255,0.15); padding-top: 1px;">
+                            <span>PORCENTAJE MANUAL:</span>
+                            <div style="display: flex; align-items: center; gap: 2px;">
+                                <span id="lblManualPctLcd" style="font-weight: 900;">0.0%</span>
+                                <button class="btn-hrs-lcd" onclick="modificarImpuestoManual(0.1)" style="margin-left: 4px;">+</button><button class="btn-hrs-lcd" onclick="modificarImpuestoManual(-0.1)">-</button>
+                            </div>
                         </div>
                     </div>
                     <div class="scroll-hint" id="flechaGuia">▼ deslizar</div>
@@ -274,13 +297,13 @@
                     <div class="lcd-total" style="margin-bottom: 1px;">TOTAL: $<span id="outPer">0.00</span></div>
                     <div id="rowPersonaCuota" style="opacity: 0.3; font-size: 11px; margin-top: 1px; transition: opacity 0.15s ease;"><span id="txtSerruchoLabelType">SERRUCHO (C/U): N/A</span> <span id="outPerPersonaLine"></span></div>
                 </div>
-                <!-- Data Base de Salario (Outputs Netos Reales) -->
+                <!-- Data Base de Salario (Outputs Netos Saneados) -->
                 <div id="wrapperDataSalarioLcd" style="display: none; border-top: 1px solid rgba(0,240,255,0.2); padding-top: 2px; font-size: 8.5px; line-height: 1.1;">
-                    <div style="color: #ff3b30; font-weight: 900; font-size: 8px;">RETENCIÓN TOTAL: <span id="outSalRetencion">-$0.00</span></div>
+                    <div style="color: #ff3b30; font-weight: 900; font-size: 8px; text-transform: uppercase;">RETENCIÓN TOTAL: <span id="outSalRetencion">-$0.00 (0%)</span></div>
                     <div>SEMANAL NETO  : <span id="outSalSemanal" style="font-weight: 900; font-size: 9.5px;">$0.00</span></div>
                     <div>BISEMANAL NETO: <span id="outSalBisemanal" style="font-weight: 900; font-size: 9.5px;">$0.00</span></div>
                     <div>MENSUAL NETO  : <span id="outSalMensual" style="font-weight: 900; font-size: 9.5px;">$0.00</span></div>
-                    <div style="border-top: 1px dotted rgba(0,240,255,0.2); margin-top: 1px; padding-top: 1px;">ANUAL NETO    : <span id="outSalAnual" style="font-weight: 900; font-size: 11px;">$0.00</span></div>
+                    <div style="border-top: 1px dotted rgba(0,240,255,0.2); margin-top: 1px; padding-top: 1px;">ANUAL NETO    : <span id="outSalAnual" style="font-weight: 900; font-size: 11px; color: #00ff66;">$0.00</span></div>
                 </div>
             </div>
         </div>
@@ -294,7 +317,8 @@
             </div>
             <button id="btnAnadirGlobal" class="btn-add-embedded" onclick="addProducto()">+</button>
         </div>
-        <!-- 🚨 NUEVO ORDEN DE BOTONES REESTRUCTURADO DE IZQUIERDA A DERECHA EN GRID DE 5 COLUMNAS -->
+
+        <!-- 🚨 SECUENCIA FÍSICA EXACTA SOLICITADA EN GRID DE 5 COLUMNAS -->
         <div class="row-opciones-pasos">
             <!-- 1. Serrucho -->
             <div class="wrapper-pasos">
@@ -388,6 +412,7 @@
             </div>
         </div>
     </div>
+
     <script>
         // 💾 CONTROL DE ESTADOS, MEMORIAS Y ACUMULADORES FISCALES
         let ivu = 0.0, mode = 'sub', sSub = "0", incluirPropina = false, modoSerruchoActivo = false, modoDescuentoActivo = false, modoIvuActivo = false;
@@ -397,11 +422,11 @@
         let themes = ['theme-cyberpunk', 'theme-retro-gold', 'theme-matrix', 'theme-sunset'], temaActualIdx = 0;
         let sistemaEncendido = true; 
 
-        // 📊 VARIABLES DE LA MEMORIA DE SALARIO AVANZADO (NUEVO DEFAULT A $10.50)
+        // 📊 VARIABLES DE LA MEMORIA DE SALARIO AVANZADO ($10.50 DEFAULT)
         let modoSalarioActivo = false;
         let precioHoraTrabajo = 10.50; 
         let horasSemanalesTrabajo = 40; 
-        let regimenContributivo = 'W2'; // 'W2', '1099', 'EXENTO'
+        let regimenContributivo = 'W2'; 
         let ssActivo = true;
         let medActivo = true;
         let porcientoManualRetencion = 0.0;
@@ -490,13 +515,14 @@
                     }
                     ejecutarModificacionPaso(tipo, deltaFinal);
                 }, 20); 
-            }, 300);
+            }, 350);
         }
 
         function detenerAutoIncremento() {
             clearTimeout(timeoutAutoIncremento);
             clearInterval(intervaloAutoIncremento);
         }
+
         function ejecutarModificacionPaso(tipo, delta) {
             if (!sistemaEncendido) return;
             reproducirSonido('paso');
@@ -602,6 +628,7 @@
             document.getElementById('visorConfirmarApagado').classList.remove('activo');
             togglePowerAccion();
         }
+
         function togglePowerAccion() {
             const lcd = document.getElementById('pantallaVerde');
             const chasis = document.getElementById('calcChasis');
@@ -650,7 +677,6 @@
             document.getElementById('wrapperDataComprasLcd').style.display = "block";
             document.getElementById('wrapperDataSalarioLcd').style.display = "none";
             
-            // Reajuste estricto al nuevo default de $10.50
             precioHoraTrabajo = 10.50;
             horasSemanalesTrabajo = 40;
             porcientoManualRetencion = 0.0;
@@ -724,6 +750,7 @@
                 actualizarHeaderIndicadores();
                 return;
             }
+
             if (modoSalarioActivo && f !== 'sal') {
                 modoSalarioActivo = false;
                 lcd.classList.remove('modo-salario-activo');
@@ -777,50 +804,11 @@
             actualizarHeaderIndicadores(); calc();
         }
 
-        // 🧮 PROCESADOR MATEMÁTICO CONTRIBUTIVO NETO AVANZADO (FICA)
-        function calcularSalarioSubPantalla() {
-            let tasaSS = 0.0;
-            let tasaMED = 0.0;
-
-            // Selección de bases contributivas legales de Puerto Rico / EEUU
-            if (regimenContributivo === 'W2') {
-                tasaSS = ssActivo ? 0.062 : 0.0;
-                tasaMED = medActivo ? 0.0145 : 0.0;
-            } else if (regimenContributivo === '1099') {
-                tasaSS = ssActivo ? 0.124 : 0.0;
-                tasaMED = medActivo ? 0.029 : 0.0;
-            }
-
-            let porcientoTotalDeduccion = tasaSS + tasaMED + (porcientoManualRetencion / 100);
-
-            // Cálculos Base de Brutos
-            let brutoSemanal = precioHoraTrabajo * horasSemanalesTrabajo;
-            let brutoBisemanal = brutoSemanal * 2;
-            let brutoMensual = brutoSemanal * 4.3333;
-            let brutoAnual = brutoSemanal * 52;
-
-            // Retenciones Aplicadas
-            let retencionSemanal = brutoSemanal * porcientoTotalDeduccion;
-            let retencionBisemanal = brutoBisemanal * porcientoTotalDeduccion;
-            let retencionMensual = brutoMensual * porcientoTotalDeduccion;
-            let retencionAnual = brutoAnual * porcientoTotalDeduccion;
-
-            // Inyección de Outputs Netos Reales
-            document.getElementById('lblSalHoraLcd').innerText = "$" + precioHoraTrabajo.toFixed(2) + "/h";
-            document.getElementById('outSalRetencion').innerText = "-$" + retencionSemanal.toFixed(2) + " (" + (porcientoTotalDeduccion * 100).toFixed(15).replace(/\.?0+$/, '') + "%)";
-            
-            document.getElementById('outSalSemanal').innerText = "$" + (brutoSemanal - retencionSemanal).toFixed(2);
-            document.getElementById('outSalBisemanal').innerText = "$" + (brutoBisemanal - retencionBisemanal).toFixed(2);
-            document.getElementById('outSalMensual').innerText = "$" + (brutoMensual - retencionMensual).toFixed(2);
-            document.getElementById('outSalAnual').innerText = "$" + (brutoAnual - retencionAnual).toFixed(2);
-        }
-        // 🚨 INTERRUPTORES TÁCTILES EXCLUSIVOS DENTRO DE LA PANTALLA AZUL (REGÍMENES)
         function cambiarRegimenContributivo(regimen) {
             if (!sistemaEncendido || !modoSalarioActivo) return;
             reproducirSonido('menu');
             regimenContributivo = regimen;
 
-            // Configuración automática de fábrica según el modo contributivo de Puerto Rico
             if (regimen === 'W2') {
                 ssActivo = true; medActivo = true;
             } else if (regimen === '1099') {
@@ -853,6 +841,41 @@
             document.getElementById('toggleMED').className = medActivo ? "toggle-label-lcd on" : "toggle-label-lcd off";
             
             calcularSalarioSubPantalla();
+        }
+
+        function calcularSalarioSubPantalla() {
+            let tasaSS = 0.0;
+            let tasaMED = 0.0;
+
+            if (regimenContributivo === 'W2') {
+                tasaSS = ssActivo ? 0.062 : 0.0;
+                tasaMED = medActivo ? 0.0145 : 0.0;
+            } else if (regimenContributivo === '1099') {
+                tasaSS = ssActivo ? 0.124 : 0.0;
+                tasaMED = medActivo ? 0.029 : 0.0;
+            }
+
+            let porcientoTotalDeduccion = tasaSS + tasaMED + (porcientoManualRetencion / 100);
+
+            let brutoSemanal = precioHoraTrabajo * horasSemanalesTrabajo;
+            let brutoBisemanal = brutoSemanal * 2;
+            let brutoMensual = brutoSemanal * 4.3333;
+            let brutoAnual = brutoSemanal * 52;
+
+            let retencionSemanal = brutoSemanal * porcientoTotalDeduccion;
+            let retencionBisemanal = brutoBisemanal * porcientoTotalDeduccion;
+            let retencionMensual = brutoMensual * porcientoTotalDeduccion;
+            let retencionAnual = brutoAnual * porcientoTotalDeduccion;
+
+            document.getElementById('lblSalHoraLcd').innerText = "$" + precioHoraTrabajo.toFixed(2) + "/h";
+            
+            // 🚨 SANEADO DE DECIMALES INFINITOS BINARIOS DE COMA FLOTANTE (.toFixed(1))
+            document.getElementById('outSalRetencion').innerText = "-$" + retencionSemanal.toFixed(2) + " (" + (porcientoTotalDeduccion * 100).toFixed(1) + "%)";
+            
+            document.getElementById('outSalSemanal').innerText = "$" + (brutoSemanal - retencionSemanal).toFixed(2);
+            document.getElementById('outSalBisemanal').innerText = "$" + (brutoBisemanal - retencionBisemanal).toFixed(2);
+            document.getElementById('outSalMensual').innerText = "$" + (brutoMensual - retencionMensual).toFixed(2);
+            document.getElementById('outSalAnual').innerText = "$" + (brutoAnual - retencionAnual).toFixed(2);
         }
 
         function num(c) {
@@ -916,6 +939,7 @@
             let nSerrucho = (modoSerruchoActivo && !isNaN(numPplRaw) && numPplRaw > 1) ? numPplRaw : 1;
             let dPct = modoDescuentoActivo ? (parseFloat(memoriaDescuentoPct) || 0) : 0;
             let tPct = incluirPropina ? (parseFloat(memoriaTipPct) || 0) : 0;
+            
             let sumaPreciosGuardados = preciosGuardados.reduce((sum, item) => sum + item.precio, 0);
             let sumaDescuentosGuardados = preciosGuardados.reduce((sum, item) => sum + item.descuento, 0);
             let impuestoTotalAcumulado = preciosGuardados.reduce((sum, item) => sum + item.ivuCalculado, 0);
@@ -1036,12 +1060,12 @@
             textoReciboGlobal = txt;
             document.getElementById('textoContenidoHolo').innerText = txt;
             document.getElementById('btnCopiarHolo').innerText = "Copiar";
-            document.getElementById('visorHolograma').classList.add('active');
+            document.getElementById('visorHolograma').classList.add('activo');
         }
 
         function cerrarHologramaRecibo() {
             reproducirSonido('menu');
-            document.getElementById('visorHolograma').classList.remove('active');
+            document.getElementById('visorHolograma').classList.remove('activo');
         }
 
         function copiarTextoHolograma() {
