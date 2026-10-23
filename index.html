@@ -885,6 +885,7 @@
             document.getElementById('txtHeaderIndicadores').innerText = subpartes.length > 0 ? subpartes.join(' | ') : "SISTEMA ACTIVO";
         }
 
+        // 🚨 REPARACIÓN MAESTRA DE RUTAS: APAGADO ABSOLUTO DE HISTORIAL AL ENTRAR A SALARIO
         function seleccionarMenu(f) {
             if (!sistemaEncendido) return;
             reproducirSonido('menu');
@@ -899,9 +900,13 @@
                 modoSalarioActivo = !modoSalarioActivo;
                 if (modoSalarioActivo) {
                     lcd.classList.add('modo-salario-activo');
+                    
+                    // 🔒 FIJACIÓN LOGÍSTICA: Se apaga el historial para que no ocupe espacio arriba
                     bloqueListaCompras.style.display = "none";
                     wrapperCompras.style.display = "none";
                     document.getElementById('flechaGuia').style.display = "none";
+                    
+                    // Se despierta la subpantalla azul ocupando todo el tope del cristal
                     bloqueSubPantallaSalario.style.display = "flex";
                     wrapperSalario.style.display = "block";
                     
@@ -914,6 +919,8 @@
                     lcd.classList.remove('modo-salario-activo');
                     bloqueSubPantallaSalario.style.display = "none";
                     wrapperSalario.style.display = "none";
+                    
+                    // Se restaura el historial tradicional de compras
                     bloqueListaCompras.style.display = "block";
                     wrapperCompras.style.display = "block";
                     
@@ -978,6 +985,7 @@
             }
             actualizarHeaderIndicadores(); calc();
         }
+
 
         function cambiarRegimenContributivo(regimen) {
             if (!sistemaEncendido || !modoSalarioActivo) return;
