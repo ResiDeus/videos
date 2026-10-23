@@ -365,6 +365,34 @@
             animation: auraNeonParpadeo 2.6s infinite ease-in-out;
         }
 
+                /* ==========================================================================
+           🇵🇷 TEMA 5: PUERTO RICO (Azul Celeste, Rojo Bandera y Palmas Patrias)
+           ========================================================================== */
+        body.theme-puertorico {
+            --bg-grad: linear-gradient(180deg, #0050ef 0%, #1e1b4b 100%); /* Azul Celeste a Indigo Nocturno */
+            --neon-primary: #ef4444;    /* Rojo Bandera */
+            --neon-secondary: #00d2ff;  /* Azul Celeste Brillante */
+            --receipt-glow: #00ff66;
+            --btn-bg-theme: linear-gradient(135deg, #051630 0%, #0c2b54 50%, #051630 100%);
+            --num-bg-theme: linear-gradient(180deg, #0d2854 0%, #040d1f 100%);
+            --blue-tech: linear-gradient(45deg, #0050ef, #00d2ff, #0050ef);
+        }
+        body.theme-puertorico #marcadorPrecioUnificado {
+            background-image: 
+                linear-gradient(rgba(0, 210, 255, 0.25) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 210, 255, 0.25) 1px, transparent 1px) !important;
+        }
+
+        /* Teclado personalizado para el Tema de Puerto Rico (Fondo Azul Oscuro, Palmas Rojas y Celestes) */
+        body.theme-puertorico .btn-key, body.theme-puertorico .btn-back {
+            background-color: #040c1f !important;
+            background-image: none, url("data:image/svg+xml;utf8,<svg xmlns='http://w3.org' viewBox='0 0 100 100'><path d='M100,100 Q80,70 50,70 Q75,55 100,45 Q70,40 55,20 Q80,25 100,5 Q60,15 45,5 Q65,0 80,-15 Q50,-5 35,-15 Q40,-35 45,-55 Q20,-30 0,-40 C30,10 60,40 100,100 Z' fill='%2300d2ff' opacity='0.22'/><path d='M100,100 Q85,75 60,80 Q78,65 100,60 Q75,50 65,35 Q82,35 100,20 Q65,25 55,15 Z' fill='%23ef4444' opacity='0.18'/></svg>") !important;
+            color: #ffffff !important;
+            border: 2px solid #00d2ff !important;
+            box-shadow: 0 0 8px rgba(0, 210, 255, 0.3) !important;
+            animation: auraNeonParpadeo 2.6s infinite ease-in-out;
+        }
+
 
 
 
@@ -610,7 +638,8 @@
         let sDesc = "0", sTip = "15", sPpl = "2", sIvuModificado = "11.5"; 
         let memoriaDescuentoPct = "0", memoriaTipPct = "15", memoriaSerruchoCortes = "2", memoriaIvuPct = "11.5";
         let preciosGuardados = [], cuentaAcumulada = 0, textoReciboGlobal = "";
-        let themes = ['theme-cyberpunk', 'theme-retro-gold', 'theme-matrix', 'theme-sunset'], temaActualIdx = 0;
+        let themes = ['theme-cyberpunk', 'theme-retro-gold', 'theme-matrix', 'theme-sunset', 'theme-puertorico'];
+
         let sistemaEncendido = true; 
 
         // 📊 VARIABLES DE LA MEMORIA DE SALARIO AVANZADO ($10.50 DEFAULT)
