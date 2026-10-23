@@ -500,7 +500,7 @@
                                 <div style="display: flex; align-items: center; justify-content: flex-start; line-height: 1; height: 18px; width: 100%;">
                                     <div style="width: 26px; min-width: 26px; display: inline-block; text-align: left;"><span id="lblHorasSemanaLcd" style="font-size: 12px; font-weight: 900; background: rgba(0,0,0,0.2); padding: 2px 4px; border-radius: 3px;">40</span></div>
                                     <!-- Separación de 20px de la caja y GAP de 6px exclusivo entre los dos botones -->
-                                    <div style="margin-left: 20px; display: flex; gap: 6px; position: relative; z-index: 100;">
+                                    <div style="margin-left: 6px; display: flex; gap: 12px; position: relative; z-index: 100;">
                                         <button class="btn-hrs-lcd" style="width: 18px; height: 18px; font-size: 12px;" onmousedown="iniciarAccionLcdControles('horas', -1)" ontouchstart="iniciarAccionLcdControlesTouch(event, 'horas', -1)" onmouseup="detenerAccionLcdControles()" onmouseleave="detenerAccionLcdControles()" ontouchend="detenerAccionLcdControles()">-</button>
                                         <button class="btn-hrs-lcd" style="width: 18px; height: 18px; font-size: 12px;" onmousedown="iniciarAccionLcdControles('horas', 1)" ontouchstart="iniciarAccionLcdControlesTouch(event, 'horas', 1)" onmouseup="detenerAccionLcdControles()" onmouseleave="detenerAccionLcdControles()" ontouchend="detenerAccionLcdControles()">+</button>
                                     </div>
@@ -532,7 +532,7 @@
                                 <div style="display: flex; align-items: center; justify-content: flex-start; overflow: visible; position: relative; z-index: 100; height: 18px; line-height: 1; width: 100%;">
                                     <div style="width: 38px; min-width: 38px; display: inline-block; text-align: left;"><span id="lblManualPctLcd" style="font-size: 11px; font-weight: 900; color: #fff; background: rgba(0,0,0,0.15); padding: 2px 4px; border-radius: 2px;">0.0%</span></div>
                                     <!-- Separación de 20px de la caja y GAP de 6px exclusivo entre los dos botones -->
-                                    <div style="margin-left: 20px; display: flex; gap: 6px;">
+                                    <div style="margin-left: 6px; display: flex; gap: 12px;">
                                         <button id="btnManualMenos" class="btn-hrs-lcd" style="width: 18px; height: 18px; font-size: 12px;" onmousedown="iniciarAccionLcdControles('manual', -0.1)" ontouchstart="iniciarAccionLcdControlesTouch(event, 'manual', -0.1)" onmouseup="detenerAccionLcdControles()" onmouseleave="detenerAccionLcdControles()" ontouchend="detenerAccionLcdControles()">-</button>
                                         <button id="btnManualMas" class="btn-hrs-lcd" style="width: 18px; height: 18px; font-size: 12px;" onmousedown="iniciarAccionLcdControles('manual', 0.1)" ontouchstart="iniciarAccionLcdControlesTouch(event, 'manual', 0.1)" onmouseup="detenerAccionLcdControles()" onmouseleave="detenerAccionLcdControles()" ontouchend="detenerAccionLcdControles()">+</button>
                                     </div>
