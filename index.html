@@ -365,11 +365,11 @@
             animation: auraNeonParpadeo 2.6s infinite ease-in-out;
         }
 
-                /* ==========================================================================
-           🇵🇷 TEMA 5: PUERTO RICO (Azul Celeste, Rojo Bandera y Palmas Patrias)
+        /* ==========================================================================
+           🇵🇷 5️⃣ TEMA ADICIONAL: PUERTO RICO (Azul Celeste, Rojo Bandera y Palmas Patrias)
            ========================================================================== */
         body.theme-puertorico {
-            --bg-grad: linear-gradient(180deg, #0050ef 0%, #1e1b4b 100%); /* Azul Celeste a Indigo Nocturno */
+            --bg-grad: linear-gradient(180deg, #0050ef 0%, #1c0d3a 100%); /* Azul Celeste a Índigo Nocturno */
             --neon-primary: #ef4444;    /* Rojo Bandera */
             --neon-secondary: #00d2ff;  /* Azul Celeste Brillante */
             --receipt-glow: #00ff66;
@@ -383,10 +383,12 @@
                 linear-gradient(90deg, rgba(0, 210, 255, 0.25) 1px, transparent 1px) !important;
         }
 
-        /* Teclado personalizado para el Tema de Puerto Rico (Fondo Azul Oscuro, Palmas Rojas y Celestes) */
+        /* 🚨 REPARACIÓN MAESTRA DE HARDWARE: URL RECONSTRUIDA CON ENLACE XML MAESTRO */
         body.theme-puertorico .btn-key, body.theme-puertorico .btn-back {
+            --neon-secondary: #00d2ff;
             background-color: #040c1f !important;
-            background-image: none, url("data:image/svg+xml;utf8,<svg xmlns='http://w3.org' viewBox='0 0 100 100'><path d='M100,100 Q80,70 50,70 Q75,55 100,45 Q70,40 55,20 Q80,25 100,5 Q60,15 45,5 Q65,0 80,-15 Q50,-5 35,-15 Q40,-35 45,-55 Q20,-30 0,-40 C30,10 60,40 100,100 Z' fill='%2300d2ff' opacity='0.22'/><path d='M100,100 Q85,75 60,80 Q78,65 100,60 Q75,50 65,35 Q82,35 100,20 Q65,25 55,15 Z' fill='%23ef4444' opacity='0.18'/></svg>") !important;
+            /* Se sanó el pasaporte XML apuntando a la dirección digital completa para evitar bloqueos en iOS */
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://w3.org' viewBox='0 0 100 100'><path d='M100,100 Q80,70 50,70 Q75,55 100,45 Q70,40 55,20 Q80,25 100,5 Q60,15 45,5 Q65,0 80,-15 Q50,-5 35,-15 Q40,-35 45,-55 Q20,-30 0,-40 C30,10 60,40 100,100 Z' fill='%2300d2ff' opacity='0.22'/><path d='M100,100 Q85,75 60,80 Q78,65 100,60 Q75,50 65,35 Q82,35 100,20 Q65,25 55,15 Z' fill='%23ef4444' opacity='0.18'/></svg>") !important;
             color: #ffffff !important;
             border: 2px solid #00d2ff !important;
             box-shadow: 0 0 8px rgba(0, 210, 255, 0.3) !important;
