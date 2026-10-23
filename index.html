@@ -406,7 +406,26 @@
         .tab-btn-lcd { background: rgba(0,240,255,0.12); border: 1px solid rgba(0,240,255,0.35); color: rgba(0,240,255,0.8); font-size: 8px; font-weight: 900; padding: 2px 5px; border-radius: 4px; cursor: pointer; font-family: monospace; transition: all 0.15s ease; flex-grow: 1; text-align: center; position: relative !important; z-index: 100 !important; overflow: hidden; }
         .tab-btn-lcd.active { background: #00f0ff !important; color: #051e36 !important; box-shadow: 0 0 6px #00f0ff !important; border-color: #fff !important; }
         
-        .toggle-label-lcd { font-size: 8px; font-weight: 900; background: rgba(0,0,0,0.2); border: 1px solid rgba(0,255,102,0.2); padding: 3px 5px; border-radius: 4px; cursor: pointer; transition: all 0.15s ease; width: 100%; text-align: center; font-family: monospace; position: relative !important; z-index: 100 !important; overflow: hidden; }
+                /* 🚨 REEMPLAZO MODULAR CSS: CONGELACIÓN QUIRÚRGICA DE BORDES ANTI-MOVIMIENTO EN IPHONE */
+        .toggle-label-lcd { 
+            font-size: 8px; 
+            font-weight: 900; 
+            background: rgba(0,0,0,0.2); 
+            border: 1px solid rgba(0,255,102,0.2); 
+            padding: 3px 5px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            width: 100%; 
+            text-align: center; 
+            font-family: monospace; 
+            position: relative !important; 
+            z-index: 100 !important; 
+            overflow: hidden;
+            /* 🛑 SE ELIMINÓ LA TRANSICIÓN DE BORDES Y SOMBRAS PARA CONGELAR LOS PICOS VISUALES EN IOS */
+            transition: color 0.1s ease, background-color 0.1s ease; 
+            box-sizing: border-box !important;
+        }
+
         .toggle-label-lcd.on { color: #00ff66 !important; border-color: #00ff66 !important; text-shadow: 0 0 4px #00ff66 !important; background: rgba(0,255,102,0.12) !important; box-shadow: inset 0 0 4px rgba(0,255,102,0.2); }
         .toggle-label-lcd.off { color: rgba(255, 191, 36, 0.4) !important; border-color: rgba(255, 191, 36, 0.3) !important; background: rgba(251, 191, 36, 0.05) !important; }
 
@@ -1322,14 +1341,22 @@
             actualizarHeaderIndicadores();
         }
 
-        // 🚨 REPARACIÓN MAESTRA DE HARDWARE: APERTURA Y CIERRE DEL RECIBO 100% CORREGIDOS
+        // 🚨 REEMPLAZO MODULAR JS: DISPARADOR AUTOMÁTICO DE GUARDADO PRE-RECIBO
         function abrirHologramaRecibo() {
             if (!sistemaEncendido) return;
+            
+            // 🛒 INTEGRACIÓN INTELIGENTE: Si hay un precio en el teclado mayor a 0, lo añade a la lista antes de imprimir
+            let precioColgadoEnTeclado = parseFloat(sSub) || 0;
+            if (precioColgadoEnTeclado > 0 && !modoSalarioActivo) {
+                addProducto();
+            }
+            
             reproducirSonido('caja');
             
             let numPplRaw = parseInt(sPpl); 
             let nPpl = (modoSerruchoActivo && !isNaN(numPplRaw) && numPplRaw > 1) ? numPplRaw : 1;
             let tPct = incluirPropina ? (parseFloat(memoriaTipPct) || 0) : 0;
+
             
             let nSub = preciosGuardados.reduce((sum, sum_item) => sum + sum_item.precio, 0);
             let rebajaTotal = preciosGuardados.reduce((sum, sum_item) => sum + sum_item.descuento, 0);
