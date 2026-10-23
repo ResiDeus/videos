@@ -964,7 +964,7 @@
             document.getElementById('txtHeaderIndicadores').innerText = subpartes.length > 0 ? subpartes.join(' | ') : "SISTEMA ACTIVO";
         }
 
-        // 🚨 REPARACIÓN LOGÍSTICA DEFINTIVA: ELIMINACIÓN DE TEXTO FLOTANTE "LISTA VACÍA" EN MODO SALARIO
+        // 🚨 REEMPLAZO MAESTRO JS: AISLAMIENTO ABSOLUTO DE ARTÍCULOS EN LA PANTALLA VERDE DE COMPRAS
         function seleccionarMenu(f) {
             if (!sistemaEncendido) return;
             reproducirSonido('menu');
@@ -975,7 +975,6 @@
             const wrapperCompras = document.getElementById('wrapperDataComprasLcd');
             const wrapperSalario = document.getElementById('wrapperDataSalarioLcd');
 
-            // 🚨 REEMPLAZO TOTALMENTE INTEGRADO: FUERZA EL ALINEAMIENTO ARRIBA CONTRA EL CENTRADO DE IOS
             if (f === 'sal') {
                 modoSalarioActivo = !modoSalarioActivo;
                 
@@ -984,19 +983,19 @@
                 if (modoSalarioActivo) {
                     lcd.classList.add('modo-salario-activo');
                     
-                    // Se obliga al flexbox padre a tirar todo hacia el techo superior del LCD
                     if (contenedorPadreLcd) {
                         contenedorPadreLcd.style.justifyContent = 'flex-start';
                     }
                     
+                    // 🔒 ESCUDO ABSOLUTO: Apagamos los contenedores y los bloques estructurales de compras
                     bloqueListaCompras.style.display = "none";
                     wrapperCompras.style.display = "none";
                     document.getElementById('flechaGuia').style.display = "none";
                     
-                    if (preciosGuardados.length === 0) {
-                        bloqueListaCompras.innerHTML = '';
-                    }
+                    // 🧼 PURGA DE CAPAS: Vaciamos físicamente el contenido de la lista para que NADA flote por encima en la pantalla azul
+                    bloqueListaCompras.innerHTML = '';
                     
+                    // Se activa la subpantalla azul ocupando todo el tope del cristal con total limpieza
                     bloqueSubPantallaSalario.style.display = "flex";
                     wrapperSalario.style.display = "block";
                     
@@ -1008,20 +1007,18 @@
                 } else {
                     lcd.classList.remove('modo-salario-activo');
                     
-                    // Se restaura el alineamiento por defecto al salir de salario
                     if (contenedorPadreLcd) {
                         contenedorPadreLcd.style.justifyContent = '';
                     }
                     
                     bloqueSubPantallaSalario.style.display = "none";
                     wrapperSalario.style.display = "none";
-
                     
-                    // Se restaura el historial tradicional de compras
+                    // Se restauran los contenedores estructurales de compras tradicionales
                     bloqueListaCompras.style.display = "block";
                     wrapperCompras.style.display = "block";
                     
-                    // 📑 RESTAURACIÓN CONTABLE: Si no había artículos, devolvemos su texto base limpio
+                    // 📑 RESTAURACIÓN RECTIFICADA: Reconstruimos y pintamos tus artículos guardados EXACTAMENTE como estaban
                     if (preciosGuardados.length === 0) {
                         bloqueListaCompras.innerHTML = 'Lista vacía<span class="lcd-tipeo"></span>';
                     } else {
@@ -1049,9 +1046,13 @@
                 document.getElementById('btnModoSalario').className = "caja-data btn-off";
                 document.getElementById('lblSalarioBoton').innerText = "N/A";
                 
-                // Si salta a otra opción por teclado físico, también restauramos el texto base
+                // Si el usuario toca otra opción del menú por accidente, restauramos el estado correcto de la lista de compras
                 if (preciosGuardados.length === 0) {
                     bloqueListaCompras.innerHTML = 'Lista vacía<span class="lcd-tipeo"></span>';
+                } else {
+                    bloqueListaCompras.innerHTML = preciosGuardados.map((item, i) => '<div>• (' + (i+1) + '): $' + item.total.toFixed(2) + ' <span style="font-size:8px; opacity:0.75;">(DTO:-$' + item.descuento.toFixed(2) + '/IVU:' + item.porcientoIvuUsado.toFixed(1) + '%)</span></div>').join('');
+                    let totalConTaxAcumulado = preciosGuardados.reduce((sum, item) => sum + item.total, 0);
+                    bloqueListaCompras.innerHTML += '<div style="border-top:1px dashed rgba(0,0,0,0.3); font-weight:900; margin-top:2px;">TOTAL: \$' + totalConTaxAcumulado.toFixed(2) + '</div>';
                 }
             }
 
@@ -1096,6 +1097,7 @@
             }
             actualizarHeaderIndicadores(); calc();
         }
+
 
 
 
