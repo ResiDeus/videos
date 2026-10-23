@@ -485,7 +485,8 @@
                 <span id="txtHeaderIndicadores" class="blinking-header-text">SISTEMA ACTIVO</span>
             </div>
             
-            <div class="lcd-wrapper">
+            <!-- 🚨 REEMPLAZO MAESTRO INTEGRADO: ELIMINACIÓN DE BARRA FLOTANTE INTRUSA Y TRASLACIÓN DE ESTILO NEÓN AL VISOR FIJO -->
+            <div class="lcd-wrapper" style="position: relative; overflow: visible; display: flex; flex-direction: column; height: auto;">
                 <div class="listaPrecios-container" style="flex-grow: 1; position: relative; display: flex; flex-direction: column; overflow: visible;">
                     <!-- Bloque Vista de Compras (Jaula Fija con Scroll) -->
                     <div class="lcd-historial" id="listaPrecios" style="height: 48px !important; max-height: 48px !important; overflow-y: auto !important; box-sizing: border-box;">
@@ -495,7 +496,7 @@
                     <!-- Etiqueta Flotante Absoluta: Clavada sobre la línea discontinua superior a 26px -->
                     <div class="scroll-hint" id="flechaGuia" style="position: absolute; bottom: 26px; right: 2px; font-size: 8px; font-weight: 900; background: rgba(146, 176, 67, 0.95); padding: 1px 4px; border-radius: 2px; color: #000; z-index: 130; display: none; white-space: nowrap; line-height: 1;">▼ deslizar</div>
                     
-                    <!-- 🚨 LA GRAN CAPA DE SALARIO DE ALTA COMODIDAD (Elevada a top: 6px con botones separados 12px entre sí) -->
+                    <!-- Capa de Salario de Alta Comodidad (Elevada a top: 6px con botones separados 12px entre sí) -->
                     <div id="vistaSubPantallaSalario" style="display: none; flex-direction: row; justify-content: space-between; align-items: flex-start; width: 96%; height: 75px !important; max-height: 75px !important; font-family: monospace; line-height: 1.1; font-size: 11px; gap: 8px; padding: 0; overflow: visible; position: absolute !important; top: 6px !important; left: 6px !important; z-index: 95; box-sizing: border-box;">
                         
                         <!-- COLUMNA IZQUIERDA: Paga y Horas (Botón MENOS separado del MÁS por 12px de holgura táctil) -->
@@ -547,12 +548,11 @@
                             </div>
                         </div>
                     </div> <!-- Cierre de vistaSubPantallaSalario -->
-                    
                 </div>
             </div> <!-- Cierre de lcd-wrapper -->
 
-            <!-- 💵 LA ÚNICA Y LEGÍTIMA BARRA DE PRECIO EN SU UBICACIÓN ORIGINAL DE TODA LA VIDA -->
-            <div class="contenedor-precio-unificado precio-on" id="marcadorPrecioUnificado" style="display: flex; width: 100%; gap: 4px; background-color: #0b0214 !important; border-radius: 10px; border: 2px solid var(--neon-secondary); padding: 4px; min-height: 52px; align-items: center; position: relative; overflow: hidden;">
+                        <!-- 💵 AQUÍ ESTÁ: EL FORMATO GIGANTE REUBICADO CON EXCLUSIVIDAD EN LA BARRA LEGÍTIMA DE ABAJO -->
+            <div class="contenedor-precio-unificado precio-on" id="marcadorPrecioUnificado" style="display: flex; width: 100%; gap: 4px; background-color: #0b0214 !important; border-radius: 10px; border: 2px solid var(--neon-secondary); padding: 4px; min-height: 52px; align-items: center; position: relative; overflow: hidden; margin-top: 4px;">
                 <div style="width:55px; opacity:0; pointer-events:none;"></div>
                 <div id="cajaSub" class="caja-data" style="flex-grow: 1; background: transparent !important; border: none !important; box-shadow: none !important; min-height: auto; align-items: center !important; justify-content: center !important; color: #fff !important; opacity: 1; text-align: center;" onclick="seleccionarMenu('sub')">
                     <span class="lbl-title" style="font-size: 8px; text-transform: uppercase; color: var(--neon-secondary); margin-bottom: 1px; font-weight: bold; text-shadow: 0 0 4px rgba(0,240,255,0.2);">Precio</span>
@@ -561,7 +561,8 @@
                 <button id="btnAnadirGlobal" class="btn-add-embedded" style="width: 55px; height: 100%; min-height: 40px; background: var(--blue-tech) !important; background-size: 200% 200% !important; border: 2px solid #fff; border-radius: 6px; color: #ffffff !important; font-size: 24px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 10px var(--neon-secondary); transition: all 0.1s ease; user-select: none; z-index: 2;" onclick="addProducto()">+</button>
             </div>
 
-            <div class="lcd-body">
+        <div class="lcd-body">
+
 
 
 
