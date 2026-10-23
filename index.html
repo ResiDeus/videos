@@ -1341,11 +1341,11 @@
             actualizarHeaderIndicadores();
         }
 
-        // 🚨 REEMPLAZO MODULAR JS: DISPARADOR AUTOMÁTICO DE GUARDADO PRE-RECIBO
+        // 🚨 REEMPLAZO MAESTRO JS: RECIBO ULTRA-COMPACTO ALINEADO Y BLINDADO PARA PANTALLAS DE IPHONE
         function abrirHologramaRecibo() {
             if (!sistemaEncendido) return;
             
-            // 🛒 INTEGRACIÓN INTELIGENTE: Si hay un precio en el teclado mayor a 0, lo añade a la lista antes de imprimir
+            // Disparador automático inteligente: Si hay un precio colgado en el teclado, lo añade antes de imprimir
             let precioColgadoEnTeclado = parseFloat(sSub) || 0;
             if (precioColgadoEnTeclado > 0 && !modoSalarioActivo) {
                 addProducto();
@@ -1356,7 +1356,6 @@
             let numPplRaw = parseInt(sPpl); 
             let nPpl = (modoSerruchoActivo && !isNaN(numPplRaw) && numPplRaw > 1) ? numPplRaw : 1;
             let tPct = incluirPropina ? (parseFloat(memoriaTipPct) || 0) : 0;
-
             
             let nSub = preciosGuardados.reduce((sum, sum_item) => sum + sum_item.precio, 0);
             let rebajaTotal = preciosGuardados.reduce((sum, sum_item) => sum + sum_item.descuento, 0);
@@ -1374,16 +1373,15 @@
                 txt += `Artículos Guardados:\n`;
                 preciosGuardados.forEach((a, i) => {
                     let ivuFormateadoStr = a.porcientoIvuUsado.toFixed(2);
-                    if(ivuFormateadoStr.length < 5) ivuFormateadoStr = "0" + ivuFormateadoStr;
                     txt += ` Art. #${i+1}\n`;
-                    txt += `  Precio Base:       $${a.precio.toFixed(2).padStart(8)}\n`;
-                    if(a.descuento > 0) txt += `  Descuento:        -$${a.descuento.toFixed(2).padStart(8)}\n`;
-                    
-                    // Solo muestra la línea de IVU del artículo si fue mayor a 0
-                    if (a.ivuCalculado > 0) {
-                        txt += `  IVU (${ivuFormateadoStr}%):    +$${a.ivuCalculado.toFixed(2).padStart(8)}\n`;
+                    txt += `  Precio Base   : $${a.precio.toFixed(2)}\n`;
+                    if(a.descuento > 0) {
+                        txt += `  Descuento     : -$${a.descuento.toFixed(2)}\n`;
                     }
-                    txt += `  Total Artículo:    $${a.total.toFixed(2).padStart(8)}\n`;
+                    if (a.ivuCalculado > 0) {
+                        txt += `  IVU (${ivuFormateadoStr}%): +$${a.ivuCalculado.toFixed(2)}\n`;
+                    }
+                    txt += `  Total Art.    : $${a.total.toFixed(2)}\n`;
                     txt += ` -----------------------------\n`;
                 });
             } else {
@@ -1391,32 +1389,36 @@
                 txt += ` -------------------------------\n`;
             }
             
-            txt += `Subtotal:          $${nSub.toFixed(2).padStart(8)}\n`;
-            if(rebajaTotal > 0) txt += `Descuento Total:  -$${rebajaTotal.toFixed(2).padStart(8)}\n`;
-            
-            // 🚫 Si el IVU acumulado es 0, destruye la línea del recibo automáticamente
-            if (impuestoTotal > 0) {
-                txt += `IVU Acumulado:     $${impuestoTotal.toFixed(2).padStart(8)}\n`;
+            txt += `Subtotal        : $${nSub.toFixed(2)}\n`;
+            if(rebajaTotal > 0) {
+                txt += `Descuento Total : -$${rebajaTotal.toFixed(2)}\n`;
             }
             
-            if(propinaTotal > 0) txt += `Propina (${tPct}%):     $${propinaTotal.toFixed(2).padStart(8)}\n`;
+            // Filtro estricto: Si el IVU es 0, no se escribe la línea en el recibo
+            if (impuestoTotal > 0) {
+                txt += `IVU Acumulado   : +$${impuestoTotal.toFixed(2)}\n`;
+            }
+            
+            if(propinaTotal > 0) {
+                txt += `Propina (${tPct}%)   : $${propinaTotal.toFixed(2)}\n`;
+            }
             txt += `===============================\n`;
-            txt += `TOTAL:             $${totalNetoGlobal.toFixed(2).padStart(8)}\n`;
+            txt += `TOTAL FINAL     : $${totalNetoGlobal.toFixed(2)}\n`;
             txt += `===============================\n`;
 
             if(modoSerruchoActivo && numPplRaw > 1) {
                 txt += `SERRUCHO COMPARTI'O: ${numPplRaw} panas\n`;
-                txt += `CUOTA POR CABEZA:   $${(totalNetoGlobal / nPpl).toFixed(2).padStart(8)}\n`;
+                txt += `CUOTA POR CABEZA: $${(totalNetoGlobal / nPpl).toFixed(2)}\n`;
                 txt += `===============================\n`;
             }
             txt += `    ¡Gracias por usar la app!`;
             
-            // 🔓 CONEXIÓN DE CLASES LIMPIA: Despierta el visor de forma estable en iOS
             textoReciboGlobal = txt;
             document.getElementById('textoContenidoHolo').innerText = txt;
             document.getElementById('btnCopiarHolo').innerText = "Copiar";
             document.getElementById('visorHolograma').classList.add('activo');
         }
+
 
         function cerrarHologramaRecibo() {
             reproducirSonido('menu');
