@@ -897,22 +897,28 @@
             const wrapperCompras = document.getElementById('wrapperDataComprasLcd');
             const wrapperSalario = document.getElementById('wrapperDataSalarioLcd');
 
+            // 🚨 REEMPLAZO TOTALMENTE INTEGRADO: FUERZA EL ALINEAMIENTO ARRIBA CONTRA EL CENTRADO DE IOS
             if (f === 'sal') {
                 modoSalarioActivo = !modoSalarioActivo;
+                
+                const contenedorPadreLcd = document.querySelector('.listaPrecios-container');
+
                 if (modoSalarioActivo) {
                     lcd.classList.add('modo-salario-activo');
                     
-                    // 🔒 ESCUDO ESTRICTO: Apagamos los bloques de compras e historial
+                    // Se obliga al flexbox padre a tirar todo hacia el techo superior del LCD
+                    if (contenedorPadreLcd) {
+                        contenedorPadreLcd.style.justifyContent = 'flex-start';
+                    }
+                    
                     bloqueListaCompras.style.display = "none";
                     wrapperCompras.style.display = "none";
                     document.getElementById('flechaGuia').style.display = "none";
                     
-                    // 🧼 PURGA COMPLETA: Si la lista está vacía o tiene el nodo libre de texto, limpiamos el historial para que no flote nada
                     if (preciosGuardados.length === 0) {
                         bloqueListaCompras.innerHTML = '';
                     }
                     
-                    // Se activa la subpantalla azul ocupando todo el tope del cristal
                     bloqueSubPantallaSalario.style.display = "flex";
                     wrapperSalario.style.display = "block";
                     
@@ -923,8 +929,15 @@
                     calcularSalarioSubPantalla();
                 } else {
                     lcd.classList.remove('modo-salario-activo');
+                    
+                    // Se restaura el alineamiento por defecto al salir de salario
+                    if (contenedorPadreLcd) {
+                        contenedorPadreLcd.style.justifyContent = '';
+                    }
+                    
                     bloqueSubPantallaSalario.style.display = "none";
                     wrapperSalario.style.display = "none";
+
                     
                     // Se restaura el historial tradicional de compras
                     bloqueListaCompras.style.display = "block";
