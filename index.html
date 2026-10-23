@@ -82,7 +82,9 @@
         .sky { position: absolute; width: 100%; height: 100%; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent), radial-gradient(1.5px 1px at 75px 120px, #fff9, transparent); background-size: 380px 380px; z-index: 1; animation: twk 4s infinite linear; pointer-events: none; }
         .grid3d { position: absolute; width: 100%; height: 40%; bottom: 0; background-size: 40px 40px; transform: perspective(180px) rotateX(65deg); transform-origin: top center; z-index: 1; animation: gM 2.5s infinite linear; pointer-events: none; }
         .grid3d { background-image: linear-gradient(rgba(255, 0, 127, 0.12) 2px, transparent 2px), linear-gradient(90deg, rgba(255, 0, 127, 0.12) 2px, transparent 2px); }
-
+        @keyframes twk { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+        @keyframes gM { 0% { background-position: 0 0; } 100% { background-position: 0 40px; } }
+        
         /* 📟 CHASIS FÍSICO CON REGLA ESTRICTA DE ENERGÍA */
         .chasis { width: 340px; height: auto; min-height: 580px; background: #160d21; border: 4px solid var(--neon-primary); box-shadow: 0 0 25px rgba(255, 0, 127, 0.3); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; border-radius: 24px; overflow: hidden; display: flex; flex-direction: column; padding: 12px; gap: 8px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         
@@ -91,6 +93,7 @@
         .chasis.global-power-off .lcd { background: #121805 !important; box-shadow: inset 0 4px 10px rgba(0,0,0,0.9) !important; border-color: #222 !important; }
         .chasis.global-power-off .lcd * { opacity: 0 !important; visibility: hidden !important; text-shadow: none !important; }
         
+        /* Precio invisible en el apagado */
         .chasis.global-power-off .contenedor-precio-unificado { opacity: 0 !important; visibility: hidden !important; box-shadow: none !important; outline: none !important; }
         
         .chasis.global-power-off .btn-key:not(.power-btn), 
@@ -100,9 +103,10 @@
         .chasis.global-power-off .btn-step,
         .chasis.global-power-off .btn-add-embedded { box-shadow: none !important; text-shadow: none !important; border-color: #222 !important; animation: none !important; opacity: 0 !important; pointer-events: none !important; }
         
+        /* Botón de encendido verde activo constante al apagarse */
         .chasis.global-power-off .btn-power-bottom { background: #022c22 !important; border-color: #10b981 !important; color: #34d399 !important; text-shadow: 0 0 8px #10b981 !important; opacity: 1 !important; pointer-events: auto !important; }
 
-        /* 🟢 PANTALLA LCD VERDE RETRO */
+        /* 🟢 PANTALLA LCD VERDE RETRO COMPLETAMENTE LIMPIA Y PLANA */
         .lcd { width: 100%; height: 175px; background: #92b043; border: 2px solid #000; border-radius: 14px; color: #000; box-shadow: inset 0 2px 6px rgba(0,0,0,0.3); font-weight: bold; padding: 8px; display: flex; flex-direction: column; justify-content: space-between; position: relative; transition: all 0.4s ease; transform-origin: center; z-index: 12; overflow: hidden; }
         
         /* 🔵 MUTACIÓN A SUB-PANTALLA AZUL CIBERNÉTICO DE SALARIO */
@@ -129,11 +133,12 @@
         /* ⚡ CONTROLES DEL EFECTO FLASH BLANCO UNIVERSAL AL TOCAR LAS TECLAS */
         .btn-key:active, 
         .caja-data:active, 
-        .btn-theme:active,
-        .btn-receipt:active,
-        .btn-step:active,
+        .btn-theme:active, 
+        .btn-receipt:active, 
+        .btn-step:active, 
         .btn-add-embedded:active,
-        .btn-power-bottom:active {
+        .btn-power-bottom:active,
+        .btn-hrs-lcd:active {
             background: #ffffff !important;
             color: #000000 !important;
             filter: brightness(2) contrast(1.5) !important;
@@ -141,7 +146,6 @@
             text-shadow: none !important;
             transition: none !important;
         }
-
         /* 🎛️ GRID HORIZONTAL EXPANDIDO: 5 Columnas perfectas alineadas simétricamente */
         .row-opciones-pasos { display: grid; grid-template-columns: repeat(5, 1fr) !important; gap: 3px; width: 100%; }
         .wrapper-pasos { display: flex; flex-direction: column; gap: 2px; align-items: center; width: 100%; }
@@ -174,7 +178,7 @@
         }
         .caja-data.btn-on * { position: relative; z-index: 2; font-weight: 900 !important; }
 
-        /* 📟 CONTENEDOR INTEGRADO DE PRECIO ANIMADO DE SQUARDS SYNTHWAVE EN BUCLÉ RECONSTRUIDO */
+        /* 📟 CONTENEDOR INTEGRADO DE PRECIO ANIMADO DE SQUARES SYNTHWAVE */
         @keyframes synthwaveShift { 0% { background-position: 0% 0%; } 100% { background-position: 40px 40px; } }
         .contenedor-precio-unificado { display: flex; width: 100%; gap: 4px; background-color: #0b0214 !important; background-size: 20px 20px !important; animation: synthwaveShift 2.5s infinite linear !important; border-radius: 10px; border: 2px solid var(--neon-secondary); padding: 4px; min-height: 52px; align-items: center; transition: all 0.2s ease; position: relative; overflow: hidden; }
         .contenedor-precio-unificado.precio-on { border-color: #fff; box-shadow: 0 0 14px var(--neon-secondary); }
@@ -203,21 +207,14 @@
         }
         body.theme-cyberpunk .btn-key::after, body.theme-cyberpunk .btn-back::after { display: none !important; content: none !important; }
 
+        /* ➕ / ➖ BOTONES INTEGRADOS ADENTRO DEL LCD AZUL PARA LAS HORAS */
+        .btn-hrs-lcd { background: #00f0ff; border: none; color: #051e36; font-size: 10px; font-weight: 900; width: 14px; height: 14px; border-radius: 3px; display: inline-flex; justify-content: center; align-items: center; cursor: pointer; margin: 0 2px; vertical-align: middle; transition: all 0.1s ease; font-family: monospace; }
+
         .btn-theme, .btn-receipt, .btn-power-bottom { border-radius: 10px; font-weight: bold; cursor: pointer; transition: all 0.2s ease; text-transform: uppercase; display: flex; justify-content: center; align-items: center; font-family: monospace; height: 28px; font-size: 8px; background: var(--num-bg-theme) !important; border: 2px solid var(--neon-primary) !important; color: #ccc !important; width: 100%; z-index: 15; }
         .row-acciones-inferior { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-top: 2px; width: 100%; }
         
         .holograma-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10, 2, 24, 0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 100; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
         .holograma-overlay.activo { opacity: 1; pointer-events: auto; visibility: visible; }
-        .holograma-ticket { width: 320px; max-height: 80vh; background: rgba(15, 10, 25, 0.95); border: 2px solid var(--receipt-glow); box-shadow: 0 0 30px var(--receipt-glow), inset 0 0 15px rgba(255,255,255,0.05); border-radius: 16px; padding: 16px; position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 12px; transform: scale(0.85); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); color: #fff; font-family: monospace; }
-        .holograma-overlay.activo .holograma-ticket { transform: scale(1); }
-        .holograma-lineas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%); background-size: 100% 4px; pointer-events: none; z-index: 5; }
-        .holograma-scrollable { flex-grow: 1; overflow-y: auto; font-size: 11px; line-height: 1.4; white-space: pre-wrap; padding-right: 4px; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 8px; padding: 8px; background: rgba(0, 0, 0, 0.5); color: var(--receipt-glow); text-shadow: 0 0 3px var(--receipt-glow); }
-        .holograma-footer { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .btn-holo { padding: 8px; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; border: 1px solid var(--receipt-glow); font-family: monospace; font-size: 11px; text-align: center; background: transparent; color: var(--receipt-glow); transition: all 0.2s ease; }
-        @keyframes deTresPuntos { 0% { content: "."; } 33% { content: ".."; } 66% { content: "..."; } 100% { content: "."; } }
-        .lcd-tipeo::after { content: "."; animation: deTresPuntos 1.2s infinite steps(1, start) !important; }
-    </style>
-</head>
 <body class="theme-cyberpunk">
     <div class="sky"></div>
     <div class="grid3d"></div>
@@ -230,18 +227,26 @@
             </div>
             <div class="lcd-wrapper">
                 <div class="listaPrecios-container" style="flex-grow: 1; position: relative; display: flex; flex-direction: column; overflow: hidden;">
+                    <!-- Bloque Vista de Compras -->
                     <div class="lcd-historial" id="listaPrecios">
                         <span id="lblArtText">Lista vacía<span class="lcd-tipeo"></span></span>
                     </div>
+                    <!-- Bloque Vista de Salario (Sub-Pantalla Oculta por defecto con botones de Horas Semanales) -->
                     <div id="vistaSubPantallaSalario" style="display: none; flex-direction: column; justify-content: center; height: 100%; font-family: monospace; line-height: 1.3;">
                         <div style="font-weight: 900; letter-spacing: 0.5px; border-bottom: 1px dashed rgba(0,240,255,0.4); padding-bottom: 2px; margin-bottom: 3px;">CONSULTA DE SALARIO</div>
-                        <div>PAGA POR HORA: <span id="lblSalHoraLcd" style="font-weight: 900; background: rgba(0,0,0,0.2); padding: 0 4px; border-radius: 3px;">$0.00</span></div>
-                        <div>HORAS SEMANA : <span style="font-weight: 900;">40 hrs</span></div>
+                        <div>PAGA POR HORA: <span id="lblSalHoraLcd" style="font-weight: 900; background: rgba(0,0,0,0.2); padding: 0 4px; border-radius: 3px;">$10.25/h</span></div>
+                        <div>HORAS SEMANA : 
+                            <span id="lblHorasSemanaLcd" style="font-weight: 900;">40</span> hrs
+                            <!-- ➕ / ➖ Controles incrustados en la pantalla azul -->
+                            <button class="btn-hrs-lcd" onclick="modificarHorasSemanales(1)" style="margin-left: 8px;">+</button>
+                            <button class="btn-hrs-lcd" onclick="modificarHorasSemanales(-1)">-</button>
+                        </div>
                     </div>
                     <div class="scroll-hint" id="flechaGuia">▼ deslizar</div>
                 </div>
             </div>
             <div class="lcd-body">
+                <!-- Data Base de Compras -->
                 <div id="wrapperDataComprasLcd">
                     <div id="rowDesc" style="opacity: 0.3; transition: opacity 0.15s ease;">DESCUENTO: <span id="outDesc">-$0.00</span></div>
                     <div id="rowTip" style="opacity: 0.2; transition: opacity 0.15s ease;">PROPINA: <span id="outTip">$0.00</span></div>
@@ -249,6 +254,7 @@
                     <div class="lcd-total" style="margin-bottom: 1px;">TOTAL: $<span id="outPer">0.00</span></div>
                     <div id="rowPersonaCuota" style="opacity: 0.3; font-size: 11px; margin-top: 1px; transition: opacity 0.15s ease;"><span id="txtSerruchoLabelType">SERRUCHO (C/U): N/A</span> <span id="outPerPersonaLine"></span></div>
                 </div>
+                <!-- Data Base de Salario (Sub-Pantalla Oculta) -->
                 <div id="wrapperDataSalarioLcd" style="display: none; border-top: 1px solid rgba(0,240,255,0.2); padding-top: 3px;">
                     <div style="font-size: 11px; font-weight: 900;">CHEQUE SEMANAL: <span id="outSalSemanal" style="font-size: 13px;">$0.00</span></div>
                     <div style="font-size: 11px; font-weight: 900; margin-top: 1px;">TOTAL MENSUAL : <span id="outSalMensual" style="font-size: 13px;">$0.00</span></div>
@@ -266,7 +272,7 @@
             <button id="btnAnadirGlobal" class="btn-add-embedded" onclick="addProducto()">+</button>
         </div>
 
-        <!-- Fila unificada amarrada en Grid de 5 columnas horizontales estrictas -->
+        <!-- 🚨 ORDEN REESTRUCTURADO DE IZQUIERDA A DERECHA EN GRID DE 5 COLUMNAS -->
         <div class="row-opciones-pasos">
             <!-- 1. Serrucho -->
             <div class="wrapper-pasos">
@@ -278,17 +284,7 @@
                 <button class="btn-step" onmousedown="iniciarAutoIncremento('ppl', -1)" ontouchstart="iniciarAutoIncrementoTouch(event, 'ppl', -1)" onmouseup="detenerAutoIncremento()" onmouseleave="detenerAutoIncremento()" ontouchend="detenerAutoIncremento()">▼</button>
             </div>
 
-            <!-- 2. Descuento -->
-            <div class="wrapper-pasos">
-                <button class="btn-step" onmousedown="iniciarAutoIncremento('desc', 1)" ontouchstart="iniciarAutoIncrementoTouch(event, 'desc', 1)" onmouseup="detenerAutoIncremento()" onmouseleave="detenerAutoIncremento()" ontouchend="detenerAutoIncremento()">▲</button>
-                <div id="cajaDesc" class="caja-data btn-off" onclick="seleccionarMenu('desc')">
-                    <span class="lbl-title">Descuento</span>
-                    <span class="lbl-val">-<span id="lblDesc">0</span>%</span>
-                </div>
-                <button class="btn-step" onmousedown="iniciarAutoIncremento('desc', -1)" ontouchstart="iniciarAutoIncrementoTouch(event, 'desc', -1)" onmouseup="detenerAutoIncremento()" onmouseleave="detenerAutoIncremento()" ontouchend="detenerAutoIncremento()">▼</button>
-            </div>
-
-            <!-- 3. Propina -->
+            <!-- 2. Propina -->
             <div class="wrapper-pasos">
                 <button class="btn-step" onmousedown="iniciarAutoIncremento('tip', 1)" ontouchstart="iniciarAutoIncrementoTouch(event, 'tip', 1)" onmouseup="detenerAutoIncremento()" onmouseleave="detenerAutoIncremento()" ontouchend="detenerAutoIncremento()">▲</button>
                 <div id="cajaTip" class="caja-data btn-off" onclick="seleccionarMenu('tip')">
@@ -298,17 +294,27 @@
                 <button class="btn-step" onmousedown="iniciarAutoIncremento('tip', -1)" ontouchstart="iniciarAutoIncrementoTouch(event, 'tip', -1)" onmouseup="detenerAutoIncremento()" onmouseleave="detenerAutoIncremento()" ontouchend="detenerAutoIncremento()">▼</button>
             </div>
 
-            <!-- 4. 🚨 INTERCAMBIADO: Botón de Salario ahora en la 4ta Columna -->
+            <!-- 3. Salario (Ahora en la 3ra Columna, Formato N/A / $10.25/h) -->
             <div class="wrapper-pasos">
-                <button class="btn-step" onmousedown="iniciarAutoIncremento('sal', 0.25)" ontouchstart="iniciarAutoIncrementoTouch(event, 'sal', 0.25)" onmouseup="detenerAutoIncremento()" onmouseleave="detenerAutoIncremento()" ontouchend="detenerAutoIncremento()">▲</button>
+                <button class="btn-step" onmousedown="iniciarAutoIncremento('sal', 0.01)" ontouchstart="iniciarAutoIncrementoTouch(event, 'sal', 0.01)" onmouseup="detenerAutoIncremento()" onmouseleave="detenerAutoIncremento()" ontouchend="detenerAutoIncremento()">▲</button>
                 <div id="btnModoSalario" class="caja-data btn-off" onclick="seleccionarMenu('sal')">
                     <span class="lbl-title">Salario</span>
-                    <span class="lbl-val">$<span id="lblSalarioBoton">10.25</span></span>
+                    <span class="lbl-val"><span id="lblSalarioBoton">N/A</span></span>
                 </div>
-                <button class="btn-step" onmousedown="iniciarAutoIncremento('sal', -0.25)" ontouchstart="iniciarAutoIncrementoTouch(event, 'sal', -0.25)" onmouseup="detenerAutoIncremento()" onmouseleave="detenerAutoIncremento()" ontouchend="detenerAutoIncremento()">▼</button>
+                <button class="btn-step" onmousedown="iniciarAutoIncremento('sal', -0.01)" ontouchstart="iniciarAutoIncrementoTouch(event, 'sal', -0.01)" onmouseup="detenerAutoIncremento()" onmouseleave="detenerAutoIncremento()" ontouchend="detenerAutoIncremento()">▼</button>
             </div>
 
-            <!-- 5. 🚨 INTERCAMBIADO: Botón de IVU ahora al final en la 5ta Columna -->
+            <!-- 4. Descuento -->
+            <div class="wrapper-pasos">
+                <button class="btn-step" onmousedown="iniciarAutoIncremento('desc', 1)" ontouchstart="iniciarAutoIncrementoTouch(event, 'desc', 1)" onmouseup="detenerAutoIncremento()" onmouseleave="detenerAutoIncremento()" ontouchend="detenerAutoIncremento()">▲</button>
+                <div id="cajaDesc" class="caja-data btn-off" onclick="seleccionarMenu('desc')">
+                    <span class="lbl-title">Descuento</span>
+                    <span class="lbl-val">-<span id="lblDesc">0</span>%</span>
+                </div>
+                <button class="btn-step" onmousedown="iniciarAutoIncremento('desc', -1)" ontouchstart="iniciarAutoIncrementoTouch(event, 'desc', -1)" onmouseup="detenerAutoIncremento()" onmouseleave="detenerAutoIncremento()" ontouchend="detenerAutoIncremento()">▼</button>
+            </div>
+
+            <!-- 5. IVU -->
             <div class="wrapper-pasos">
                 <button class="btn-step" onmousedown="iniciarAutoIncremento('ivu', 0.1)" ontouchstart="iniciarAutoIncrementoTouch(event, 'ivu', 0.1)" onmouseup="detenerAutoIncremento()" onmouseleave="detenerAutoIncremento()" ontouchend="detenerAutoIncremento()">▲</button>
                 <div id="btnToggleIvu" class="caja-data btn-off" onclick="seleccionarMenu('ivu')">
@@ -373,6 +379,7 @@
         // 📊 VARIABLES DEDICADAS DE LA MEMORIA DE SALARIO
         let modoSalarioActivo = false;
         let precioHoraTrabajo = 10.25; 
+        let horasSemanalesTrabajo = 40; // Horas base editables por los micro-botones
 
         let intervaloAutoIncremento = null;
         let timeoutAutoIncremento = null;
@@ -440,7 +447,7 @@
             timeoutAutoIncremento = setTimeout(() => {
                 intervaloAutoIncremento = setInterval(() => {
                     ejecutarModificacionPaso(tipo, delta);
-                }, 110); 
+                }, 40); // Aceleración optimizada para cambios fluidos centavo a centavo (0.01)
             }, 350);
         }
 
@@ -457,7 +464,7 @@
                 precioHoraTrabajo += delta;
                 if (precioHoraTrabajo < 0) precioHoraTrabajo = 0;
                 if (precioHoraTrabajo > 500) precioHoraTrabajo = 500;
-                document.getElementById('lblSalarioBoton').innerText = precioHoraTrabajo.toFixed(2);
+                document.getElementById('lblSalarioBoton').innerText = "$" + precioHoraTrabajo.toFixed(2) + "/h";
                 calcularSalarioSubPantalla();
                 return;
             }
@@ -511,11 +518,22 @@
             document.getElementById('cajaDesc').className = modoDescuentoActivo ? "caja-data btn-on" : "caja-data btn-off";
             document.getElementById('cajaTip').className = incluirPropina ? "caja-data btn-on" : "caja-data btn-off";
             document.getElementById('btnToggleIvu').className = modoIvuActivo ? "caja-data btn-on" : "caja-data btn-off";
+            document.getElementById('btnModoSalario').className = modoSalarioActivo ? "caja-data btn-on" : "caja-data btn-off";
             
             actualizarHeaderIndicadores(); calc();
         }
 
-        // 🔌 CONTROL DE APAGADO MAESTRO E INTERRUPTOR CRT
+        // ⏱️ CONTROL INTERACTIVO DE LAS HORAS SEMANALES ADENTRO DEL LCD
+        function modificarHorasSemanales(delta) {
+            if (!sistemaEncendido || !modoSalarioActivo) return;
+            reproducirSonido('paso');
+            horasSemanalesTrabajo += delta;
+            if (horasSemanalesTrabajo < 1) horasSemanalesTrabajo = 1;
+            if (horasSemanalesTrabajo > 168) horasSemanalesTrabajo = 168; // Límite máximo matemático de horas en una semana
+            document.getElementById('lblHorasSemanaLcd').innerText = horasSemanalesTrabajo;
+            calcularSalarioSubPantalla();
+        }
+
         function solicitarApagado() {
             if (!sistemaEncendido) {
                 togglePowerAccion();
@@ -553,7 +571,7 @@
                 lcd.classList.remove('power-off-crt', 'power-on-crt');
                 void lcd.offsetWidth; 
                 lcd.classList.add('power-on-crt');
-                document.querySelectorAll('.btn-theme, .btn-receipt').forEach(b => b.style.opacity = "1");
+                document.querySelectorAll('.btn-theme, .btn-receipt, .btn-hrs-lcd').forEach(b => b.style.opacity = "1");
                 document.querySelectorAll('.pad-num .btn-key').forEach(b => b.style.opacity = "1");
                 document.querySelectorAll('.row-opciones-pasos .caja-data, .btn-step').forEach(b => b.style.opacity = "1");
                 sistemaEncendido = true;
@@ -564,7 +582,7 @@
         }
 
         function toggleTeclasBloqueo(bloquear) {
-            const botones = document.querySelectorAll('.btn-key, .caja-data, .btn-receipt, .btn-theme, .btn-step, .btn-add-embedded');
+            const botones = document.querySelectorAll('.btn-key, .caja-data, .btn-receipt, .btn-theme, .btn-step, .btn-add-embedded, .btn-hrs-lcd');
             botones.forEach(btn => {
                 if (btn.id !== 'btnTogglePower' && btn.id !== 'btnTheme') {
                     btn.disabled = bloquear;
@@ -583,7 +601,9 @@
             document.getElementById('wrapperDataComprasLcd').style.display = "block";
             document.getElementById('wrapperDataSalarioLcd').style.display = "none";
             precioHoraTrabajo = 10.25;
-            document.getElementById('lblSalarioBoton').innerText = "10.25";
+            horasSemanalesTrabajo = 40;
+            document.getElementById('lblSalarioBoton').innerText = "N/A";
+            document.getElementById('lblHorasSemanaLcd').innerText = "40";
             document.getElementById('listaPrecios').innerHTML = 'Lista vacía<span class="lcd-tipeo"></span>';
             document.getElementById('flechaGuia').style.display = "none"; sPpl = "0"; modoSerruchoActivo = false; memoriaSerruchoCortes = "2";
             document.getElementById('lblPpl').innerText = "N/A"; sDesc = "0"; memoriaDescuentoPct = "0"; modoDescuentoActivo = false; document.getElementById('lblDesc').innerText = "0";
@@ -625,7 +645,9 @@
                     document.getElementById('flechaGuia').style.display = "none";
                     bloqueSubPantallaSalario.style.display = "flex";
                     wrapperSalario.style.display = "block";
+                    
                     document.getElementById('btnModoSalario').className = "caja-data btn-on";
+                    document.getElementById('lblSalarioBoton').innerText = "$" + precioHoraTrabajo.toFixed(2) + "/h";
                     calcularSalarioSubPantalla();
                 } else {
                     lcd.classList.remove('modo-salario-activo');
@@ -633,7 +655,9 @@
                     wrapperSalario.style.display = "none";
                     bloqueListaCompras.style.display = "block";
                     wrapperCompras.style.display = "block";
+                    
                     document.getElementById('btnModoSalario').className = "caja-data btn-off";
+                    document.getElementById('lblSalarioBoton').innerText = "N/A";
                     if (preciosGuardados.length >= 3) document.getElementById('flechaGuia').style.display = "block";
                     calc(); 
                 }
@@ -649,6 +673,7 @@
                 bloqueListaCompras.style.display = "block";
                 wrapperCompras.style.display = "block";
                 document.getElementById('btnModoSalario').className = "caja-data btn-off";
+                document.getElementById('lblSalarioBoton').innerText = "N/A";
             }
 
             const numSub = document.getElementById('lblSub'), numPpl = document.getElementById('lblPpl'), numDesc = document.getElementById('lblDesc'), numTip = document.getElementById('lblTip'), numIvu = document.getElementById('lblIvuBoton');
@@ -694,9 +719,9 @@
         }
 
         function calcularSalarioSubPantalla() {
-            let semanal = precioHoraTrabajo * 40; 
+            let semanal = precioHoraTrabajo * horasSemanalesTrabajo; 
             let mensual = semanal * 4.3333; 
-            document.getElementById('lblSalHoraLcd').innerText = "$" + precioHoraTrabajo.toFixed(2);
+            document.getElementById('lblSalHoraLcd').innerText = "$" + precioHoraTrabajo.toFixed(2) + "/h";
             document.getElementById('outSalSemanal').innerText = "$" + semanal.toFixed(2);
             document.getElementById('outSalMensual').innerText = "$" + mensual.toFixed(2);
         }
@@ -802,6 +827,52 @@
             actualizarHeaderIndicadores();
         }
 
+        function abrirHologramaRecibo() {
+            if (!sistemaEncendido) return;
+            reproducirSonido('caja');
+            let numPplRaw = parseInt(sPpl); 
+            let nPpl = (modoSerruchoActivo && !isNaN(numPplRaw) && numPplRaw > 1) ? numPplRaw : 1;
+            let dPct = modoDescuentoActivo ? (parseFloat(memoriaDescuentoPct) || 0) : 0;
+            let tPct = incluirPropina ? (parseFloat(memoriaTipPct) || 0) : 0;
+            
+            let sumaPreciosGuardados = preciosGuardados.reduce((sum, sum_item) => sum + sum_item.precio, 0);
+            let sumaDescuentosGuardados = preciosGuardados.reduce((sum, sum_item) => sum + sum_item.descuento, 0);
+            let impuestoTotalAcumulado = preciosGuardados.reduce((sum, sum_item) => sum + sum_item.ivuCalculado, 0);
+            
+            let precioEnTeclado = parseFloat(sSub) || 0;
+            let descuentoEnTeclado = precioEnTeclado * (dPct / 100);
+            let precioDescontadoTeclado = precioEnTeclado - descuentoEnTeclado;
+            let impuestoEnTeclado = precioDescontadoTeclado * (ivu / 100);
+            
+            let nSub = sumaPreciosGuardados + precioEnTeclado;
+            let rebajaTotal = sumaDescuentosGuardados + descuentoEnTeclado;
+            let impuestoTotal = impuestoTotalAcumulado + impuestoEnTeclado;
+            let subtotalDescontado = nSub - rebajaTotal;
+            let propinaTotal = subtotalDescontado * (tPct / 100);
+            let totalNetoGlobal = subtotalDescontado + impuestoTotal + propinaTotal;
+            let porSerrucho = totalNetoGlobal / nSerrucho;
+            
+            document.getElementById('outDesc').innerText = '-\$' + rebajaTotal.toFixed(2); 
+            document.getElementById('outTip').innerText = '\$' + propinaTotal.toFixed(2);
+            document.getElementById('outIvu').innerText = '\$' + impuestoTotal.toFixed(2); 
+            document.getElementById('outPer').innerText = totalNetoGlobal.toFixed(2);
+            
+            document.getElementById('rowDesc').style.opacity = modoDescuentoActivo ? "1" : "0.3";
+            document.getElementById('rowTip').style.opacity = incluirPropina ? "1" : "0.3";
+            document.getElementById('rowIvu').style.opacity = modoIvuActivo ? "1" : "0.3";
+
+            if (modoSerruchoActivo) {
+                document.getElementById('txtSerruchoLabelType').innerText = `SERRUCHO (C/U): `;
+                document.getElementById('outPerPersonaLine').innerText = '$' + porSerrucho.toFixed(2);
+                document.getElementById('rowPersonaCuota').style.opacity = "1"; 
+            } else {
+                document.getElementById('txtSerruchoLabelType').innerText = `SERRUCHO (C/U): N/A`;
+                document.getElementById('outPerPersonaLine').innerText = ``;
+                document.getElementById('rowPersonaCuota').style.opacity = "0.3"; 
+            }
+            actualizarHeaderIndicadores();
+        }
+
         // 🌌 CONSTRUCTOR DEL RECIBO HOLOGRÁFICO UNIFICADO
         function abrirHologramaRecibo() {
             if (!sistemaEncendido) return;
@@ -858,10 +929,10 @@
                 txt += `===============================\n`;
             }
             if (precioHoraTrabajo > 0) {
-                let sem = precioHoraTrabajo * 40;
+                let sem = precioHoraTrabajo * horasSemanalesTrabajo;
                 txt += `\n===============================\n     PROYECCIÓN DE SALARIO\n===============================\n`;
                 txt += ` Paga por Hora:     $${precioHoraTrabajo.toFixed(2).padStart(8)}\n`;
-                txt += ` Horas Semana :          40 hrs\n`;
+                txt += ` Horas Semana :     ${horasSemanalesTrabajo.toString().padStart(8)} hrs\n`;
                 txt += ` -----------------------------\n`;
                 txt += ` CHEQUE SEMANAL:    $${sem.toFixed(2).padStart(8)}\n`;
                 txt += ` ESTIMADO MENSUAL:  $${(sem * 4.3333).toFixed(2).padStart(8)}\n`;
