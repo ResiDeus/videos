@@ -207,14 +207,20 @@
         #cajaSub .lbl-val { font-size: 18px !important; font-weight: 900; color: #fff !important; }
 
         /* ==========================================================================
-           🌴 TECLADO SYNTHWAVE: NOCHE NOCTURNA RELAX CON ESTRELLAS Y FLASH BLANCO
+           🌴 TECLADO SYNTHWAVE: NOCHE RELAX CON ESTRELLAS REALES Y AURAS DE NEÓN
            ========================================================================== */
         .pad-num { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; width: 100%; }
 
-        /* 🌌 Animación ultra lenta y relax de las estrellas nocturnas */
+        /* ✨ Animación ultra lenta para que las estrellas parpadeen suavemente */
         @keyframes estrellasRelaxNoche {
-            0%, 100% { opacity: 0.15; transform: translateY(0); }
-            50% { opacity: 0.8; transform: translateY(-1px); }
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 0.9; }
+        }
+
+        /* 🔮 Animación de aura parpadeante para los números (Text Glow) */
+        @keyframes auraNeonParpadeo {
+            0%, 100% { text-shadow: 0 0 4px var(--neon-secondary), 0 0 10px var(--neon-secondary); }
+            50% { text-shadow: 0 0 8px var(--neon-secondary), 0 0 18px var(--neon-secondary), 0 0 25px var(--neon-secondary); }
         }
 
         /* Estructura Base de los Botones del Teclado */
@@ -233,16 +239,16 @@
             z-index: 10; 
             opacity: 1 !important; 
             pointer-events: auto !important;
-            /* Capa 1: Fondo Nocturno Relax | Capa 2: Palmas Retro */
-            background-repeat: no-repeat, no-repeat !important;
-            background-position: center, center right !important;
-            background-size: cover, contain !important;
-            transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+            /* Dos capas fijas: El fondo relax azul y el SVG de palmas al borde derecho */
+            background-repeat: no-repeat !important;
+            background-position: center right !important;
+            background-size: contain !important;
+            transition: border-color 0.2s, box-shadow 0.2s;
             user-select: none;
             -webkit-user-select: none;
         }
 
-        /* 🚨 FIJACIÓN ABSOLUTA: Flash Blanco Sólido instantáneo y permanente al presionar/mantener */
+        /* 🚨 REGLA MAESTRA DE PRESIÓN: Flash Blanco Puro y Sólido instantáneo en cualquier Tema */
         .btn-key:active, .btn-back:active {
             background-color: #ffffff !important;
             background-image: none !important;
@@ -253,62 +259,69 @@
             animation: none !important;
             transition: none !important;
         }
+        .btn-key:active::before, .btn-back:active::before { display: none !important; }
 
-        /* Pseudo-elemento para animar las estrellitas de fondo muy lentamente */
+        /* 🌌 Capa Vectorial Exclusiva de Estrellas para Alta Visibilidad en iOS */
         .btn-key::before, .btn-back::before {
             content: "";
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://w3.org' viewBox='0 0 100 100'><circle cx='15' cy='20' r='1' fill='%23ffffff'/><circle cx='80' cy='15' r='1' fill='%23ffffff'/><circle cx='45' cy='50' r='1' fill='%23ffffff'/><circle cx='25' cy='75' r='1' fill='%23ffffff'/><circle cx='70' cy='70' r='1' fill='%23ffffff'/></svg>");
-            background-size: cover;
-            animation: estrellasRelaxNoche 4s infinite ease-in-out;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://w3.org' viewBox='0 0 100 100'><circle cx='15' cy='18' r='1.5' fill='%23ffffff'/><circle cx='82' cy='12' r='1.2' fill='%23ffffff'/><circle cx='42' cy='32' r='1.5' fill='%23ffffff'/><circle cx='22' cy='78' r='1.2' fill='%23ffffff'/><circle cx='72' cy='68' r='1.5' fill='%23ffffff'/></svg>") !important;
+            background-size: 100% 100% !important;
+            background-repeat: no-repeat !important;
+            animation: estrellasRelaxNoche 3.5s infinite ease-in-out;
             pointer-events: none;
             z-index: 1;
         }
 
         /* ==========================================================================
-           🎨 PALMAS Y MATICES DE NEONES NOCTURNOS POR CADA TEMA
+           🎨 CAPAS CONTRIBUTIVAS Y AURAS DE COLOR DE LOS CONTROLES POR TEMA
            ========================================================================== */
 
-        /* 🔵 TEMA 1: CYBERPUNK (Azul Oscuro Cósmico con Palmas Cyan y Magenta) */
+        /* 🔵 TEMA 1: CYBERPUNK */
         body.theme-cyberpunk .btn-key, body.theme-cyberpunk .btn-back {
-            background-color: #050f26 !important;
-            background-image: none, url("data:image/svg+xml;utf8,<svg xmlns='http://w3.org' viewBox='0 0 100 100'><path d='M100,100 Q80,70 50,70 Q75,55 100,45 Q70,40 55,20 Q80,25 100,5 Q60,15 45,5 Q65,0 80,-15 Q50,-5 35,-15 Q40,-35 45,-55 Q20,-30 0,-40 C30,10 60,40 100,100 Z' fill='%2300f0ff' opacity='0.25'/><path d='M100,100 Q85,75 60,80 Q78,65 100,60 Q75,50 65,35 Q82,35 100,20 Q65,25 55,15 Z' fill='%23ff007f' opacity='0.2'/></svg>") !important;
+            --neon-secondary: #00f0ff;
+            background-color: #040d21 !important;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://w3.org' viewBox='0 0 100 100'><path d='M100,100 Q80,70 50,70 Q75,55 100,45 Q70,40 55,20 Q80,25 100,5 Q60,15 45,5 Q65,0 80,-15 Q50,-5 35,-15 Q40,-35 45,-55 Q20,-30 0,-40 C30,10 60,40 100,100 Z' fill='%2300f0ff' opacity='0.22'/><path d='M100,100 Q85,75 60,80 Q78,65 100,60 Q75,50 65,35 Q82,35 100,20 Q65,25 55,15 Z' fill='%23ff007f' opacity='0.18'/></svg>") !important;
             color: #ffffff !important;
             border: 2px solid #00f0ff !important;
             box-shadow: 0 0 8px rgba(0, 240, 255, 0.3) !important;
-            text-shadow: 0 0 4px rgba(255, 255, 255, 0.6) !important;
+            animation: auraNeonParpadeo 2.5s infinite ease-in-out; /* Activa el aura parpadeante */
         }
 
-        /* 🟡 TEMA 2: RETRO GOLD (Azul Oscuro Ámbar con Palmas Oro Viejo) */
+        /* 🟡 TEMA 2: RETRO GOLD */
         body.theme-retro-gold .btn-key, body.theme-retro-gold .btn-back {
-            background-color: #040c1c !important;
-            background-image: none, url("data:image/svg+xml;utf8,<svg xmlns='http://w3.org' viewBox='0 0 100 100'><path d='M100,100 Q80,70 50,70 Q75,55 100,45 Q70,40 55,20 Q80,25 100,5 Q60,15 45,5 Q65,0 80,-15 Q50,-5 35,-15 Q40,-35 45,-55 Q20,-30 0,-40 C30,10 60,40 100,100 Z' fill='%23fbbf24' opacity='0.22'/><path d='M100,100 Q85,75 60,80 Q78,65 100,60 Q75,50 65,35 Q82,35 100,20 Q65,25 55,15 Z' fill='%23b45309' opacity='0.2'/></svg>") !important;
+            --neon-secondary: #fbbf24;
+            background-color: #030a17 !important;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://w3.org' viewBox='0 0 100 100'><path d='M100,100 Q80,70 50,70 Q75,55 100,45 Q70,40 55,20 Q80,25 100,5 Q60,15 45,5 Q65,0 80,-15 Q50,-5 35,-15 Q40,-35 45,-55 Q20,-30 0,-40 C30,10 60,40 100,100 Z' fill='%23fbbf24' opacity='0.2'/><path d='M100,100 Q85,75 60,80 Q78,65 100,60 Q75,50 65,35 Q82,35 100,20 Q65,25 55,15 Z' fill='%23b45309' opacity='0.15'/></svg>") !important;
             color: #ffffff !important;
             border: 1px solid #fbbf24 !important;
-            box-shadow: 0 0 8px rgba(251, 191, 36, 0.25) !important;
-            text-shadow: 0 0 4px rgba(251, 191, 36, 0.5) !important;
+            box-shadow: 0 0 8px rgba(251, 191, 36, 0.22) !important;
+            animation: auraNeonParpadeo 2.8s infinite ease-in-out;
         }
 
-        /* 🟢 TEMA 3: MATRIX (Azul Oscuro Abisal con Palmas Esmeralda y Fósforo) */
+        /* 🟢 TEMA 3: MATRIX */
         body.theme-matrix .btn-key, body.theme-matrix .btn-back {
-            background-color: #020a17 !important;
-            background-image: none, url("data:image/svg+xml;utf8,<svg xmlns='http://w3.org' viewBox='0 0 100 100'><path d='M100,100 Q80,70 50,70 Q75,55 100,45 Q70,40 55,20 Q80,25 100,5 Q60,15 45,5 Q65,0 80,-15 Q50,-5 35,-15 Q40,-35 45,-55 Q20,-30 0,-40 C30,10 60,40 100,100 Z' fill='%2334d399' opacity='0.22'/><path d='M100,100 Q85,75 60,80 Q78,65 100,60 Q75,50 65,35 Q82,35 100,20 Q65,25 55,15 Z' fill='%23047857' opacity='0.2'/></svg>") !important;
+            --neon-secondary: #34d399;
+            background-color: #020814 !important;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://w3.org' viewBox='0 0 100 100'><path d='M100,100 Q80,70 50,70 Q75,55 100,45 Q70,40 55,20 Q80,25 100,5 Q60,15 45,5 Q65,0 80,-15 Q50,-5 35,-15 Q40,-35 45,-55 Q20,-30 0,-40 C30,10 60,40 100,100 Z' fill='%2334d399' opacity='0.2'/><path d='M100,100 Q85,75 60,80 Q78,65 100,60 Q75,50 65,35 Q82,35 100,20 Q65,25 55,15 Z' fill='%23047857' opacity='0.15'/></svg>") !important;
             color: #ffffff !important;
             border: 1px solid #10b981 !important;
-            box-shadow: 0 0 8px rgba(16, 185, 129, 0.25) !important;
-            text-shadow: 0 0 4px rgba(52, 211, 153, 0.5) !important;
+            box-shadow: 0 0 8px rgba(16, 185, 129, 0.22) !important;
+            animation: auraNeonParpadeo 3s infinite ease-in-out;
         }
 
-        /* 🟠 TEMA 4: SUNSET (Azul Oscuro Crepúsculo con Palmas Rubí y Magma) */
+        /* 🟠 TEMA 4: SUNSET */
         body.theme-sunset .btn-key, body.theme-sunset .btn-back {
-            background-color: #030e21 !important;
-            background-image: none, url("data:image/svg+xml;utf8,<svg xmlns='http://w3.org' viewBox='0 0 100 100'><path d='M100,100 Q80,70 50,70 Q75,55 100,45 Q70,40 55,20 Q80,25 100,5 Q60,15 45,5 Q65,0 80,-15 Q50,-5 35,-15 Q40,-35 45,-55 Q20,-30 0,-40 C30,10 60,40 100,100 Z' fill='%23f97316' opacity='0.25'/><path d='M100,100 Q85,75 60,80 Q78,65 100,60 Q75,50 65,35 Q82,35 100,20 Q65,25 55,15 Z' fill='%2378350f' opacity='0.2'/></svg>") !important;
+            --neon-secondary: #f97316;
+            background-color: #02091c !important;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://w3.org' viewBox='0 0 100 100'><path d='M100,100 Q80,70 50,70 Q75,55 100,45 Q70,40 55,20 Q80,25 100,5 Q60,15 45,5 Q65,0 80,-15 Q50,-5 35,-15 Q40,-35 45,-55 Q20,-30 0,-40 C30,10 60,40 100,100 Z' fill='%23f97316' opacity='0.22'/><path d='M100,100 Q85,75 60,80 Q78,65 100,60 Q75,50 65,35 Q82,35 100,20 Q65,25 55,15 Z' fill='%2378350f' opacity='0.15'/></svg>") !important;
             color: #ffffff !important;
             border: 1px solid #f97316 !important;
-            box-shadow: 0 0 8px rgba(249, 115, 22, 0.25) !important;
-            text-shadow: 0 0 4px rgba(253, 186, 116, 0.5) !important;
+            box-shadow: 0 0 8px rgba(249, 115, 22, 0.22) !important;
+            animation: auraNeonParpadeo 2.6s infinite ease-in-out;
         }
+
 
 
 
