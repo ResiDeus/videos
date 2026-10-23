@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Calculadora de ResiDeus Master Pro</title>
+    <title>Calculadora de ResiDeus Master Ultimate</title>
 
     <!-- 📱 CONFIGURACIÓN DE PANTALLA DE INICIO IPHONE / PWA -->
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -106,7 +106,7 @@
         /* Botón de encendido verde activo constante al apagarse */
         .chasis.global-power-off .btn-power-bottom { background: #022c22 !important; border-color: #10b981 !important; color: #34d399 !important; text-shadow: 0 0 8px #10b981 !important; opacity: 1 !important; pointer-events: auto !important; }
 
-        /* 🟢 PANTALLA LCD OPTIMIZADA CON ALTURA EXTRA CONFORTABLE PARA LAS 10 LÍNEAS */
+        /* 🟢 PANTALLA LCD RETRO DE ALTA DENSIDAD */
         .lcd { width: 100%; height: 185px; background: #92b043; border: 2px solid #000; border-radius: 14px; color: #000; box-shadow: inset 0 2px 6px rgba(0,0,0,0.3); font-weight: bold; padding: 6px 8px; display: flex; flex-direction: column; justify-content: space-between; position: relative; transition: all 0.4s ease; transform-origin: center; z-index: 12; overflow: hidden; }
         
         /* 🔵 MUTACIÓN A SUB-PANTALLA AZUL CIBERNÉTICO CONTRIBUTIVA DE SALARIO */
@@ -122,33 +122,12 @@
         .lcd-header { display: flex; justify-content: space-between; font-size: 10px; border-bottom: 1px solid rgba(0,0,0,0.2); line-height: 1.2; }
         .blinking-header-text { opacity: 1; }
 
-        /* 🚨 REEMPLAZO PASO 1: EXPANSIÓN TOTAL DE CONTENEDORES PARA CERO BOTONES PICADOS */
-        .lcd-wrapper { 
-            position: relative; 
-            flex-grow: 1; 
-            display: flex; 
-            flex-direction: column; 
-            margin: 0; 
-            max-height: 78px; 
-            overflow: visible !important; 
-        }
-        .listaPrecios-container {
-            flex-grow: 1; 
-            position: relative; 
-            display: flex; 
-            flex-direction: column; 
-            overflow: visible !important; 
-               /* 🚨 REEMPLAZO PASO 1: JAULA DE 4 ÍTEMS MÁXIMOS CON SCROLL INERCIAL PARA IOS */
-        .lcd-historial { 
-            flex-grow: 1; 
-            font-size: 9px; 
-            max-height: 48px; 
-            overflow-y: auto !important; 
-            text-align: left; 
-            padding-right: 4px; 
-            line-height: 1.2; 
-            -webkit-overflow-scrolling: touch; 
-        }
+        /* Contenedores con altura calibrada para que nada se piche ni rompa el overflow */
+        .lcd-wrapper { position: relative; flex-grow: 1; display: flex; flex-direction: column; margin: 0; max-height: 78px; overflow: visible !important; }
+        .listaPrecios-container { flex-grow: 1; position: relative; display: flex; flex-direction: column; overflow: visible !important; }
+
+        /* 🚨 JAULA ESTRICTA DE 4 ÍTEMS MÁXIMOS CON SCROLL INERIAL */
+        .lcd-historial { flex-grow: 1; font-size: 9px; max-height: 48px; overflow-y: auto !important; text-align: left; padding-right: 4px; line-height: 1.2; -webkit-overflow-scrolling: touch; }
         .lcd-body { text-align: left !important; font-size: 9px; line-height: 1.2; }
         .lcd-total { font-size: 22px; font-weight: 900; text-align: left !important; line-height: 1.1; }
 
@@ -224,49 +203,22 @@
         body.theme-cyberpunk #btnN7, body.theme-cyberpunk #btnN8, body.theme-cyberpunk #btnN9 {
             background: linear-gradient(180deg, #163e54 0%, #0d283d 100%) !important; color: #ffffff !important; border: 2px solid #00f0ff !important; box-shadow: 0 0 8px rgba(0, 240, 255, 0.4), inset 0 1px 3px rgba(255, 255, 255, 0.1) !important; text-shadow: 0 0 4px rgba(255, 255, 255, 0.6) !important;
         }
-        /* Eliminamos el pseudo-elemento ::before estático que creaba el steady resplandor blanco erróneo */
         body.theme-cyberpunk .btn-key::after, body.theme-cyberpunk .btn-back::after { display: none !important; content: none !important; }
 
-                /* 🚨 PASO 1: PRIORIDAD DE CAPA ABSOLUTA PARA BOTONES INTERNOS DEL LCD */
-        .btn-hrs-lcd { 
-            background: #00f0ff; border: none; color: #051e36; font-size: 11px; font-weight: 900; 
-            width: 16px; height: 16px; border-radius: 4px; display: inline-flex; justify-content: center; 
-            align-items: center; cursor: pointer; margin: 0 1px; vertical-align: middle; 
-            transition: all 0.1s ease; font-family: monospace;
-            /* Inyección de prioridad háptica para romper el cristal del LCD */
-            position: relative !important; z-index: 100 !important; overflow: hidden; 
-        }
+        /* ➕ / ➖ MICRO BOTONES Y CONTROLES INTERACTIVOS INTERNOS DEL LCD AZUL EN ALTA CAPA */
+        .btn-hrs-lcd { background: #00f0ff; border: none; color: #051e36; font-size: 11px; font-weight: 900; width: 16px; height: 16px; border-radius: 4px; display: inline-flex; justify-content: center; align-items: center; cursor: pointer; margin: 0 1px; vertical-align: middle; transition: all 0.1s ease; font-family: monospace; position: relative !important; z-index: 100 !important; overflow: hidden; }
         
-        .tab-btn-lcd { 
-            background: rgba(0,240,255,0.12); border: 1px solid rgba(0,240,255,0.35); color: rgba(0,240,255,0.8); 
-            font-size: 8px; font-weight: 900; padding: 2px 5px; border-radius: 4px; cursor: pointer; 
-            font-family: monospace; transition: all 0.15s ease; flex-grow: 1; text-align: center;
-            /* Inyección de prioridad háptica para romper el cristal del LCD */
-            position: relative !important; z-index: 100 !important; overflow: hidden;
-        }
-
+        .tab-btn-lcd { background: rgba(0,240,255,0.12); border: 1px solid rgba(0,240,255,0.35); color: rgba(0,240,255,0.8); font-size: 8px; font-weight: 900; padding: 2px 5px; border-radius: 4px; cursor: pointer; font-family: monospace; transition: all 0.15s ease; flex-grow: 1; text-align: center; position: relative !important; z-index: 100 !important; overflow: hidden; }
         .tab-btn-lcd.active { background: #00f0ff !important; color: #051e36 !important; box-shadow: 0 0 6px #00f0ff !important; border-color: #fff !important; }
         
-        /* 🟢 Nuevos colores de alta visibilidad para Seguro Social y Medicare */
-        .toggle-label-lcd { 
-            font-size: 8px; font-weight: 900; background: rgba(0,0,0,0.2); border: 1px solid rgba(0,255,102,0.2); 
-            padding: 3px 5px; border-radius: 4px; cursor: pointer; transition: all 0.15s ease; 
-            width: 100%; text-align: center; font-family: monospace; position: relative; overflow: hidden;
-        }
-        .toggle-label-lcd.on { 
-            color: #00ff66 !important; border-color: #00ff66 !important; 
-            text-shadow: 0 0 4px #00ff66 !important; background: rgba(0,255,102,0.12) !important; 
-            box-shadow: inset 0 0 4px rgba(0,255,102,0.2);
-        }
-        .toggle-label-lcd.off { 
-            color: rgba(255, 191, 36, 0.4) !important; border-color: rgba(255, 191, 36, 0.3) !important; 
-            background: rgba(251, 191, 36, 0.05) !important;
-        }
+        .toggle-label-lcd { font-size: 8px; font-weight: 900; background: rgba(0,0,0,0.2); border: 1px solid rgba(0,255,102,0.2); padding: 3px 5px; border-radius: 4px; cursor: pointer; transition: all 0.15s ease; width: 100%; text-align: center; font-family: monospace; position: relative !important; z-index: 100 !important; overflow: hidden; }
+        .toggle-label-lcd.on { color: #00ff66 !important; border-color: #00ff66 !important; text-shadow: 0 0 4px #00ff66 !important; background: rgba(0,255,102,0.12) !important; box-shadow: inset 0 0 4px rgba(0,255,102,0.2); }
+        .toggle-label-lcd.off { color: rgba(255, 191, 36, 0.4) !important; border-color: rgba(255, 191, 36, 0.3) !important; background: rgba(251, 191, 36, 0.05) !important; }
 
         .btn-theme, .btn-receipt, .btn-power-bottom { border-radius: 10px; font-weight: bold; cursor: pointer; transition: all 0.2s ease; text-transform: uppercase; display: flex; justify-content: center; align-items: center; font-family: monospace; height: 28px; font-size: 8px; background: var(--num-bg-theme) !important; border: 2px solid var(--neon-primary) !important; color: #ccc !important; width: 100%; z-index: 15; }
         .row-acciones-inferior { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-top: 2px; width: 100%; }
         
-        /* 🚨 CONTROL ULTRA ESTRICTO: Ocultamiento físico absoluto para evitar congelados visuales de fondo */
+        /* 🚨 ESCUDO ANTI-FANTASMAS POR HARDWARE: Ocultamiento absoluto inicial con display: none */
         .holograma-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10, 2, 24, 0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 100; display: none !important; justify-content: center; align-items: center; opacity: 0; }
         .holograma-overlay.activo { display: flex !important; opacity: 1; }
         .holograma-ticket { width: 320px; max-height: 80vh; background: rgba(15, 10, 25, 0.95); border: 2px solid var(--receipt-glow); box-shadow: 0 0 30px var(--receipt-glow), inset 0 0 15px rgba(255,255,255,0.05); border-radius: 16px; padding: 16px; position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 12px; transform: scale(0.85); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); color: #fff; font-family: monospace; }
@@ -284,19 +236,19 @@
     <div class="grid3d"></div>
 
     <div class="chasis" id="calcChasis">
-        <!-- 🟢 PANTALLA LCD MULTI-MODAL DE ALTA DENSIDAD -->
+        <!-- 🟢 PANTALLA LCD MULTI-MODAL CON ESPACIOS PURGADOS -->
         <div class="lcd" id="pantallaVerde">
             <div class="lcd-header">
                 <span id="txtHeaderIndicadores" class="blinking-header-text">SISTEMA ACTIVO</span>
             </div>
             <div class="lcd-wrapper">
-                <div class="listaPrecios-container" style="flex-grow: 1; position: relative; display: flex; flex-direction: column; overflow: hidden;">
-<!-- Bloque Vista de Compras -->
+                <div class="listaPrecios-container" style="flex-grow: 1; position: relative; display: flex; flex-direction: column;">
+                    <!-- Bloque Vista de Compras (Jaula Fija con Scroll) -->
                     <div class="lcd-historial" id="listaPrecios">
                         <span id="lblArtText">Lista vacía<span class="lcd-tipeo"></span></span>
                     </div>
                     
-                    <!-- 🚨 PASO 2: MAQUETA DEL LCD CON COMPORTAMIENTO VISIBLE Y AJUSTE DE MÁRGENES DE CONTROL -->
+                    <!-- 🚨 LA GRAN CAPA DE SALARIO DE ALTA COMODIDAD (Doble Columna) -->
                     <div id="vistaSubPantallaSalario" style="display: none; flex-direction: row; justify-content: space-between; align-items: center; height: 100%; font-family: monospace; line-height: 1.1; font-size: 10px; gap: 6px; padding: 4px 0; overflow: visible;">
                         
                         <!-- COLUMNA IZQUIERDA: Tarifas y Horas con separación fija -->
@@ -307,10 +259,9 @@
                             </div>
                             <div style="display: flex; flex-direction: column; gap: 2px;">
                                 <span style="opacity: 0.85; font-size: 8.5px; font-weight: bold;">HORAS POR SEMANA:</span>
-                                <div style="display: flex; align-items: center; justify-content: flex-start;">
+                                <div style="display: flex; align-items: center; justify-content: flex-start; overflow: visible;">
                                     <div style="min-width: 24px;"><span id="lblHorasSemanaLcd" style="font-size: 11px; font-weight: 900; background: rgba(0,0,0,0.2); padding: 2px 4px; border-radius: 3px;">40</span></div>
-                                    <!-- Separación fija de 12px (equivalente a 3 spacebars) -->
-                                    <div style="margin-left: 12px; display: flex; gap: 2px;">
+                                    <div style="margin-left: 12px; display: flex; gap: 2px; position: relative; z-index: 100;">
                                         <button class="btn-hrs-lcd" onmousedown="iniciarAccionLcdControles('horas', -1)" ontouchstart="iniciarAccionLcdControlesTouch(event, 'horas', -1)" onmouseup="detenerAccionLcdControles()" onmouseleave="detenerAccionLcdControles()" ontouchend="detenerAccionLcdControles()">-</button>
                                         <button class="btn-hrs-lcd" onmousedown="iniciarAccionLcdControles('horas', 1)" ontouchstart="iniciarAccionLcdControlesTouch(event, 'horas', 1)" onmouseup="detenerAccionLcdControles()" onmouseleave="detenerAccionLcdControles()" ontouchend="detenerAccionLcdControles()">+</button>
                                     </div>
@@ -318,7 +269,7 @@
                             </div>
                         </div>
 
-                        <!-- COLUMNA DERECHA: NOMINA/FREELANCE y Hacienda con separación fija abajo -->
+                        <!-- COLUMNA DERECHA: Modos, Switches Horizontales e Input abajo -->
                         <div style="display: flex; flex-direction: column; gap: 4px; width: 52%; border-left: 1px dotted rgba(0,240,255,0.2); padding-left: 6px; height: 100%; justify-content: center; overflow: visible;">
                             <div style="display: flex; align-items: center; gap: 2px; width: 100%; overflow: visible;">
                                 <button id="tabW2" class="tab-btn-lcd" onclick="cambiarRegimenContributivo('W2')">NOMINA</button>
@@ -333,9 +284,8 @@
                             
                             <div style="display: flex; flex-direction: column; width: 100%; border-top: 1px dotted rgba(0,240,255,0.15); padding-top: 3px; gap: 2px; overflow: visible;">
                                 <span id="lblTextoManual" style="font-size: 9px; opacity: 1; font-weight: 900; color: #fff; white-space: nowrap; text-shadow: 0 0 2px rgba(0,240,255,0.2);">RETENCIÓN MANUAL:</span>
-                                <div style="display: flex; align-items: center; justify-content: flex-start; overflow: visible;">
+                                <div style="display: flex; align-items: center; justify-content: flex-start; overflow: visible; position: relative; z-index: 100;">
                                     <div style="min-width: 32px;"><span id="lblManualPctLcd" style="font-size: 10px; font-weight: 900; color: #fff; background: rgba(0,0,0,0.15); padding: 1px 4px; border-radius: 2px;">0.0%</span></div>
-                                    <!-- Separación fija de 12px (equivalente a 3 spacebars) -->
                                     <div style="margin-left: 12px; display: flex; gap: 2px;">
                                         <button id="btnManualMenos" class="btn-hrs-lcd" onmousedown="iniciarAccionLcdControles('manual', -0.1)" ontouchstart="iniciarAccionLcdControlesTouch(event, 'manual', -0.1)" onmouseup="detenerAccionLcdControles()" onmouseleave="detenerAccionLcdControles()" ontouchend="detenerAccionLcdControles()">-</button>
                                         <button id="btnManualMas" class="btn-hrs-lcd" onmousedown="iniciarAccionLcdControles('manual', 0.1)" ontouchstart="iniciarAccionLcdControlesTouch(event, 'manual', 0.1)" onmouseup="detenerAccionLcdControles()" onmouseleave="detenerAccionLcdControles()" ontouchend="detenerAccionLcdControles()">+</button>
@@ -345,10 +295,6 @@
                         </div>
 
                     </div>
-
-
-
-
                     <div class="scroll-hint" id="flechaGuia">▼ deslizar</div>
                 </div>
             </div>
@@ -435,7 +381,7 @@
             </div>
         </div>
 
-        <!-- ⌨️ TECLADO NUMÉRICO REORDENADO -->
+        <!-- Teclado Numérico -->
         <div class="pad-num">
             <button id="btnN7" onclick="num('7')" class="btn-key">7</button><button id="btnN8" onclick="num('8')" class="btn-key">8</button><button id="btnN9" onclick="num('9')" class="btn-key">9</button>
             <button id="btnN4" onclick="num('4')" class="btn-key">4</button><button id="btnN5" onclick="num('5')" class="btn-key">5</button><button id="btnN6" onclick="num('6')" class="btn-key">6</button>
@@ -465,7 +411,7 @@
         </div>
     </div>
 
-    <div class="holograma-overlay" id="visorConfirmarApagado">
+<div class="holograma-overlay" id="visorConfirmarApagado">
         <div class="holograma-ticket" style="border-color: #ef4444; box-shadow: 0 0 30px rgba(239,68,68,0.4);">
             <div class="holograma-lineas"></div>
             <div style="font-weight: 900; text-align: center; letter-spacing: 1px; font-size: 14px; color: #ef4444;">ALERTA DE SISTEMA</div>
@@ -486,15 +432,14 @@
         let themes = ['theme-cyberpunk', 'theme-retro-gold', 'theme-matrix', 'theme-sunset'], temaActualIdx = 0;
         let sistemaEncendido = true; 
 
-        // 🚨 REEMPLAZO MODULAR JS: CONFIGURACIÓN DE ARRANQUE INICIAL AUTOMÁTICO EN MODO N/A (EXENTO)
+        // 📊 VARIABLES DE LA MEMORIA DE SALARIO AVANZADO ($10.50 DEFAULT)
         let modoSalarioActivo = false;
         let precioHoraTrabajo = 10.50; 
         let horasSemanalesTrabajo = 40; 
-        let regimenContributivo = 'EXENTO'; // El sistema ahora despierta directamente aquí
-        let ssActivo = false;              // Desactivado al inicio por regla exenta
-        let medActivo = false;             // Desactivado al inicio por regla exenta
+        let regimenContributivo = 'EXENTO'; // El sistema ahora arranca en N/A de fábrica
+        let ssActivo = false;              // Desactivado al inicio por regla N/A
+        let medActivo = false;             // Desactivado al inicio por regla N/A
         let porcientoManualRetencion = 0.0;
-
 
         let intervaloAutoIncremento = null;
         let timeoutAutoIncremento = null;
@@ -654,7 +599,7 @@
             actualizarHeaderIndicadores(); calc();
         }
 
-        // 🚨 PASO 3: MOTOR DE RÁFAGA CONTINUA TURBO EXCLUSIVO PARA LOS CONTROLES INTERNOS DEL LCD
+        // 🚨 MOTOR DE RÁFAGA TURBO PARA CONTROLES INTERNOS DEL LCD AZUL
         let timerLcdControlesTimeout = null;
         let timerLcdControlesInterval = null;
 
@@ -665,8 +610,6 @@
 
         function iniciarAccionLcdControles(destino, delta) {
             if (!sistemaEncendido || !modoSalarioActivo) return;
-            
-            // Primer disparo instantáneo al momento del tap
             ejecutarPasoFiltroLcd(destino, delta);
             
             let ticks = 0;
@@ -677,17 +620,12 @@
                 timerLcdControlesInterval = setInterval(() => {
                     ticks++;
                     let factorTurbo = 1;
-                    
-                    // Ráfaga inteligente progresiva según el tiempo de presión táctil
-                    if (ticks > 25) {
-                        factorTurbo = destino === 'horas' ? 4 : 3;
-                    } else if (ticks > 10) {
-                        factorTurbo = destino === 'horas' ? 2 : 2;
-                    }
+                    if (ticks > 25) factorTurbo = destino === 'horas' ? 4 : 3;
+                    else if (ticks > 10) factorTurbo = destino === 'horas' ? 2 : 2;
                     
                     ejecutarPasoFiltroLcd(destino, delta * factorTurbo);
-                }, 15); // Bucle ultra rápido de 15ms para respuesta instantánea en iOS
-            }, 300); // 300ms de espera estándar antes de activar la ráfaga continua
+                }, 15); // Ráfaga ultra violenta a 15ms para romper la fricción en iOS
+            }, 300);
         }
 
         function detenerAccionLcdControles() {
@@ -710,7 +648,6 @@
             }
             calcularSalarioSubPantalla();
         }
-
 
         function solicitarApagado() {
             if (!sistemaEncendido) {
@@ -782,15 +719,16 @@
             precioHoraTrabajo = 10.50;
             horasSemanalesTrabajo = 40;
             porcientoManualRetencion = 0.0;
-            regimenContributivo = 'W2';
-            ssActivo = true; medActivo = true;
+            regimenContributivo = 'EXENTO';
+            ssActivo = false; medActivo = false;
             
             document.getElementById('lblSalarioBoton').innerText = "N/A";
             document.getElementById('lblHorasSemanaLcd').innerText = "40";
             document.getElementById('lblManualPctLcd').innerText = "0.0%";
-            document.getElementById('toggleSS').className = "toggle-label-lcd on";
-            document.getElementById('toggleMED').className = "toggle-label-lcd on";
-            actualizarEstilosPestañasLcd('W2');
+            document.getElementById('toggleSS').className = "toggle-label-lcd off";
+            document.getElementById('toggleMED').className = "toggle-label-lcd off";
+            document.getElementById('lblTextoManual').innerText = "RETENCIÓN MANUAL:";
+            actualizarEstilosPestañasLcd('EXENTO');
 
             document.getElementById('listaPrecios').innerHTML = 'Lista vacía<span class="lcd-tipeo"></span>';
             document.getElementById('flechaGuia').style.display = "none"; sPpl = "0"; modoSerruchoActivo = false; memoriaSerruchoCortes = "2";
@@ -824,7 +762,6 @@
             const wrapperCompras = document.getElementById('wrapperDataComprasLcd');
             const wrapperSalario = document.getElementById('wrapperDataSalarioLcd');
 
-            // 🚨 REEMPLAZO MODULAR JS: CONMUTADOR DE PANTALLA CON ACTUALIZACIÓN DE ESTILOS EN MODO N/A
             if (f === 'sal') {
                 modoSalarioActivo = !modoSalarioActivo;
                 if (modoSalarioActivo) {
@@ -838,7 +775,6 @@
                     document.getElementById('btnModoSalario').className = "caja-data btn-on";
                     document.getElementById('lblSalarioBoton').innerText = "$" + precioHoraTrabajo.toFixed(2) + "/h";
                     
-                    // Asegura que las pestañas visuales reflejen el estado activo de N/A al encender
                     actualizarEstilosPestañasLcd(regimenContributivo);
                     calcularSalarioSubPantalla();
                 } else {
@@ -910,7 +846,6 @@
             actualizarHeaderIndicadores(); calc();
         }
 
-        // 🚨 REEMPLAZO TOTALMENTE INTEGRADO: CONMUTADORES CONTRIBUTIVOS CON VARIABLE DE HACIENDA Y VALORES DE ARRANQUE
         function cambiarRegimenContributivo(regimen) {
             if (!sistemaEncendido || !modoSalarioActivo) return;
             reproducirSonido('menu');
@@ -919,23 +854,19 @@
             const lblTexto = document.getElementById('lblTextoManual');
 
             if (regimen === 'W2') {
-                // Modo Nómina: Muta texto a HACIENDA, libera botones y arranca en 0% por defecto
                 lblTexto.innerText = "HACIENDA:";
                 porcientoManualRetencion = 0.0;
                 ssActivo = true; medActivo = true;
             } else if (regimen === '1099') {
-                // Modo Freelance: Muta texto a HACIENDA, libera botones y clava base de retención de ley de 10%
                 lblTexto.innerText = "HACIENDA:";
                 porcientoManualRetencion = 10.0;
                 ssActivo = true; medActivo = true;
             } else if (regimen === 'EXENTO') {
-                // Modo N/A: Restablece texto original, libera botones y regresa base a 0%
                 lblTexto.innerText = "RETENCIÓN MANUAL:";
                 porcientoManualRetencion = 0.0;
                 ssActivo = false; medActivo = false;
             }
 
-            // Sincroniza el número impreso en el LCD al instante de cambiar de régimen
             document.getElementById('lblManualPctLcd').innerText = porcientoManualRetencion.toFixed(1) + "%";
 
             actualizarEstilosPestañasLcd(regimen);
@@ -950,10 +881,8 @@
             document.getElementById('toggleSS').className = ssActivo ? "toggle-label-lcd on" : "toggle-label-lcd off";
             document.getElementById('toggleMED').className = medActivo ? "toggle-label-lcd on" : "toggle-label-lcd off";
 
-            // 🔓 REGLA DE LIBERACIÓN TOTAL: Habilita los botones de +/- y restablece opacidad en todos los modos
             const bMas = document.getElementById('btnManualMas');
             const bMenos = document.getElementById('btnManualMenos');
-            
             bMas.disabled = false; bMas.style.opacity = "1"; bMas.style.pointerEvents = "auto";
             bMenos.disabled = false; bMenos.style.opacity = "1"; bMenos.style.pointerEvents = "auto";
         }
@@ -971,9 +900,6 @@
             calcularSalarioSubPantalla();
         }
 
-
-
-        // 🚨 REEMPLAZO TOTALMENTE INTEGRADO: FUNCIÓN DE CÁLCULOS NETOS Y CARACTERES NUMÉRICOS
         function calcularSalarioSubPantalla() {
             let tasaSS = 0.0;
             let tasaMED = 0.0;
@@ -999,11 +925,8 @@
             let retencionAnual = brutoAnual * porcientoTotalDeduccion;
 
             document.getElementById('lblSalHoraLcd').innerText = "$" + precioHoraTrabajo.toFixed(2) + "/h";
-            
-            // Saneado matemático estricto a un solo decimal fijo para evitar números rotos infinitos
             document.getElementById('outSalRetencion').innerText = "-$" + retencionSemanal.toFixed(2) + " (" + (porcientoTotalDeduccion * 100).toFixed(1) + "%)";
             
-            // Inyección limpia y directa en los nodos renombrados como TOTAL
             document.getElementById('outSalSemanal').innerText = "$" + (brutoSemanal - retencionSemanal).toFixed(2);
             document.getElementById('outSalBisemanal').innerText = "$" + (brutoBisemanal - retencionBisemanal).toFixed(2);
             document.getElementById('outSalMensual').innerText = "$" + (brutoMensual - retencionMensual).toFixed(2);
@@ -1022,7 +945,6 @@
             calc();
         }
 
-
         function bksp() {
             if (!sistemaEncendido || modoSalarioActivo) return; 
             if (mode !== 'sub') mode = 'sub';
@@ -1040,7 +962,7 @@
                 reproducirSonido('add');
                 let dPct = modoDescuentoActivo ? (parseFloat(memoriaDescuentoPct) || 0) : 0;
                 let rebaja = val * (dPct / 100), precioDescontado = val - rebaja;
-                let ivuIndividual = precioDescontado * (ivu / 100);
+                                let ivuIndividual = precioDescontado * (ivu / 100);
                 let totalArticulo = precioDescontado + ivuIndividual;
                 
                 preciosGuardados.push({ precio: val, descuento: rebaja, ivuCalculado: ivuIndividual, porcientoIvuUsado: ivu, total: totalArticulo });
@@ -1166,17 +1088,16 @@
                 txt += `CUOTA POR CABEZA:   $${(totalNetoGlobal / nPpl).toFixed(2).padStart(8)}\n`;
                 txt += `===============================\n`;
             }
-
             txt += `    ¡Gracias por usar la app!`;
             textoReciboGlobal = txt;
             document.getElementById('textoContenidoHolo').innerText = txt;
             document.getElementById('btnCopiarHolo').innerText = "Copiar";
-            document.getElementById('visorHolograma').classList.add('activo');
+            document.getElementById('visorHolograma').classList.add('active');
         }
 
         function cerrarHologramaRecibo() {
             reproducirSonido('menu');
-            document.getElementById('visorHolograma').classList.remove('activo');
+            document.getElementById('visorHolograma').classList.remove('active');
         }
 
         function copiarTextoHolograma() {
