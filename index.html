@@ -1292,7 +1292,7 @@
             actualizarHeaderIndicadores();
         }
 
-        // 🚨 REEMPLAZO MAESTRO JS: RECIBO INTELIGENTE CON OCULTAMIENTO DE LÍNEA DE IVU SI ES 0.00
+        // 🚨 REPARACIÓN MAESTRA DE HARDWARE: APERTURA Y CIERRE DEL RECIBO 100% CORREGIDOS
         function abrirHologramaRecibo() {
             if (!sistemaEncendido) return;
             reproducirSonido('caja');
@@ -1322,7 +1322,7 @@
                     txt += `  Precio Base:       $${a.precio.toFixed(2).padStart(8)}\n`;
                     if(a.descuento > 0) txt += `  Descuento:        -$${a.descuento.toFixed(2).padStart(8)}\n`;
                     
-                    // 🛡️ Filtro en los artículos: Solo muestra la línea de IVU del artículo si fue mayor a 0
+                    // Solo muestra la línea de IVU del artículo si fue mayor a 0
                     if (a.ivuCalculado > 0) {
                         txt += `  IVU (${ivuFormateadoStr}%):    +$${a.ivuCalculado.toFixed(2).padStart(8)}\n`;
                     }
@@ -1337,7 +1337,7 @@
             txt += `Subtotal:          $${nSub.toFixed(2).padStart(8)}\n`;
             if(rebajaTotal > 0) txt += `Descuento Total:  -$${rebajaTotal.toFixed(2).padStart(8)}\n`;
             
-            // 🚫 REGLA ESTRICTA DE DISEÑO: Si el IVU acumulado es 0, se salta esta línea por completo
+            // 🚫 Si el IVU acumulado es 0, destruye la línea del recibo automáticamente
             if (impuestoTotal > 0) {
                 txt += `IVU Acumulado:     $${impuestoTotal.toFixed(2).padStart(8)}\n`;
             }
@@ -1354,19 +1354,19 @@
             }
             txt += `    ¡Gracias por usar la app!`;
             
+            // 🔓 CONEXIÓN DE CLASES LIMPIA: Despierta el visor de forma estable en iOS
             textoReciboGlobal = txt;
             document.getElementById('textoContenidoHolo').innerText = txt;
             document.getElementById('btnCopiarHolo').innerText = "Copiar";
-            document.getElementById('visorHolograma').classList.add('active');
+            document.getElementById('visorHolograma').classList.add('activo');
         }
 
-
-        
-        // HOLOGRAMA DE RECIBO
         function cerrarHologramaRecibo() {
             reproducirSonido('menu');
+            // Saneamiento de clases estándar para evitar que se cuelgue el modal de fondo
             document.getElementById('visorHolograma').classList.remove('activo');
         }
+
 
         function copiarTextoHolograma() {
             if (!sistemaEncendido) return;
