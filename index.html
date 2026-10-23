@@ -247,43 +247,44 @@
                         <span id="lblArtText">Lista vacía<span class="lcd-tipeo"></span></span>
                     </div>
                     
-                    <!-- 🚨 REDISEÑO ESPACIAL DE SALARIO AUTOMATIZADO (2 Columnas Limpias) -->
-                    <div id="vistaSubPantallaSalario" style="display: none; flex-direction: column; gap: 2px; justify-content: center; height: 100%; font-family: monospace; line-height: 1.2; font-size: 9px;">
-                        <!-- Fila 1: Paga por Hora -->
-                        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                            <span>PAGA POR HORA:</span>
-                            <span id="lblSalHoraLcd" style="font-weight: 900; background: rgba(0,0,0,0.25); padding: 0 4px; border-radius: 3px;">$10.50/h</span>
-                        </div>
-                        <!-- Fila 2: Horas por Semana -->
-                        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                            <span>HORAS POR SEMANA:</span>
-                            <div style="display: flex; align-items: center; gap: 2px;">
-                                <span id="lblHorasSemanaLcd" style="font-weight: 900;">40</span> <span style="font-size: 8px; opacity:0.8;">hrs</span>
-                                <button class="btn-hrs-lcd" onclick="modificarHorasSemanales(1)" style="margin-left: 4px;">+</button><button class="btn-hrs-lcd" onclick="modificarHorasSemanales(-1)">-</button>
+                    <!-- 🚨 REEMPLAZO PASO 1 Y 2: MAQUETA DE DOBLE COLUMNA CON TEXTOS AMPLIADOS Y ASIGNADOS -->
+                    <div id="vistaSubPantallaSalario" style="display: none; flex-direction: row; justify-content: space-between; align-items: center; height: 100%; font-family: monospace; line-height: 1.2; font-size: 8.5px; gap: 4px; padding: 2px 0;">
+                        
+                        <!-- COLUMNA IZQUIERDA: Tarifas y Tiempos de labor -->
+                        <div style="display: flex; flex-direction: column; gap: 4px; width: 48%; height: 100%; justify-content: center;">
+                            <div style="display: flex; flex-direction: column; gap: 1px;">
+                                <span style="opacity: 0.85; font-size: 7.5px;">PAGA POR HORA:</span>
+                                <span id="lblSalHoraLcd" style="font-weight: 900; background: rgba(0,0,0,0.25); padding: 2px 4px; border-radius: 3px; width: max-content; color: #fff;">$10.50/h</span>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 1px;">
+                                <span style="opacity: 0.85; font-size: 7.5px;">HORAS POR SEMANA:</span>
+                                <div style="display: flex; align-items: center; gap: 2px;">
+                                    <span id="lblHorasSemanaLcd" style="font-weight: 900; background: rgba(0,0,0,0.15); padding: 1px 3px; border-radius: 2px;">40</span>
+                                    <button class="btn-hrs-lcd" onclick="modificarHorasSemanales(1)">+</button><button class="btn-hrs-lcd" onclick="modificarHorasSemanales(-1)">-</button>
+                                </div>
                             </div>
                         </div>
-                        <!-- Fila 3: Régimen Contributivo (Botones W-2, 1099, 0%) -->
-                        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 1px;">
-                            <span>RÉGIMEN CONTRIB:</span>
-                            <div style="display: flex; align-items: center;">
-                                <button id="tabW2" class="tab-btn-lcd active" onclick="cambiarRegimenContributivo('W2')">W-2</button><button id="tab1099" class="tab-btn-lcd" onclick="cambiarRegimenContributivo('1099')">1099</button><button id="tabExento" class="tab-btn-lcd" onclick="cambiarRegimenContributivo('EXENTO')">0%</button>
+
+                        <!-- COLUMNA DERECHA: Regímenes, Switches y Porcentaje Manual -->
+                        <div style="display: flex; flex-direction: column; gap: 3px; width: 50%; border-left: 1px dotted rgba(0,240,255,0.2); padding-left: 4px; height: 100%; justify-content: center;">
+                            <div style="display: flex; align-items: center; justify-content: flex-start; width: 100%;">
+                                <button id="tabW2" class="tab-btn-lcd active" onclick="cambiarRegimenContributivo('W2')">NOMINA</button>
+                                <button id="tab1099" class="tab-btn-lcd" onclick="cambiarRegimenContributivo('1099')">FREELANCE</button>
+                                <button id="tabExento" class="tab-btn-lcd" onclick="cambiarRegimenContributivo('EXENTO')">0%</button>
+                            </div>
+                            <div style="display: flex; align-items: center; justify-content: flex-start; width: 100%;">
+                                <button id="toggleSS" class="toggle-label-lcd on" onclick="toggleImpuestoIndividual('SS')">SS</button>
+                                <button id="toggleMED" class="toggle-label-lcd on" onclick="toggleImpuestoIndividual('MED')">MED</button>
+                            </div>
+                            <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; border-top: 1px dotted rgba(0,240,255,0.15); padding-top: 2px;">
+                                <span style="font-size: 7.5px; opacity: 0.85;">MANUAL:</span>
+                                <div style="display: flex; align-items: center; gap: 1px;">
+                                    <span id="lblManualPctLcd" style="font-weight: 900; margin-right: 2px;">0.0%</span>
+                                    <button class="btn-hrs-lcd" onclick="modificarImpuestoManual(0.1)">+</button><button class="btn-hrs-lcd" onclick="modificarImpuestoManual(-0.1)">-</button>
+                                </div>
                             </div>
                         </div>
-                        <!-- Fila 4: Switches de Seguro Social y Medicare -->
-                        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 1px;">
-                            <span>RETENCIONES DE LEY:</span>
-                            <div style="display: flex; align-items: center;">
-                                <button id="toggleSS" class="toggle-label-lcd on" onclick="toggleImpuestoIndividual('SS')">SS</button><button id="toggleMED" class="toggle-label-lcd on" onclick="toggleImpuestoIndividual('MED')">MED</button>
-                            </div>
-                        </div>
-                        <!-- Fila 5: Retención Manual por Botón -->
-                        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 1px; border-top: 1px dotted rgba(0,240,255,0.15); padding-top: 1px;">
-                            <span>PORCENTAJE MANUAL:</span>
-                            <div style="display: flex; align-items: center; gap: 2px;">
-                                <span id="lblManualPctLcd" style="font-weight: 900;">0.0%</span>
-                                <button class="btn-hrs-lcd" onclick="modificarImpuestoManual(0.1)" style="margin-left: 4px;">+</button><button class="btn-hrs-lcd" onclick="modificarImpuestoManual(-0.1)">-</button>
-                            </div>
-                        </div>
+
                     </div>
                     <div class="scroll-hint" id="flechaGuia">▼ deslizar</div>
                 </div>
@@ -297,13 +298,13 @@
                     <div class="lcd-total" style="margin-bottom: 1px;">TOTAL: $<span id="outPer">0.00</span></div>
                     <div id="rowPersonaCuota" style="opacity: 0.3; font-size: 11px; margin-top: 1px; transition: opacity 0.15s ease;"><span id="txtSerruchoLabelType">SERRUCHO (C/U): N/A</span> <span id="outPerPersonaLine"></span></div>
                 </div>
-                <!-- Data Base de Salario (Outputs Netos Saneados) -->
+                <!-- Data Base de Salario (Outputs Saneados con Nombres de Total) -->
                 <div id="wrapperDataSalarioLcd" style="display: none; border-top: 1px solid rgba(0,240,255,0.2); padding-top: 2px; font-size: 8.5px; line-height: 1.1;">
                     <div style="color: #ff3b30; font-weight: 900; font-size: 8px; text-transform: uppercase;">RETENCIÓN TOTAL: <span id="outSalRetencion">-$0.00 (0%)</span></div>
-                    <div>SEMANAL NETO  : <span id="outSalSemanal" style="font-weight: 900; font-size: 9.5px;">$0.00</span></div>
-                    <div>BISEMANAL NETO: <span id="outSalBisemanal" style="font-weight: 900; font-size: 9.5px;">$0.00</span></div>
-                    <div>MENSUAL NETO  : <span id="outSalMensual" style="font-weight: 900; font-size: 9.5px;">$0.00</span></div>
-                    <div style="border-top: 1px dotted rgba(0,240,255,0.2); margin-top: 1px; padding-top: 1px;">ANUAL NETO    : <span id="outSalAnual" style="font-weight: 900; font-size: 11px; color: #00ff66;">$0.00</span></div>
+                    <div>TOTAL SEMANAL  : <span id="outSalSemanal" style="font-weight: 900; font-size: 9.5px;">$0.00</span></div>
+                    <div>TOTAL BISEMANAL: <span id="outSalBisemanal" style="font-weight: 900; font-size: 9.5px;">$0.00</span></div>
+                    <div>TOTAL MENSUAL  : <span id="outSalMensual" style="font-weight: 900; font-size: 9.5px;">$0.00</span></div>
+                    <div style="border-top: 1px solid rgba(0,240,255,0.2); margin-top: 1px; padding-top: 1px;">TOTAL ANUAL    : <span id="outSalAnual" style="font-weight: 900; font-size: 11px; color: #00ff66;">$0.00</span></div>
                 </div>
             </div>
         </div>
@@ -843,6 +844,7 @@
             calcularSalarioSubPantalla();
         }
 
+        // 🚨 REEMPLAZO TOTALMENTE INTEGRADO: FUNCIÓN DE CÁLCULOS NETOS Y CARACTERES NUMÉRICOS
         function calcularSalarioSubPantalla() {
             let tasaSS = 0.0;
             let tasaMED = 0.0;
@@ -869,9 +871,10 @@
 
             document.getElementById('lblSalHoraLcd').innerText = "$" + precioHoraTrabajo.toFixed(2) + "/h";
             
-            // 🚨 SANEADO DE DECIMALES INFINITOS BINARIOS DE COMA FLOTANTE (.toFixed(1))
+            // Saneado matemático estricto a un solo decimal fijo para evitar números rotos infinitos
             document.getElementById('outSalRetencion').innerText = "-$" + retencionSemanal.toFixed(2) + " (" + (porcientoTotalDeduccion * 100).toFixed(1) + "%)";
             
+            // Inyección limpia y directa en los nodos renombrados como TOTAL
             document.getElementById('outSalSemanal').innerText = "$" + (brutoSemanal - retencionSemanal).toFixed(2);
             document.getElementById('outSalBisemanal').innerText = "$" + (brutoBisemanal - retencionBisemanal).toFixed(2);
             document.getElementById('outSalMensual').innerText = "$" + (brutoMensual - retencionMensual).toFixed(2);
@@ -889,6 +892,7 @@
             document.getElementById('lblSub').innerText = sSub;
             calc();
         }
+
 
         function bksp() {
             if (!sistemaEncendido || modoSalarioActivo) return; 
@@ -1033,6 +1037,7 @@
                 txt += `CUOTA POR CABEZA:   $${(totalNetoGlobal / nPpl).toFixed(2).padStart(8)}\n`;
                 txt += `===============================\n`;
             }
+            // 🚨 REEMPLAZO MODULAR: DETALLE DE PROYECCIÓN DE TOTALES EN EL TICKET HOLOGRÁFICO
             if (precioHoraTrabajo > 0) {
                 let tasaSS = 0.0, tasaMED = 0.0;
                 if (regimenContributivo === 'W2') {
@@ -1044,18 +1049,23 @@
                 let semBruto = precioHoraTrabajo * horasSemanalesTrabajo;
                 let semNeto = semBruto * (1 - porcientoTotalDeduccion);
                 
-                txt += `\n===============================\n     PROYECCIÓN DE SALARIO NETO\n===============================\n`;
-                txt += ` Régimen / Modo   : ${regimenContributivo.padStart(12)}\n`;
+                let nombreRegimenRecibo = "0% EXENTO";
+                if (regimenContributivo === 'W2') nombreRegimenRecibo = "NÓMINA (W-2)";
+                if (regimenContributivo === '1099') nombreRegimenRecibo = "FREELANCE (1099)";
+
+                txt += `\n===============================\n     PROYECCIÓN DE SALARIO\n===============================\n`;
+                txt += ` Régimen / Modo   : ${nombreRegimenRecibo.padStart(12)}\n`;
                 txt += ` Paga por Hora    : $${precioHoraTrabajo.toFixed(2).padStart(8)}/h\n`;
                 txt += ` Horas por Semana : ${horasSemanalesTrabajo.toString().padStart(8)} hrs\n`;
-                txt += ` Deducción Total  : ${(porcientoTotalDeduccion * 100).toFixed(1)}%\n`;
+                txt += ` Deducción Total  : ${(porcientoTotalDeduccion * 100).toFixed(1).padStart(8)}%\n`;
                 txt += ` -----------------------------\n`;
-                txt += ` SEMANAL NETO     : $${semNeto.toFixed(2).padStart(8)}\n`;
-                txt += ` BISEMANAL NETO   : $${(semNeto * 2).toFixed(2).padStart(8)}\n`;
-                txt += ` MENSUAL NETO     : $${(semNeto * 4.3333).toFixed(2).padStart(8)}\n`;
-                txt += ` ANUAL NETO       : $${(semNeto * 52).toFixed(2).padStart(8)}\n`;
+                txt += ` TOTAL SEMANAL    : $${semNeto.toFixed(2).padStart(8)}\n`;
+                txt += ` TOTAL BISEMANAL  : $${(semNeto * 2).toFixed(2).padStart(8)}\n`;
+                txt += ` TOTAL MENSUAL    : $${(semNeto * 4.3333).toFixed(2).padStart(8)}\n`;
+                txt += ` TOTAL ANUAL      : $${(semNeto * 52).toFixed(2).padStart(8)}\n`;
                 txt += `===============================\n`;
             }
+
             txt += `    ¡Gracias por usar la app!`;
             textoReciboGlobal = txt;
             document.getElementById('textoContenidoHolo').innerText = txt;
