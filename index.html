@@ -577,12 +577,15 @@
             </div>
         </div>
 
-        <!-- 🎛️ CONTENEDOR UNIFICADO DE PRECIO CENTRADO -->
+                <!-- 🎛️ CONTENEDOR UNIFICADO DE PRECIO CENTRADO -->
         <div class="contenedor-precio-unificado precio-on" id="marcadorPrecioUnificado">
             <div style="width:55px; opacity:0; pointer-events:none;"></div>
             <div id="cajaSub" class="caja-data" onclick="seleccionarMenu('sub')">
                 <span class="lbl-title">Precio</span>
-                <span class="lbl-val">$<span id="lblSub" class="blink-num">0</span></span>
+                <!-- Modificado aquí: Añadidos estilos de tamaño grande alineados -->
+                <span class="lbl-val" style="display: flex; align-items: center; gap: 2px; font-size: 24px !important; font-weight: bold;">
+                    <span>$</span><span id="lblSub" class="blink-num">0</span>
+                </span>
             </div>
             <button id="btnAnadirGlobal" class="btn-add-embedded" style="width: auto; padding: 0 12px; font-size: 11px; text-transform: uppercase;" onclick="addProducto()">AÑADIR</button>
         </div> <!-- boton de añadir -->
