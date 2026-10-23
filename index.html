@@ -885,7 +885,7 @@
             document.getElementById('txtHeaderIndicadores').innerText = subpartes.length > 0 ? subpartes.join(' | ') : "SISTEMA ACTIVO";
         }
 
-        // 🚨 REPARACIÓN MAESTRA DE RUTAS: APAGADO ABSOLUTO DE HISTORIAL AL ENTRAR A SALARIO
+        // 🚨 REPARACIÓN LOGÍSTICA DEFINTIVA: ELIMINACIÓN DE TEXTO FLOTANTE "LISTA VACÍA" EN MODO SALARIO
         function seleccionarMenu(f) {
             if (!sistemaEncendido) return;
             reproducirSonido('menu');
@@ -901,12 +901,17 @@
                 if (modoSalarioActivo) {
                     lcd.classList.add('modo-salario-activo');
                     
-                    // 🔒 FIJACIÓN LOGÍSTICA: Se apaga el historial para que no ocupe espacio arriba
+                    // 🔒 ESCUDO ESTRICTO: Apagamos los bloques de compras e historial
                     bloqueListaCompras.style.display = "none";
                     wrapperCompras.style.display = "none";
                     document.getElementById('flechaGuia').style.display = "none";
                     
-                    // Se despierta la subpantalla azul ocupando todo el tope del cristal
+                    // 🧼 PURGA COMPLETA: Si la lista está vacía o tiene el nodo libre de texto, limpiamos el historial para que no flote nada
+                    if (preciosGuardados.length === 0) {
+                        bloqueListaCompras.innerHTML = '';
+                    }
+                    
+                    // Se activa la subpantalla azul ocupando todo el tope del cristal
                     bloqueSubPantallaSalario.style.display = "flex";
                     wrapperSalario.style.display = "block";
                     
@@ -923,6 +928,15 @@
                     // Se restaura el historial tradicional de compras
                     bloqueListaCompras.style.display = "block";
                     wrapperCompras.style.display = "block";
+                    
+                    // 📑 RESTAURACIÓN CONTABLE: Si no había artículos, devolvemos su texto base limpio
+                    if (preciosGuardados.length === 0) {
+                        bloqueListaCompras.innerHTML = 'Lista vacía<span class="lcd-tipeo"></span>';
+                    } else {
+                        bloqueListaCompras.innerHTML = preciosGuardados.map((item, i) => '<div>• (' + (i+1) + '): $' + item.total.toFixed(2) + ' <span style="font-size:8px; opacity:0.75;">(DTO:-$' + item.descuento.toFixed(2) + '/IVU:' + item.porcientoIvuUsado.toFixed(1) + '%)</span></div>').join('');
+                        let totalConTaxAcumulado = preciosGuardados.reduce((sum, item) => sum + item.total, 0);
+                        bloqueListaCompras.innerHTML += '<div style="border-top:1px dashed rgba(0,0,0,0.3); font-weight:900; margin-top:2px;">TOTAL: \$' + totalConTaxAcumulado.toFixed(2) + '</div>';
+                    }
                     
                     document.getElementById('btnModoSalario').className = "caja-data btn-off";
                     document.getElementById('lblSalarioBoton').innerText = "N/A";
@@ -942,6 +956,11 @@
                 wrapperCompras.style.display = "block";
                 document.getElementById('btnModoSalario').className = "caja-data btn-off";
                 document.getElementById('lblSalarioBoton').innerText = "N/A";
+                
+                // Si salta a otra opción por teclado físico, también restauramos el texto base
+                if (preciosGuardados.length === 0) {
+                    bloqueListaCompras.innerHTML = 'Lista vacía<span class="lcd-tipeo"></span>';
+                }
             }
 
             const numSub = document.getElementById('lblSub'), numPpl = document.getElementById('lblPpl'), numDesc = document.getElementById('lblDesc'), numTip = document.getElementById('lblTip'), numIvu = document.getElementById('lblIvuBoton');
@@ -985,6 +1004,7 @@
             }
             actualizarHeaderIndicadores(); calc();
         }
+
 
 
         function cambiarRegimenContributivo(regimen) {
