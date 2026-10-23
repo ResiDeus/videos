@@ -554,17 +554,19 @@
                 </div>
             </div>
 
-        <!-- 💰 MARCADOR UNIFICADO DE PRECIO ORIGINAL GIGANTE CON SU "$" E INPUT ANIMADO -->
-        <div class="contenedor-precio-unificado precio-on" id="marcadorPrecioUnificado">
+        <!-- 🚨 REEMPLAZO MAESTRO INTEGRADO: ELIMINACIÓN DE DUPLICADOS Y VISOR DE PRECIO ORIGINAL CON "$" PARPADEANTE -->
+        <div class="contenedor-precio-unificado precio-on" id="marcadorPrecioUnificado" style="display: flex; width: 100%; gap: 4px; background-color: #0b0214 !important; border-radius: 10px; border: 2px solid var(--neon-secondary); padding: 4px; min-height: 52px; align-items: center; position: relative; overflow: hidden;">
             <div style="width:55px; opacity:0; pointer-events:none;"></div>
-            <div id="cajaSub" class="caja-data" style="background:transparent !important; border:none !important; box-shadow:none !important; min-height:auto; align-items:center !important; justify-content:center !important; color:#fff !important; opacity:1; text-align:center;" onclick="seleccionarMenu('sub')">
+            <div id="cajaSub" class="caja-data" style="flex-grow: 1; background: transparent !important; border: none !important; box-shadow: none !important; min-height: auto; align-items: center !important; justify-content: center !important; color: #fff !important; opacity: 1; text-align: center;" onclick="seleccionarMenu('sub')">
                 <span class="lbl-title" style="font-size: 8px; text-transform: uppercase; color: var(--neon-secondary); margin-bottom: 1px; font-weight: bold; text-shadow: 0 0 4px rgba(0,240,255,0.2);">Precio</span>
                 <span class="lbl-val" style="font-size: 18px !important; font-weight: 900; color: #fff !important;">$<span id="lblSub" class="blink-num-input-active">0</span></span>
             </div>
-            <button id="btnAnadirGlobal" class="btn-add-embedded" style="width: auto; padding: 0 12px; font-size: 11px; text-transform: uppercase;" onclick="addProducto()">AÑADIR</button>
+            <!-- Tu botón original de "+" a la derecha perfectamente restaurado -->
+            <button id="btnAnadirGlobal" class="btn-add-embedded" style="width: 55px; height: 100%; min-height: 40px; background: var(--blue-tech) !important; background-size: 200% 200% !important; border: 2px solid #fff; border-radius: 6px; color: #ffffff !important; font-size: 24px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 10px var(--neon-secondary); transition: all 0.1s ease; user-select: none; z-index: 2;" onclick="addProducto()">+</button>
         </div>
 
         <div class="lcd-body">
+
 
                 <!-- Data Base de Compras -->
                 <div id="wrapperDataComprasLcd" style="position: relative; overflow: visible;">
