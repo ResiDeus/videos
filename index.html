@@ -372,23 +372,44 @@
             } catch (e) {}
         }
 
-        function iniciarAutoIncrementoTouch(e, tipo, delta) {
+                function iniciarAutoIncrementoTouch(e, tipo, delta) {
             if (e && e.cancelable) e.preventDefault(); 
             iniciarAutoIncremento(tipo, delta);
         }
 
+        // 🚨 REEMPLAZO MAESTRO: SISTEMA DE RÁFAGA CONTINUA Y ACELERACIÓN EXCLUSIVA POR PRESIÓN PROLONGADA
         function iniciarAutoIncremento(tipo, delta) {
             if (!sistemaEncendido) return;
             if (modoSalarioActivo && tipo !== 'sal') return;
             if (!modoSalarioActivo && tipo === 'sal') return;
 
+            // El primer tap ejecuta el movimiento base exacto sin retrasos
             ejecutarModificacionPaso(tipo, delta);
+            
+            let ciclosCorridos = 0;
             
             timeoutAutoIncremento = setTimeout(() => {
                 intervaloAutoIncremento = setInterval(() => {
-                    ejecutarModificacionPaso(tipo, delta);
-                }, 40); 
-            }, 350);
+                    ciclosCorridos++;
+                    let multiplicadorAceleracion = 1;
+                    
+                    // ⚡️ FACTOR ACCELERATOR: Incrementa la velocidad según el tiempo que dejes pegado el dedo
+                    if (ciclosCorridos > 35) {
+                        multiplicadorAceleracion = tipo === 'sal' ? 15 : 4; 
+                    } else if (ciclosCorridos > 12) {
+                        multiplicadorAceleracion = tipo === 'sal' ? 5 : 2;
+                    }
+                    
+                    let deltaFinal = delta * multiplicadorAceleracion;
+                    
+                    // Para los botones normales (no salario), forzamos que el paso acelerado mantenga coherencia numérica
+                    if (tipo !== 'sal' && tipo !== 'ivu') {
+                        deltaFinal = Math.round(deltaFinal);
+                    }
+                    
+                    ejecutarModificacionPaso(tipo, deltaFinal);
+                }, 25); // Bucle ultra veloz de 25ms para ráfaga continua óptima en iOS
+            }, 350); // Tiempo de espera antes de activar el modo ráfaga rápida
         }
 
         function detenerAutoIncremento() {
@@ -462,6 +483,7 @@
             
             actualizarHeaderIndicadores(); calc();
         }
+
 
         // ⏱️ CONTROL INTERACTIVO DE LAS HORAS SEMANALES ADENTRO DEL LCD
         function modificarHorasSemanales(delta) {
