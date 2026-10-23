@@ -305,7 +305,8 @@
                                 <span style="font-size: 7px; opacity: 0.85; font-weight: bold; white-space: nowrap;">RETENCIÓN MANUAL:</span>
                                 <div style="display: flex; align-items: center; gap: 2px;">
                                     <span id="lblManualPctLcd" style="font-size: 10px; font-weight: 900; color: #fff; margin-right: 3px;">0.0%</span>
-                                    <button class="btn-hrs-lcd" onclick="modificarImpuestoManual(0.1)">+</button><button class="btn-hrs-lcd" onclick="modificarImpuestoManual(-0.1)">-</button>
+                                    <button id="btnManualMas" class="btn-hrs-lcd" onclick="modificarImpuestoManual(0.1)">+</button>
+                                    <button id="btnManualMenos" class="btn-hrs-lcd" onclick="modificarImpuestoManual(-0.1)">-</button>
                                 </div>
                             </div>
                         </div>
@@ -836,15 +837,19 @@
             actualizarHeaderIndicadores(); calc();
         }
 
+        // 🚨 REEMPLAZO TOTALMENTE INTEGRADO: CONMUTADORES CONTRIBUTIVOS Y BLOQUEO DE FILTRO MANUAL
         function cambiarRegimenContributivo(regimen) {
             if (!sistemaEncendido || !modoSalarioActivo) return;
             reproducirSonido('menu');
             regimenContributivo = regimen;
 
-            if (regimen === 'W2') {
-                ssActivo = true; medActivo = true;
-            } else if (regimen === '1099') {
-                ssActivo = true; medActivo = true;
+            // Regla estricta: Si se selecciona Nómina o Freelance, la retención manual se desploma a 0 automáticamente
+            if (regimen === 'W2' || regimen === '1099') {
+                porcientoManualRetencion = 0.0;
+                document.getElementById('lblManualPctLcd').innerText = "0.0%";
+                
+                if (regimen === 'W2') { ssActivo = true; medActivo = true; }
+                if (regimen === '1099') { ssActivo = true; medActivo = true; }
             } else if (regimen === 'EXENTO') {
                 ssActivo = false; medActivo = false;
             }
@@ -860,6 +865,18 @@
             
             document.getElementById('toggleSS').className = ssActivo ? "toggle-label-lcd on" : "toggle-label-lcd off";
             document.getElementById('toggleMED').className = medActivo ? "toggle-label-lcd on" : "toggle-label-lcd off";
+
+            // Motor de deshabilitación: Apaga visualmente y congela los clics si no está en modo N/A (EXENTO)
+            const bMas = document.getElementById('btnManualMas');
+            const bMenos = document.getElementById('btnManualMenos');
+            
+            if (regimen === 'EXENTO') {
+                bMas.disabled = false; bMas.style.opacity = "1"; bMas.style.pointerEvents = "auto";
+                bMenos.disabled = false; bMenos.style.opacity = "1"; bMenos.style.pointerEvents = "auto";
+            } else {
+                bMas.disabled = true; bMas.style.opacity = "0.2"; bMas.style.pointerEvents = "none";
+                bMenos.disabled = true; bMenos.style.opacity = "0.2"; bMenos.style.pointerEvents = "none";
+            }
         }
 
         function toggleImpuestoIndividual(tipo) {
@@ -874,6 +891,7 @@
             
             calcularSalarioSubPantalla();
         }
+
 
         // 🚨 REEMPLAZO TOTALMENTE INTEGRADO: FUNCIÓN DE CÁLCULOS NETOS Y CARACTERES NUMÉRICOS
         function calcularSalarioSubPantalla() {
