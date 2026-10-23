@@ -202,20 +202,24 @@
         /* Eliminamos el pseudo-elemento ::before estático que creaba el steady resplandor blanco erróneo */
         body.theme-cyberpunk .btn-key::after, body.theme-cyberpunk .btn-back::after { display: none !important; content: none !important; }
 
-        /* 🚨 REEMPLAZO CSS: CONTENCIÓN DE FLASHES, ESCALADO Y NUEVOS COLORES DE SWITCHES */
+                /* 🚨 PASO 1: PRIORIDAD DE CAPA ABSOLUTA PARA BOTONES INTERNOS DEL LCD */
         .btn-hrs-lcd { 
             background: #00f0ff; border: none; color: #051e36; font-size: 11px; font-weight: 900; 
             width: 16px; height: 16px; border-radius: 4px; display: inline-flex; justify-content: center; 
             align-items: center; cursor: pointer; margin: 0 1px; vertical-align: middle; 
-            transition: all 0.1s ease; font-family: monospace; position: relative; overflow: hidden; 
+            transition: all 0.1s ease; font-family: monospace;
+            /* Inyección de prioridad háptica para romper el cristal del LCD */
+            position: relative !important; z-index: 100 !important; overflow: hidden; 
         }
         
         .tab-btn-lcd { 
             background: rgba(0,240,255,0.12); border: 1px solid rgba(0,240,255,0.35); color: rgba(0,240,255,0.8); 
             font-size: 8px; font-weight: 900; padding: 2px 5px; border-radius: 4px; cursor: pointer; 
             font-family: monospace; transition: all 0.15s ease; flex-grow: 1; text-align: center;
-            position: relative; overflow: hidden;
+            /* Inyección de prioridad háptica para romper el cristal del LCD */
+            position: relative !important; z-index: 100 !important; overflow: hidden;
         }
+
         .tab-btn-lcd.active { background: #00f0ff !important; color: #051e36 !important; box-shadow: 0 0 6px #00f0ff !important; border-color: #fff !important; }
         
         /* 🟢 Nuevos colores de alta visibilidad para Seguro Social y Medicare */
@@ -300,15 +304,16 @@
                                 <button id="toggleMED" class="toggle-label-lcd off" style="width: 50%; padding: 3px 1px; font-size: 7.5px; white-space: nowrap;" onclick="toggleImpuestoIndividual('MED')">MEDICARE</button>
                             </div>
                             
-                            <!-- 🚨 REEMPLAZO LOGÍSTICO: ETIQUETA MUTABLE EN GRANDE ARRIBA E INPUTS CON BOTONES ABAJO -->
+                            <!-- 🚨 PASO 2: CONTENEDOR INFERIOR CON REFUERZO DE CAPA HÁPTICA -->
                             <div style="display: flex; flex-direction: column; width: 100%; border-top: 1px dotted rgba(0,240,255,0.15); padding-top: 3px; gap: 2px;">
-                                <!-- Línea Superior: Etiqueta masiva de alta visibilidad -->
+                                <!-- Línea Superior: Etiqueta masiva -->
                                 <span id="lblTextoManual" style="font-size: 9px; opacity: 1; font-weight: 900; color: #fff; white-space: nowrap; text-shadow: 0 0 2px rgba(0,240,255,0.2);">RETENCIÓN MANUAL:</span>
                                 
-                                <!-- Línea Inferior: El porcentaje y sus controles reordenados abajo -->
-                                <div style="display: flex; align-items: center; justify-content: flex-start; gap: 4px; padding-left: 2px;">
-                                    <span id="lblManualPctLcd" style="font-size: 10px; font-weight: 900; color: #fff; background: rgba(0,0,0,0.15); padding: 1px 4px; border-radius: 2px;">0.0%</span>
-                                    <button id="btnManualMenos" class="btn-hrs-lcd" onclick="modificarImpuestoManual(-0.1)">-</button><button id="btnManualMas" class="btn-hrs-lcd" onclick="modificarImpuestoManual(0.1)">+</button>
+                                <!-- Línea Inferior: El porcentaje y sus controles con z-index inyectado -->
+                                <div style="display: flex; align-items: center; justify-content: flex-start; gap: 4px; padding-left: 2px; position: relative; z-index: 100;">
+                                    <span id="lblManualPctLcd" style="font-size: 10px; font-weight: 900; color: #fff; background: rgba(0,0,0,0.15); padding: 1px 4px; border-radius: 2px; position: relative; z-index: 100;">0.0%</span>
+                                    <button id="btnManualMenos" class="btn-hrs-lcd" onclick="modificarImpuestoManual(-0.1)">-</button>
+                                    <button id="btnManualMas" class="btn-hrs-lcd" onclick="modificarImpuestoManual(0.1)">+</button>
                                 </div>
                             </div>
                         </div>
