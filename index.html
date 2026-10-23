@@ -128,16 +128,18 @@
 
         /* 🚨 JAULA ESTRICTA DE 4 ÍTEMS MÁXIMOS CON SCROLL INERIAL */
         .lcd-historial { 
-            flex-grow: 1; 
+            display: grid !important;
+            grid-auto-rows: 12px !important; /* Fuerza a cada línea de artículo a medir exactamente 12px */
+            gap: 0px !important;            /* Destruye cualquier margen dinámico entre filas */
             font-size: 9px; 
-            height: 48px !important; /* Forzamos altura estricta inmutable */
+            height: 48px !important;        /* Dimensión inmutable en el eje vertical */
             max-height: 48px !important; 
             overflow-y: auto !important; 
             text-align: left; 
             padding-right: 4px; 
-            line-height: 1.2; 
+            line-height: 12px !important;   /* Clava la tipografía para que no estire su contenedor */
+            box-sizing: border-box !important;
             -webkit-overflow-scrolling: touch; 
-            box-sizing: border-box;
         }
         .lcd-body { text-align: left !important; font-size: 9px; line-height: 1.2; }
         .lcd-total { font-size: 22px; font-weight: 900; text-align: left !important; line-height: 1.1; }
