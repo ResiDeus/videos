@@ -1292,27 +1292,20 @@
             actualizarHeaderIndicadores();
         }
 
-        // APERTURA DEL RECIBO HOLOGRÁFICO
+        // 🚨 REEMPLAZO MAESTRO JS: RECIBO BLINDADO SOLO PARA ARTÍCULOS AÑADIDOS
         function abrirHologramaRecibo() {
             if (!sistemaEncendido) return;
             reproducirSonido('caja');
+            
             let numPplRaw = parseInt(sPpl); 
             let nPpl = (modoSerruchoActivo && !isNaN(numPplRaw) && numPplRaw > 1) ? numPplRaw : 1;
-            let dPct = modoDescuentoActivo ? (parseFloat(memoriaDescuentoPct) || 0) : 0;
             let tPct = incluirPropina ? (parseFloat(memoriaTipPct) || 0) : 0;
             
-            let sumaPreciosGuardados = preciosGuardados.reduce((sum, sum_item) => sum + sum_item.precio, 0);
-            let sumaDescuentosGuardados = preciosGuardados.reduce((sum, sum_item) => sum + sum_item.descuento, 0);
-            let impuestoTotalAcumulado = preciosGuardados.reduce((sum, sum_item) => sum + sum_item.ivuCalculado, 0);
+            // 🔥 FIJACIÓN CONTABLE: El recibo ahora calcula subtotal, descuento e IVU ÚNICAMENTE de la lista guardada
+            let nSub = preciosGuardados.reduce((sum, sum_item) => sum + sum_item.precio, 0);
+            let rebajaTotal = preciosGuardados.reduce((sum, sum_item) => sum + sum_item.descuento, 0);
+            let impuestoTotal = preciosGuardados.reduce((sum, sum_item) => sum + sum_item.ivuCalculado, 0);
             
-            let precioEnTeclado = parseFloat(sSub) || 0;
-            let descuentoEnTeclado = precioEnTeclado * (dPct / 100);
-            let precioDescontadoTeclado = precioEnTeclado - descuentoEnTeclado;
-            let impuestoEnTeclado = precioDescontadoTeclado * (ivu / 100);
-            
-            let nSub = sumaPreciosGuardados + precioEnTeclado;
-            let rebajaTotal = sumaDescuentosGuardados + descuentoEnTeclado;
-            let impuestoTotal = impuestoTotalAcumulado + impuestoEnTeclado;
             let subtotalDescontado = nSub - rebajaTotal;
             let propinaTotal = subtotalDescontado * (tPct / 100);
             let totalNetoGlobal = subtotalDescontado + impuestoTotal + propinaTotal;
@@ -1333,7 +1326,11 @@
                     txt += `  Total Artículo:    $${a.total.toFixed(2).padStart(8)}\n`;
                     txt += ` -----------------------------\n`;
                 });
+            } else {
+                txt += ` No hay artículos guardados.\n`;
+                txt += ` -------------------------------\n`;
             }
+            
             txt += `Subtotal:          $${nSub.toFixed(2).padStart(8)}\n`;
             if(rebajaTotal > 0) txt += `Descuento Total:  -$${rebajaTotal.toFixed(2).padStart(8)}\n`;
             if(modoIvuActivo)   txt += `IVU Acumulado:     $${impuestoTotal.toFixed(2).padStart(8)}\n`;
@@ -1349,12 +1346,12 @@
             }
             txt += `    ¡Gracias por usar la app!`;
             
-            // 🔓 FIJACIÓN MAESTRA: Se extrajo del viejo bloqueo "if" para que el recibo abra siempre
             textoReciboGlobal = txt;
             document.getElementById('textoContenidoHolo').innerText = txt;
             document.getElementById('btnCopiarHolo').innerText = "Copiar";
             document.getElementById('visorHolograma').classList.add('activo');
         }
+
         
         // HOLOGRAMA DE RECIBO
         function cerrarHologramaRecibo() {
